@@ -1,0 +1,152 @@
+.footer {
+  background-color: #fff;
+  color: #000;
+  padding: 60px 80px 30px;
+  font-family: "Inter", sans-serif;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.footer p {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 5px 0;
+}
+
+.footer-column h4 {
+  font-size: 15px;
+
+  margin-bottom: 10px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin: 5px 0;
+}
+
+.footer-column ul li a {
+  color: #555;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.footer-column ul li a:hover {
+  color: #000;
+}
+
+/* Social icons */
+.social-icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.social-icons a {
+  color: #000;
+  font-size: 16px;
+  transition: opacity 0.3s;
+}
+
+.social-icons a:hover {
+  opacity: 0.7;
+}
+
+/* Divider line */
+.footer-line {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 30px 0 20px;
+}
+
+/* Bottom Section */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #555;
+  position: relative;
+}
+
+/* Language Switcher */
+.language-switcher {
+  position: relative;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+}
+
+.flag-icon {
+  border-radius: 50%;
+}
+
+.arrow-icon {
+  margin-top: 1px;
+  stroke-width: 2px;
+}
+
+.dropdown {
+  position: absolute;
+  bottom: 25px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 13px;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dropdown-item:hover {
+  background: #f5f5f5;
+}
+
+
+
+.footer-logo {
+    width: 100px;
+    margin: 0 0 30px;
+}
+
+.footer-logo a img {
+    width: 100%;
+    display: block;
+}

@@ -1,0 +1,77 @@
+@font-face {
+  font-family: 'Avenir-Book';
+  src: url('../fonts/Avenir-Book.woff');
+}
+@font-face {
+  font-family: 'Avenir-Black';
+  src: url('../fonts/Avenir-Black.woff');
+}
+
+:root {
+  --primary-color: #2050F5;
+  --secondary-color: #1b1b25;
+  --bg-color: #f1f3fa;
+  --warning: #e2da1e;
+  --sucess: #1ee288;
+  --error-color: #EA1525;
+}
+
+.header-div .h-btn {
+    background: var(--primary-color);
+    color: #ffffff;
+    font-size: 14px;
+
+    padding: 10px 26px;
+    border-radius: 5px;
+      font-family: 'Avenir-Black';
+      display: inline-block;
+
+}
+
+.header-div .h-login{
+background: #ffffff;
+    color: #000000;
+    font-size: 14px;
+
+    padding: 10px 26px;
+    border-radius: 5px; margin: 0 14px 0;
+      font-family: 'Avenir-Black';
+            display: inline-block;
+
+
+}
+.search-container button {
+  background: #bfbfbf;
+  color: #fff;
+  border: none;
+  padding: 15px 40px;
+  font-size: 18px;
+      font-family: 'Avenir-Black';
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.search-container button:hover {
+  background: #a5a5a5;
+}
+.signup-btn {
+    padding: 20px 45px;
+     font-family: 'Avenir-Black';
+    background: #ffffff;
+    margin: 30px 0 30px;
+    display: inline-block;
+    border-radius: 4px;
+    color: var(--secondary-color);
+}
+.get-listed {
+    color: #fff;
+    background: var(--primary-color);
+    border-radius: 5px;
+    padding: 10px 27px;
+    font-size: 13px;
+    font-weight: 400;
+    display: inline-block;
+    margin: 30px 0 0;
+          font-family: 'Avenir-Black';
+
+}

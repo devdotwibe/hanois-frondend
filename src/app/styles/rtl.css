@@ -1,0 +1,13 @@
+
+
+
+body[dir=rtl] {
+    direction: rtl;
+    text-align: right;
+}
+
+
+body[dir="rtl"] .header,
+body[dir="rtl"] .footer {
+  flex-direction: row-reverse;
+}
