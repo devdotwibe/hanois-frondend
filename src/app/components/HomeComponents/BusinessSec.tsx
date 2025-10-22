@@ -18,8 +18,10 @@ import image3 from "../../../../public/images/support.png"
     },
     {
       title1: 'Support on every Step',
+      spanText: 'Step',
       discption: 'Productive agents are happy agents. Give them all the support tools and information they need to best serve your customers.',
       imageSrc: image3,
+
     }
   ];
 
@@ -43,6 +45,7 @@ const BusinessSec = () => {
           <BusinessCard
             key={index}
             title1={item.title1}
+            spanText={item.spanText}
             discption={item.discption}
             imageSrc={item.imageSrc}
           />
@@ -75,7 +78,7 @@ export default BusinessSec
 //         trigger: ".cards",
 //         pin: true,
 //         pinSpacing: true,
-//         markers: true, 
+//         markers: true,
 //         start: "top top",
 //         end: "+=1000",
 //         scrub: 1,
