@@ -1,0 +1,256 @@
+
+
+@font-face {
+  font-family: 'Avenir-Book';
+  src: url('../fonts/Avenir-Book.woff');
+}
+@font-face {
+  font-family: 'Avenir-Black';
+  src: url('../fonts/Avenir-Black.woff');
+}
+@font-face {
+  font-family: 'Avenir-medium';
+  src: url('../fonts/Avenir-Medium.woff');
+}
+@font-face {
+  font-family: 'Avenir-heavy';
+  src: url('../fonts/Avenir-Heavy.woff');
+}
+
+
+:root {
+  --primary-color: #2050F5;
+  --secondary-color: #1b1b25;
+  --bg-color: #f1f3fa;
+  --warning: #e2da1e;
+  --sucess: #1ee288;
+  --error-color: #EA1525;
+}
+
+
+
+.google-btn {
+    width: 100%;
+    background: #ffffff; color: #000000;
+    border: 1px solid #ccc;
+     display: block;
+    width: 100%; padding: 15px; border-radius: 5px;
+      font-family: 'Avenir-Black';
+      margin: 20px 0 20px; cursor: pointer;
+      display: flex;
+    justify-content: center;
+    align-items: center; gap: 9px;
+}
+
+button.apple-btn{
+    width: 100%;
+    background: #000000; color: #ffffff;
+    border: 1px solid #000000;
+     display: block;
+    width: 100%; padding: 15px; border-radius: 5px;
+      font-family: 'Avenir-Black';
+      margin: 20px 0 20px; cursor: pointer;
+     display: flex;
+    justify-content: center;
+    align-items: center; gap: 9px;
+}
+button.apple-btn:hover{
+  background: #46454C;
+}
+button.back-bth {
+    position: absolute; cursor: pointer;
+    top: 40px;
+    left: 60px;
+    width: 40px;
+}
+.login-btn{
+    background: var(--primary-color);
+    color: #ffffff;
+    display: block;
+    width: 100%; padding: 15px; border-radius: 5px;
+      font-family: 'Avenir-Black';
+      margin: 20px 0 20px; cursor: pointer;
+}
+
+.login-btn:hover {
+    background: #4c72f6;
+}
+
+
+.form-grp input,
+.form-grp textarea {
+    border: 1px solid #d7dbec;
+     color: #000000;
+    padding: 20px 15px;
+    border-radius: 4px; transition: all 0.5s ease-in-out;
+}
+
+.form-grp input:focus,
+.form-grp textarea:focus
+{
+  outline: none;
+   border-color: var(--primary-color); 
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+}
+.form-grp input:hover,
+.form-grp textarea:hover
+{
+   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+ 
+}
+
+
+
+
+
+
+
+
+
+.login-body .header{display: none;}
+
+
+.logincol1{width: 30%; position: relative;}
+
+
+.logo-div{position: absolute; top: 20px; left: 20px;}
+
+
+.logincol2{width: 70%; 
+    /* background: gray; */ position: relative;
+}
+
+.login-divider {display: flex;flex-wrap: wrap;}
+
+.logincol1 .bg-cover img{width: 100%; height: 100%; object-fit: cover;}
+
+.logincol2 h2{font-family: 'Avenir-Black';font-size: 36px;color: var(--secondary-color); margin: 0 0 30px;}
+
+
+
+.login-container {
+    padding-left: 150px; max-width: 700px; margin-top: 120px; 
+}
+
+.form-grp {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column; margin: 20px 0 0;
+}
+
+.form-grp label {
+    color: #1b1b25;
+        margin-bottom: 4px; 
+}
+
+
+
+.forget-pass{color: var(--primary-color); font-size: 13px; text-decoration: underline;}
+
+.signup-text a,
+ .register-text a {
+text-decoration: underline;
+color: #000000;
+  font-family: 'Avenir-Black';
+
+ 
+
+ }
+
+
+
+
+.signup-text {text-align: center; margin: 0 0 10px; color: #a3a3a7;}
+
+.register-text {text-align: center;color: #a3a3a7;margin: 0 0 10px;}
+
+
+
+.login-form input::placeholder {
+  color: #a3a3a7;          
+  font-size: 16px;      
+          
+}
+
+
+form small{
+    color: #a3a3a7;  
+    margin: 10px 0 0;        
+
+}
+
+
+.divider{
+    position: relative;
+    height: 40px;
+}
+
+.divider .line1{
+    
+    width: 100%; height: 1px; background: #000000;
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 9;
+}
+.divider h6{
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%); z-index: 99;
+    left: 50%;
+    font-size: 11px; width: fit-content;
+    padding-inline: 10px; background: #ffffff; color: #000000;
+}
+
+
+
+p.terms
+ {
+    font-size: 11px;
+    max-width: 80%;
+    margin-inline: auto;
+    text-align: center; color: #a3a3a7;
+}
+
+.formcol2 {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.formcol2 .form-grp {
+    width: 48%;
+}
+
+.signuppage .form-grp span {
+    color: #a3a3a7;
+    font-size: 13px;
+    max-width: 300px;
+    margin-top: 12px;
+}
+
+.forgot-pass p{
+  margin: 0 0 15px;
+  color: #a3a3a7;
+}
+
+
+
+
+.login-container .form-grp span {
+    color: #a3a3a7;
+    max-width: 300px;
+    margin-top: 12px;
+    font-size: 13px;
+}
+
+
+.bg-cover {
+    height: 100%;
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,84 @@
+
+@font-face {
+  font-family: 'Avenir-Book';
+  src: url('../fonts/Avenir-Book.woff');
+}
+@font-face {
+  font-family: 'Avenir-Black';
+  src: url('../fonts/Avenir-Black.woff');
+}
+@font-face {
+  font-family: 'Avenir-medium';
+  src: url('../fonts/Avenir-Medium.woff');
+}
+@font-face {
+  font-family: 'Avenir-heavy';
+  src: url('../fonts/Avenir-Heavy.woff');
+}
+
+
+.thank-btn{background: none; border: 2px solid #000000; color: #000000; padding: 15px 20px; border-radius: 4px;  font-family: 'Avenir-Black'; cursor: pointer; width: 350px;
+}
+.thank-btn:hover{
+    background: #000000; color: #ffffff;
+}
+
+/* === Overlay === */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+.modal-content {
+  background: #fff;
+  border-radius: 16px;
+  width: 320px;
+  max-width: 90%;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.35s ease;
+  min-width: 600px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+
+.modal-content h2 {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #111827;
+    font-family: 'Avenir-Black';
+}
+
+.modal-content p {
+  color: #4b5563;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}

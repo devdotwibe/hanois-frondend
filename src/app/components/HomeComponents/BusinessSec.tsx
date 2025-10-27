@@ -17,7 +17,7 @@ import image3 from "../../../../public/images/support.png"
       imageSrc: image2,
     },
     {
-      title1: 'Support on every Step',
+      title1: 'Support on every',
       spanText: 'Step',
       discption: 'Productive agents are happy agents. Give them all the support tools and information they need to best serve your customers.',
       imageSrc: image3,
