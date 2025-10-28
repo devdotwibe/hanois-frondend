@@ -84,3 +84,34 @@ background: #ffffff;color: #000000;font-size: 14px;padding: 10px 26px;border-rad
 .get-listed:hover {
     background: #4c72f6;
 }
+
+
+
+
+
+
+
+
+
+@media (max-width: 1204px) {
+
+
+.header-div .h-login{
+    margin-inline: 10px;
+}
+
+}
+
+@media (max-width: 600px) {
+.search-container button{font-size: 15px;padding: 15px 22px;}
+.header-div .h-btn{padding: 10px 15px;}
+.header-div .h-login{padding: 10px 15px;}
+}
+
+
+
+
+@media (max-width: 480px) {
+.header-div .h-btn{display: none;}
+.header-div .h-login{margin: 0;}
+}

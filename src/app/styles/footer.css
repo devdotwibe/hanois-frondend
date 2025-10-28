@@ -21,12 +21,24 @@
   font-family: "Inter", sans-serif;
 }
 
+
+
 .footer-container {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  gap: 40px;
-  margin-bottom: 120px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 120px;
+
 }
+
+
+
+
+
+
+
+
+
 
 .logo {
   font-size: 22px;
@@ -167,4 +179,42 @@
 .footer-logo a img {
     width: 100%;
     display: block;
+}
+
+.footer-about.footer-column span{display: block;}
+
+
+@media (max-width: 767px) {
+.footer-about.footer-column {width: 100%; margin: 0 0 40px;}
+.footer-about.footer-column span{display: inline;}
+
+.footer{padding-top: 50px;}
+.footer-logo{margin: 0 0 15px;}
+.footer-container{margin-bottom: 50px;}
+
+
+}
+
+
+@media (max-width: 600px) {
+
+
+.footer-about.footer-column {
+    width: 100%;
+}
+
+.footer-column.f-links {
+    width: 50%;
+    margin: 0 0 30px;
+}
+.footer-container{margin-bottom: 10px;}
+
+}
+
+
+
+@media (max-width: 600px) {
+
+.footer-column.f-links{width: 100%;}
+
 }

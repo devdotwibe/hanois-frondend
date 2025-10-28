@@ -156,9 +156,7 @@ padding: 80px 0 0;
 
 
 
-.blue-card .b-card:nth-child(3) {
-    margin-right: 0;
-}
+
 
 
 .blue-card .b-img img {
@@ -517,7 +515,7 @@ top: 160px; margin-bottom: 0;
 
 .btn-cvr .login-btn{width: 450px;}
 
-
+.b-card .b-img {border-radius: 11px;overflow: hidden;}
 
 /* ------------------------------------responsive */
 
@@ -553,6 +551,16 @@ top: 160px; margin-bottom: 0;
 .business-wrap{padding: 80px 0;}
 .ready-div{padding-bottom: 80px;}
 .bg-dark-blue{padding-top: 80px;}
+.blue-card {gap: 0;justify-content: space-around;}
+.blue-card .b-card {width: 32.2%;}
+.business-div2 {width: 40%;}
+
+.banner-div h2,
+.ready-div h3,
+.business-div1 h3,
+.faq-section h3  {font-size: 46px;}
+.faq-question{font-size: 30px;}
+.faq-question .icon {font-size: 38px;}
 
 }
 
@@ -561,6 +569,12 @@ top: 160px; margin-bottom: 0;
 
 
 @media (max-width: 900px) {
+.business-block{padding: 20px;}
+.content-top{margin: 0 0 20px;}
+.outer-imgb {width: 70px;}
+.content-top h3 { width: calc(100% - 70px);}
+
+
 
 }
 
@@ -585,9 +599,36 @@ top: 160px; margin-bottom: 0;
 .bg-dark-blue{padding-top: 50px;}
 .blue-card {gap: 0;justify-content: space-around;}
 .blue-card .b-card {width: 30%;}
-.business-div1{width: 100%;}
+.business-div1{width: 100%; margin: 0 0 50px;}
 
 .business-div2{width: 100%;}
+
+.bg-blue1{background: var(--primary-color); padding-top: 50px;}
+
+.business-block {
+    width: 70%;
+    margin-inline: auto;
+}
+
+
+.banner-div h2,
+.ready-div h3,
+.business-div1 h3,
+.faq-section h3  {font-size: 36px;}
+
+
+.faq-section h3 {line-height: 1.4;}
+
+
+.banner-div p,
+.ready-div p {font-size: 14px;}
+
+p {font-size: 14px;}
+.b-text h4{font-size: 17px; margin: 0 0 10px;}
+.faq-question {font-size: 26px;}
+
+.faq-question .icon {font-size: 30px;}
+.banner-div{margin: 0 0 50px;}
 }
 
 /* ----------- */
@@ -596,15 +637,23 @@ top: 160px; margin-bottom: 0;
 
 @media (max-width: 600px) {
 .blue-card .b-card {
-    width: 100%;
+    width: 80%;margin: 0 auto 40px;
 }
+.blue-card .b-card:last-child{margin-bottom: 0;}
+.business-block {width: 80%;}
+
 }
 
 
 /* ----------- */
 
 @media (max-width: 480px) {
-
+.business-block {width: 100%;}
+.search-container button {padding: 15px 20px;}
+.search-container input {padding: 12px 12px;}
+.blue-card .b-card {
+    width: 100%;
+}
 
 }
 

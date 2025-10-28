@@ -12,8 +12,11 @@ const Footer = () => {
   return (
     <footer className="footer">
       {/* Top Section */}
+
+
       <div className="footer-container containers">
-        <div className="footer-about">
+
+        <div className="footer-about footer-column">
 
            <div className="footer-logo">
               <Link href="/">
@@ -29,8 +32,9 @@ const Footer = () => {
 
           <p>We built an elegant solution.</p>
           <p>
-            Our team created a fully integrated sales <br />
-            and marketing solution for SMBs
+            Our team created a fully integrated sales 
+            <span>and marketing solution for SMBs</span>
+            
           </p>
 
 
@@ -69,7 +73,7 @@ const Footer = () => {
 
         </div>
 
-        <div className="footer-column">
+        <div className="footer-column f-links">
           <h4>Service Providers</h4>
           <ul>
             <li><a href="#">Get listed</a></li>
@@ -77,7 +81,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="footer-column">
+        <div className="footer-column f-links">
           <h4>Service Seeker</h4>
           <ul>
             <li><a href="#">Find Service Provider</a></li>
@@ -85,14 +89,14 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="footer-column">
+        <div className="footer-column f-links">
           <h4>Help Center</h4>
           <ul>
             <li><a href="#">Get in touch</a></li>
           </ul>
         </div>
 
-        <div className="footer-column">
+        <div className="footer-column f-links">
           <h4>About</h4>
           <ul>
             <li><a href="#">Terms of Service</a></li>
@@ -100,6 +104,7 @@ const Footer = () => {
             <li><a href="#">Cookies</a></li>
           </ul>
         </div>
+
       </div>
 
       <hr className="footer-line" />
