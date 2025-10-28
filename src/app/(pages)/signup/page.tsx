@@ -1,4 +1,6 @@
-// SignUp.js
+// "use client" directive tells Next.js to treat this file as a client component
+"use client";
+
 import React, { useState } from 'react';
 import Image from 'next/image';
 import backarrow from "../../../../public/images/left-arrow.svg";
@@ -14,7 +16,7 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Basic client-side validation
@@ -27,7 +29,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await fetch('http://72.60.220.196:5000//api/users/register', {
+      const response = await fetch('http://72.60.220.196:5000/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
