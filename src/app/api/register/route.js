@@ -3,7 +3,7 @@ export async function POST(req) {
     const body = await req.json();
 
     // Send the request to your backend (HTTP)
-    const response = await fetch('http://72.60.220.196:5000/api/users/register', {
+const response = await fetch('http://localhost:5000/api/users/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
