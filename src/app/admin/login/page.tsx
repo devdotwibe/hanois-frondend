@@ -84,27 +84,12 @@ const SignUp = () => {
             <h2>Sign up to Handis</h2>
 
             <form className="login-form" onSubmit={handleSubmit}>
-              <div className="formcol2">
-                <div className="form-grp">
-                  <label htmlFor="firstName">First Name</label>
-                  <input type="text" id="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" required />
-                </div>
-
-                <div className="form-grp">
-                  <label htmlFor="lastName">Last Name</label>
-                  <input type="text" id="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last Name" required />
-                </div>
-              </div>
-
+           
               <div className="form-grp">
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
               </div>
 
-              <div className="form-grp">
-                <label htmlFor="number">Mobile Number</label>
-                <input type="text" id="number" value={formData.number} onChange={handleChange} placeholder="+1 (000) 000 0000" required />
-              </div>
 
               <div className="form-grp">
                 <label htmlFor="password">Password</label>
@@ -112,12 +97,8 @@ const SignUp = () => {
                  <span>Use 8 or more characters, with a mix of letters, numbers and synbols</span>
               </div>
 
-              <div className="form-grp">
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm a password" required />
-              </div>
-
-              <button type="submit" className="login-btn">Sign up</button>
+              
+              <button type="submit" className="login-btn">Login</button>
             </form>
 
             {message && <p style={{ color: 'red', marginTop: '10px' }}>{message}</p>}

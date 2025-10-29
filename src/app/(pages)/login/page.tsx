@@ -13,6 +13,8 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 
 import Link from "next/link";
+import { BASE_API_URL } from '@/config'; 
+
 
 const Login = () => {
   const router = useRouter();
@@ -24,7 +26,7 @@ const Login = () => {
     const password = e.target.password.value;
 
     try {
-      const res = await fetch("https://hanois.dotwibe.com/api/api/users/login", {
+        const res = await fetch(`${BASE_API_URL}/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
