@@ -10,42 +10,42 @@ import backarrow from "../../../../public/images/left-arrow.svg";
 import headerlogo from "../../../../public/images/logo.png";
 
 import { createPortal } from "react-dom";
-
+import { useRouter } from "next/navigation";
 
 import Link from "next/link";
 
-
-const handleLogin = async (e) => {
-  e.preventDefault();
-  const email = e.target.email.value;
-  const password = e.target.password.value;
-
-  try {
-    const res = await fetch('/api/api/users/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert(data.error);
-    } else {
-      console.log('Login Success:', data);
-      // Save token in localStorage if needed
-      localStorage.setItem('token', data.token);
-      // Redirect or show user dashboard
-    }
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 const Login = () => {
-
+  const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    try {
+      const res = await fetch("https://hanois.dotwibe.com/api/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "Login failed");
+      } else {
+        console.log("Login Success:", data);
+        localStorage.setItem("token", data.token);
+        router.push("/"); 
+      }
+    } catch (err) {
+      console.error("Login Error:", err);
+      alert("Something went wrong. Please try again.");
+    }
+  };
+
+ 
   const handleClick = () => {
     setShowPopup(true);
   };
@@ -103,7 +103,7 @@ const Login = () => {
 
             <h2 className="">Log In to Handis</h2>
 
-              <form className="login-form" onSubmit={handleLogin}>
+            <form className="login-form" onSubmit={(e) => handleLogin(e, router)}>
                 <div className="form-grp">
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" placeholder="Email" required />
