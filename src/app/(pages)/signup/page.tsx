@@ -33,7 +33,7 @@ const SignUp = () => {
     }
 
     try {
-      const res = await fetch('https://hanois.dotwibe.com/api/api/users/registery', {
+      const res = await fetch('https://hanois.dotwibe.com/api/api/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
