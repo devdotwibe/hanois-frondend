@@ -2,11 +2,13 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import backarrow from "../../../../public/images/left-arrow.svg";
 import headerlogo from "../../../../public/images/logo.png";
 import loginimg from "../../../../public/images/login-sidebar.png";
 
 const SignUp = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -31,7 +33,7 @@ const SignUp = () => {
     }
 
     try {
-      const res = await fetch('https://hanois.dotwibe.com/api/api/users/register', {
+      const res = await fetch('https://hanois.dotwibe.com/api/api/users/registery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -49,6 +51,7 @@ const SignUp = () => {
           password: '',
           confirmPassword: ''
         });
+        router.push('/login');
       } else {
         setMessage(data.error || 'Registration failed');
       }
@@ -84,33 +87,34 @@ const SignUp = () => {
               <div className="formcol2">
                 <div className="form-grp">
                   <label htmlFor="firstName">First Name</label>
-                  <input type="text" id="firstName" value={formData.firstName} onChange={handleChange} required />
+                  <input type="text" id="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" required />
                 </div>
 
                 <div className="form-grp">
                   <label htmlFor="lastName">Last Name</label>
-                  <input type="text" id="lastName" value={formData.lastName} onChange={handleChange} required />
+                  <input type="text" id="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last Name" required />
                 </div>
               </div>
 
               <div className="form-grp">
                 <label htmlFor="email">Email</label>
-                <input type="email" id="email" value={formData.email} onChange={handleChange} required />
+                <input type="email" id="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
               </div>
 
               <div className="form-grp">
                 <label htmlFor="number">Mobile Number</label>
-                <input type="text" id="number" value={formData.number} onChange={handleChange} required />
+                <input type="text" id="number" value={formData.number} onChange={handleChange} placeholder="+1 (000) 000 0000" required />
               </div>
 
               <div className="form-grp">
                 <label htmlFor="password">Password</label>
-                <input type="password" id="password" value={formData.password} onChange={handleChange} required />
+                <input type="password" id="password" value={formData.password} onChange={handleChange} placeholder="+8 characters" required />
+                 <span>Use 8 or more characters, with a mix of letters, numbers and synbols</span>
               </div>
 
               <div className="form-grp">
                 <label htmlFor="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
+                <input type="password" id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm a password" required />
               </div>
 
               <button type="submit" className="login-btn">Sign up</button>

@@ -14,6 +14,34 @@ import { createPortal } from "react-dom";
 
 import Link from "next/link";
 
+
+const handleLogin = async (e) => {
+  e.preventDefault();
+  const email = e.target.email.value;
+  const password = e.target.password.value;
+
+  try {
+    const res = await fetch('/api/users/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error);
+    } else {
+      console.log('Login Success:', data);
+      // Save token in localStorage if needed
+      localStorage.setItem('token', data.token);
+      // Redirect or show user dashboard
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const Login = () => {
 
   const [showPopup, setShowPopup] = useState(false);
@@ -75,8 +103,8 @@ const Login = () => {
 
             <h2 className="">Log In to Handis</h2>
 
-            <form className="login-form">
-              <div className="form-grp">
+              <form className="login-form" onSubmit={handleLogin}>
+                <div className="form-grp">
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" placeholder="Email" required />
               </div>
@@ -95,9 +123,7 @@ const Login = () => {
                 Forget password?
               </Link>
 
-              <button type="submit" className="login-btn">
-                Log in
-              </button>
+            <button type="submit" className="login-btn">Log in</button>
             </form>
 
             <p className="signup-text">
