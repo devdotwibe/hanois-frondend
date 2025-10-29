@@ -33,7 +33,7 @@ const SignUp = () => {
     }
 
     try {
-      const res = await fetch('https://hanois.dotwibe.com/api/api/users/register', {
+      const res = await fetch('', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -81,7 +81,7 @@ const SignUp = () => {
           </button>
 
           <div className="login-container">
-            <h2>Sign up to Handis</h2>
+            <h2>Login to Admin</h2>
 
             <form className="login-form" onSubmit={handleSubmit}>
            
@@ -94,7 +94,6 @@ const SignUp = () => {
               <div className="form-grp">
                 <label htmlFor="password">Password</label>
                 <input type="password" id="password" value={formData.password} onChange={handleChange} placeholder="+8 characters" required />
-                 <span>Use 8 or more characters, with a mix of letters, numbers and synbols</span>
               </div>
 
               
