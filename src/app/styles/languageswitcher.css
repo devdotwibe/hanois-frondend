@@ -7,16 +7,13 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #f1f3fa;
+
   padding: 6px 8px;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.2s ease-in-out;
 }
 
-.lang-btn:hover {
-  background: #f9fafb;
-}
 
 .lang-text {
   font-size: 14px;

@@ -517,13 +517,154 @@ top: 160px; margin-bottom: 0;
 
 .b-card .b-img {border-radius: 11px;overflow: hidden;}
 
+
+
+
+
+
+
+.chooseplan h3 {
+    text-align: center;
+    font-size: 28px;
+      font-family: 'Avenir-medium';
+}
+.business-div21 {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.get-listedpage .business-block {
+    width: 32%;
+    margin-right: 2%;
+    margin-bottom: 0;
+}
+
+.get-listedpage .business-block:nth-child(3n) {
+    margin-right: 0;
+}
+
+
+.pricing-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 40px; gap: 15px;
+}
+
+.pricing-card {
+
+  border: 1px solid #e5e5e5;
+  border-radius: 16px;
+  padding: 24px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: 0.3s;
+}
+.chooseplan {
+    margin-bottom: 50px;
+}
+.highlighted {
+  border: 1.5px solid #2563eb;
+  box-shadow: 0 5px 18px rgba(37, 99, 235, 0.2);
+}
+
+.plan-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.per-month {
+  font-size: 1rem;
+  color: #888;
+  font-weight: 400;
+}
+
+
+hr {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 20px 0;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.features li {
+  margin: 10px 0;
+
+}
+
+.btn-outline,
+.btn-filled {
+  width: 100%;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1.5px solid #2563eb;
+  transition: 0.3s;
+}
+.btn-outline {
+  background: transparent;
+  color: #2563eb;
+}
+.btn-filled {
+  background: #2563eb;
+  color: #fff;
+}
+.recommended {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #e0ebff;
+  color: #2563eb;
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* ------------------------------------responsive */
 
 
 
 
 @media (max-width: 1340px) {
-  
+
 }
 
 /* ----------- */
@@ -589,7 +730,7 @@ top: 160px; margin-bottom: 0;
 
 
 @media (max-width: 767px) {
-  
+
 .containers{width: 90%;}
 
 
