@@ -49,8 +49,6 @@ export default function UsersPage() {
               <th>#</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Role</th>
-              <th>Joined</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -61,12 +59,6 @@ export default function UsersPage() {
                   <td>{user.id}</td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
-                  <td>
-                    <span className={`role-badge ${user.role.toLowerCase()}`}>
-                      {user.role}
-                    </span>
-                  </td>
-                  <td>{user.joined}</td>
                   <td>
                     <button className="btn-edit">Edit</button>
                     <button className="btn-delete">Delete</button>
