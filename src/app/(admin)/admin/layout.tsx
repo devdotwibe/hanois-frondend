@@ -1,8 +1,8 @@
+// app/(admin)/admin/layout.tsx
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard - hanois",
-  description: "Admin panel for hanois",
+  title: "Admin - hanois",
 };
 
 export default function AdminLayout({
@@ -12,17 +12,8 @@ export default function AdminLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="admin-body">
-        <div className="admin-container">
-          <aside className="admin-sidebar">
-            <h2>Admin Panel</h2>
-          
-          </aside>
-
-          <main className="admin-main">
-            {children}
-          </main>
-        </div>
+      <body>
+        <div className="admin-container">{children}</div>
       </body>
     </html>
   );
