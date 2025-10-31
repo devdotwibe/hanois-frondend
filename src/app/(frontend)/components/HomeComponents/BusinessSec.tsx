@@ -1,9 +1,9 @@
 import React from 'react'
 import Link from 'next/link'
 import BusinessCard from '../ReusableComponents/Cards/BusinessCard';
-import image1 from "../../../../public/images/lead.png"
-import image2 from "../../../../public/images/grow.png"
-import image3 from "../../../../public/images/support.png"
+import image1 from "../../../../../public/images/lead.png"
+import image2 from "../../../../../public/images/grow.png"
+import image3 from "../../../../../public/images/support.png"
 
  const BusinesCardData = [
     {

@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import build3 from "../../../../public/images/get-listed-3.png"
+import build3 from "../../../../../public/images/get-listed-3.png"
 const BuildSec = () => {
   return (
     <div className='build-outer'>

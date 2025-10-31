@@ -1,4 +1,4 @@
-import ContactForm from '@/app/components/ContactComponents/ContactForm'
+import ContactForm from '@/app/(frontend)/components/ContactComponents/ContactForm'
 import React from 'react'
 
 const Contact = () => {

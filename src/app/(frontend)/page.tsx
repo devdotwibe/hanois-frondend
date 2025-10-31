@@ -1,4 +1,4 @@
-import ContactForm from "./components/ContactComponents/ContactForm";
+
 import Banner from "./components/HomeComponents/Banner";
 import BusinessSec from "./components/HomeComponents/BusinessSec";
 import FaqSec from "./components/HomeComponents/FaqSec";
@@ -17,7 +17,6 @@ export default function Home() {
 
       <FaqSec />
 
-    
 
     </div>
   );

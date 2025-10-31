@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import "../../src/app/styles/header.css"
-import "../../src/app/styles/home.css"
-import "../../src/app/styles/footer.css"
-import "../../src/app/styles/languageswitcher.css"
-import "../../src/app/styles/rtl.css"
-import "../../src/app/styles/btn.css"
-import "../../src/app/styles/login.css"
-import "../../src/app/styles/popup.css"
-import "../../src/app/styles/serviceprovidersignup.css"
+import "../globals.css";
+import "../../app/styles/header.css"
+import "../../app/styles/home.css"
+import "../../app/styles/footer.css"
+import "../../app/styles/languageswitcher.css"
+import "../../app/styles/rtl.css"
+import "../../app/styles/btn.css"
+import "../../app/styles/login.css"
+import "../../app/styles/popup.css"
+import "../../app/styles/serviceprovidersignup.css"
 
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header"
@@ -26,13 +26,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+
       <body className="antialiased" suppressHydrationWarning={true}>
         
         <BodyClassManager />
 
         <Header />
 
-        {children}
+              {children}
 
         <Footer />
 

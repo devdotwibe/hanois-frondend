@@ -1,6 +1,6 @@
 import React from 'react';
 import BannerCards from '../ReusableComponents/Cards/BannerCards';
-import image1 from "../../../../public/images/interior.png"
+import image1 from "../../../../../public/images/interior.png"
 const BannerCardWrapper = () => {
 
   const BannerCardsData = [
@@ -29,8 +29,6 @@ const BannerCardWrapper = () => {
             title1={item.title1}
             imageSrc={item.imageSrc}
           />
-
-
 
         ))}
 

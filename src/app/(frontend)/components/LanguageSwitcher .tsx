@@ -76,7 +76,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import flageng from "../../../public/images/eng.png";
+import flageng from "../../../../public/images/eng.png";
 
 const LanguageSwitcher = () => {
   const [open, setOpen] = useState(false);

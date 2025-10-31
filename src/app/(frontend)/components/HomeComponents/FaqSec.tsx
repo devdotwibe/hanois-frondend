@@ -34,7 +34,7 @@ const faqData = [
 ];
 
 export default function FaqSec() {
-  // ✅ default to first item open (index 0)
+
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   const toggleFaq = (index: number) => {
@@ -47,30 +47,31 @@ export default function FaqSec() {
       <div className="containers">
 
         <h3>Frequently asked <span>questions</span></h3>
-         <div className="faq-container">
-        {faqData.map((faq, index) => (
-          <div
-            key={index}
-            className={`faq-item ${activeIndex === index ? "active" : ""}`}
-          >
-            <button className="faq-question" onClick={() => toggleFaq(index)}>
-              {faq.question}
-              <span className="icon">{activeIndex === index ? "–" : "+"}</span>
-            </button>
 
-            <div
-              className="faq-answer"
-              style={{
-                maxHeight: activeIndex === index ? "500px" : "0",
-                padding: activeIndex === index ? "10px 0" : "0",
-              }}
-            >
-              <p>{faq.answer}</p>
-              
-            </div>
+         <div className="faq-container">
+                  {faqData.map((faq, index) => (
+                    <div
+                      key={index}
+                      className={`faq-item ${activeIndex === index ? "active" : ""}`}
+                    >
+                      <button className="faq-question" onClick={() => toggleFaq(index)}>
+                        {faq.question}
+                        <span className="icon">{activeIndex === index ? "–" : "+"}</span>
+                      </button>
+
+                        <div
+                          className="faq-answer"
+                          style={{
+                            maxHeight: activeIndex === index ? "500px" : "0",
+                            padding: activeIndex === index ? "10px 0" : "0",
+                          }}
+                        >
+                          <p>{faq.answer}</p>
+                          
+                        </div>
+                    </div>
+                  ))}
           </div>
-        ))}
-      </div>
 
 
       </div>
