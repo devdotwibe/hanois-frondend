@@ -1,0 +1,101 @@
+/* Background setup */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a, #3730a3);
+  font-family: "Poppins", sans-serif;
+}
+
+/* Card */
+.login-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Title */
+.login-title {
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Error message */
+.login-error {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 16px;
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Labels */
+.form-group label {
+  color: #e2e8f0;
+  font-size: 14px;
+  display: block;
+  text-align: left;
+  margin-bottom: 6px;
+}
+
+/* Inputs */
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  background-color: rgba(15, 23, 42, 0.6);
+  color: #f8fafc;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+/* Button */
+.login-btn {
+  background-color: #2563eb;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background-color: #1e40af;
+}
+
+.login-btn:disabled {
+  background-color: #60a5fa;
+  cursor: not-allowed;
+}
+
+/* Footer */
+.login-footer {
+  color: #94a3b8;
+  font-size: 13px;
+  margin-top: 20px;
+}

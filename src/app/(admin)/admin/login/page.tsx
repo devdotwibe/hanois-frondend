@@ -1,115 +1,80 @@
 "use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import backarrow from "../../../../public/images/left-arrow.svg";
-import headerlogo from "../../../../public/images/logo.png";
-import loginimg from "../../../../public/images/login-sidebar.png";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import "./login.css"; 
 
-const SignUp = () => {
+export default function AdminLoginPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    number: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const [message, setMessage] = useState('');
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (formData.password !== formData.confirmPassword) {
-      setMessage('Passwords do not match!');
-      return;
-    }
+    setError("");
+    setLoading(true);
 
     try {
-      const res = await fetch('', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+      const res = await axios.post("https://hanois.dotwibe.com/api/admin/login", {
+        email,
+        password,
       });
 
-      const data = await res.json();
-
-      if (res.ok) {
-        setMessage('Registration successful!');
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          number: '',
-          password: '',
-          confirmPassword: ''
-        });
-        router.push('/login');
+      if (res.data.success) {
+        localStorage.setItem("admin_token", res.data.token);
+        router.push("/admin/dashboard");
       } else {
-        setMessage(data.error || 'Registration failed');
+        setError("Invalid credentials. Please try again.");
       }
-    } catch (err) {
-      console.error('Error:', err);
-      setMessage('Server error');
+    } catch (err: any) {
+      setError("Login failed. Please check your connection or credentials.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="signuppage">
-      <div className="login-divider">
-        {/* Left Column */}
-        <div className="logincol1">
-          <div className="bg-cover">
-            <Image src={loginimg} alt="Login background" width={100} height={100} className="login-img" />
-          </div>
-          <div className="logo-div">
-            <Image src={headerlogo} alt="Logo" width={100} height={100} className="login-img" />
-          </div>
-        </div>
+    <div className="login-page">
+      <div className="login-card">
+        <h2 className="login-title">Admin Login</h2>
 
-        {/* Right Column */}
-        <div className="logincol2">
-          <button className="back-bth">
-            <Image src={backarrow} alt="arrow" width={140} height={40} />
+        {error && <p className="login-error">{error}</p>}
+
+        <form onSubmit={handleLogin} className="login-form">
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="Enter your admin email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" disabled={loading} className="login-btn">
+            {loading ? "Logging in..." : "Login"}
           </button>
+        </form>
 
-          <div className="login-container">
-            <h2>Login to Admin</h2>
-
-            <form className="login-form" onSubmit={handleSubmit}>
-           
-              <div className="form-grp">
-                <label htmlFor="email">Email</label>
-                <input type="email" id="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
-              </div>
-
-
-              <div className="form-grp">
-                <label htmlFor="password">Password</label>
-                <input type="password" id="password" value={formData.password} onChange={handleChange} placeholder="+8 characters" required />
-              </div>
-
-              
-              <button type="submit" className="login-btn">Login</button>
-            </form>
-
-            {message && <p style={{ color: 'red', marginTop: '10px' }}>{message}</p>}
-
-            <p className="terms">
-              By signing up, signing in or continuing, I agree to the Handis Terms of Use and acknowledge the Handis Privacy Policy.
-            </p>
-          </div>
-        </div>
+        <p className="login-footer">
+          © {new Date().getFullYear()} Hanois Admin Portal
+        </p>
       </div>
     </div>
   );
-};
-
-export default SignUp;
+}

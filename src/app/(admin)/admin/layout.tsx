@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./styles/admin.css";
+import AdminSidebar from "./Sidebar";
 
 export const metadata: Metadata = {
   title: "Admin Panel | hanois",
@@ -11,6 +12,7 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  
   return (
 
      <html lang="en">
@@ -20,21 +22,16 @@ export default function AdminLayout({
       </head>
 
       <body suppressHydrationWarning={true}>
-        <div className="admin-container">
-          <aside className="admin-sidebar">
-            <h2 className="admin-logo">Admin Panel</h2>
-            <nav className="admin-nav">
-              <a href="/admin" className="active">
-                Dashboard
-              </a>
-              <a href="/admin/users">Users</a>
-              <a href="/admin/products">Products</a>
-              <a href="/admin/orders">Orders</a>
-              <a href="/admin/settings">Settings</a>
-            </nav>
-          </aside>
 
-          <main className="admin-content">{children}</main>
+        <div className="admin-container">
+
+           <AdminSidebar /> 
+
+          <main className="admin-content">
+
+            {children}
+
+          </main>
         </div>
       </body>
     </html>

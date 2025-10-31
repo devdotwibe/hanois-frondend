@@ -1,41 +1,42 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import "./styles/admin.css";
+import { usePathname } from "next/navigation";
 
-export default function Sidebar() {
-  const [open, setOpen] = useState(true);
+export default function AdminSidebar() {
+  const pathname = usePathname();
 
   return (
-    <aside
-      className={`bg-indigo-700 text-white p-4 flex-shrink-0 transition-all duration-300 ${
-        open ? "w-64" : "w-16"
-      }`}
-    >
-      {/* Toggle button */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="text-white mb-6 focus:outline-none"
-      >
-        {open ? "⮜" : "⮞"}
-      </button>
-
-      {/* Menu items */}
-      <nav className="flex flex-col gap-3">
-        <Link href="/admin" className="hover:bg-indigo-600 p-2 rounded">
-          {open ? "Dashboard" : "🏠"}
+    <aside className="admin-sidebar">
+      <h2 className="admin-logo">Admin Panel</h2>
+      <nav className="admin-nav">
+        <Link href="/admin" className={pathname === "/admin" ? "active" : ""}>
+          Dashboard
         </Link>
-        <Link href="/admin/users" className="hover:bg-indigo-600 p-2 rounded">
-          {open ? "Users" : "👥"}
+        <Link
+          href="/admin/users"
+          className={pathname === "/admin/users" ? "active" : ""}
+        >
+          Users
         </Link>
-        <Link href="/admin/products" className="hover:bg-indigo-600 p-2 rounded">
-          {open ? "Products" : "📦"}
+        <Link
+          href="/admin/products"
+          className={pathname === "/admin/products" ? "active" : ""}
+        >
+          Products
         </Link>
-        <Link href="/admin/orders" className="hover:bg-indigo-600 p-2 rounded">
-          {open ? "Orders" : "🧾"}
+        <Link
+          href="/admin/orders"
+          className={pathname === "/admin/orders" ? "active" : ""}
+        >
+          Orders
         </Link>
-        <Link href="/admin/settings" className="hover:bg-indigo-600 p-2 rounded">
-          {open ? "Settings" : "⚙️"}
+        <Link
+          href="/admin/settings"
+          className={pathname === "/admin/settings" ? "active" : ""}
+        >
+          Settings
         </Link>
       </nav>
     </aside>
