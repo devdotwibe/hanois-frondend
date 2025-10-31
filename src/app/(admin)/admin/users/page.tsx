@@ -1,26 +1,38 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { API_URL } from '@/config'; 
 
 interface User {
   id: number;
   name: string;
   email: string;
-  role: string;
-  joined: string;
+  createdAt:string;
+  updatedAt:string;
 }
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    const sampleUsers: User[] = [
-      { id: 1, name: "Anas K A", email: "anasfamilyman@gmail.com", role: "Admin", joined: "2024-05-10" },
-      { id: 2, name: "Sarah Thomas", email: "sarah@example.com", role: "Editor", joined: "2024-06-21" },
-      { id: 3, name: "David Mathew", email: "david@example.com", role: "User", joined: "2024-07-01" },
-      { id: 4, name: "Priya Nair", email: "priya@example.com", role: "Moderator", joined: "2024-08-15" },
-    ];
-    setUsers(sampleUsers);
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${API_URL}users`);
+       
+        const formattedUsers = response.data.map((user: any) => ({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          createdAt: user.createdAt || "N/A",
+        }));
+        setUsers(formattedUsers);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
   return (
