@@ -13,7 +13,7 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 
 import Link from "next/link";
-import { BASE_API_URL } from '@/config'; 
+import { API_URL } from '@/config'; 
 
 
 const Login = () => {
@@ -26,7 +26,7 @@ const Login = () => {
     const password = e.target.password.value;
 
     try {
-        const res = await fetch(`${BASE_API_URL}/users/login`, {
+        const res = await fetch(`${API_URL}/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

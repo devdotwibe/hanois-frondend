@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import backarrow from "../../../../public/images/left-arrow.svg";
 import headerlogo from "../../../../public/images/logo.png";
 import loginimg from "../../../../public/images/login-sidebar.png";
-import { BASE_API_URL } from '@/config'; 
+import { API_URL } from '@/config'; 
 
 const SignUp = () => {
   const router = useRouter();
@@ -34,7 +34,7 @@ const SignUp = () => {
     }
 
     try {
-        const res = await fetch(`${BASE_API_URL}/users/register`, {
+        const res = await fetch(`${API_URL}/users/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
