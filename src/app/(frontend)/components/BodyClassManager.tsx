@@ -23,6 +23,13 @@ export default function BodyClassManager() {
       document.body.classList.remove("serv-signup");
     }
 
+      // service provider signup
+    if (pathname.startsWith("/provider-dashboard")) {
+      document.body.classList.add("prov-dashboard");
+    } else {
+      document.body.classList.remove("prov-dashboard");
+    }
+
   
 
 
