@@ -34,7 +34,7 @@ const BuildCard: React.FC<BuildCardProps> = ({
         <h4>{title1}</h4>
         <p>{disc}</p>
 
-        <Link href={linkUrl} className="build-link">
+        <Link href={linkUrl} className="g-listed">
           {linkText}
         </Link>
       </div>

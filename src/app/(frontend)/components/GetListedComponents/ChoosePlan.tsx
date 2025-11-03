@@ -1,4 +1,9 @@
 import React from 'react'
+import Image from 'next/image'
+import ibtn from "../../../../../public/images/info-outline.svg"
+
+
+
 
 const ChoosePlan = () => {
   return (
@@ -21,8 +26,25 @@ const ChoosePlan = () => {
         </p>
         <hr />
         <ul className="features">
-          <li>✓ Directory Listing</li>
-          <li>✓ 10$ Per lead</li>
+          <li>Directory Listing<button className='info-btn'>
+            <Image 
+            src={ibtn}
+            alt='img'
+            width={24}
+            height={24}
+            />
+            </button> </li>
+          <li>10$ Per lead <button className='info-btn'>
+            <Image 
+            src={ibtn}
+            alt='img'
+            width={24}
+            height={24}
+            />
+            </button></li>
+
+
+            
         </ul>
         <button className="btn-outline">Sign up</button>
       </div>
@@ -39,11 +61,18 @@ const ChoosePlan = () => {
         </p>
         <hr />
         <ul className="features">
-          <li>✓ Directory Listing</li>
-          <li>✓ 10 Free Qualified Leads/month</li>
-          <li>✓ 7$ per qualified lead</li>
-          <li>✓ Unlimited portfolio projects</li>
-          <li>✓ Support 24/7</li>
+          <li>Directory Listing <button className='info-btn'>
+            <Image 
+            src={ibtn}
+            alt='img'
+            width={24}
+            height={24}
+            />
+            </button></li>
+          <li>10 Free Qualified Leads/month</li>
+          <li>7$ per qualified lead</li>
+          <li>Unlimited portfolio projects</li>
+          <li>Support 24/7</li>
         </ul>
         <button className="btn-filled">Sign Up</button>
       </div>

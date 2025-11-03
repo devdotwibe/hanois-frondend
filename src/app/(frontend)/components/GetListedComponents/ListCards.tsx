@@ -25,7 +25,7 @@ import image3 from "../../../../../public/images/support.png"
   ];
 const ListCards = () => {
   return (
-    <div>
+    <div className='ch-col'>
       <div className="containers">
 
         <div className="business-div21">
