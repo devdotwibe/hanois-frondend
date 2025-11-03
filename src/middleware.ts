@@ -10,7 +10,7 @@ const JWT_SECRET =
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 🌐 Handle language in URL
+  // 🌐 Handle language routing
   const segments = pathname.split("/").filter(Boolean);
   const firstSegment = segments[0];
 
@@ -25,21 +25,21 @@ export async function middleware(request: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
+  // 🔒 Protect admin routes
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
     const token = request.cookies.get("token")?.value;
 
+    console.log("🔍 Token in middleware:", token);
+
     if (!token) {
-      
       return NextResponse.redirect(new URL("/admin/login", request.url));
     }
 
     try {
-   
       jwt.verify(token, JWT_SECRET);
       return NextResponse.next();
     } catch (err) {
-
-      console.error("JWT verification failed:", err);
+      console.error("❌ JWT verification failed:", err);
       return NextResponse.redirect(new URL("/admin/login", request.url));
     }
   }
