@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import "./login.css"; 
+import { API_URL } from '@/config'; 
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -18,19 +19,31 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      const res = await axios.post("https://hanois.dotwibe.com/api/admin/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${API_URL}admin/login`,
+        { email, password },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+        }
+      );
 
-      if (res.data.success) {
-        localStorage.setItem("admin_token", res.data.token);
-        router.push("/admin/dashboard");
-      } else {
-        setError("Invalid credentials. Please try again.");
-      }
-    } catch (err: any) {
-      setError("Login failed. Please check your connection or credentials.");
+      console.log(res.data.success);
+
+      console.log(res);
+      
+        if (res.data?.success) {
+
+          setTimeout(() => router.push("/admin"), 300);
+        } else {
+
+          setError(res.data?.error || "Invalid credentials. Please try again.");
+        }
+    } catch (err) {
+      setError("Login failed. Please check your credentials.");
     } finally {
       setLoading(false);
     }
