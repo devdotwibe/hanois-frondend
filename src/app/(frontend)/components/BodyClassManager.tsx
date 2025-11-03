@@ -15,6 +15,14 @@ export default function BodyClassManager() {
       document.body.classList.remove("login-body");
     }
 
+
+      // service provider signup
+    if (pathname.startsWith("/serviceprovider/signup")) {
+      document.body.classList.add("serv-signup");
+    } else {
+      document.body.classList.remove("serv-signup");
+    }
+
   
 
 
