@@ -3,9 +3,9 @@ import type { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
 const SUPPORTED_LANGS = ["en", "ar"];
-const JWT_SECRET =
-  process.env.JWT_SECRET ||
-  "a3f9b0e1a8c2d34e5f67b89a0c1d2e3f4a5b6c7d8e9f00112233445566778899";
+
+const JWT_SECRET = "a3f9b0e1a8c2d34e5f67b89a0c1d2e3f4a5b6c7d8e9f00112233445566778899";
+
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -36,7 +36,9 @@ export async function middleware(request: NextRequest) {
     }
 
     try {
+
       jwt.verify(token, JWT_SECRET);
+
       return NextResponse.next();
     } catch (err) {
       console.error("❌ JWT verification failed:", err);
