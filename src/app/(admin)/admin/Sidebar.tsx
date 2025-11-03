@@ -7,6 +7,19 @@ import { usePathname } from "next/navigation";
 export default function AdminSidebar() {
   const pathname = usePathname();
 
+  const handleLogout = async () => {
+      try {
+        await axios.post(`${API_URL}admin/logout`, {}, { 
+          withCredentials: true 
+        });
+
+        router.push("/admin/login");
+      } catch (err) {
+        console.error("Logout failed", err);
+      }
+  };
+
+
   return (
     <aside className="admin-sidebar">
       <h2 className="admin-logo">Admin Panel</h2>
@@ -45,6 +58,12 @@ export default function AdminSidebar() {
         >
           Home Page
         </Link>
+
+        <button onClick={handleLogout} className={pathname === "/admin/logout" ? "active" : ""}>
+        
+            Logout
+        </button>
+
 
 
 
