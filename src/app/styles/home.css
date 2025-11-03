@@ -694,11 +694,11 @@ hr {
 .how-help p{margin-inline: auto; max-width: 425px;}
 
 .build-outer {
-    padding: 80px 0 120px; text-align: center;
+    padding: 80px 0 180px; text-align: center;
 }
 .buildimg-outer img {
     width: 100%;
-        box-shadow: 0 0 200px 200px rgba(255 255 255 / 0.95);
+        /* box-shadow: 0 0 200px 200px rgba(255 255 255 / 0.95); */
 }
 .buildimg-outer {
     max-width: 900px;
@@ -756,19 +756,21 @@ padding-block: 60px;
 .h-div .h-div1:first-child:first-child::after {
   content: "";
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+  top: 0%;
+  right: 0%;
+  /* transform: translate(-50%, -50%); */
+  width: 50%;
   height: 100%;
  
-   background: linear-gradient(
+   /* background: linear-gradient(
     90deg,
     #ffffff 0%,       
     #ffffff 60%,     
     #8c9fdd 85%,      
     #2050f5 100%     
-  );
+  ); */
+
+    background: url("../../../public/images/bg1.jpg") no-repeat center / cover;
   z-index: -1;
 }
 
@@ -788,7 +790,8 @@ padding-block: 60px;
   left: 0;
   width: 40%; 
   height: 100%;
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, #2050f5 100%);
+  /* background: linear-gradient(90deg, rgba(255,255,255,0) 0%, #2050f5 100%); */
+    background: url("../../../public/images/bg2.jpg") no-repeat center / cover;
   border-radius: 0 30px 30px 0;
   z-index: 9;
 }
@@ -802,7 +805,7 @@ padding-block: 60px;
   transform: translate(-50%, -50%);
   width: 120%;
   height: 55%;
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     rgba(99, 119, 255, 0) 0%,
     rgba(99, 119, 255, 0.25) 20%,
@@ -811,8 +814,11 @@ padding-block: 60px;
   );
 
   border-radius: 200px;
-  filter: blur(0px);
+  filter: blur(0px); */
   z-index: -1;
+
+
+    background: url("../../../public/images/bg3.jpg") no-repeat center / cover;
 
 }
 
@@ -913,35 +919,6 @@ padding-block: 60px;
 
 
 
-
-/* .feedback-wrapper {
-  position: relative;
-  overflow: hidden;
-}
-
-.step {
-  opacity: 0;
-  transform: translateY(30px);
-  visibility: hidden;
-  position: absolute;
-  width: 100%;
-  transition:
-    opacity 0.6s ease,
-    transform 0.6s ease,
-    visibility 0.6s ease;
-}
-
-.step.show {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
-  position: relative;
-  transition-delay: 0s;
-}
-
-.step:not(.show) {
-  transition-delay: 0s;
-} */
 
 
 
