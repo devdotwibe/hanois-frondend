@@ -38,6 +38,16 @@ export default function AdminSidebar() {
         >
           Settings
         </Link>
+
+          <Link
+          href="/admin/home"
+          className={pathname === "/admin/home" ? "active" : ""}
+        >
+          Home Page
+        </Link>
+
+
+
       </nav>
     </aside>
   );
