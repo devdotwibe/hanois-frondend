@@ -46,6 +46,13 @@
   min-width: 600px;
 }
 
+
+.modal-content.providesucess{
+  padding: 97px;
+}
+
+
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -78,7 +85,7 @@
 
 .modal-content p {
   color: #4b5563;
-  font-size: 0.95rem;
+  font-size: 16px;
   margin-bottom: 20px;
   line-height: 1.4;
 }
