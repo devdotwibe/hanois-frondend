@@ -10,7 +10,7 @@ import backarrow from "../../../../public/images/left-arrow.svg";
 import headerlogo from "../../../../public/images/logo.png";
 
 import { createPortal } from "react-dom";
-import { useRouter } from "next/navigation";
+import { useRouter,useSearchParams } from "next/navigation";
 
 import Link from "next/link";
 import { API_URL } from '@/config'; 
@@ -18,6 +18,11 @@ import { API_URL } from '@/config';
 
 const Login = () => {
   const router = useRouter();
+
+    const searchParams = useSearchParams();
+
+   const lang = searchParams.get("lang") === "ar" ? "ar" : "en";
+
   const [showPopup, setShowPopup] = useState(false);
 
   const handleLogin = async (e) => {
@@ -59,7 +64,7 @@ const Login = () => {
 
 
   return (
-    <div className="loginpage">
+    <div className={`loginpage ${lang === "ar" ? "rtl" : ""}`}>
 
 
       <div className="login-divider">
@@ -103,7 +108,7 @@ const Login = () => {
           <div className="login-container">
 
 
-            <h2 className="">Log In to Handis</h2>
+            <h2 className="">{lang === "ar" ? "تسجيل الدخول إلى Handis" : "Log In to Handis"}</h2>
 
             <form className="login-form" onSubmit={(e) => handleLogin(e, router)}>
                 <div className="form-grp">

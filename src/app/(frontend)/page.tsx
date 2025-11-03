@@ -2,22 +2,26 @@
 import Banner from "./components/HomeComponents/Banner";
 import BusinessSec from "./components/HomeComponents/BusinessSec";
 import FaqSec from "./components/HomeComponents/FaqSec";
-import ReadySec from "./components/HomeComponents/ReadySec";
+import ReadySec from "./components/HomeComponents/ReadySec";    
+
+type Lang = "en" | "ar";
 
 export default function Home() {
-  return (
-    <div className="home-page">
 
+   const lang: Lang = "en";
 
-      <Banner />
+    return (
 
-      <ReadySec />
+        <div className={`home-page ${lang === "ar" ? "rtl" : ""}`}>
 
-      <BusinessSec />
+        <Banner lang={lang} />
 
-      <FaqSec />
+        <ReadySec lang={lang} />
 
+        <BusinessSec lang={lang} />
+        
+        <FaqSec lang={lang} />
 
-    </div>
-  );
+        </div>
+    );
 }
