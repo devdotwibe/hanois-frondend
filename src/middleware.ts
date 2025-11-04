@@ -14,16 +14,20 @@ export async function middleware(request: NextRequest) {
     if (pathname === "/admin/login") {
 
       if (token) {
-          try {
 
-            jwt.verify(token, JWT_SECRET);
 
-            return NextResponse.redirect(new URL("/admin", request.url));
+          return NextResponse.redirect(new URL("/admin", request.url));
+          
+          // try {
 
-          } catch (err) {
+          //   jwt.verify(token, JWT_SECRET);
+
+          //   return NextResponse.redirect(new URL("/admin", request.url));
+
+          // } catch (err) {
       
-            console.error("JWT invalid:", err);
-          }
+          //   console.error("JWT invalid:", err);
+          // }
         }
         return NextResponse.next();
     }
