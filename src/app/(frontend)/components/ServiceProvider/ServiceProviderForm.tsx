@@ -1,8 +1,18 @@
 import React from 'react'
+import FeedbackForm from './FeedbackForm'
 
 const ServiceProviderForm = () => {
   return (
-    <div>
+    <div className='containers'>
+
+
+      <div className="provider-outer">
+              <FeedbackForm />
+
+
+      </div>
+
+
       
     </div>
   )
