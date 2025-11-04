@@ -55,7 +55,7 @@ const ReadySec = ({ lang }: { lang: string }) => {
 
             <p>{t.desc}</p>
 
-            <Link href="" className='signup-btn'>{t.button}</Link>
+            <Link href="/signup" className='signup-btn'>{t.button}</Link>
             <h6>{t.link_title}</h6>
 
           </div>

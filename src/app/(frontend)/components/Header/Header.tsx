@@ -30,8 +30,8 @@ const Header = () => {
           <div className="header-col2">
             <LanguageSwitcher />
            
-            <Link href="/" className='h-login'>Login</Link>
-            <Link href="/" className='h-btn'>Get Started</Link>
+            <Link href="/login" className='h-login'>Login</Link>
+            <Link href="/signup" className='h-btn'>Get Started</Link>
           </div>
         </div>
       </div>
