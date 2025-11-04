@@ -71,14 +71,14 @@ export async function middleware(request: NextRequest) {
 
       }
 
-      try {
+        // try {
 
-        jwt.verify(token, JWT_SECRET);
+        //   jwt.verify(token, JWT_SECRET);
 
-      } catch {
+        // } catch {
 
-        return NextResponse.redirect(new URL("/login", request.url));
-      }
+        //   return NextResponse.redirect(new URL("/login", request.url));
+        // }
       
     }
     
