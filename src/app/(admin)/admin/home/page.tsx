@@ -166,6 +166,39 @@ const handleArabicHeadingChange = (id: keyof typeof arabicHeadings, value: strin
     }
   };
 
+  const handleSaveTab2 = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+  setMessage("");
+
+  try {
+    // Example payload; adjust to your API schema
+    const payload = {
+      headings,
+      arabicHeadings,
+      images,
+    };
+
+    // Replace with your actual API call
+    const res = await axios.put(`http://localhost:5000/api/homecontent/tab2`, payload);
+
+    if (res.status === 200) {
+      setMessage("✅ Section 2 saved successfully!");
+    } else {
+      setMessage("❌ Failed to save Section 2.");
+    }
+  } catch (err) {
+    console.error("Save failed:", err);
+    setMessage("❌ Error saving Section 2.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+
+
   return (
     <>
       <style jsx>{`
@@ -215,7 +248,7 @@ const handleArabicHeadingChange = (id: keyof typeof arabicHeadings, value: strin
               <input
                 type="text"
                 className="w-full border rounded-lg p-2"
-                placeholder="Enter English title"
+            
                 value={engTitle}
                 onChange={(e) => setEngTitle(e.target.value)}
                 required
@@ -265,7 +298,7 @@ const handleArabicHeadingChange = (id: keyof typeof arabicHeadings, value: strin
                 loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
               }`}
             >
-              {loading ? "Saving..." : "Save All"}
+              {loading ? "Saving..." : "Save Section 1"}
             </button>
 
             {message && (
@@ -279,11 +312,12 @@ const handleArabicHeadingChange = (id: keyof typeof arabicHeadings, value: strin
             )}
           </form>
         )}
-
 {activeTab === "tab2" && (
-  <form className="space-y-8">
+  <form className="space-y-8" onSubmit={handleSaveTab2}>
     {[1, 2, 3].map((idx) => (
       <div key={idx}>
+        {/* Existing fields omitted for brevity */}
+        {/* Heading */}
         <label className="block mb-2 font-medium">{`Heading ${idx}`}</label>
         <input
           type="text"
@@ -292,10 +326,11 @@ const handleArabicHeadingChange = (id: keyof typeof arabicHeadings, value: strin
           onChange={(e) =>
             handleHeadingChange(`heading${idx}` as keyof typeof headings, e.target.value)
           }
-          placeholder={`Enter heading ${idx}`}
+        
         />
 
-        <label className="block mb-2 font-medium arabic-text" style={{ direction: "rtl" }}>
+        {/* Arabic Title */}
+        <label className="block mb-2 font-medium arabic-text" >
           {`Arabic Title ${idx}`}
         </label>
         <input
@@ -305,9 +340,10 @@ const handleArabicHeadingChange = (id: keyof typeof arabicHeadings, value: strin
           onChange={(e) =>
             handleArabicHeadingChange(`arabicheading${idx}` as keyof typeof arabicHeadings, e.target.value)
           }
-          dir="rtl"
+       
         />
 
+        {/* Image */}
         <label className="block mb-2 font-medium">{`Image ${idx}`}</label>
         <input
           type="file"
@@ -316,6 +352,7 @@ const handleArabicHeadingChange = (id: keyof typeof arabicHeadings, value: strin
           className="mb-2"
         />
 
+        {/* Image preview */}
         {imgUploadLoading === idx ? (
           <p className="text-blue-600 text-sm">Uploading image...</p>
         ) : images[`image${idx}` as keyof typeof images] && (
@@ -327,6 +364,26 @@ const handleArabicHeadingChange = (id: keyof typeof arabicHeadings, value: strin
         )}
       </div>
     ))}
+
+    <button
+      type="submit"
+      disabled={loading}
+      className={`mt-4 px-6 py-3 rounded-lg text-white ${
+        loading ? "bg-gray-400" : "bg-green-600 hover:bg-green-700"
+      }`}
+    >
+      {loading ? "Saving..." : "Save Section 2"}
+    </button>
+
+    {message && (
+      <p
+        className={`mt-3 text-sm ${
+          message.includes("✅") ? "text-green-600" : "text-red-600"
+        }`}
+      >
+        {message}
+      </p>
+    )}
   </form>
 )}
 
