@@ -68,10 +68,10 @@ const SignUp = () => {
         {/* Left Column */}
         <div className="logincol1">
           <div className="bg-cover">
-            <Image src={loginimg} alt="Login background" width={100} height={100} className="login-img" />
+            <Image src={loginimg} alt="Login background" width={571} height={919} className="login-img" />
           </div>
           <div className="logo-div">
-            <Image src={headerlogo} alt="Logo" width={100} height={100} className="login-img" />
+            <Image src={headerlogo} alt="Logo" width={100} height={18} className="login-img" />
           </div>
         </div>
 

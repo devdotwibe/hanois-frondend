@@ -24,8 +24,8 @@ const BuildCard: React.FC<BuildCardProps> = ({
           <Image
             src={imageSrc}
             alt={title1 || "img"}
-            width={696}
-            height={392}
+            width={731}
+            height={410}
           />
         )}
       </div>

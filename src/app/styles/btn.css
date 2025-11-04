@@ -52,9 +52,7 @@ background: #ffffff;color: #000000;font-size: 14px;padding: 10px 26px;border-rad
   cursor: pointer;
   transition: background 0.3s ease;
 }
-.search-container button:hover {
-  background: #a5a5a5;
-}
+
 .signup-btn {
     padding: 20px 45px;
      font-family: 'Avenir-Black';
@@ -157,7 +155,10 @@ button.btn-back {
     padding: 10px 60px; cursor: pointer;
       font-family: 'Avenir-medium';
 }
+button.btn-back:hover{
+      border: 1px solid #ffffff;
 
+}
 
 .btn-home{
   padding: 12px;

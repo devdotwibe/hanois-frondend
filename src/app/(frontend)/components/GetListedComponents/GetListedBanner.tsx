@@ -5,7 +5,7 @@ const GetListedBanner = () => {
         <div className='banner-wrapp g-list'>
       <div className="containers">
         <div className="banner-div">
-          <h2>Handis can benefit <span> your sysyem</span></h2>
+          <h2>Handis can benefit <span> your business</span></h2>
           <p>An awesome & powefull tools for your business, increase business revenue with enterprise- 
             
             grade links built to acquire and engage cutomers.

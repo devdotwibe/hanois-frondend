@@ -96,7 +96,7 @@ const ContactForm = () => {
     <div className="containers">
       <div className="form-c">
         <h3>Let's get in touch</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing</p>
+        <p>We strive to respond to all inquiries within 1–3 business days.</p>
 
         <form onSubmit={handleSubmit}>
           {/* Full Name */}
@@ -158,7 +158,9 @@ const ContactForm = () => {
 
           {/* Notes */}
           <div className="form-grp">
-            <label htmlFor="notes">Notes</label>
+            <label htmlFor="notes">
+              <strong>Notes</strong>
+              </label>
             <textarea
               id="notes"
               value={formData.notes}

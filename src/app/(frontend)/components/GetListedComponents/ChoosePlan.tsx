@@ -26,14 +26,18 @@ const ChoosePlan = () => {
         </p>
         <hr />
         <ul className="features">
-          <li>Directory Listing<button className='info-btn'>
+          <li>Directory Listing
+            <button className='info-btn'>
             <Image 
             src={ibtn}
             alt='img'
             width={24}
             height={24}
             />
+            <span className="tooltip-text">Our team will create a professional, mobile-friendly website with a custom domain to build your brand and help close prospective clients.</span>
             </button> </li>
+
+
           <li>10$ Per lead <button className='info-btn'>
             <Image 
             src={ibtn}
@@ -41,6 +45,8 @@ const ChoosePlan = () => {
             width={24}
             height={24}
             />
+              <span className="tooltip-text">Our team will create a professional, mobile-friendly website with a custom domain to build your brand and help close prospective clients.</span>
+
             </button></li>
 
 
@@ -68,6 +74,7 @@ const ChoosePlan = () => {
             width={24}
             height={24}
             />
+            <span className="tooltip-text">Our team will create a professional, mobile-friendly website with a custom domain to build your brand and help close prospective clients.</span>
             </button></li>
           <li>10 Free Qualified Leads/month</li>
           <li>7$ per qualified lead</li>

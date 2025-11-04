@@ -79,7 +79,8 @@ button.back-bth {
 
 .form-grp input,
 .form-grp textarea {
-    border: 1px solid #d7dbec;
+  background: #ffffff;
+    border: 2px solid #d7dbec;
      color: #000000;
     padding: 20px 15px;
     border-radius: 4px; transition: all 0.5s ease-in-out;
@@ -88,6 +89,7 @@ button.back-bth {
 .form-grp input:focus,
 .form-grp textarea:focus
 {
+  background: #ffffff;
   outline: none;
    border-color: var(--primary-color); 
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
@@ -120,7 +122,7 @@ button.back-bth {
     /* background: gray; */ position: relative;
 }
 
-.login-divider {display: flex;flex-wrap: wrap;}
+.login-divider {display: flex;flex-wrap: wrap; margin: 0 0 100px;}
 
 .logincol1 .bg-cover img{width: 100%; height: 100%; object-fit: cover;}
 
@@ -145,7 +147,7 @@ button.back-bth {
 
 
 
-.forget-pass{color: var(--primary-color); font-size: 13px; text-decoration: underline;}
+.forget-pass{color: var(--primary-color); font-size: 13px; text-decoration: underline; float: left; margin: 15px 0 40px;}
 
 .signup-text a,
  .register-text a {
@@ -187,7 +189,7 @@ form small{
 
 .divider .line1{
     
-    width: 100%; height: 1px; background: #000000;
+    width: 100%; height: 0.1px; background: #000000;
     position: absolute; top: 50%; transform: translateY(-50%); z-index: 9;
 }
 .divider h6{
@@ -196,7 +198,7 @@ form small{
     transform: translate(-50%, -50%); z-index: 99;
     left: 50%;
     font-size: 11px; width: fit-content;
-    padding-inline: 10px; background: #ffffff; color: #000000;
+    padding-inline: 10px; background: #ffffff; color: #a3a3a7;
 }
 
 

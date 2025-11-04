@@ -35,6 +35,14 @@ p {
     color: var(--secondary-color);
 }
 
+
+strong{
+  font-weight: 700;
+      font-family: 'Avenir-Black';
+}
+
+
+
 .banner-div p {font-size: 18px;}
 button{transition: all 0.5s ease-in-out;}
 
@@ -196,7 +204,7 @@ padding: 80px 0 0;
 
 
 .business-div1 h3 {
-    font-size: 64px;
+    font-size: 48px;
     margin: 0 0 12px; line-height: 1.3;
     color: var(--secondary-color);
 }
@@ -223,8 +231,10 @@ padding: 80px 0 0;
 
 .faq-item {
   border-bottom: 1px solid #ddd;
-  padding: 10px 0;
+  padding: 30px 0;
 }
+
+.faq-item:last-child{border-bottom: none;}
 
 .faq-question {
   width: 100%;
@@ -338,7 +348,7 @@ padding: 80px 0 0;
 }
 
 .business-block {
-    padding: 30px;
+    padding: 30px 30px 60px;
     background: #ffffff;
     margin: 0 0 30px;
     border: 1px solid #ffffff;
@@ -502,9 +512,9 @@ top: 400px;  opacity: 0;
 
 
 .form-c h3{
-  text-align: center;
+  text-align: center; line-height: 1.2;
   color: var(--secondary-color);
-    margin: 0 0 30px;
+    margin: 0 0 20px;
      font-family: 'Avenir-Black';
 
     font-size: 36px;
@@ -517,7 +527,7 @@ top: 400px;  opacity: 0;
     max-width: 800px;
     margin-inline: auto;
 }
-
+.form-c form{margin-top: 40px;}
 
 .btn-cvr{display: flex; justify-content: flex-end; flex-wrap: wrap; margin: 20px 0 0;}
 
@@ -702,7 +712,8 @@ hr {
 .how-help p{margin-inline: auto; max-width: 425px;}
 
 .build-outer {
-    padding: 80px 0 180px; text-align: center;
+    padding: 80px 0 250px;
+    text-align: center;
 }
 .buildimg-outer img {
     width: 100%;
@@ -732,7 +743,7 @@ hr {
     justify-content: space-between;
 }
 
-.build-card .img-b{width: 60%;
+.build-card .img-b{width: 63%;
 position: relative;
     z-index: 99;}
 
@@ -740,7 +751,7 @@ position: relative;
 
 
 .h-outer {
-    padding: 100px 0;
+    padding: 200px 0 100px;
 }
 
 .build-card .img-b img{width: 100%;}
@@ -1042,11 +1053,38 @@ padding-block: 60px;
 
 
 
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 125%; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #F5F6FE;
+  color: #333;
+  text-align: center;
+  padding: 15px 15px;
+  border-radius: 6px;
+  font-size: 16px;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+      width: 366px;
+    white-space: pre-wrap; text-align: left;
+}
 
+.info-btn:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
 
+.business-div21 .content-top h3{
+padding-left: 16px;
+}
 
-
-
+.contact-div .form-c p {
+    font-size: 20px;
+}
 
 
 /* ------------------------------------responsive */
