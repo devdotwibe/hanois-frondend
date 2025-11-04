@@ -149,8 +149,8 @@ const Login = () => {
             <Image
               src={loginimg}
               alt="Login background"
-              width={100}
-              height={100}
+              width={571}
+              height={919}
               className="login-img"
             />
           </div>
@@ -160,7 +160,7 @@ const Login = () => {
               src={headerlogo}
               alt="Login background"
               width={100}
-              height={100}
+              height={18}
               className="login-img"
             />
           </div>
