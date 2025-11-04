@@ -20,12 +20,15 @@ export default function UsersPage() {
       try {
         const response = await axios.get(`${API_URL}users`);
        
-        const formattedUsers = response.data.map((user: any) => ({
+        const usersArray = response.data?.data?.users || [];
+
+      const formattedUsers = usersArray.map((user: any) => ({
           id: user.id,
           name: user.name,
           email: user.email,
-          createdAt: user.createdAt || "N/A",
+          createdAt: user.created_at || "N/A",
         }));
+        
         setUsers(formattedUsers);
       } catch (error) {
         console.error("Error fetching users:", error);
