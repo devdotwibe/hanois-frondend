@@ -63,7 +63,13 @@ export async function middleware(request: NextRequest) {
   
         if (authType === "user") {
           
-          return NextResponse.redirect(new URL("/user/seeker-dashboard", request.url));
+          return NextResponse.redirect(new URL("/user/dashboard", request.url));
+
+        }
+
+        if (authType === "provider") {
+          
+          return NextResponse.redirect(new URL("/provider/dashboard", request.url));
 
         }
       }
@@ -96,15 +102,16 @@ export async function middleware(request: NextRequest) {
 
       }
 
-        // try {
+    }
 
-        //   jwt.verify(token, JWT_SECRET);
+    if (pathname.startsWith("/provider") && !pathname.startsWith("/login")) {
 
-        // } catch {
+      if (!token && authType !='user' && authType !='provider') {
 
-        //   return NextResponse.redirect(new URL("/login", request.url));
-        // }
-      
+        return NextResponse.redirect(new URL("/login", request.url));
+
+      }
+
     }
     
 
