@@ -9,7 +9,9 @@ const JWT_SECRET = "a3f9b0e1a8c2d34e5f67b89a0c1d2e3f4a5b6c7d8e9f0011223344556677
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-   const token = request.cookies.get("token")?.value;
+  const token = request.cookies.get("token")?.value;
+
+  const authType = request.cookies.get("auth")?.value;
 
     if (pathname === "/admin/login") {
 
@@ -47,9 +49,13 @@ export async function middleware(request: NextRequest) {
 
     if (pathname === "/login") {
       
-      if (token) {
-
-        return NextResponse.redirect(new URL("/user/seeker-dashboard"));
+      if (token && authType) {
+  
+        if (authType === "user") {
+          
+          return NextResponse.redirect(new URL("/user/seeker-dashboard",));
+          
+        }
       }
 
     }

@@ -51,6 +51,8 @@ const Login = () => {
 
           localStorage.setItem("auth",'user');
           
+          document.cookie = "auth=user; path=/;";
+          
           router.push("/user/seeker-dashboard"); 
 
       }
