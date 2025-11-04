@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import loginimg from "../../../../public/images/login-sidebar.png";
 
 import appleimg from "../../../../public/images/apple.svg";
@@ -24,6 +24,21 @@ const Login = () => {
    const lang = searchParams.get("lang") === "ar" ? "ar" : "en";
 
   const [showPopup, setShowPopup] = useState(false);
+
+    const [mode, setMode] = useState("login");
+
+  const [resetToken, setResetToken] = useState("");
+
+  useEffect(() => {
+    const token = searchParams.get("reset-password");
+    if (token) {
+      setMode("reset");
+      setResetToken(token);
+    } else {
+      setMode("login");
+    }
+  }, [searchParams]);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -72,6 +87,44 @@ const Login = () => {
   };
 
 
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    const password = e.target.password.value;
+    const confirmPassword = e.target.confirmPassword.value;
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_URL}providers/reset-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+
+        body: JSON.stringify({ token: resetToken, password }),
+
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+
+        alert("Password reset successful! Please log in.");
+
+        router.push("/login");
+
+      } else {
+
+        alert(data.error || "Password reset failed.");
+      }
+    } catch (err) {
+
+      console.error("Reset Password Error:", err);
+      alert("Something went wrong. Please try again.");
+    }
+  };
+
+
 
   return (
     <div className={`loginpage ${lang === "ar" ? "rtl" : ""}`}>
@@ -115,7 +168,7 @@ const Login = () => {
 
           {/* --------------------------------------------------------------- */}
 
-          <div className="login-container">
+          <div className={`login-container ${mode === "login" ? "" : "hidden"}`}>
 
 
             <h2 className="">{lang === "ar" ? "تسجيل الدخول إلى Handis" : "Log In to Handis"}</h2>
@@ -192,7 +245,7 @@ const Login = () => {
 
           {/* -------forgotpassword----------------------------------------------------------- */}
 
-          <div className="login-container forgot-pass hidden">
+          <div className={`login-container forgot-pass ${mode === "forgot" ? "" : "hidden"}`}>
 
              <h2 className="">Forgot Password</h2>
 
@@ -251,18 +304,19 @@ const Login = () => {
 
           {/* -------reset password-------- */}
 
-          <div className="login-container reset-pass hidden">
+          <div className={`login-container reset-pass ${mode === "reset" ? "" : "hidden"}`}>
 
              <h2 className="">Reset Password</h2>
 
              
-               <form className="login-form">
+               <form className="login-form" onSubmit={handleResetPassword} >
 
 
               <div className="form-grp">
                 <label htmlFor="password">Password</label>
                 <input
                   type="password"
+                  name="password"   
                   id="password"
                   placeholder="+8 characters"
                   required
@@ -276,6 +330,7 @@ const Login = () => {
                 <input
                   type="password"
                   id="conformpassword"
+                  name="confirmPassword"  
                   placeholder="Confirm a password"
                   required
                 />
