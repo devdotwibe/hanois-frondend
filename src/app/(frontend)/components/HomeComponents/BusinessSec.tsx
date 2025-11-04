@@ -22,14 +22,7 @@ import image3 from "../../../../../public/images/support.png"
       discption: 'Productive agents are happy agents. Give them all the support tools and information they need to best serve your customers.',
       imageSrc: image3,
 
-    },
-    {
-      title1: '',
-      spanText: '',
-      discption: '',
-      
-
-    },
+    }
    
   ];
 
