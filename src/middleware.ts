@@ -49,15 +49,15 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/admin/login", request.url));
     }
 
-    try {
+    // try {
 
-      jwt.verify(token, JWT_SECRET);
+    //   jwt.verify(token, JWT_SECRET);
 
-      return NextResponse.next();
-    } catch (err) {
-      console.error("❌ JWT verification failed:", err);
-      return NextResponse.redirect(new URL("/admin/login", request.url));
-    }
+    //   return NextResponse.next();
+    // } catch (err) {
+    //   console.error("❌ JWT verification failed:", err);
+    //   return NextResponse.redirect(new URL("/admin/login", request.url));
+    // }
   }
 
   return NextResponse.next();
