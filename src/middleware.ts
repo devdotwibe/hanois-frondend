@@ -47,7 +47,7 @@ export async function middleware(request: NextRequest) {
 
     if (pathname === "/login") {
       
-      if (!token) {
+      if (token) {
 
         return NextResponse.redirect(new URL("/user", request.url));
       }
