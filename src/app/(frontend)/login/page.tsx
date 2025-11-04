@@ -51,7 +51,7 @@ const Login = () => {
 
           localStorage.setItem("auth",'user');
           
-          router.push("/users/seeker-dashboard"); 
+          router.push("/user/seeker-dashboard"); 
 
       }
     } catch (err) {
