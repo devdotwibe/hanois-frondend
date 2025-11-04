@@ -63,7 +63,7 @@ export default function UsersPage() {
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>
-                    <button className="btn-edit">Edit</button>
+                    {/* <button className="btn-edit">Edit</button> */}
                     <button className="btn-delete">Delete</button>
                   </td>
                 </tr>
