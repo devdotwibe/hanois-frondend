@@ -1029,6 +1029,26 @@ padding-block: 60px;
 .seeker-col1{width: 100%; 
   display: flex; flex-wrap: wrap; justify-content: space-between;}
 
+
+
+  .seeker-dashboard1 .header {
+    padding-top: 0;
+}
+
+.seeker-dashboard1 .header-div {
+    background: #ffffff;
+}
+
+
+
+
+
+
+
+
+
+
+
 /* ------------------------------------responsive */
 
 

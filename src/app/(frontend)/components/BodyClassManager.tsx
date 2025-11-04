@@ -30,6 +30,21 @@ export default function BodyClassManager() {
       document.body.classList.remove("prov-dashboard");
     }
 
+
+    
+    if (pathname.startsWith("/seeker-dashboard")) {
+      document.body.classList.add("seeker-dashboard1");
+    } else {
+      document.body.classList.remove("seeker-dashboard1");
+    }
+
+
+
+
+
+
+
+
   
 
 
