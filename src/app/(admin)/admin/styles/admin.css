@@ -1,3 +1,56 @@
+
+
+* {
+  margin: 0 !important;
+}
+body{
+    margin: 0 !important;
+  font-family: 'Avenir-Book'; color: #000;
+
+}
+
+
+@font-face {
+  font-family: 'Avenir-Book';
+  src: url('../../../fonts/Avenir-Book.woff');
+}
+@font-face {
+  font-family: 'Avenir-Black';
+  src: url('../../../fonts/Avenir-Black.woff');
+}
+@font-face {
+  font-family: 'Avenir-medium';
+  src: url('../../../fonts/Avenir-Medium.woff');
+}
+@font-face {
+  font-family: 'Avenir-heavy';
+  src: url('../../../fonts/Avenir-Heavy.woff');
+}
+
+:root {
+  --primary-color: #2050F5;
+  --secondary-color: #1b1b25;
+  --bg-color: #f1f3fa;
+  --warning: #e2da1e;
+  --sucess: #1ee288;
+  --error-color: #EA1525;
+}
+
+
+.admin-nav button{
+      background: var(--primary-color);
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 26px;
+  font-family: 'Avenir-Book';
+    font-size: 16px;
+    display: inline-block; border: none;
+}
+.admin-nav button:hover{
+     background: #4c72f6;
+}
+
+
 /* Basic admin layout */
 .admin-container {
   display: flex;
@@ -8,11 +61,12 @@
 /* Sidebar */
 .admin-sidebar {
   width: 220px;
-  background-color: #222;
+  background-color: #ffffff;
   color: #fff;
   display: flex;
   flex-direction: column;
   padding: 20px;
+  border-right: 1px solid #e0e0e0;
 }
 
 .admin-logo {
@@ -25,27 +79,32 @@
 .admin-nav {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0px;
 }
 
 .admin-nav a {
-  color: #ccc;
+  color: #000;
   text-decoration: none;
-  padding: 10px 12px;
+  padding: 10px 20px;
   border-radius: 6px;
   transition: background-color 0.3s ease;
+  font-family: 'Avenir-Book';
+
+
 }
 
 .admin-nav a:hover,
 .admin-nav a.active {
-  background-color: #444;
-  color: #fff;
+color: #2050f5;
+    background: #f0f2fb;
+      
+
 }
 
 /* Main content */
 .admin-content {
   flex: 1;
-  background: #f4f4f4;
+  background: #ffffff;
   padding: 30px;
 }
 
@@ -105,12 +164,12 @@
 .admin-title {
   font-size: 1.8rem;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 10px !important; margin-top: 20px !important; color: #000000;
 }
 
 .admin-subtitle {
   color: #6b7280;
-  margin-bottom: 20px;
+  margin-bottom: 40px !important;
 }
 
 .admin-table-container {
@@ -179,11 +238,11 @@
 
 .btn-edit {
   background: #2563eb;
-  color: white;
+  color: white; margin-right: 8px !important;
 }
 
 .btn-edit:hover {
-  background: #1e40af;
+  background: #4c72f6;
 }
 
 .btn-delete {

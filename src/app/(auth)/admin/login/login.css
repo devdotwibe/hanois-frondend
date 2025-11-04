@@ -1,38 +1,69 @@
-/* Background setup */
+
+
+@font-face {
+  font-family: 'Avenir-Book';
+  src: url('../../../fonts/Avenir-Book.woff2');
+}
+@font-face {
+  font-family: 'Avenir-Black';
+  src: url('../../../fonts/Avenir-Black.woff');
+}
+@font-face {
+  font-family: 'Avenir-medium';
+  src: url('../../../fonts/Avenir-Medium.woff');
+}
+@font-face {
+  font-family: 'Avenir-heavy';
+  src: url('../../../fonts/Avenir-Heavy.woff');
+}
+
+
+:root {
+  --primary-color: #2050F5;
+  --secondary-color: #1b1b25;
+  --bg-color: #f1f3fa;
+  --warning: #e2da1e;
+  --sucess: #1ee288;
+  --error-color: #EA1525;
+}
+
+
+
+
+
+
+
+
+body{
+    font-family: 'Avenir-Book' !important; font-weight: normal !important;
+
+}
 .login-page {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #0f172a, #1e3a8a, #3730a3);
-  font-family: "Poppins", sans-serif;
+  font-family: 'Avenir-Book';
 }
 
-/* Card */
 .login-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+max-width: 400px;
   width: 100%;
-  max-width: 400px;
-  text-align: center;
+  padding: 40px; text-align: center; border-radius: 10px;
 }
 
-/* Title */
+
 .login-title {
-  color: white;
+  color: #000000;
   font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 20px; margin-top: 0;
 }
 
 /* Error message */
 .login-error {
-  background: rgba(239, 68, 68, 0.2);
-  color: #fca5a5;
+ margin-top: 0;
+  color: red;
   border-radius: 6px;
   padding: 10px;
   margin-bottom: 16px;
@@ -47,45 +78,34 @@
 
 /* Labels */
 .form-group label {
-  color: #e2e8f0;
-  font-size: 14px;
+   all: unset;
+ color: #1b1b25;
+  font-size: 15px;
   display: block;
   text-align: left;
   margin-bottom: 6px;
+  font-family: 'Avenir-Book' !important; font-weight: normal !important;
+
 }
 
 /* Inputs */
-.form-group input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #475569;
-  border-radius: 8px;
-  background-color: rgba(15, 23, 42, 0.6);
-  color: #f8fafc;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.3s ease;
-}
 
-.form-group input:focus {
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
-}
 
 /* Button */
 .login-btn {
-  background-color: #2563eb;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
+     background: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px; border: none;
+    width: 100%;
+    margin: 20px 0;
+    padding: 15px;
+  font-family: 'Avenir-Black';
+    display: block; outline: none; box-shadow: none !important;
 }
 
 .login-btn:hover {
-  background-color: #1e40af;
+    background: #4c72f6;
 }
 
 .login-btn:disabled {
@@ -93,9 +113,33 @@
   cursor: not-allowed;
 }
 
-/* Footer */
+
 .login-footer {
   color: #94a3b8;
   font-size: 13px;
   margin-top: 20px;
+}
+
+
+.form-group input {
+  outline: none;
+width: 100%;
+    color: #000; font-size: 15px;
+    border: 1px solid #d7dbec;
+    border-radius: 4px;
+    padding: 20px 15px;
+    transition: all .5s ease-in-out; width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color); 
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+}
+
+.form-group input::placeholder {
+  color: #a3a3a7;          
+  font-size: 16px;      
+          
 }
