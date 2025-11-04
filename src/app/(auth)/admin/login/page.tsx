@@ -37,6 +37,8 @@ export default function AdminLoginPage() {
       
         if (res.data?.success) {
 
+          localStorage.setItem("token", res.data.token);
+
           setTimeout(() => router.push("/admin"), 300);
         } else {
 

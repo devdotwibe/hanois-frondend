@@ -31,7 +31,7 @@ const Login = () => {
     const password = e.target.password.value;
 
     try {
-        const res = await fetch(`${API_URL}/users/login`, {
+        const res = await fetch(`${API_URL}users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -40,11 +40,19 @@ const Login = () => {
       const data = await res.json();
 
       if (!res.ok) {
+
         alert(data.error || "Login failed");
+
       } else {
-        console.log("Login Success:", data);
-        localStorage.setItem("token", data.token);
-        router.push("/"); 
+
+          console.log("Login Success:", data);
+          
+          localStorage.setItem("token", data.token);
+
+          localStorage.setItem("auth",'user');
+          
+          router.push("/users/seeker-dashboard"); 
+
       }
     } catch (err) {
       console.error("Login Error:", err);

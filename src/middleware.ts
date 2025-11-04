@@ -15,7 +15,6 @@ export async function middleware(request: NextRequest) {
 
       if (token) {
 
-
           return NextResponse.redirect(new URL("/admin", request.url));
           
           // try {
@@ -47,26 +46,52 @@ export async function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    
-    if (!token) {
+      
+      if (!token) {
 
-      return NextResponse.redirect(new URL("/admin/login", request.url));
+        return NextResponse.redirect(new URL("/admin/login", request.url));
+      }
+
+      // try {
+
+      //   jwt.verify(token, JWT_SECRET);
+
+      //   return NextResponse.next();
+      // } catch (err) {
+      //   console.error("❌ JWT verification failed:", err);
+      //   return NextResponse.redirect(new URL("/admin/login", request.url));
+      // }
     }
 
-    // try {
+    if (pathname.startsWith("/user") && !pathname.startsWith("/login")) {
 
-    //   jwt.verify(token, JWT_SECRET);
+      if (!token) {
 
-    //   return NextResponse.next();
-    // } catch (err) {
-    //   console.error("❌ JWT verification failed:", err);
-    //   return NextResponse.redirect(new URL("/admin/login", request.url));
-    // }
+        return NextResponse.redirect(new URL("/login", request.url));
+
+      }
+
+      try {
+
+        jwt.verify(token, JWT_SECRET);
+
+      } catch {
+
+        return NextResponse.redirect(new URL("/login", request.url));
+      }
+      
+    }
+    
+
+    return NextResponse.next();
   }
 
-  return NextResponse.next();
-}
+  
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)", "/admin/:path*"],
+  matcher: [
+      "/((?!_next/static|_next/image|favicon.ico).*)",
+      "/admin/:path*",
+      "/users/:path*",
+    ],
 };

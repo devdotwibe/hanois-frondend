@@ -24,16 +24,22 @@ export default function AdminLoginLayout({
       <>
         <head>
 
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-          <title>Admin Login</title>
-
+            <title>Admin Login</title>
+            
+            </>
         </head>
 
         <body suppressHydrationWarning={true}>
+
           <main className="flex justify-center items-center min-h-screen bg-gray-100">
-            {children}
+
+                {children}
+                
           </main>
+
         </body>
         
       </>
