@@ -31,7 +31,7 @@ const Header = () => {
             <LanguageSwitcher />
            
             <Link href="/login" className='h-login'>Login</Link>
-            <Link href="/signup" className='h-btn'>Get Started</Link>
+            <Link href="/signup" className='h-btn'>Get listed</Link>
           </div>
         </div>
       </div>

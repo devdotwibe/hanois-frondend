@@ -74,14 +74,18 @@ const SignUp = () => {
           <div className="bg-cover">
             <Image src={loginimg} alt="Login background" width={571} height={919} className="login-img" />
           </div>
-          <div className="logo-div">
+
+          <div className="logo-div" onClick={() => router.push("/")} >
+
             <Image src={headerlogo} alt="Logo" width={100} height={18} className="login-img" />
+            
           </div>
+
         </div>
 
         {/* Right Column */}
         <div className="logincol2">
-          <button className="back-bth">
+          <button className="back-bth" onClick={() => router.push("/")}>
             <Image src={backarrow} alt="arrow" width={140} height={40} />
           </button>
 

@@ -83,7 +83,7 @@ const BusinessSec = ({ lang }: { lang: string }) => {
             </h3>
             <p>{t.paragraph}</p>
             <Link
-              href={lang === "ar" ? "/ar/get-listed" : "/en/get-listed"}
+              href={lang === "ar" ? "/serviceprovider/signup?lang='ar'" : "serviceprovider/signup"}
               className="get-listed"
             >
               {t.button}

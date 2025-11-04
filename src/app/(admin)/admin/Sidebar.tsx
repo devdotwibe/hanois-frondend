@@ -29,31 +29,28 @@ export default function AdminSidebar() {
         <Link href="/admin" className={pathname === "/admin" ? "active" : ""}>
           Dashboard
         </Link>
+
         <Link
           href="/admin/users"
           className={pathname === "/admin/users" ? "active" : ""}
         >
-          Users
+          Seekers
         </Link>
+
         <Link
-          href="/admin/products"
-          className={pathname === "/admin/products" ? "active" : ""}
+          href="/admin/prividers"
+          className={pathname === "/admin/prividers" ? "active" : ""}
         >
-          Products
+          Providers
         </Link>
-        <Link
+
+        {/* <Link
           href="/admin/orders"
           className={pathname === "/admin/orders" ? "active" : ""}
         >
           Orders
-        </Link>
-        <Link
-          href="/admin/settings"
-          className={pathname === "/admin/settings" ? "active" : ""}
-        >
-          Settings
-        </Link>
-
+        </Link> */}
+    
           <Link
           href="/admin/home"
           className={pathname === "/admin/home" ? "active" : ""}
@@ -61,13 +58,17 @@ export default function AdminSidebar() {
           Home Page
         </Link>
 
+        <Link
+            href="/admin/settings"
+            className={pathname === "/admin/settings" ? "active" : ""}
+          >
+            Settings
+        </Link>
+
         <button onClick={handleLogout} className={pathname === "/admin/logout" ? "active" : ""}>
 
             Logout
         </button>
-
-
-
 
       </nav>
     </aside>

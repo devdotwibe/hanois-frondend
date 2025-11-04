@@ -18,9 +18,9 @@ export default function UsersPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${API_URL}users`);
+        const response = await axios.get(`${API_URL}providers`);
        
-        const usersArray = response.data?.data?.users || [];
+        const usersArray = response.data?.data?.providers || [];
 
       const formattedUsers = usersArray.map((user: any) => ({
           id: user.id,
@@ -41,9 +41,9 @@ export default function UsersPage() {
   return (
     <div className="admin-page">
 
-      <h1 className="admin-title">Seekers</h1>
+      <h1 className="admin-title">Providers</h1>
 
-      <p className="admin-subtitle">View and manage all registered Seekers.</p>
+      <p className="admin-subtitle">View and manage all registered providers.</p>
 
       <div className="admin-table-container">
         <table className="admin-table">
@@ -70,7 +70,7 @@ export default function UsersPage() {
             ) : (
               <tr>
                 <td colSpan={6} style={{ textAlign: "center", padding: "20px" }}>
-                    No Seekers
+                    No Providers
                 </td>
               </tr>
             )}

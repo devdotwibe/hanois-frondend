@@ -17,9 +17,10 @@ import { API_URL } from '@/config';
 
 
 const Login = () => {
+
   const router = useRouter();
 
-    const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
 
    const lang = searchParams.get("lang") === "ar" ? "ar" : "en";
 
@@ -155,7 +156,7 @@ const Login = () => {
             />
           </div>
 
-          <div className="logo-div">
+          <div className="logo-div"    onClick={() => router.push("/")} >
             <Image
               src={headerlogo}
               alt="Login background"
@@ -168,14 +169,15 @@ const Login = () => {
 
         {/* Right Column */}
         <div className="logincol2">
-          <button className="back-bth">
-            <Image
-              src={backarrow}
-              alt="arrow"
-              width={140}
-              height={40}
-              className=""
-            />
+
+          <button className="back-bth test"  onClick={() => router.push("/")}>
+              <Image
+                src={backarrow}
+                alt="arrow"
+                width={140}
+                height={40}
+                className=""
+              />
           </button>
 
           {/* --------------------------------------------------------------- */}
@@ -209,11 +211,11 @@ const Login = () => {
             </form>
 
             <p className="signup-text">
-              Don't have an account? <Link href="#">Sign up</Link>
+              Don't have an account? <Link href="/signup">Sign up</Link>
             </p>
 
             <p className="register-text">
-              I want to <Link href="#">register as a company</Link>
+              I want to <Link href="/serviceprovider/signup">register as a company</Link>
             </p>
 
             <div className="divider">

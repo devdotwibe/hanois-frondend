@@ -9,6 +9,8 @@ import LanguageSwitcher from "../LanguageSwitcher ";
 const Footer = () => {
   const [open, setOpen] = useState(false);
 
+  const token =  localStorage.getItem("token");
+  
   return (
     <footer className="footer">
       {/* Top Section */}
@@ -76,7 +78,7 @@ const Footer = () => {
         <div className="footer-column f-links">
           <h4>Service Providers</h4>
           <ul>
-            <li><a href="#">Get listed</a></li>
+            <li><a href="/serviceprovider/signup">Get listed</a></li>
             <li><a href="#">Pricing</a></li>
           </ul>
         </div>
@@ -84,24 +86,35 @@ const Footer = () => {
         <div className="footer-column f-links">
           <h4>Service Seeker</h4>
           <ul>
+
             <li><a href="#">Find Service Provider</a></li>
-            <li><a href="#">List your project</a></li>
+
+            {token ? (
+
+               <li><a href="#">List your project</a></li>
+
+            ) : (
+
+               <li><a href="/login">List your project</a></li>
+            ) }
+           
+
           </ul>
         </div>
 
         <div className="footer-column f-links">
           <h4>Help Center</h4>
           <ul>
-            <li><a href="#">Get in touch</a></li>
+            <li><a href="/get-in-touch">Get in touch</a></li>
           </ul>
         </div>
 
         <div className="footer-column f-links">
           <h4>About</h4>
           <ul>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Cookies</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/cookies">Cookies</a></li>
           </ul>
         </div>
 
