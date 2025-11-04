@@ -6,28 +6,11 @@ const SUPPORTED_LANGS = ["en", "ar"];
 
 const JWT_SECRET = "a3f9b0e1a8c2d34e5f67b89a0c1d2e3f4a5b6c7d8e9f00112233445566778899";
 
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-   const token = request.cookies.get("token")?.value;
-
-    if (pathname === "/admin/login") {
-
-      if (token) {
-          try {
-
-            jwt.verify(token, JWT_SECRET);
-
-            return NextResponse.redirect(new URL("/admin", request.url));
-
-          } catch (err) {
-      
-            console.error("JWT invalid:", err);
-          }
-        }
-        return NextResponse.next();
-    }
-
+  // 🌐 Handle language routing
   const segments = pathname.split("/").filter(Boolean);
   const firstSegment = segments[0];
 
@@ -43,10 +26,13 @@ export async function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    
+    const token = request.cookies.get("token")?.value;
+
+    console.log("🔍 Token in middleware:", token);
+
     if (!token) {
 
-      return NextResponse.redirect(new URL("/admin/login", request.url));
+      // return NextResponse.redirect(new URL("/admin/login", request.url));
     }
 
     try {
