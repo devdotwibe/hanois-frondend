@@ -975,7 +975,7 @@ padding-block: 60px;
       padding: 10px 20px; cursor: pointer; transition: all 0.4s ease-in-out;
 }
 .tab-nav li button.active{
-  background: #F0F2FB; color: #675CEF;
+  background: #F0F2FB; color: #2050f5;
     font-family: 'Avenir-medium';
 
 }
