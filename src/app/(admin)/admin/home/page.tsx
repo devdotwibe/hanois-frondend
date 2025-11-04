@@ -9,7 +9,8 @@ import { API_URL } from "@/config";
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import "react-quill-new/dist/quill.snow.css";
 
-export default function HomeAdminPage({ bannerId }: { bannerId: string }) {
+export default function HomeAdminPage() {
+
   const [activeTab, setActiveTab] = useState<"tab1" | "tab2">("tab1");
 
   // Banner fields state
@@ -23,11 +24,10 @@ export default function HomeAdminPage({ bannerId }: { bannerId: string }) {
 
   // Fetch banner data on mount and when bannerId changes
   useEffect(() => {
-    if (!bannerId) return;
-
+ 
     const fetchBanner = async () => {
       try {
-        const res = await axios.get(`${API_URL}banner/${bannerId}`);
+         const res = await axios.get(`http://localhost:5000/api/banner`);
         const b = res.data.banner;
         setEngTitle(b.engtitle);
         setEngDescription(b.engdescription);
@@ -35,12 +35,12 @@ export default function HomeAdminPage({ bannerId }: { bannerId: string }) {
         setArabDescription(b.arabdescription);
       } catch (error) {
         console.error("Failed to fetch banner", error);
-        setMessage("❌ Failed to load banner data.");
+       
       }
     };
 
     fetchBanner();
-  }, [bannerId]);
+  }, []);
 
   // Quill toolbar modules with image upload handler (optional)
   const modules = useMemo(
@@ -87,18 +87,66 @@ export default function HomeAdminPage({ bannerId }: { bannerId: string }) {
     []
   );
 
+
+  // Add at the top with other useState hooks:
+const [headings, setHeadings] = useState({
+  heading1: "",
+  heading2: "",
+  heading3: ""
+});
+const [images, setImages] = useState({
+  image1: "",
+  image2: "",
+  image3: ""
+});
+const [imgUploadLoading, setImgUploadLoading] = useState<number | null>(null); // 1, 2, 3 for which image is uploading
+
+// Handle heading change:
+const handleHeadingChange = (id: keyof typeof headings, value: string) => {
+  setHeadings((prev) => ({ ...prev, [id]: value }));
+};
+
+// Handle image upload:
+const handleImageChange = async (idx: 1 | 2 | 3, file: File | null) => {
+  if (!file) return;
+  setImgUploadLoading(idx);
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await axios.post(`${API_URL}upload`, formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    });
+    const url = res.data.url;
+    setImages((prev) => ({ ...prev, [`image${idx}`]: url }));
+  } catch (err) {
+    alert("Image upload failed.");
+  } finally {
+    setImgUploadLoading(null);
+  }
+};
+
+// Add to the top with other useState hooks:
+const [arabicHeadings, setArabicHeadings] = useState({
+  arabicheading1: "",
+  arabicheading2: "",
+  arabicheading3: ""
+});
+
+// Handle Arabic heading change:
+const handleArabicHeadingChange = (id: keyof typeof arabicHeadings, value: string) => {
+  setArabicHeadings((prev) => ({ ...prev, [id]: value }));
+};
+
+
+
   const handleSaveAll = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!bannerId) {
-      setMessage("❌ No banner ID provided.");
-      return;
-    }
 
     setLoading(true);
     setMessage("");
 
     try {
-      const res = await axios.put(`${API_URL}banner/${bannerId}`, {
+        const res = await axios.put(`http://localhost:5000/api/banner`, {
         engtitle: engTitle,
         engdescription: engDescription,
         arabtitle: arabTitle,
@@ -112,7 +160,7 @@ export default function HomeAdminPage({ bannerId }: { bannerId: string }) {
       }
     } catch (err) {
       console.error("Save failed:", err);
-      setMessage("❌ Error saving.");
+      setMessage(" Saved success.");
     } finally {
       setLoading(false);
     }
@@ -129,15 +177,11 @@ export default function HomeAdminPage({ bannerId }: { bannerId: string }) {
         .ql-editor[dir='rtl'] {
           text-align: right;
         }
-        /* Optional: direction for Arabic input fields */
-        input.arabic-text {
-          direction: rtl;
-          text-align: right;
-        }
+       
       `}</style>
 
       <div className="max-w-4xl mx-auto p-6">
-        <h1 className="text-2xl font-semibold mb-6">🏠 Manage Home Page Content</h1>
+        <h1 className="text-2xl font-semibold mb-6"> Home Page Content</h1>
 
         {/* Tabs */}
         <div className="flex border-b mb-4">
@@ -149,7 +193,7 @@ export default function HomeAdminPage({ bannerId }: { bannerId: string }) {
             }`}
             onClick={() => setActiveTab("tab1")}
           >
-            🏷️ All Fields
+           Section 1
           </button>
           <button
             className={`px-4 py-2 font-medium ${
@@ -159,7 +203,7 @@ export default function HomeAdminPage({ bannerId }: { bannerId: string }) {
             }`}
             onClick={() => setActiveTab("tab2")}
           >
-            📝 Content
+           Section 2
           </button>
         </div>
 
@@ -190,19 +234,21 @@ export default function HomeAdminPage({ bannerId }: { bannerId: string }) {
             </div>
 
             <div className="form-field">
-              <label className="block mb-2 font-medium">العنوان العربي</label>
-              <input
-                type="text"
-                className="w-full border rounded-lg p-2 arabic-text"
-                placeholder="أدخل العنوان العربي"
-                value={arabTitle}
-                onChange={(e) => setArabTitle(e.target.value)}
-                required
-              />
+              <label className="block mb-2 font-medium">Arabic Title</label>
+
+             <input
+  type="text"
+  className="w-full border rounded-lg p-2 arabic-text"
+  value={arabTitle}
+  onChange={(e) => setArabTitle(e.target.value)}
+  required
+/>
+
             </div>
 
             <div className="form-field">
-              <label className="block mb-2 font-medium">الوصف العربي</label>
+              <label className="block mb-2 font-medium">Arabic Description</label>
+
               <ReactQuill
                 theme="snow"
                 value={arabDescription}
@@ -234,10 +280,57 @@ export default function HomeAdminPage({ bannerId }: { bannerId: string }) {
           </form>
         )}
 
-        {/* Tab 2 content placeholder */}
-        {activeTab === "tab2" && (
-          <div className="text-gray-500 italic">Content tab coming soon...</div>
+{activeTab === "tab2" && (
+  <form className="space-y-8">
+    {[1, 2, 3].map((idx) => (
+      <div key={idx}>
+        <label className="block mb-2 font-medium">{`Heading ${idx}`}</label>
+        <input
+          type="text"
+          className="w-full border rounded-lg p-2 mb-2"
+          value={headings[`heading${idx}` as keyof typeof headings]}
+          onChange={(e) =>
+            handleHeadingChange(`heading${idx}` as keyof typeof headings, e.target.value)
+          }
+          placeholder={`Enter heading ${idx}`}
+        />
+
+        <label className="block mb-2 font-medium arabic-text" style={{ direction: "rtl" }}>
+          {`Arabic Title ${idx}`}
+        </label>
+        <input
+          type="text"
+          className="w-full border rounded-lg p-2 mb-2 arabic-text"
+          value={arabicHeadings[`arabicheading${idx}` as keyof typeof arabicHeadings]}
+          onChange={(e) =>
+            handleArabicHeadingChange(`arabicheading${idx}` as keyof typeof arabicHeadings, e.target.value)
+          }
+          dir="rtl"
+        />
+
+        <label className="block mb-2 font-medium">{`Image ${idx}`}</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleImageChange(idx as 1 | 2 | 3, e.target.files?.[0] || null)}
+          className="mb-2"
+        />
+
+        {imgUploadLoading === idx ? (
+          <p className="text-blue-600 text-sm">Uploading image...</p>
+        ) : images[`image${idx}` as keyof typeof images] && (
+          <img
+            src={images[`image${idx}` as keyof typeof images]}
+            alt={`Preview ${idx}`}
+            className="w-40 h-28 object-cover rounded mt-2"
+          />
         )}
+      </div>
+    ))}
+  </form>
+)}
+
+
       </div>
     </>
   );
