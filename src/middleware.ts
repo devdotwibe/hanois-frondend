@@ -45,6 +45,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
+    if (pathname === "/login") {
+      
+      if (!token) {
+
+        return NextResponse.redirect(new URL("/user", request.url));
+      }
+
+    }
+
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
       
       if (!token) {
