@@ -10,17 +10,13 @@ const Banner = ({ lang }: { lang: string }) => {
     const [message, setMessage] = useState("");
     const [text, setText] = useState({
       en: {
-        title: <>Bringing people and <span>professionals together</span></>,
+        title:"Bringing people and <span>professionals together</span>",
         desc: "An awesome & powerful tool for your business — increase business revenue with enterprise-grade links built to acquire and engage customers.",
         placeholder: "Search for a Service provider",
         button: "Search",
       },
       ar: {
-        title: (
-          <>
-            <span>جمع الناس</span> والمحترفين معًا
-          </>
-        ),
+        title: "<span>جمع الناس</span> والمحترفين معًا",
         desc: "أداة قوية ورائعة لعملك — قم بزيادة إيرادات عملك باستخدام روابط احترافية مصممة لجذب العملاء والتفاعل معهم.",
         placeholder: "ابحث عن مقدم الخدمة",
         button: "بحث",
@@ -45,26 +41,17 @@ const Banner = ({ lang }: { lang: string }) => {
         setText((prev) => ({
           en: {
             ...prev.en,
-            title: en?.engtitle ? (
-              <>{en.engtitle}</>
-            ) : (
-              prev.en.title
-            ),
+            title: en?.engtitle,
             desc: en?.engdescription || prev.en.desc,
           },
           ar: {
             ...prev.ar,
-            title: ar?.arabtitle ? (
-              <>{ar.arabtitle}</>
-            ) : (
-              prev.ar.title
-            ),
+            title: ar?.arabtitle,
             desc: ar?.arabdescription || prev.ar.desc,
           },
         }));
       } catch (err) {
-        console.error("❌ Failed to fetch banners:", err);
-        setMessage("❌ Unable to load banner data.");
+
       } finally {
         setLoading(false);
       }
@@ -75,6 +62,8 @@ const Banner = ({ lang }: { lang: string }) => {
 
   const t = lang === "ar" ? text.ar : text.en;
 
+  console.log('ar',lang);
+
   return (
 
     <div className={`banner-wrapp ${lang === "ar" ? "rtl" : ""}`} >
@@ -83,20 +72,10 @@ const Banner = ({ lang }: { lang: string }) => {
 
         <div className="banner-div">
 
-            {/* {typeof t.title === "string" ? (
-              <h2 dangerouslySetInnerHTML={{ __html: t.title }} />
-            ) : (
-              <h2>{t.title}</h2>
-            )} */}
-
-            <h2>Bringing people and <span>professionals together</span></h2>
+          <h2 dangerouslySetInnerHTML={{ __html: t.title }} />
            
           <p>
-              {typeof t.desc === "string" ? (
-                <span dangerouslySetInnerHTML={{ __html: t.desc }} />
-              ) : (
-                t.desc
-              )}
+              <span dangerouslySetInnerHTML={{ __html: t.desc }} />
           </p>
 
             <div className="search-container">

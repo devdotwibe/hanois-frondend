@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Image from "next/image";
 import Link from 'next/link'
 import logo from "../../../../../public/images/logo.png"
@@ -9,8 +9,13 @@ import LanguageSwitcher from "../LanguageSwitcher ";
 const Footer = () => {
   const [open, setOpen] = useState(false);
 
-  const token =  localStorage.getItem("token");
-  
+  const [token, setToken] = useState<string | null>(null);
+
+   useEffect(() => {
+      const storedToken = localStorage.getItem("token");
+      setToken(storedToken);
+    }, []);
+    
   return (
     <footer className="footer">
       {/* Top Section */}

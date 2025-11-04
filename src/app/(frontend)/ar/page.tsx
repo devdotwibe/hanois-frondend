@@ -5,7 +5,7 @@ import ReadySec from "../components/HomeComponents/ReadySec";
 
 export default function HomePage({ params }: { params: { slug?: string[] } }) {
 
-   const lang = params.slug?.[0] === "ar" ? "ar" : "en";
+   const lang = params.slug?.[0] === "ar" ? "ar" : "ar";
 
   return (
     <div className={`home-page ${lang === "ar" ? "rtl" : ""}`}>
