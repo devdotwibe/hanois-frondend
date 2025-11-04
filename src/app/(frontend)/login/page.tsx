@@ -48,7 +48,10 @@ const Login = () => {
           console.log("Login Success:", data);
           
           localStorage.setItem("token", data.token);
-          router.push("/users"); 
+
+          localStorage.setItem("auth",'user');
+          
+          router.push("/users/seeker-dashboard"); 
 
       }
     } catch (err) {
