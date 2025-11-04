@@ -24,8 +24,8 @@ const BuildCard: React.FC<BuildCardProps> = ({
           <Image
             src={imageSrc}
             alt={title1 || "img"}
-            width={300}
-            height={200}
+            width={731}
+            height={410}
           />
         )}
       </div>
@@ -34,7 +34,7 @@ const BuildCard: React.FC<BuildCardProps> = ({
         <h4>{title1}</h4>
         <p>{disc}</p>
 
-        <Link href={linkUrl} className="build-link">
+        <Link href={linkUrl} className="g-listed">
           {linkText}
         </Link>
       </div>

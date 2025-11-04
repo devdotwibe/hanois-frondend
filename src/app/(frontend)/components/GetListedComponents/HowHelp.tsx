@@ -12,7 +12,7 @@ const HowHelp = () => {
           their needs, identify new opportunities to help, address any problems
           faster.
         </p>
-        <button className="help-button">Get Listed</button>
+        <button className="g-listed">Get Listed</button>
 
       </div>
 

@@ -11,18 +11,28 @@ const BuildSec = () => {
           their needs, identify new opportunities to help, address any problems
           faster.</p>
 
+
+
         </div>
 
       </div>
-      <div className="buildimg-outer">
+
+
+
+
+      <div className="build-grad">
+         <div className="buildimg-outer">
             <Image
             src={build3}
             alt='img'
-            width={400}
-            height={300}
+            width={900}
+            height={492}
             />
 
-          </div>
+      </div>
+        
+      </div>
+     
     </div>
   )
 }
