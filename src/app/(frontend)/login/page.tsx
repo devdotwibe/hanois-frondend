@@ -41,6 +41,7 @@ const Login = () => {
 
 
   const handleLogin = async (e) => {
+    
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
@@ -64,11 +65,22 @@ const Login = () => {
           
           localStorage.setItem("token", data.token);
 
-          localStorage.setItem("auth",'user');
+           localStorage.setItem("auth", data.data.role);
           
           document.cookie = "auth=user; path=/;";
           
-          router.push("/user/seeker-dashboard"); 
+          if (data.data.redirectUrl) {
+
+              router.push(data.data.redirectUrl);
+
+            } else if (data.data.role === "provider") {
+
+              router.push("/provider/dashboard");
+
+            } else {
+              
+              router.push("/user/dashboard");
+          }
 
       }
     } catch (err) {
