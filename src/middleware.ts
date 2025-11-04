@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
 
 
           return NextResponse.redirect(new URL("/admin", request.url));
-          
+
           // try {
 
           //   jwt.verify(token, JWT_SECRET);
@@ -48,10 +48,10 @@ export async function middleware(request: NextRequest) {
 
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
     
-    if (!token) {
+    // if (!token) {
 
-      return NextResponse.redirect(new URL("/admin/login", request.url));
-    }
+    //   return NextResponse.redirect(new URL("/admin/login", request.url));
+    // }
 
     // try {
 
