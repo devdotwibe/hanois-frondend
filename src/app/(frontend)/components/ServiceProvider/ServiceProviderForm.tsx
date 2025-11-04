@@ -5,15 +5,12 @@ const ServiceProviderForm = () => {
   return (
     <div className='containers'>
 
-
       <div className="provider-outer">
+
               <FeedbackForm />
-
-
+              
       </div>
 
-
-      
     </div>
   )
 }
