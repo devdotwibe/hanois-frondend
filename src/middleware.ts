@@ -15,21 +15,31 @@ export async function middleware(request: NextRequest) {
 
     if (pathname === "/admin/login") {
 
-      if (token) {
-
-          return NextResponse.redirect(new URL("/admin", request.url));
+      if (token && authType) {
+  
+        if (authType === "admin") {
           
-          // try {
+          return NextResponse.redirect(new URL("/admin", request.url));
 
-          //   jwt.verify(token, JWT_SECRET);
-
-          //   return NextResponse.redirect(new URL("/admin", request.url));
-
-          // } catch (err) {
-      
-          //   console.error("JWT invalid:", err);
-          // }
         }
+
+      }
+
+      // if (token) {
+
+      //     return NextResponse.redirect(new URL("/admin", request.url));
+          
+      //     // try {
+
+      //     //   jwt.verify(token, JWT_SECRET);
+
+      //     //   return NextResponse.redirect(new URL("/admin", request.url));
+
+      //     // } catch (err) {
+      
+      //     //   console.error("JWT invalid:", err);
+      //     // }
+      //   }
         return NextResponse.next();
     }
 
@@ -62,7 +72,7 @@ export async function middleware(request: NextRequest) {
 
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
       
-      if (!token) {
+      if (!token && authType !='admin') {
 
         return NextResponse.redirect(new URL("/admin/login", request.url));
       }
@@ -80,7 +90,7 @@ export async function middleware(request: NextRequest) {
 
     if (pathname.startsWith("/user") && !pathname.startsWith("/login")) {
 
-      if (!token) {
+      if (!token && authType !='user') {
 
         return NextResponse.redirect(new URL("/login", request.url));
 

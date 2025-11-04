@@ -39,6 +39,10 @@ export default function AdminLoginPage() {
 
           localStorage.setItem("token", res.data.token);
 
+          localStorage.setItem("auth", "admin");
+          document.cookie = "auth=admin; path=/;";
+          document.cookie = `token=${res.data.token}; path=/;`;
+
           setTimeout(() => router.push("/admin"), 300);
         } else {
 
