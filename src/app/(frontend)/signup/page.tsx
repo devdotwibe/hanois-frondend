@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter,useSearchParams } from 'next/navigation';
 import backarrow from "../../../../public/images/left-arrow.svg";
-import headerlogo from "../../../../public/images/logo2.png";
+import headerlogo from "../../../../public/images/logo.png";
 import loginimg from "../../../../public/images/login-sidebar.png";
 import { API_URL } from '@/config'; 
 
@@ -18,6 +18,10 @@ const SignUp = () => {
     password: '',
     confirmPassword: ''
   });
+
+  const searchParams = useSearchParams();
+
+  const lang = searchParams.get("lang") === "ar" ? "ar" : "en";
 
   const [message, setMessage] = useState('');
 
@@ -68,10 +72,10 @@ const SignUp = () => {
         {/* Left Column */}
         <div className="logincol1">
           <div className="bg-cover">
-            <Image src={loginimg} alt="Login background" width={571} height={919} className="login-img" />
+            <Image src={loginimg} alt="Login background" width={100} height={100} className="login-img" />
           </div>
           <div className="logo-div">
-            <Image src={headerlogo} alt="Logo" width={100} height={18} className="login-img" />
+            <Image src={headerlogo} alt="Logo" width={100} height={100} className="login-img" />
           </div>
         </div>
 
@@ -82,7 +86,7 @@ const SignUp = () => {
           </button>
 
           <div className="login-container">
-            <h2>Sign up to Handis</h2>
+            <h2> {lang === "ar" ? "تسجيل الدخول إلى Handis" : "Sign up to Handis"}</h2>
 
             <form className="login-form" onSubmit={handleSubmit}>
               <div className="formcol2">

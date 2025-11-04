@@ -17,8 +17,8 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ title1, imageSrc, discption
             <Image
               src={imageSrc}
               alt={title1 || 'img'}
-              width={80}
-              height={80}
+              width={60}
+              height={60}
             />
           )}
         </div>

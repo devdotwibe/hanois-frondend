@@ -6,11 +6,17 @@ const HelpSec = () => {
   return (
     <div className='h-outer'>
 
-      <div className="h-div">
-        <div className="h-div1">
+      <div className="containers">
+        <div className="h-div">
 
-          <div className="containers">
-                     <BuildCard
+         <BuildCard
+  imageSrc={buildimg1}
+  title1="Here's how Handis can help you!"
+  disc="Build more meaningful and lasting relationships — better understand their needs, identify new opportunities to help, address any problems faster."
+  linkText="Get Listed"
+  linkUrl="/"
+/>
+         <BuildCard
   imageSrc={buildimg1}
   title1="Here's how Handis can help you!"
   disc="Build more meaningful and lasting relationships — better understand their needs, identify new opportunities to help, address any problems faster."
@@ -18,21 +24,13 @@ const HelpSec = () => {
   linkUrl="/"
 />
 
-          </div>
 
-        </div>
-        <div className="h-div1">
 
-          <div className="containers">
-                     <BuildCard
-  imageSrc={buildimg2}
-  title1="Here's how Handis can help you!"
-  disc="Build more meaningful and lasting relationships — better understand their needs, identify new opportunities to help, address any problems faster."
-  linkText="Get Listed"
-  linkUrl="/"
-/>
 
-          </div>
+
+
+
+
 
         </div>
       </div>

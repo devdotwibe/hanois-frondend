@@ -16,24 +16,33 @@ export default function AdminLayout({
   return (
 
      <html lang="en">
-      <head>
+        <>
+        <head>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      <body suppressHydrationWarning={true}>
+        </head>
 
-        <div className="admin-container">
+          <body suppressHydrationWarning={true}>
 
-           <AdminSidebar /> 
+              <div className="admin-container">
 
-          <main className="admin-content">
+                <>
+                
+                  <AdminSidebar /> 
 
-            {children}
+                  <main className="admin-content">
 
-          </main>
-        </div>
-      </body>
+                    {children}
+
+                  </main>
+
+                </>
+                
+              </div>
+          </body>
+
+          </>
     </html>
   );
 }

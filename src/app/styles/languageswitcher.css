@@ -1,7 +1,6 @@
 .language-switcher {
   position: relative;
-  /* display: inline-block; */
-  display: none;
+  display: inline-block;
 }
 
 .lang-btn {

@@ -5,13 +5,13 @@ import "../../app/styles/home.css"
 import "../../app/styles/footer.css"
 import "../../app/styles/languageswitcher.css"
 import "../../app/styles/rtl.css"
-import "../../app/styles/btn.css"
 import "../../app/styles/login.css"
 import "../../app/styles/popup.css"
+import "../../app/styles/btn.css"
 import "../../app/styles/serviceprovidersignup.css"
 
 import Footer from "./components/Footer/Footer";
-import Header from "./components/Header/Header"
+import Header from "./components/Header/Header";
 import BodyClassManager from "./components/BodyClassManager";
 
 export const metadata: Metadata = {

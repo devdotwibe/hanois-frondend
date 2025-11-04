@@ -7,10 +7,10 @@ import loginimg from "../../../../public/images/login-sidebar.png";
 import appleimg from "../../../../public/images/apple.svg";
 import googleimg from "../../../../public/images/google.svg";
 import backarrow from "../../../../public/images/left-arrow.svg";
-import headerlogo from "../../../../public/images/logo2.png";
+import headerlogo from "../../../../public/images/logo.png";
 
 import { createPortal } from "react-dom";
-import { useRouter } from "next/navigation";
+import { useRouter,useSearchParams } from "next/navigation";
 
 import Link from "next/link";
 import { API_URL } from '@/config'; 
@@ -18,6 +18,11 @@ import { API_URL } from '@/config';
 
 const Login = () => {
   const router = useRouter();
+
+    const searchParams = useSearchParams();
+
+   const lang = searchParams.get("lang") === "ar" ? "ar" : "en";
+
   const [showPopup, setShowPopup] = useState(false);
 
   const handleLogin = async (e) => {
@@ -26,7 +31,7 @@ const Login = () => {
     const password = e.target.password.value;
 
     try {
-        const res = await fetch(`${API_URL}/users/login`, {
+        const res = await fetch(`${API_URL}users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -35,11 +40,21 @@ const Login = () => {
       const data = await res.json();
 
       if (!res.ok) {
+
         alert(data.error || "Login failed");
+
       } else {
-        console.log("Login Success:", data);
-        localStorage.setItem("token", data.token);
-        router.push("/"); 
+
+          console.log("Login Success:", data);
+          
+          localStorage.setItem("token", data.token);
+
+          localStorage.setItem("auth",'user');
+          
+          document.cookie = "auth=user; path=/;";
+          
+          router.push("/user/seeker-dashboard"); 
+
       }
     } catch (err) {
       console.error("Login Error:", err);
@@ -59,7 +74,7 @@ const Login = () => {
 
 
   return (
-    <div className="loginpage">
+    <div className={`loginpage ${lang === "ar" ? "rtl" : ""}`}>
 
 
       <div className="login-divider">
@@ -69,8 +84,8 @@ const Login = () => {
             <Image
               src={loginimg}
               alt="Login background"
-              width={571}
-              height={919}
+              width={100}
+              height={100}
               className="login-img"
             />
           </div>
@@ -80,7 +95,7 @@ const Login = () => {
               src={headerlogo}
               alt="Login background"
               width={100}
-              height={18}
+              height={100}
               className="login-img"
             />
           </div>
@@ -103,7 +118,7 @@ const Login = () => {
           <div className="login-container">
 
 
-            <h2 className="">Log In to Handis</h2>
+            <h2 className="">{lang === "ar" ? "تسجيل الدخول إلى Handis" : "Log In to Handis"}</h2>
 
             <form className="login-form" onSubmit={(e) => handleLogin(e, router)}>
                 <div className="form-grp">

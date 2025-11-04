@@ -19,10 +19,8 @@ const BannerCards: React.FC<BannerCardsProps> = ({ title1, imageSrc }) => {
         <Image
           src={imageSrc}
           alt={title1 || 'img'}
-          width={273}
-          height={242}
-          quality={100}   
-          priority 
+          width={100}
+          height={200}
         />
       )}
 

@@ -2,10 +2,25 @@
 
 import Link from "next/link";
 import "./styles/admin.css";
-import { usePathname } from "next/navigation";
+import { usePathname ,useRouter} from "next/navigation";
+import { API_URL } from '@/config'; 
+import axios from "axios";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const handleLogout = async () => {
+      try {
+        await axios.post(`${API_URL}admin/logout`, {}, { 
+          withCredentials: true 
+        });
+
+        router.push("/admin/login");
+      } catch (err) {
+        console.error("Logout failed", err);
+      }
+  };
+
 
   return (
     <aside className="admin-sidebar">
@@ -45,6 +60,12 @@ export default function AdminSidebar() {
         >
           Home Page
         </Link>
+
+        <button onClick={handleLogout} className={pathname === "/admin/logout" ? "active" : ""}>
+
+            Logout
+        </button>
+
 
 
 

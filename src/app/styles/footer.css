@@ -89,7 +89,15 @@
   margin-top: 15px;
 }
 
+.social-icons a {
+  color: #000;
+  font-size: 16px;
+  transition: opacity 0.3s;
+}
 
+.social-icons a:hover {
+  opacity: 0.7;
+}
 
 /* Divider line */
 .footer-line {
@@ -174,13 +182,7 @@
 }
 
 .footer-about.footer-column span{display: block;}
-.f-ss {
-    background: #000000;
-    border-radius: 50%; width: 30px; height: 30px;
-        display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 @media (max-width: 767px) {
 .footer-about.footer-column {width: 100%; margin: 0 0 40px;}

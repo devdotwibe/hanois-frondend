@@ -6,8 +6,7 @@ import image2 from "../../../../../public/images/grow.png"
 import image3 from "../../../../../public/images/support.png"
  const BusinesCardData = [
     {
-      title1: 'Lead customers',
-      spanText: 'to your business',
+      title1: 'Lead customers to your business',
       discption: 'Handis Support helps you provide personalized support when and where customers need it, so customers stay happy.',
       imageSrc: image1,
     },
@@ -26,7 +25,7 @@ import image3 from "../../../../../public/images/support.png"
   ];
 const ListCards = () => {
   return (
-    <div className='ch-col'>
+    <div>
       <div className="containers">
 
         <div className="business-div21">

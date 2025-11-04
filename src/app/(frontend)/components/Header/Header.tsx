@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import logo from "../../../../../public/images/logo2.png"
+import logo from "../../../../../public/images/logo.png"
 import LanguageSwitcher from '../LanguageSwitcher '
 
 const Header = () => {
@@ -15,8 +15,8 @@ const Header = () => {
                 <Image
                   src={logo}
                   alt="logo"
-                  width={100}
-                  height={19}
+                  width={50}
+                  height={50}
                 />
               </Link>
             </div>

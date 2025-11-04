@@ -63,7 +63,7 @@ const ContactForm = () => {
         notes: formData.notes,
       };
 
-      const response = await axios.post("https://hanois.dotwibe.com/api/api/contacts", payload);
+      const response = await axios.post("http://localhost:5000/api/contacts", payload);
 
       if (response.data.success) {
         setStatus({
@@ -96,7 +96,7 @@ const ContactForm = () => {
     <div className="containers">
       <div className="form-c">
         <h3>Let's get in touch</h3>
-        <p>We strive to respond to all inquiries within 1–3 business days.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing</p>
 
         <form onSubmit={handleSubmit}>
           {/* Full Name */}
@@ -158,9 +158,7 @@ const ContactForm = () => {
 
           {/* Notes */}
           <div className="form-grp">
-            <label htmlFor="notes">
-              <strong>Notes</strong>
-              </label>
+            <label htmlFor="notes">Notes</label>
             <textarea
               id="notes"
               value={formData.notes}
