@@ -2,8 +2,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from 'next/link'
-import logo from "../../../../../public/images/logo.png"
-import fbicon from "../../../../../public/images/facebook.png"
+import logo from "../../../../../public/images/logo2.png"
+import fbicon from "../../../../../public/images/facebook.svg"
+import instagram from "../../../../../public/images/instagram.svg"
+import twitter from "../../../../../public/images/twitter.svg"
+import linkedin from "../../../../../public/images/linkedin.svg"
+
+
 import LanguageSwitcher from "../LanguageSwitcher ";
 
 const Footer = () => {
@@ -23,8 +28,8 @@ const Footer = () => {
                 <Image
                   src={logo}
                   alt="logo"
-                  width={50}
-                  height={50}
+                  width={100}
+                  height={18}
                 />
               </Link>
             </div>
@@ -41,23 +46,43 @@ const Footer = () => {
           <div className="social-icons">
 
             <div className="f-ss">
-              <Link href= "">
+              <Link href= "/">
               <Image
                   src={fbicon}
                   alt="logo"
-                  width={30}
-                  height={30}
+                  width={20}
+                  height={20}
                 />
               </Link>
             </div>
 
             <div className="f-ss">
-              <Link href= "">
+              <Link href= "/">
               <Image
-                  src={fbicon}
+                  src={linkedin}
                   alt="logo"
-                  width={30}
-                  height={30}
+                  width={20}
+                  height={20}
+                />
+              </Link>
+            </div>
+            <div className="f-ss">
+              <Link href= "/">
+              <Image
+                  src={twitter}
+                  alt="logo"
+                  width={20}
+                  height={20}
+                />
+              </Link>
+            </div>
+            <div className="f-ss">
+              <Link href= "/">
+              <Image
+                  src={instagram}
+                  alt="logo"
+                  width={20}
+                  height={20}
                 />
               </Link>
             </div>

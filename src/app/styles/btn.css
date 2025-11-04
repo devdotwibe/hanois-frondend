@@ -175,6 +175,25 @@ button.btn-back {
 }
 
 
+
+button.new-proj {
+    background: var(--primary-color);
+    color: #fff;
+    border-radius: 5px;
+    padding: 18px 26px;
+    font-family: 'Avenir-Black';
+    font-size: 16px;
+    display: inline-block; cursor: pointer;
+}
+
+button.new-proj:hover{
+        background: #4c72f6;
+
+}
+
+
+
+/* ---------------------------------------- */
 @media (max-width: 1204px) {
 
 

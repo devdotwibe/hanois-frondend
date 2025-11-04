@@ -25,8 +25,8 @@ const BuildSec = () => {
             <Image
             src={build3}
             alt='img'
-            width={400}
-            height={300}
+            width={900}
+            height={492}
             />
 
       </div>
