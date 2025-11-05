@@ -11,6 +11,7 @@ export default function BannerSubExtrasForm() {
     arabicsubdescription: "",
     arabicsubbuttonname: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -72,13 +73,14 @@ export default function BannerSubExtrasForm() {
       <form onSubmit={handleSubmit} className="extras-form">
         <div className="form-field">
           <label>Sub Description (English)</label>
-          <textarea
+          <input
+            type="text"
             name="subdescription"
             value={formData.subdescription}
             onChange={handleChange}
             placeholder="Enter sub description in English"
             required
-          ></textarea>
+          />
         </div>
 
         <div className="form-field">
@@ -97,14 +99,15 @@ export default function BannerSubExtrasForm() {
 
         <div className="form-field">
           <label>Sub Description (Arabic)</label>
-          <textarea
+          <input
+            type="text"
             className="text-right"
             name="arabicsubdescription"
             value={formData.arabicsubdescription}
             onChange={handleChange}
             placeholder="Enter Arabic sub description"
             required
-          ></textarea>
+          />
         </div>
 
         <div className="form-field">
