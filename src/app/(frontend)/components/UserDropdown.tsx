@@ -15,6 +15,8 @@ const UserDropdown = () => {
 
   const [user, setUser] = useState<{ name?: string } | null>(null);
 
+  const [auth, setauth] = useState(null);
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -26,10 +28,20 @@ const UserDropdown = () => {
   }, []);
 
   useEffect(() => {
+
     const storedUser = localStorage.getItem("user");
+
+    const authUser = localStorage.getItem("auth");
+
+    if(authUser)
+    {
+      setauth(authUser);
+    }
+
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+
   }, []);
 
 
@@ -60,7 +72,7 @@ const UserDropdown = () => {
       {user && (
         <div className="user-name">
 
-          <p>{user?.name}</p>
+           <p>{user.name ? user.name.split(" ")[0] : ""}</p>
 
         </div>
       )}
@@ -68,7 +80,7 @@ const UserDropdown = () => {
         {open && (
           <div className="user-dropdown">
 
-            <Link href="/user/my-account">Profile</Link>
+            <Link href={`${auth}/dashboard`}>Profile</Link>
             
             <button onClick={handleLogout} >Logout</button>
 
