@@ -911,7 +911,7 @@ padding-block: 60px;
 }
 
 .provider-intro p {
-    color: #ffffff;
+    color: #e5e5e5;
 }
 .provider-intro h3 {
     font-size: 30px;
@@ -951,6 +951,7 @@ padding-block: 60px;
     padding: 50px;
     border-radius: 20px;
         padding-bottom: 0;
+            box-shadow: 0 -8px 20px -8px rgba(0, 0, 0, 0.5);
 }
 
 
