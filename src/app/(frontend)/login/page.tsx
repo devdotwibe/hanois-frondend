@@ -150,8 +150,8 @@ const Login = () => {
             <Image
               src={loginimg}
               alt="Login background"
-              width={571}
-              height={919}
+              width={980}
+              height={1578}
               className="login-img"
             />
           </div>
@@ -252,8 +252,7 @@ const Login = () => {
             </button>
 
             <p className="terms">
-              By signing up, signing in or continuing, I agree to the Handis
-              Terms of Use and acknowledge the Handis Privacy Policy.
+             By signing up, signing in or continuing, I agree to the Handis Terms of Use and acknowledge the Handis Privacy Policy. I agree that Handis may use my email address for marketing purposes. I can opt out at any time through my settings.
             </p>
           </div>
 

@@ -329,7 +329,7 @@ padding: 80px 0 0;
 
 
 .business-wrap {
-    padding: 100px 0 350px;
+    padding: 100px 0 520px;
     background: #F1F3F9; 
 }
 
@@ -364,8 +364,8 @@ padding: 80px 0 0;
 }
 
 .business-b-out:nth-child(3) {
+       margin-top: -140px;
     transform: translateY(270px);
-    margin-top: 120px;
 }
 
 .business-block {
@@ -374,7 +374,9 @@ padding: 80px 0 0;
     margin: 0 0 30px;
     border: 1px solid #ffffff;
     border-radius: 8px;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, .1);
+    /* box-shadow: 0 -4px 12px rgba(0, 0, 0, .1); */
+    /* box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px; */
+    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
 }
 .business-block:hover {
     box-shadow: 0 10px 30px hsla(217, 91%, 60%, 0.2);
@@ -419,13 +421,14 @@ top: 400px;  opacity: 0;
 }
 
 .content-top h3 {
-    font-size: 20px;
+    font-size: 19px;
     width: calc(100% - 80px);
     padding-left: 18px;
     color: var(--secondary-color);
       font-family: 'Avenir-heavy';
 
 }
+.content-top h3 span{display: block;}
 .content-top h3 span{
   display: block;
 }
@@ -516,6 +519,8 @@ top: 400px;  opacity: 0;
 .faq-section{
   background: var(--primary-color);
   padding: 100px 0; position: relative;
+     width: 100%;
+    float: left;
 }
 
 
@@ -571,17 +576,28 @@ top: 400px;  opacity: 0;
     flex-wrap: wrap;
 }
 
-.get-listedpage .business-block {
+.get-listedpage .business-b-out {
     width: 32%;
     margin-right: 2%;
-    margin-bottom: 0;
+    margin-bottom: 0; position: static !important; transform: none !important; margin-top: 0 !important; margin-bottom: 10px;
 }
 
-.get-listedpage .business-block:nth-child(2n) {
+.get-listedpage .business-div21 .business-b-out:nth-child(2n)
+{
+  transform: translateY(-40px) !important;
+}
+
+
+.get-listedpage .business-b-out .business-block {
+    height: 100%; padding-bottom: 20px; box-shadow: none;
+}
+
+
+.get-listedpage .business-b-out:nth-child(2n) {
     transform: translateY(-30px);
 }
 
-.get-listedpage .business-block:nth-child(3n) {
+.get-listedpage .business-b-out:nth-child(3n) {
     margin-right: 0;
 }
 
@@ -609,6 +625,7 @@ top: 400px;  opacity: 0;
     #f1f3fa 0%,               
     rgba(241, 243, 250, 0) 100% 
   );
+  display: none;
 }
 .highlighted {
   border: 1.5px solid #2563eb;
@@ -715,13 +732,27 @@ hr {
   margin: 0 0 20px; font-size: 24px; font-weight: normal;
 }
 
-
+.banner-wrapp.g-list {
+    width: 100%;
+    float: left;
+    margin-bottom: 60px;
+}
 
 .how-help {padding: 180px 0; text-align: center;  
       background: #f1f3fa;
+          width: 100%;
+    float: left;
 }
 .ch-col{
         background: #f1f3fa;
+         /* background: linear-gradient(
+    to top,
+    #f1f3fa 0%,               
+    rgba(241, 243, 250, 0) 100% 
+  ); */
+  padding-top: 160px;
+  width: 100%;
+    float: left;
 
 }
 
@@ -734,6 +765,8 @@ hr {
 .build-outer {
     padding: 80px 0 250px;
     text-align: center;
+         width: 100%;
+    float: left;
 }
 .buildimg-outer img {
     width: 100%;
@@ -772,6 +805,8 @@ position: relative;
 
 .h-outer {
     padding: 200px 0 100px;
+        width: 100%;
+    float: left;
 }
 
 .build-card .img-b img{width: 100%;}
@@ -798,7 +833,7 @@ padding-block: 60px;
   top: 0%;
   right: 0%;
   /* transform: translate(-50%, -50%); */
-  width: 50%;
+  width: 63%;
   height: 100%;
  
    /* background: linear-gradient(
@@ -827,7 +862,7 @@ padding-block: 60px;
   position: absolute;
   top: 0%;
   left: 0;
-  width: 40%; 
+  width: 39%; 
   height: 100%;
   /* background: linear-gradient(90deg, rgba(255,255,255,0) 0%, #2050f5 100%); */
     background: url("../../../public/images/bg2.jpg") no-repeat center / cover;
@@ -855,8 +890,6 @@ padding-block: 60px;
   border-radius: 200px;
   filter: blur(0px); */
   z-index: -1;
-
-
     background: url("../../../public/images/bg3.jpg") no-repeat center / cover;
 
 }
@@ -1106,6 +1139,11 @@ padding-left: 16px;
     font-size: 20px;
 }
 
+
+
+.g-listbanner {
+    margin-top: 100px;
+}
 
 /* ------------------------------------responsive */
 

@@ -12,7 +12,8 @@ import image3 from "../../../../../public/images/support.png"
       imageSrc: image1,
     },
     {
-      title1: 'Grow without growing pains',
+      title1: 'Grow without growing',
+      spanText: 'pains',
       discption: 'Handis is powerful enough to handle the most complex business, yet flexible enough to scale with you as you grow.',
       imageSrc: image2,
     },
