@@ -2,9 +2,11 @@
 import React, { useState,useEffect } from "react";
 import Image from "next/image";
 import Link from 'next/link'
-import logo from "../../../../../public/images/logo.png"
-import fbicon from "../../../../../public/images/facebook.png"
-import LanguageSwitcher from "../LanguageSwitcher ";
+import logo from "../../../../../public/images/logo2.png"
+import fbicon from "../../../../../public/images/facebook.svg"
+import instagram from "../../../../../public/images/instagram.svg"
+import twitter from "../../../../../public/images/twitter.svg"
+import linkedin from "../../../../../public/images/linkedin.svg"
 
 const Footer = () => {
   const [open, setOpen] = useState(false);
