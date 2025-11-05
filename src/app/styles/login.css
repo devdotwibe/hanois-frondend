@@ -257,7 +257,11 @@ p.terms
 
 
 
-
+.login-success {
+    position: absolute;
+    top: 40px;
+    right: 100px;
+}
 
 
 

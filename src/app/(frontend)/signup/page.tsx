@@ -8,6 +8,7 @@ import headerlogo from "../../../../public/images/logo2.png";
 import loginimg from "../../../../public/images/login-sidebar.png";
 import { API_URL } from '@/config'; 
 import "./signup.css";
+import { createPortal } from "react-dom";
 
 const SignUp = () => {
   const router = useRouter();
@@ -190,8 +191,12 @@ const SignUp = () => {
               <button type="submit" className="login-btn">Sign up</button>
 
                 {successMessage && 
-
+                 createPortal(
                   <div className='login-success'>  {successMessage} </div>
+         ,
+        document.body
+                 )
+
                   
                 }
 

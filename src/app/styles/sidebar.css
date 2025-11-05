@@ -1,0 +1,100 @@
+@font-face {
+  font-family: 'Avenir-Book';
+  src: url('../fonts/Avenir-Book.woff');
+}
+@font-face {
+  font-family: 'Avenir-Black';
+  src: url('../fonts/Avenir-Black.woff');
+}
+@font-face {
+  font-family: 'Avenir-medium';
+  src: url('../fonts/Avenir-Medium.woff');
+}
+@font-face {
+  font-family: 'Avenir-heavy';
+  src: url('../fonts/Avenir-Heavy.woff');
+}
+
+
+
+
+:root {
+  --primary-color: #2050F5;
+  --secondary-color: #1b1b25;
+  --bg-color: #f1f3fa;
+  --warning: #e2da1e;
+  --sucess: #1ee288;
+  --error-color: #EA1525;
+}
+
+
+
+.sidebar-div {
+    margin-top: 70px; 
+       
+}
+.sidebar-pages {
+    width: 100%;
+    height: 80vh;
+    width: calc(100% - 250px); padding: 0 40px;
+    max-width: 1310px;
+}
+ul.sidebarul {
+    width: 250px;
+     border-right: 1px solid #e0e0e0; height: 100%;
+  
+    padding: 0 20px;
+}
+
+ul.sidebarul li {
+    padding: 12px 20px;
+    margin-bottom: 10px; background: #ffffff; border-radius: 12px;
+}
+
+ul.sidebarul li a {
+    color: #000000;
+      font-family: 'Avenir-medium';
+
+}
+ul.sidebarul li a:hover
+
+{
+color: #2050f5;
+    background: #f0f2fb;
+}
+ul.sidebarul li:hover{
+       background: #f0f2fb;
+ 
+}
+ul.sidebarul li.active a{
+    color: #2050f5;
+}
+ul.sidebarul li.active{
+        background: #f0f2fb;
+
+}
+.sidebar-div {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+.seeker-col1 h2 {
+    margin: 0 0 10px;
+  font-family: 'Avenir-Black';
+    font-size: 28px;
+    line-height: 1; color: #000000;
+}
+
+/* .serv-seeker */
+.seeker-div {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; align-items: flex-start;
+}

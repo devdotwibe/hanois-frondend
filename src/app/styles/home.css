@@ -1081,19 +1081,7 @@ padding-block: 60px;
     margin-inline: auto;
 }
 
-.seeker-col1 h2 {
-    margin: 0 0 10px;
-  font-family: 'Avenir-Black';
-    font-size: 28px;
-    line-height: 1;
-}
 
-/* .serv-seeker */
-.seeker-div {
-    display: flex;
-    justify-content: space-between;
-    width: 100%; align-items: flex-start;
-}
 
 .tab-content-wrap.serv-seeker{
     max-width: 1340px;
