@@ -78,6 +78,7 @@
   text-decoration: none;
   font-size: 14px;
   transition: color 0.3s;
+  text-transform: capitalize;
 }
 
 .footer-column ul li a:hover {

@@ -1002,10 +1002,10 @@ padding-block: 60px;
   width: 270px; border-right: 1px solid #e0e0e0;
 
 }
+.tab-nav li{margin: 0 0 10px;}
 
-
-.tab-nav li button{font-size: 16px; width: 100%; text-align: left;
-      padding: 10px 20px; cursor: pointer; transition: all 0.4s ease-in-out;
+.tab-nav li button{font-size: 16px; width: 100%; text-align: left; 
+      padding: 12px 20px; cursor: pointer; transition: all 0.4s ease-in-out; border-radius: 12px;
 }
 .tab-nav li button.active{
   background: #F0F2FB; color: #2050f5;

@@ -41,7 +41,7 @@ body{
       background: var(--primary-color);
     color: #fff;
     border-radius: 5px;
-    padding: 10px 26px;
+    padding: 12px 26px;
   font-family: 'Avenir-Book';
     font-size: 16px;
     display: inline-block; border: none;
@@ -85,10 +85,11 @@ body{
 .admin-nav a {
   color: #000;
   text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  border-radius: 12px;
+  padding: 12px 20px;
   transition: background-color 0.3s ease;
-  font-family: 'Avenir-Book';
+   font-family: 'Avenir-medium';
+ margin: 0 0 10px !important;
 
 
 }
