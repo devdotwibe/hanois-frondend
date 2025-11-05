@@ -174,7 +174,7 @@ const SignUp = () => {
 
                 <label htmlFor="password">Password</label>
 
-                <input type="password" id="password" value={formData.password} onChange={handleChange} placeholder="+8 characters" required />
+                <input type="password" className={`input-field ${errors.password ? 'email-invalid' : ''}`}  id="password" value={formData.password} onChange={handleChange} placeholder="+8 characters" required />
 
                  <span>Use 8 or more characters, with a mix of letters, numbers and synbols</span>
 
@@ -183,9 +183,12 @@ const SignUp = () => {
               </div>
 
               <div className="form-grp">
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm a password" required />
+                <label htmlFor="confirmPassword">Confirm Password</label>+
+
+                <input type="password" className={`input-field ${errors.confirmPassword ? 'email-invalid' : ''}`}  id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm a password" required />
+
                  {errors.confirmPassword && <span className="error" style={{ color: 'red', marginTop: '10px' }} >{errors.confirmPassword}</span>}
+                 
               </div>
 
               <button type="submit" className="login-btn">Sign up</button>
