@@ -71,6 +71,7 @@ const handleSubmit = async (e) => {
 
       setEditingId(null);
     }
+    
   } catch (err) {
     console.error("❌ Error saving FAQ:", err);
     setMessage("❌ Failed to save FAQ.");
