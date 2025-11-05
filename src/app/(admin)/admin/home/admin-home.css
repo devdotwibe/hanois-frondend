@@ -106,3 +106,130 @@
      padding: 8px;
      border-radius: 6px;
  }
+
+
+ /* Container for the form */
+.container {
+  max-width: 820px;
+  margin: 30px auto;
+  font-family: 'Inter', sans-serif;
+  padding: 0 15px;
+}
+
+/* Section grouping */
+.section {
+  margin-bottom: 32px;
+}
+
+/* Label styling */
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* Input fields styling */
+input[type="text"] {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+/* Right to left text for Arabic */
+.text-right {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Input focus effects */
+input[type="text"]:focus {
+  outline: none;
+  border-color: #0070f3;
+}
+
+/* Form field grouping */
+.form-field {
+  margin-bottom: 24px;
+}
+
+/* Button styling */
+.button,
+button[type="button"] {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 8px;
+  transition: background-color 0.2s ease;
+}
+
+/* Button hover */
+.button:hover,
+button[type="button"]:hover {
+  background-color: #005bb5;
+}
+
+/* Disabled button */
+button:disabled,
+.button:disabled {
+  background-color: #aaa !important;
+  cursor: not-allowed;
+}
+
+/* Message notifications */
+.message {
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-top: 16px;
+  user-select: none;
+}
+
+/* Success message */
+.message.success {
+  background-color: #daf5d8;
+  color: #237804;
+  border: 1px solid #b7eb8f;
+}
+
+/* Error message */
+.message.error {
+  background-color: #ffdad8;
+  color: #a8071a;
+  border: 1px solid #ff4d4f;
+}
+
+/* Image preview */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Styling for ReactQuill editor container (optional for spacing) */
+.ql-container {
+  border-radius: 6px;
+  border: 1.5px solid #ccc;
+  min-height: 140px;
+  margin-bottom: 16px;
+}
+
+/* Ensure toolbar matches the input's border-radius */
+.ql-toolbar {
+  border-radius: 6px 6px 0 0;
+  border: 1.5px solid #ccc;
+  border-bottom: none;
+}
