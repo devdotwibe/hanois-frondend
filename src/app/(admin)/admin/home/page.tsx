@@ -17,7 +17,7 @@ const initialImages = ["", "", ""];
 export default function HomeAdminPage() {
   const [activeTab, setActiveTab] = useState(1);
 
-  // Content states
+  // 🧠 State management
   const [titles, setTitles] = useState({ en: "", ar: "" });
   const [descs, setDescs] = useState({ en: "", ar: "" });
   const [headings, setHeadings] = useState(initialHeadings);
@@ -55,11 +55,11 @@ export default function HomeAdminPage() {
         const en = banners.find((b) => getLang(b.language) === "en") || {};
         const ar = banners.find((b) => getLang(b.language) === "ar") || {};
 
-        setTitles({ en: en.engtitle || "", ar: ar.arabtitle || "" });
-        setDescs({ en: en.engdescription || "", ar: ar.arabdescription || "" });
+        setTitles({ en: en.title || "", ar: ar.title || "" });
+        setDescs({ en: en.description || "", ar: ar.description || "" });
         setHeadings({
-          english: [en.englishheading1 || "", en.englishheading2 || "", en.englishheading3 || ""],
-          arabic: [ar.arabicheading1 || "", ar.arabicheading2 || "", ar.arabicheading3 || ""],
+          english: [en.heading1 || "", en.heading2 || "", en.heading3 || ""],
+          arabic: [ar.heading1 || "", ar.heading2 || "", ar.heading3 || ""],
         });
         setImages([en.image1 || "", en.image2 || "", en.image3 || ""]);
         setIds({ en: en.id || null, ar: ar.id || null });
@@ -72,6 +72,7 @@ export default function HomeAdminPage() {
     })();
   }, []);
 
+  // 🟩 File upload (local preview only)
   const uploadFile = (idx) => {
     const input = document.createElement("input");
     input.type = "file";
@@ -82,11 +83,8 @@ export default function HomeAdminPage() {
       const file = input.files?.[0];
       if (!file) return;
 
-      // Show preview only (no upload)
       const localPreview = URL.createObjectURL(file);
-      setImages((prev) =>
-        prev.map((img, i) => (i === idx ? localPreview : img))
-      );
+      setImages((prev) => prev.map((img, i) => (i === idx ? localPreview : img)));
     };
   };
 
@@ -97,10 +95,8 @@ export default function HomeAdminPage() {
     setMessage("");
 
     try {
-      // Directly send images (blob URLs or existing URLs)
-      // Your backend should handle these correctly or implement upload logic there
       const payload = {
-        engtitle: titles.en,
+        engtitle: titles.en, // Backend expects these keys for request mapping
         engdescription: descs.en,
         arabtitle: titles.ar,
         arabdescription: descs.ar,
@@ -149,134 +145,132 @@ export default function HomeAdminPage() {
     ));
 
   return (
-    <>
-      <div className="container">
-        <h1>Home Page</h1>
+    <div className="container">
+      <h1>Home Page</h1>
 
-        {/* Tabs */}
-        <div className="tabs">
-          <button
-            type="button"
-            className={activeTab === 1 ? "tab active" : "tab"}
-            onClick={() => setActiveTab(1)}
-          >
-            Tab 1
-          </button>
-          <button
-            type="button"
-            className={activeTab === 2 ? "tab active" : "tab"}
-            onClick={() => setActiveTab(2)}
-          >
-            Tab 2
-          </button>
-        </div>
-
-        {/* 🟩 Tab 1: Banner Form */}
-        {activeTab === 1 && (
-          <form onSubmit={handleSave}>
-            <div className="section">
-              <label>Title (English)</label>
-              <input
-                type="text"
-                value={titles.en}
-                required
-                onChange={(e) => setTitles({ ...titles, en: e.target.value })}
-              />
-              <div className="form-field">
-                <label>Description (English)</label>
-                <ReactQuill
-                  theme="snow"
-                  value={descs.en}
-                  onChange={(v) => setDescs((prev) => ({ ...prev, en: v }))}
-                  modules={modules}
-                />
-              </div>
-            </div>
-
-            <div className="section">
-              <label>Title (Arabic)</label>
-              <input
-                type="text"
-                className="text-right"
-                value={titles.ar}
-                onChange={(e) => setTitles({ ...titles, ar: e.target.value })}
-              />
-              <div className="form-field">
-                <label>Description (Arabic)</label>
-                <ReactQuill
-                  theme="snow"
-                  value={descs.ar}
-                  onChange={(v) => setDescs((prev) => ({ ...prev, ar: v }))}
-                  modules={modules}
-                />
-              </div>
-            </div>
-
-            <div className="form-field">
-              <label>English Headings</label>
-              {renderHeadingsInputs("English Heading", headings.english, "english")}
-              <label>Arabic Headings</label>
-              {renderHeadingsInputs("Arabic Heading", headings.arabic, "arabic")}
-
-              {[0, 1, 2].map((i) => (
-                <div key={i}>
-                  <label>Upload Image {i + 1}</label>
-                  <button
-                    type="button"
-                    disabled={loading}
-                    onClick={() => uploadFile(i)}
-                  >
-                    Upload
-                  </button>
-                  {images[i] && (
-                    <img
-                      src={images[i]}
-                      alt={`Preview Image ${i + 1}`}
-                      style={{
-                        width: "180px",
-                        borderRadius: "8px",
-                        marginTop: "8px",
-                        border: "1px solid #ccc",
-                      }}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <button type="submit" disabled={loading}>
-              {loading
-                ? ids.en || ids.ar
-                  ? "Updating..."
-                  : "Creating..."
-                : ids.en || ids.ar
-                ? "Update Banner"
-                : "Create Banner"}
-            </button>
-
-            {message && (
-              <p
-                className={`message ${
-                  message.includes("✅")
-                    ? "success"
-                    : message.includes("⚠️")
-                    ? "warning"
-                    : "error"
-                }`}
-              >
-                {message}
-              </p>
-            )}
-          </form>
-        )}
-
-        {/* 🟩 Tab 2: Coming Soon */}
-{activeTab === 2 && (
-  <div className="tab-content">
-    <BannerExtrasForm />
-  </div>
-)}
+      {/* Tabs */}
+      <div className="tabs">
+        <button
+          type="button"
+          className={activeTab === 1 ? "tab active" : "tab"}
+          onClick={() => setActiveTab(1)}
+        >
+          Tab 1
+        </button>
+        <button
+          type="button"
+          className={activeTab === 2 ? "tab active" : "tab"}
+          onClick={() => setActiveTab(2)}
+        >
+          Tab 2
+        </button>
       </div>
-    </>
+
+      {/* 🟩 Tab 1: Banner Form */}
+      {activeTab === 1 && (
+        <form onSubmit={handleSave}>
+          <div className="section">
+            <label>Title (English)</label>
+            <input
+              type="text"
+              value={titles.en}
+              required
+              onChange={(e) => setTitles({ ...titles, en: e.target.value })}
+            />
+            <div className="form-field">
+              <label>Description (English)</label>
+              <ReactQuill
+                theme="snow"
+                value={descs.en}
+                onChange={(v) => setDescs((prev) => ({ ...prev, en: v }))}
+                modules={modules}
+              />
+            </div>
+          </div>
+
+          <div className="section">
+            <label>Title (Arabic)</label>
+            <input
+              type="text"
+              className="text-right"
+              value={titles.ar}
+              onChange={(e) => setTitles({ ...titles, ar: e.target.value })}
+            />
+            <div className="form-field">
+              <label>Description (Arabic)</label>
+              <ReactQuill
+                theme="snow"
+                value={descs.ar}
+                onChange={(v) => setDescs((prev) => ({ ...prev, ar: v }))}
+                modules={modules}
+              />
+            </div>
+          </div>
+
+          <div className="form-field">
+            <label>English Headings</label>
+            {renderHeadingsInputs("English Heading", headings.english, "english")}
+            <label>Arabic Headings</label>
+            {renderHeadingsInputs("Arabic Heading", headings.arabic, "arabic")}
+
+            {[0, 1, 2].map((i) => (
+              <div key={i}>
+                <label>Upload Image {i + 1}</label>
+                <button
+                  type="button"
+                  disabled={loading}
+                  onClick={() => uploadFile(i)}
+                >
+                  Upload
+                </button>
+                {images[i] && (
+                  <img
+                    src={images[i]}
+                    alt={`Preview Image ${i + 1}`}
+                    style={{
+                      width: "180px",
+                      borderRadius: "8px",
+                      marginTop: "8px",
+                      border: "1px solid #ccc",
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+
+          <button type="submit" disabled={loading}>
+            {loading
+              ? ids.en || ids.ar
+                ? "Updating..."
+                : "Creating..."
+              : ids.en || ids.ar
+              ? "Update Banner"
+              : "Create Banner"}
+          </button>
+
+          {message && (
+            <p
+              className={`message ${
+                message.includes("✅")
+                  ? "success"
+                  : message.includes("⚠️")
+                  ? "warning"
+                  : "error"
+              }`}
+            >
+              {message}
+            </p>
+          )}
+        </form>
+      )}
+
+      {/* 🟩 Tab 2: Banner Extras Form */}
+      {activeTab === 2 && (
+        <div className="tab-content">
+          <BannerExtrasForm />
+        </div>
+      )}
+    </div>
   );
 }
