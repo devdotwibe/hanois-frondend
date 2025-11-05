@@ -256,14 +256,29 @@ p.terms
 
 
 
-
 .login-success {
     position: absolute;
     top: 40px;
     right: 100px;
-    color: #04A560;
+    color: #00a056;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border: 1px solid #00a056;
+        max-width: 300px;
+    max-height: 50px;
+}
+.login-success p{
+   color: #00a056; line-height: 1; position: relative; padding-left: 20px;
 }
 
-
-
-
+.login-success p::before{
+    content: "";
+    position: absolute;
+    background: url(../../../public/images/tik.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    left: 0;
+    top: 2px;
+    width: 15px;
+    height: 15px;
+}
