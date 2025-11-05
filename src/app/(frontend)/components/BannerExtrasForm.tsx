@@ -5,12 +5,12 @@ import { API_URL } from "@/config";
 
 export default function BannerExtrasForm() {
   const [data, setData] = useState({
-    subtitle: "",
-    subheading: "",
-    buttonname: "",
-    arabicsubtitle: "",
-    arabicsubheading: "",
-    arabicbuttonname: "",
+    subtitle_en: "",
+    subheading_en: "",
+    buttonname_en: "",
+    subtitle_ar: "",
+    subheading_ar: "",
+    buttonname_ar: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -21,17 +21,16 @@ export default function BannerExtrasForm() {
     (async () => {
       setLoading(true);
       try {
-        // ✅ Use new API endpoint for extras only
         const res = await axios.get(`${API_URL}banner/extras`);
         const extras = res.data?.data?.extras || {};
 
         setData({
-          subtitle: extras.subtitle || "",
-          subheading: extras.subheading || "",
-          buttonname: extras.buttonname || "",
-          arabicsubtitle: extras.arabicsubtitle || "",
-          arabicsubheading: extras.arabicsubheading || "",
-          arabicbuttonname: extras.arabicbuttonname || "",
+          subtitle_en: extras.subtitle || "",
+          subheading_en: extras.subheading || "",
+          buttonname_en: extras.buttonname || "",
+          subtitle_ar: extras.arabicsubtitle || "",
+          subheading_ar: extras.arabicsubheading || "",
+          buttonname_ar: extras.arabicbuttonname || "",
         });
       } catch (err) {
         console.error("❌ Failed to fetch banner extras:", err);
@@ -49,9 +48,15 @@ export default function BannerExtrasForm() {
     setMessage("");
 
     try {
-      const payload = { ...data };
+      const payload = {
+        subtitle: data.subtitle_en,
+        subheading: data.subheading_en,
+        buttonname: data.buttonname_en,
+        arabicsubtitle: data.subtitle_ar,
+        arabicsubheading: data.subheading_ar,
+        arabicbuttonname: data.buttonname_ar,
+      };
 
-      // ✅ Use new API endpoint for Tab 2 fields
       const res = await axios.put(`${API_URL}banner/update-extras`, payload);
 
       if (res.status === 200) {
@@ -72,57 +77,55 @@ export default function BannerExtrasForm() {
       <h2>Banner Extras (Tab 2)</h2>
 
       <div className="form-section">
+        <h3>English Content</h3>
+
         <label>Subtitle (English)</label>
         <input
           type="text"
-          value={data.subtitle}
-          onChange={(e) => setData({ ...data, subtitle: e.target.value })}
+          value={data.subtitle_en}
+          onChange={(e) => setData({ ...data, subtitle_en: e.target.value })}
         />
 
         <label>Subheading (English)</label>
         <input
           type="text"
-          value={data.subheading}
-          onChange={(e) => setData({ ...data, subheading: e.target.value })}
+          value={data.subheading_en}
+          onChange={(e) => setData({ ...data, subheading_en: e.target.value })}
         />
 
         <label>Button Name (English)</label>
         <input
           type="text"
-          value={data.buttonname}
-          onChange={(e) => setData({ ...data, buttonname: e.target.value })}
+          value={data.buttonname_en}
+          onChange={(e) => setData({ ...data, buttonname_en: e.target.value })}
         />
       </div>
 
       <div className="form-section">
+        <h3>Arabic Content</h3>
+
         <label>Subtitle (Arabic)</label>
         <input
           type="text"
           className="text-right"
-          value={data.arabicsubtitle}
-          onChange={(e) =>
-            setData({ ...data, arabicsubtitle: e.target.value })
-          }
+          value={data.subtitle_ar}
+          onChange={(e) => setData({ ...data, subtitle_ar: e.target.value })}
         />
 
         <label>Subheading (Arabic)</label>
         <input
           type="text"
           className="text-right"
-          value={data.arabicsubheading}
-          onChange={(e) =>
-            setData({ ...data, arabicsubheading: e.target.value })
-          }
+          value={data.subheading_ar}
+          onChange={(e) => setData({ ...data, subheading_ar: e.target.value })}
         />
 
         <label>Button Name (Arabic)</label>
         <input
           type="text"
           className="text-right"
-          value={data.arabicbuttonname}
-          onChange={(e) =>
-            setData({ ...data, arabicbuttonname: e.target.value })
-          }
+          value={data.buttonname_ar}
+          onChange={(e) => setData({ ...data, buttonname_ar: e.target.value })}
         />
       </div>
 
