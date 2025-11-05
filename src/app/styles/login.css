@@ -282,3 +282,33 @@ p.terms
     width: 15px;
     height: 15px;
 }
+
+
+.invalid-login{
+ position: absolute;
+    top: 40px;
+    right: 100px;
+    color: #e74c3c;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border: 1px solid #e74c3c;
+        max-width: 300px;
+    max-height: 50px;
+}
+
+.invalid-login p{
+   color: #e74c3c; line-height: 1; position: relative; padding-left: 20px;
+}
+
+
+.invalid-login p::before{
+    content: "";
+    position: absolute;
+    background: url(../../../public/images/warning-icon.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    left: 0;
+    top: 2px;
+    width: 15px;
+    height: 15px;
+}
