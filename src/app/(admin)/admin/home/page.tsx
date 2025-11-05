@@ -7,6 +7,8 @@ import "react-quill-new/dist/quill.snow.css";
 import Quill from "quill";
 import "./admin-home.css";
 import BannerExtrasForm from "@/app/(frontend)/components/BannerExtrasForm";
+import FaqForm from "@/app/(frontend)/components/FaqForm";
+
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 Quill.import("ui/icons")["source"] = "&lt;/&gt;";
@@ -164,6 +166,13 @@ export default function HomeAdminPage() {
         >
           Tab 2
         </button>
+
+
+
+
+         <button className={activeTab === 3 ? "tab active" : "tab"} onClick={() => setActiveTab(3)}>Tab 3</button>
+
+
       </div>
 
       {/* 🟩 Tab 1: Banner Form */}
@@ -271,6 +280,18 @@ export default function HomeAdminPage() {
           <BannerExtrasForm />
         </div>
       )}
+
+
+      {/* 🟩 Tab 3: FAQ Management */}
+{activeTab === 3 && (
+  <div className="tab-content">
+    <FaqForm />
+  </div>
+)}
+
+
+
+
     </div>
   );
 }
