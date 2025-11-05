@@ -192,7 +192,8 @@ const SignUp = () => {
 
                 {successMessage && 
                  createPortal(
-                  <div className='login-success'>  {successMessage} </div>
+                  <div className='login-success'> 
+                  <p>{successMessage}</p>  </div>
          ,
         document.body
                  )
