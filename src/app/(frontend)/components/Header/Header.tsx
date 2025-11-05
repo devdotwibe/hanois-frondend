@@ -76,7 +76,7 @@ const Header = () => {
                   
                 )}
 
-                {token && auth !='admin' && (
+                {token && (
 
                   <div className="logged-outer ">
 
