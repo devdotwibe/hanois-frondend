@@ -45,26 +45,46 @@ const Footer = () => {
           </p>
 
 
-          <div className="social-icons">
+           <div className="social-icons">
 
             <div className="f-ss">
-              <Link href= "">
+              <Link href= "/">
               <Image
                   src={fbicon}
                   alt="logo"
-                  width={30}
-                  height={30}
+                  width={20}
+                  height={20}
                 />
               </Link>
             </div>
 
             <div className="f-ss">
-              <Link href= "">
+              <Link href= "/">
               <Image
-                  src={fbicon}
+                  src={linkedin}
                   alt="logo"
-                  width={30}
-                  height={30}
+                  width={20}
+                  height={20}
+                />
+              </Link>
+            </div>
+            <div className="f-ss">
+              <Link href= "/">
+              <Image
+                  src={twitter}
+                  alt="logo"
+                  width={20}
+                  height={20}
+                />
+              </Link>
+            </div>
+            <div className="f-ss">
+              <Link href= "/">
+              <Image
+                  src={instagram}
+                  alt="logo"
+                  width={20}
+                  height={20}
                 />
               </Link>
             </div>
