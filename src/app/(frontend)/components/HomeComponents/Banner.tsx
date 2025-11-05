@@ -8,6 +8,9 @@ const Banner = ({ lang }: { lang: string }) => {
 
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+
+    const [token, setToken] = useState<string | null>(null);
+
     const [text, setText] = useState({
       en: {
         title:"Bringing people and <span>professionals together</span>",
@@ -22,6 +25,11 @@ const Banner = ({ lang }: { lang: string }) => {
         button: "بحث",
       },
     });
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
 
 
   useEffect(() => {
@@ -78,11 +86,11 @@ const Banner = ({ lang }: { lang: string }) => {
               <span dangerouslySetInnerHTML={{ __html: t.desc }} />
           </p>
 
-            <div className="search-container">
+            <div className={`search-container ${token ? 'active-search' : 'disabled' }`}>
 
-              <input type="text" placeholder={t.placeholder}  dir={lang === "ar" ? "rtl" : "ltr"}/>
+              <input type="text" placeholder={t.placeholder} disabled={!token}  dir={lang === "ar" ? "rtl" : "ltr"}/>
 
-              <button>{t.button}</button>
+              <button className={`btn-home ${token ? 'active-btn' : 'disabled-btn' }`} >{t.button}</button>
 
             </div>
 
