@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import profile from "../../../../public/images/profile.png";
 
-import profile_logo from "../../../../public/images/logo2.png";
+import profile_logo from "../../../../public/images/fav.png";
 
 const UserDropdown = () => {
   const [open, setOpen] = useState(false);

@@ -200,10 +200,20 @@ const SignUp = () => {
 
                   
                 }
+                {generalMessage && 
+                 createPortal(
+                  <div className='invalid-login'> 
+                  <p>{generalMessage}</p>  </div>
+         ,
+        document.body
+                 )
+
+                  
+                }
 
             </form>
 
-            {generalMessage && <p style={{ color: 'red', marginTop: '10px' }}>{generalMessage}</p>}
+            {/* {generalMessage && <p style={{ color: 'red', marginTop: '10px' }}>{generalMessage}</p>} */}
 
             <p className="terms">
              By signing up, signing in or continuing, I agree to the Handis Terms of Use and acknowledge the Handis Privacy Policy. I agree that Handis may use my email address for marketing purposes. I can opt out at any time through my settings.

@@ -106,7 +106,7 @@ color: #2050f5;
 .admin-content {
   flex: 1;
   background: #ffffff;
-  padding: 30px;
+      padding: 56px 30px 30px 30px;
 }
 
 /* Dashboard Section */
@@ -165,7 +165,8 @@ color: #2050f5;
 .admin-title {
   font-size: 1.8rem;
   font-weight: 600;
-  margin-bottom: 10px !important; margin-top: 20px !important; color: #000000;
+  margin-bottom: 10px !important;
+  color: #000000;
 }
 
 .admin-subtitle {
@@ -225,6 +226,51 @@ color: #2050f5;
   background: #f59e0b;
   color: #fff;
 }
+form.settingsform {
+    margin-top: 30px !important;
+    max-width: 450px;
+}
+
+.form-grp label {
+    color: #1b1b25;
+    margin-bottom: 4px !important;
+}
+
+
+
+.form-grp input,
+.form-grp textarea {
+  background: #ffffff;
+    border: 2px solid #d7dbec;
+     color: #000000;
+    padding: 20px 15px;
+    border-radius: 4px !important; transition: all 0.5s ease-in-out;
+}
+
+.form-grp input:focus,
+.form-grp textarea:focus
+{
+  background: #ffffff;
+  outline: none;
+   border-color: var(--primary-color); 
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+}
+.form-grp input:hover,
+.form-grp textarea:hover
+{
+   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+ 
+}
+
+
+
+.form-grp {
+    flex-flow: column wrap;
+    margin: 20px 0 0;
+    display: flex;
+}
+
+
 
 .btn-edit,
 .btn-delete {
@@ -236,6 +282,7 @@ color: #2050f5;
   cursor: pointer;
   transition: background 0.3s;
 }
+
 
 .btn-edit {
   background: #2563eb;
@@ -253,4 +300,20 @@ color: #2050f5;
 
 .btn-delete:hover {
   background: #b91c1c;
+}
+
+
+
+
+.setting-submit {
+    border: none;
+    padding: 10px 20px;
+    margin-top: 30px !important;
+    border-radius: 5px;
+  font-family: 'Avenir-Book';
+    font-size: 16px; cursor: pointer;
+}
+
+.setting-submit:hover{
+    background: #4c72f6 !important;
 }
