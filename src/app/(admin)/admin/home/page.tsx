@@ -23,6 +23,20 @@ export default function HomeAdminPage() {
   const [arabTitle, setArabTitle] = useState("");
   const [arabDescription, setArabDescription] = useState("");
 
+    const [englishHeading1, setEnglishHeading1] = useState("");
+  const [englishHeading2, setEnglishHeading2] = useState("");
+  const [englishHeading3, setEnglishHeading3] = useState("");
+    const [arabicHeading1, setArabicHeading1] = useState("");
+  const [arabicHeading2, setArabicHeading2] = useState("");
+  const [arabicHeading3, setArabicHeading3] = useState("");
+  const [image1, setImage1] = useState("");
+  const [image2, setImage2] = useState("");
+  const [image3, setImage3] = useState("");
+
+
+
+
+
   // IDs
   const [bannerEnId, setBannerEnId] = useState<number | null>(null);
   const [bannerArId, setBannerArId] = useState<number | null>(null);
@@ -125,6 +139,12 @@ export default function HomeAdminPage() {
         if (en) {
           setEngTitle(en.engtitle || "");
           setEngDescription(en.engdescription || "");
+            setEnglishHeading1(en.englishheading1 || "");
+          setEnglishHeading2(en.englishheading2 || "");
+          setEnglishHeading3(en.englishheading3 || "");
+          setImage1(en.image1 || "");
+          setImage2(en.image2 || "");
+          setImage3(en.image3 || "");
           setBannerEnId(en.id);
         }
 
@@ -156,6 +176,16 @@ export default function HomeAdminPage() {
         engdescription: engDescription,
         arabtitle: arabTitle,
         arabdescription: arabDescription,
+
+          englishheading1: englishHeading1,
+        englishheading2: englishHeading2,
+        englishheading3: englishHeading3,
+          image1,
+        image2,
+        image3,
+
+
+
       };
 
       const endpoint =
@@ -240,6 +270,185 @@ export default function HomeAdminPage() {
               />
             </div>
           </div>
+
+
+
+
+
+<div className="form-field">
+ 
+
+  <label>English Heading 1</label>
+  <input
+    type="text"
+    placeholder="Enter English Heading 1"
+    value={englishHeading1}
+    onChange={(e) => setEnglishHeading1(e.target.value)}
+  />
+
+  <label>English Heading 2</label>
+  <input
+    type="text"
+    placeholder="Enter English Heading 2"
+    value={englishHeading2}
+    onChange={(e) => setEnglishHeading2(e.target.value)}
+  />
+
+  <label>English Heading 3</label>
+  <input
+    type="text"
+    placeholder="Enter English Heading 3"
+    value={englishHeading3}
+    onChange={(e) => setEnglishHeading3(e.target.value)}
+  />
+</div>
+
+{/* 🟩 Arabic Headings + Images */}
+<div className="form-field">
+
+
+  <label>Arabic Heading 1</label>
+  <input
+    type="text"
+    className="text-right"
+    placeholder="Enter Arabic Heading 1"
+    value={arabicHeading1}
+    onChange={(e) => setArabicHeading1(e.target.value)}
+  />
+
+  <label>Arabic Heading 2</label>
+  <input
+    type="text"
+    className="text-right"
+    placeholder="Enter Arabic Heading 2"
+    value={arabicHeading2}
+    onChange={(e) => setArabicHeading2(e.target.value)}
+  />
+
+  <label>Arabic Heading 3</label>
+  <input
+    type="text"
+    className="text-right"
+    placeholder="Enter Arabic Heading 3"
+    value={arabicHeading3}
+    onChange={(e) => setArabicHeading3(e.target.value)}
+  />
+
+ 
+<label>Upload Image 1</label>
+<input
+  type="file"
+  accept="image/*"
+  onChange={async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await axios.post(`${API_URL}upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setImage1(res.data.url);
+      setMessage("✅ Image 1 uploaded successfully!");
+    } catch (err) {
+      console.error("❌ Image 1 upload failed:", err);
+      setMessage("❌ Failed to upload Image 1.");
+    }
+  }}
+/>
+{image1 && (
+  <img
+    src={image1}
+    alt="Preview Image 1"
+    style={{
+      width: "180px",
+      height: "auto",
+      borderRadius: "8px",
+      marginTop: "8px",
+      border: "1px solid #ccc",
+    }}
+  />
+)}
+
+{/* 🟩 Image 2 Upload */}
+<label>Upload Image 2</label>
+<input
+  type="file"
+  accept="image/*"
+  onChange={async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await axios.post(`${API_URL}upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setImage2(res.data.url);
+      setMessage("✅ Image 2 uploaded successfully!");
+    } catch (err) {
+      console.error("❌ Image 2 upload failed:", err);
+      setMessage("❌ Failed to upload Image 2.");
+    }
+  }}
+/>
+{image2 && (
+  <img
+    src={image2}
+    alt="Preview Image 2"
+    style={{
+      width: "180px",
+      height: "auto",
+      borderRadius: "8px",
+      marginTop: "8px",
+      border: "1px solid #ccc",
+    }}
+  />
+)}
+
+{/* 🟩 Image 3 Upload */}
+<label>Upload Image 3</label>
+<input
+  type="file"
+  accept="image/*"
+  onChange={async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await axios.post(`${API_URL}upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setImage3(res.data.url);
+      setMessage("✅ Image 3 uploaded successfully!");
+    } catch (err) {
+      console.error("❌ Image 3 upload failed:", err);
+      setMessage("❌ Failed to upload Image 3.");
+    }
+  }}
+/>
+{image3 && (
+  <img
+    src={image3}
+    alt="Preview Image 3"
+    style={{
+      width: "180px",
+      height: "auto",
+      borderRadius: "8px",
+      marginTop: "8px",
+      border: "1px solid #ccc",
+    }}
+  />
+)}
+</div>
+
+{/* ✅ Removed the stray </div> here */}
+
+
 
           <button
             type="submit"

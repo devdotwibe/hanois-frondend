@@ -63,7 +63,7 @@ const ContactForm = () => {
         notes: formData.notes,
       };
 
-      const response = await axios.post("http://localhost:5000/api/contacts", payload);
+      const response = await axios.post("https://hanois.dotwibe.com/api/api/contacts", payload);
 
       if (response.data.success) {
         setStatus({
