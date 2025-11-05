@@ -154,7 +154,7 @@ const Footer = () => {
            <div className="footer-bottom">
         <p>© Copyright 2022 Handis, Inc.</p>
 
-        <LanguageSwitcher />
+        {/* <LanguageSwitcher /> */}
 
 
 
