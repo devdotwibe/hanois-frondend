@@ -10,6 +10,7 @@ type BusinessCardProps = {
 
 const BusinessCard: React.FC<BusinessCardProps> = ({ title1, imageSrc, discption, spanText }) => {
   return (
+    <div className="business-b-out">
     <div className='business-block'>
       <div className="content-top">
         <div className="outer-imgb">
@@ -17,8 +18,8 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ title1, imageSrc, discption
             <Image
               src={imageSrc}
               alt={title1 || 'img'}
-              width={60}
-              height={60}
+              width={80}
+              height={80}
             />
           )}
         </div>
@@ -32,6 +33,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ title1, imageSrc, discption
       <div className="text-support">
         <p>{discption}</p>
       </div>
+    </div>
     </div>
   );
 };
