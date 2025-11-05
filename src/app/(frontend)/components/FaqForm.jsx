@@ -145,7 +145,7 @@ const handleSubmit = async (e) => {
           name="arabtitle"
           value={formData.arabtitle}
           onChange={handleChange}
-          required
+         
         />
 
         <label>Arabic Question</label>
@@ -154,7 +154,7 @@ const handleSubmit = async (e) => {
           name="arabquestion"
           value={formData.arabquestion}
           onChange={handleChange}
-          required
+         
         />
 
         <label>Arabic Answer</label>
@@ -163,7 +163,7 @@ const handleSubmit = async (e) => {
           name="arabanswer"
           value={formData.arabanswer}
           onChange={handleChange}
-          required
+          
         />
 
         <button type="submit" disabled={loading}>
