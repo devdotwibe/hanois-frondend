@@ -163,15 +163,16 @@ const SignUp = () => {
               </div>
 
               <button type="submit" className="login-btn">Sign up</button>
+
+                {successMessage && 
+
+                  <div className='login-success'>  {successMessage} </div>
+                  
+                }
+
             </form>
 
             {generalMessage && <p style={{ color: 'red', marginTop: '10px' }}>{generalMessage}</p>}
-
-            {successMessage && 
-
-              <div className='login-success'>  {successMessage} </div>
-              
-            }
 
             <p className="terms">
              By signing up, signing in or continuing, I agree to the Handis Terms of Use and acknowledge the Handis Privacy Policy. I agree that Handis may use my email address for marketing purposes. I can opt out at any time through my settings.
