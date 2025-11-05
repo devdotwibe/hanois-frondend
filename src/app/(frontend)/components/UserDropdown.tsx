@@ -77,7 +77,8 @@ const UserDropdown = () => {
         </div>
       )}
 
-        {open && (
+        {open && auth !='admin' && (
+          
           <div className="user-dropdown">
 
             <Link href={`${auth}/dashboard`}>Profile</Link>
