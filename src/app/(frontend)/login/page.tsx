@@ -30,6 +30,8 @@ const Login = () => {
 
   const [resetToken, setResetToken] = useState("");
 
+  const [loginError, setLoginError] = useState("");
+
   useEffect(() => {
     const token = searchParams.get("reset-password");
     if (token) {
@@ -44,8 +46,16 @@ const Login = () => {
   const handleLogin = async (e) => {
     
     e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+
+     setLoginError(""); 
+    
+      const target = e.target as typeof e.target & {
+        email: { value: string };
+        password: { value: string };
+      };
+
+      const email = target.email.value;
+      const password = target.password.value;
 
     try {
         const res = await fetch(`${API_URL}users/login`, {
@@ -58,7 +68,7 @@ const Login = () => {
 
       if (!res.ok) {
 
-        alert(data.error || "Login failed");
+         setLoginError(data.error || "Login failed");
 
       } else {
 
@@ -86,7 +96,7 @@ const Login = () => {
       }
     } catch (err) {
       console.error("Login Error:", err);
-      alert("Something went wrong. Please try again.");
+      setLoginError("Something went wrong. Please try again.");
     }
   };
 
@@ -202,6 +212,8 @@ const Login = () => {
                   required
                 />
               </div>
+
+               {loginError && <p style={{ color: 'red', marginTop: '10px' }} className="error-message">{loginError}</p>}
 
               <Link href="" className="forget-pass">
                 Forget password?
