@@ -25,19 +25,22 @@ const UserDropdown = () => {
       ref={dropdownRef}
       onClick={() => setOpen((prev) => !prev)}
     >
-      <div className="user-logo">
-        <Image src={profile} alt="User" width={40} height={40} />
-      </div>
-      <div className="user-name">
-        <p>jssjsjd</p>
-      </div>
 
-      {open && (
-        <div className="user-dropdown">
-          <Link href="/profile">Profile</Link>
-          <button onClick={() => alert("Logout clicked")}>Logout</button>
+        <div className="user-logo">
+          <Image src={profile} alt="User" width={40} height={40} />
         </div>
-      )}
+
+        <div className="user-name">
+          <p>jssjsjd</p>
+        </div>
+
+        {open && (
+          <div className="user-dropdown">
+            <Link href="/profile">Profile</Link>
+            <button onClick={() => alert("Logout clicked")}>Logout</button>
+          </div>
+        )}
+        
     </div>
   );
 };
