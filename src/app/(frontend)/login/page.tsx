@@ -72,7 +72,9 @@ const Login = () => {
           
           localStorage.setItem("token", data.token);
 
-           localStorage.setItem("auth", data.data.role);
+          localStorage.setItem("auth", data.data.role);
+
+          localStorage.setItem("user", JSON.stringify(data.data));
           
           document.cookie = "auth=user; path=/;";
           

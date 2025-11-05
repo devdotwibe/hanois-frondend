@@ -4,20 +4,31 @@ import Image from "next/image";
 import Link from "next/link";
 import profile from "../../../../public/images/profile.png";
 
+import profile_logo from "../../../../public/images/logo2.png";
+
 const UserDropdown = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // close dropdown when clicking outside
+  const [user, setUser] = useState<{ name?: string } | null>(null);
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
 
   return (
     <div
@@ -27,12 +38,16 @@ const UserDropdown = () => {
     >
 
         <div className="user-logo">
-          <Image src={profile} alt="User" width={40} height={40} />
+          <Image src={profile_logo} alt="User" width={40} height={40} />
         </div>
 
+      {user && (
         <div className="user-name">
-          <p>jssjsjd</p>
+
+          <p>{user?.name}</p>
+
         </div>
+      )}
 
         {open && (
           <div className="user-dropdown">
@@ -40,7 +55,7 @@ const UserDropdown = () => {
             <button onClick={() => alert("Logout clicked")}>Logout</button>
           </div>
         )}
-        
+
     </div>
   );
 };

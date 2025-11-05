@@ -50,17 +50,20 @@ const Header = () => {
                   </div>
                 </div>
 
-                <div className="header-col2">
-               
-                  <Link href="/login" className="h-login">
-                    Login
-                  </Link>
+                {!token && (
+                  <div className="header-col2">
+                
+                    <Link href="/login" className="h-login">
+                      Login
+                    </Link>
 
-                  <Link href="/signup" className="h-btn">
-                    Get Listed
-                  </Link>
+                    <Link href="/signup" className="h-btn">
+                      Get Listed
+                    </Link>
 
-                </div>
+                  </div>
+                  
+                )}
 
                 {token && (
 
