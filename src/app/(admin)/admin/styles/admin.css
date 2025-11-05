@@ -50,6 +50,24 @@ body{
      background: #4c72f6;
 }
 
+.admin-nav .dropdown-menu{
+  text-align: left; display: flex; flex-direction: column; align-items: flex-start; padding: 0 !important;
+}
+
+
+.admin-nav .dropdown-menu li{
+  width: 100%; text-align: left; list-style: none;
+}
+.admin-nav .dropdown-menu ul{
+  display: flex;
+  flex-direction: column;
+}
+.admin-nav .dropdown-menu a{
+  width: 100% !important; text-align: left; list-style: none; 
+   padding: 12px 19px; margin-bottom: 10px !important;  display: inline-block;
+}
+
+.admin-nav .dropdown-menu ul li{list-style: none; text-align: left;}
 .admin-nav button.dropdown-btn{
   background-color: #ffffff; color: #000000;
    font-family: 'Avenir-medium';
@@ -58,9 +76,22 @@ body{
   font-family: 'Avenir-medium';
     text-decoration: none;
     transition: background-color .3s;
-    margin: 0 0 10px !important;
+    margin: 0 0 10px !important; width: 100%; text-align: left; position: relative;
+}
+.admin-nav button.dropdown-btn::after {
+  content: "▼"; 
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.75rem; 
+  transition: transform 0.3s ease;
 }
 
+
+
+.admin-nav button.dropdown-btn:hover{
+  color: #2050f5;
+    background: #f0f2fb;
+}
 /* Basic admin layout */
 .admin-container {
   display: flex;
