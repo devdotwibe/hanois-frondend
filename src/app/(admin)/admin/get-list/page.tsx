@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo,useEffect } from "react";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
 import Quill from "quill";
@@ -30,6 +30,27 @@ export default function SimpleEditorPage() {
     }),
     []
   );
+
+    useEffect(() => {
+        const fetchPage = async () => {
+        try {
+            const res = await fetch(`${API_URL}page/get?sectionKey=get_listed`);
+            if (res.ok) {
+            const data = await res.json();
+
+            if (data.success) {
+
+                setTitles({ en: data?.data?.title_en || "", ar: data?.data?.title_ar || "" });
+                setContent({ en: data?.data?.content_en || "", ar: data?.data?.content_ar || "" });
+            }
+            }
+        } catch (err) {
+            console.error("Failed to fetch page data", err);
+        }
+        };
+        fetchPage();
+    }, []);
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
