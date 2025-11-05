@@ -23,12 +23,7 @@ const page = () => {
 
       <BuildSec />
 
-
-
       <FaqSec />
-
-
-
 
 
     </div>
