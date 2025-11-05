@@ -26,6 +26,8 @@ const SignUp = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [generalMessage, setGeneralMessage] = useState('');
 
+  const [successMessage, setsuccessMessage] = useState('');
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     setErrors((prev) => ({ ...prev, [e.target.id]: '' }));
@@ -50,7 +52,7 @@ const SignUp = () => {
 
       if (res.ok) {
 
-        setGeneralMessage('Registration successful!');
+        setsuccessMessage('Registration successful!');
 
         setFormData({
           firstName: '',
@@ -60,7 +62,11 @@ const SignUp = () => {
           password: '',
           confirmPassword: ''
         });
-        router.push('/login');
+
+        setTimeout(() => {
+          router.push('/login');
+        }, 5000);
+
       } else {
 
         const fieldErrors: { [key: string]: string } = {};
@@ -160,6 +166,12 @@ const SignUp = () => {
             </form>
 
             {generalMessage && <p style={{ color: 'red', marginTop: '10px' }}>{generalMessage}</p>}
+
+            {successMessage && 
+
+              <div className='login-success'>  {successMessage} </div>
+              
+            }
 
             <p className="terms">
              By signing up, signing in or continuing, I agree to the Handis Terms of Use and acknowledge the Handis Privacy Policy. I agree that Handis may use my email address for marketing purposes. I can opt out at any time through my settings.
