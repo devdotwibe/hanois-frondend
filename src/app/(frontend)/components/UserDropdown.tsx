@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import profile from "../../../../public/images/profile.png";
@@ -9,6 +10,8 @@ import profile_logo from "../../../../public/images/logo2.png";
 const UserDropdown = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
 
   const [user, setUser] = useState<{ name?: string } | null>(null);
 
@@ -28,6 +31,19 @@ const UserDropdown = () => {
       setUser(JSON.parse(storedUser));
     }
   }, []);
+
+
+   const handleLogout = () => {
+
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("auth");
+
+      document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = "auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+      router.push("/login");
+    };
 
 
   return (
@@ -51,8 +67,11 @@ const UserDropdown = () => {
 
         {open && (
           <div className="user-dropdown">
-            <Link href="/profile">Profile</Link>
-            <button onClick={() => alert("Logout clicked")}>Logout</button>
+
+            <Link href="/user/my-account">Profile</Link>
+            
+            <button onClick={handleLogout} >Logout</button>
+
           </div>
         )}
 
