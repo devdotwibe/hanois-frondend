@@ -1,174 +1,146 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "@/config";
-import dynamic from "next/dynamic";
-import "react-quill-new/dist/quill.snow.css";
 import "../../(admin)/admin/home/admin-home.css";
 
-// 🟩 Load Quill dynamically (avoids SSR issues)
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
-
-export default function BannerExtrasForm() {
-  const [data, setData] = useState({
-    subtitle_en: "",
-    subheading_en: "",
-    buttonname_en: "",
-    subtitle_ar: "",
-    subheading_ar: "",
-    buttonname_ar: "",
+export default function BannerSubExtrasForm() {
+  const [formData, setFormData] = useState({
+    subdescription: "",
+    subbuttonname: "",
+    arabicsubdescription: "",
+    arabicsubbuttonname: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // 🧠 Quill Toolbar Configuration
-  const modules = useMemo(
-    () => ({
-      toolbar: [
-        [{ header: [1, 2, 3, false] }],
-        ["bold", "italic", "underline", "strike"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        ["link"],
-        ["clean"],
-      ],
-    }),
-    []
-  );
-
-  // 🟩 Fetch banner extras data on mount
+  // 🟩 Fetch existing data (on mount)
   useEffect(() => {
-    (async () => {
-      setLoading(true);
+    const fetchSubExtras = async () => {
       try {
-        const res = await axios.get(`${API_URL}banner/extras`);
-        const extras = res.data?.data?.extras || {};
-
-        setData({
-          subtitle_en: extras.subtitle || "",
-          subheading_en: extras.subheading || "",
-          buttonname_en: extras.buttonname || "",
-          subtitle_ar: extras.arabicsubtitle || "",
-          subheading_ar: extras.arabicsubheading || "",
-          buttonname_ar: extras.arabicbuttonname || "",
+        setLoading(true);
+        const res = await axios.get(`${API_URL}banner/subextras`);
+        const data = res.data?.data?.subExtras || {};
+        setFormData({
+          subdescription: data.subdescription || "",
+          subbuttonname: data.subbuttonname || "",
+          arabicsubdescription: data.arabicsubdescription || "",
+          arabicsubbuttonname: data.arabicsubbuttonname || "",
         });
       } catch (err) {
-        console.error("❌ Failed to fetch banner extras:", err);
-        setMessage("❌ Unable to load banner extras data.");
+        console.error("❌ Error fetching sub extras:", err);
+        setMessage("❌ Failed to load banner sub extras.");
       } finally {
         setLoading(false);
       }
-    })();
+    };
+
+    fetchSubExtras();
   }, []);
 
-  // 🟩 Save or update banner extras
-  const handleSave = async (e) => {
+  // 🟩 Handle input
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // 🟩 Submit updated sub extras
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
     try {
-      const payload = {
-        subtitle: data.subtitle_en,
-        subheading: data.subheading_en,
-        buttonname: data.buttonname_en,
-        arabicsubtitle: data.subtitle_ar,
-        arabicsubheading: data.subheading_ar,
-        arabicbuttonname: data.buttonname_ar,
-      };
-
-      const res = await axios.put(`${API_URL}banner/update-extras`, payload);
+      const res = await axios.put(`${API_URL}banner/update-subextras`, formData);
 
       if (res.status === 200) {
-        setMessage("✅ Extras saved successfully!");
+        setMessage("✅ Banner Sub Extras updated successfully!");
       } else {
-        setMessage("❌ Failed to save extras.");
+        setMessage("⚠️ Update failed. Please try again.");
       }
     } catch (err) {
-      console.error("❌ Save failed:", err);
-      setMessage("❌ Error saving extras.");
+      console.error("❌ Update failed:", err);
+      setMessage("❌ Failed to update Banner Sub Extras.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSave}>
-      <h2>Banner Extras (Tab 2)</h2>
+    <div className="extras-form-container">
+      <h2>Tab 4 — Banner Sub Extras</h2>
 
-      {/* 🟩 English Section */}
-      <div className="form-section">
-        <h3>English Content</h3>
+      <form onSubmit={handleSubmit} className="extras-form">
+        <div className="form-field">
+          <label>Sub Description (English)</label>
+          <input
+            type="text"
+            name="subdescription"
+            value={formData.subdescription}
+            onChange={handleChange}
+            placeholder="Enter sub description in English"
+            required
+          />
+        </div>
 
-        <label>Subtitle (English)</label>
-        <ReactQuill
-          theme="snow"
-          value={data.subtitle_en}
-          onChange={(val) => setData({ ...data, subtitle_en: val })}
-          modules={modules}
-        />
+        <div className="form-field">
+          <label>Sub Button Name (English)</label>
+          <input
+            type="text"
+            name="subbuttonname"
+            value={formData.subbuttonname}
+            onChange={handleChange}
+            placeholder="Enter English sub button name"
+            required
+          />
+        </div>
 
-        <label>Subheading (English)</label>
-        <input
-          type="text"
-          value={data.subheading_en}
-          onChange={(e) => setData({ ...data, subheading_en: e.target.value })}
-        />
+        <hr />
 
-        <label>Button Name (English)</label>
-        <input
-          type="text"
-          value={data.buttonname_en}
-          onChange={(e) => setData({ ...data, buttonname_en: e.target.value })}
-        />
-      </div>
+        <div className="form-field">
+          <label>Sub Description (Arabic)</label>
+          <input
+            type="text"
+            className="text-right"
+            name="arabicsubdescription"
+            value={formData.arabicsubdescription}
+            onChange={handleChange}
+            placeholder="Enter Arabic sub description"
+            required
+          />
+        </div>
 
-      {/* 🟩 Arabic Section */}
-      <div className="form-section">
-        <h3>Arabic Content</h3>
+        <div className="form-field">
+          <label>Sub Button Name (Arabic)</label>
+          <input
+            type="text"
+            className="text-right"
+            name="arabicsubbuttonname"
+            value={formData.arabicsubbuttonname}
+            onChange={handleChange}
+            placeholder="Enter Arabic sub button name"
+            required
+          />
+        </div>
 
-        <label>Subtitle (Arabic)</label>
-        <ReactQuill
-          theme="snow"
-          value={data.subtitle_ar}
-          onChange={(val) => setData({ ...data, subtitle_ar: val })}
-          modules={modules}
-        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Saving..." : "Save Changes"}
+        </button>
 
-        <label>Subheading (Arabic)</label>
-        <input
-          type="text"
-          className="text-right"
-          value={data.subheading_ar}
-          onChange={(e) => setData({ ...data, subheading_ar: e.target.value })}
-        />
-
-        <label>Button Name (Arabic)</label>
-        <input
-          type="text"
-          className="text-right"
-          value={data.buttonname_ar}
-          onChange={(e) => setData({ ...data, buttonname_ar: e.target.value })}
-        />
-      </div>
-
-      <button type="submit" disabled={loading}>
-        {loading ? "Saving..." : "Save Changes"}
-      </button>
-
-      {message && (
-        <p
-          className={`message ${
-            message.includes("✅")
-              ? "success"
-              : message.includes("⚠️")
-              ? "warning"
-              : "error"
-          }`}
-        >
-          {message}
-        </p>
-      )}
-    </form>
+        {message && (
+          <p
+            className={`message ${
+              message.includes("✅")
+                ? "success"
+                : message.includes("⚠️")
+                ? "warning"
+                : "error"
+            }`}
+          >
+            {message}
+          </p>
+        )}
+      </form>
+    </div>
   );
 }
