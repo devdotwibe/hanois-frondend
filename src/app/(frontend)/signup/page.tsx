@@ -7,6 +7,7 @@ import backarrow from "../../../../public/images/left-arrow.svg";
 import headerlogo from "../../../../public/images/logo2.png";
 import loginimg from "../../../../public/images/login-sidebar.png";
 import { API_URL } from '@/config'; 
+import "./signup.css";
 
 const SignUp = () => {
   const router = useRouter();
@@ -28,9 +29,27 @@ const SignUp = () => {
 
   const [successMessage, setsuccessMessage] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-    setErrors((prev) => ({ ...prev, [e.target.id]: '' }));
+  const [emailClass, setEmailClass] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    const { id, value } = e.target;
+
+    setFormData((prev) => ({ ...prev, [id]: value }));
+    setErrors((prev) => ({ ...prev, [id]: "" }));
+
+    if (id === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (value === "") {
+        setEmailClass(""); // empty input
+      } else if (emailRegex.test(value)) {
+        setEmailClass("email-valid");
+      } else {
+        setEmailClass("email-invalid");
+      }
+    }
+
+    setGeneralMessage('');
   };
 
   const handleSubmit = async (e) => {
@@ -133,9 +152,15 @@ const SignUp = () => {
               </div>
 
               <div className="form-grp">
+
                 <label htmlFor="email">Email</label>
-                <input type="email" id="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
+
+                <input type="text" id="email" className={`input-field ${generalMessage === 'Email already exists' ? 'error-warning' : ''} ${emailClass}`} value={formData.email} onChange={handleChange} placeholder="Email" required />
+
                   {errors.email && <span className="error" style={{ color: 'red', marginTop: '10px' }}>{errors.email}</span>}
+
+                   {generalMessage === 'Email already exists'&& <span className="error" style={{ color: 'red', marginTop: '10px' }}>{generalMessage}</span>}
+
               </div>
 
               <div className="form-grp">
