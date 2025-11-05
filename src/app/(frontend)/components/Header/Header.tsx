@@ -12,6 +12,8 @@ const Header = () => {
 
   const [token, setToken] = useState<string | null>(null);
 
+  const [auth, setauth] = useState(null);
+  
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -26,6 +28,14 @@ const Header = () => {
       }, []);
    
   useEffect(() => {
+
+     const authUser = localStorage.getItem("auth");
+
+      if(authUser)
+      {
+        setauth(authUser);
+      }
+
       const storedToken = localStorage.getItem("token");
       setToken(storedToken);
     }, []);
@@ -65,7 +75,7 @@ const Header = () => {
                   
                 )}
 
-                {token && (
+                {token && auth !='admin' && (
 
                   <div className="logged-outer ">
 

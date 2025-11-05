@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "@/config";
-import "./admin-home.css";
+import "../../(admin)/admin/home/admin-home.css";
 
 export default function FaqForm() {
   const [faqs, setFaqs] = useState([]);
