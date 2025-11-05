@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../../../../public/images/logo.png";
+import logo from "../../../../../public/images/logo2.png";
 import profile from "../../../../../public/images/profile.png"
 import UserDropdown from "../UserDropdown";
 

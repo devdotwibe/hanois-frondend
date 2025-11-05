@@ -34,6 +34,11 @@
       background: #4c72f6;
 
 }
+
+.header-div .h-login{
+  
+}
+
 .header-div .h-login{
 background: #ffffff;color: #000000;font-size: 14px;padding: 10px 26px;border-radius: 5px; margin: 0 14px 0;font-family: 'Avenir-Black';display: inline-block;
 }
