@@ -49,13 +49,13 @@ const Banner = ({ lang }: { lang: string }) => {
         setText((prev) => ({
           en: {
             ...prev.en,
-            title: en?.engtitle,
-            desc: en?.engdescription || prev.en.desc,
+            title: en?.title,
+            desc: en?.description || prev.en.desc,
           },
           ar: {
             ...prev.ar,
-            title: ar?.arabtitle,
-            desc: ar?.arabdescription || prev.ar.desc,
+            title: ar?.title,
+            desc: ar?.description || prev.ar.desc,
           },
         }));
       } catch (err) {
