@@ -14,6 +14,7 @@ import { useRouter,useSearchParams } from "next/navigation";
 
 import Link from "next/link";
 import { API_URL } from '@/config'; 
+import "../signup/signup.css";
 
 
 const Login = () => {
