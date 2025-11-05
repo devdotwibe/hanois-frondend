@@ -65,19 +65,27 @@ const UserDropdown = () => {
       onClick={() => setOpen((prev) => !prev)}
     >
 
-        <div className="user-logo">
-          <Image src={profile_logo} alt="User" width={40} height={40} />
-        </div>
+      <div className="user-logo">
+        <Image src={profile_logo} alt="User" width={40} height={40} />
+      </div>
 
-      {user && (
+      { (user || auth =='admin') && (
+
         <div className="user-name">
 
-           <p>{user.name ? user.name.split(" ")[0] : ""}</p>
+          {auth =='admin' ? (
+
+             <p>Admin </p>
+          )
+          :(
+               <p>{user?.name ? user?.name.split(" ")[0] : ""}</p>
+          )}
+          
 
         </div>
       )}
 
-        {open && auth !='admin' && (
+        {open && (
           
           <div className="user-dropdown">
 

@@ -61,6 +61,7 @@ const Header = () => {
                 </div>
 
                 {!token && (
+
                   <div className="header-col2">
                 
                     <Link href="/login" className="h-login">
@@ -75,7 +76,7 @@ const Header = () => {
                   
                 )}
 
-                {token && auth !='admin' && (
+                {token && (
 
                   <div className="logged-outer ">
 

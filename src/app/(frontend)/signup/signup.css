@@ -8,13 +8,74 @@
 
 .input-field.email-valid {
   border-color: #2ecc71; 
-  background-color: #e6f7ee; 
+  background-color: #e6f7ee;
+  position: relative;  padding-right: 50px;
+   background: url(../../../../public/images/tik.svg);
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: 100%;
+   
 }
+
+
+.form-grp input.email-valid:focus{
+ border-color: #2ecc71; 
+}
+
+.form-grp:has(.email-valid) label {
+    position: relative;
+}
+.form-grp:has(.email-valid) label::after{
+   content: "";
+    position: absolute;
+    background: url(../../../../public/images/tik.svg);
+    background-repeat: no-repeat;
+    right: 15px;
+    top: 53px;
+    width: 18px;
+    height: 18px; z-index: 9999; background-size: 15px;
+}
+
+
 
 .input-field.email-invalid {
   border-color: #e74c3c; 
   background-color: #fdecea;
+  position: relative;
 }
+
+.form-grp input.email-invalid:focus{
+ border-color: #e74c3c; 
+}
+
+.input-field.email-invalid::after{
+    content: "";
+    position: absolute;
+    background: url(../../../../public/images/warning-icon.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    right: 0;
+    top: 2px;
+    width: 15px;
+    height: 15px;
+}
+
+.form-grp:has(.email-invalid) label {
+    position: relative;
+}
+.form-grp:has(.email-invalid) label::after{
+   content: "";
+    position: absolute;
+    background: url(../../../../public/images/warning-icon.svg);
+    background-repeat: no-repeat;
+    right: 15px;
+    top: 53px;
+    width: 18px;
+    height: 18px; z-index: 9999; background-size: 15px;
+}
+
+
+
 
 .input-field.error-warning {
   border-color: #f1c40f;
