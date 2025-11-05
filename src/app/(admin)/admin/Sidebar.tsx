@@ -5,10 +5,14 @@ import "./styles/admin.css";
 import { usePathname ,useRouter} from "next/navigation";
 import { API_URL } from '@/config'; 
 import axios from "axios";
+import { useState } from "react";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+
+  const [pagesOpen, setPagesOpen] = useState(false);
+
   const handleLogout = async () => {
       try {
 
@@ -54,19 +58,27 @@ export default function AdminSidebar() {
           Providers
         </Link>
 
-        {/* <Link
-          href="/admin/orders"
-          className={pathname === "/admin/orders" ? "active" : ""}
-        >
-          Orders
-        </Link> */}
-    
-          <Link
-          href="/admin/home"
-          className={pathname === "/admin/home" ? "active" : ""}
-        >
-          Home Page
-        </Link>
+        <div
+            className="pages-dropdown"
+            onMouseEnter={() => setPagesOpen(true)}
+            onMouseLeave={() => setPagesOpen(false)}
+          >
+            <button className="dropdown-btn">Pages</button>
+
+          {pagesOpen && (
+              <ul className="dropdown-menu">
+                <li>
+                  <Link
+                    href="/admin/home"
+                    className={pathname === "/admin/home" ? "active" : ""}
+                  >
+                    Home Page
+                  </Link>
+                </li>
+
+              </ul>
+            )}
+        </div>
 
         <Link
             href="/admin/settings"
