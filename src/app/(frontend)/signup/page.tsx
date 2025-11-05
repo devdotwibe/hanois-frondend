@@ -23,17 +23,19 @@ const SignUp = () => {
 
   const lang = searchParams.get("lang") === "ar" ? "ar" : "en";
 
-  const [message, setMessage] = useState('');
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [generalMessage, setGeneralMessage] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
+    setErrors((prev) => ({ ...prev, [e.target.id]: '' }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      setMessage('Passwords do not match!');
+   if (formData.password !== formData.confirmPassword) {
+      setErrors({ confirmPassword: "Passwords do not match!" });
       return;
     }
 
@@ -47,7 +49,9 @@ const SignUp = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage('Registration successful!');
+
+        setGeneralMessage('Registration successful!');
+
         setFormData({
           firstName: '',
           lastName: '',
@@ -58,11 +62,25 @@ const SignUp = () => {
         });
         router.push('/login');
       } else {
-        setMessage(data.error || 'Registration failed');
+
+        const fieldErrors: { [key: string]: string } = {};
+        if (data.errors && Array.isArray(data.errors)) {
+          data.errors.forEach((err: any) => {
+            fieldErrors[err.field] = err.message;
+          });
+        }
+        setErrors(fieldErrors);
+
+        if (data.error) {
+          setGeneralMessage(data.error);
+        }
+
       }
     } catch (err) {
       console.error('Error:', err);
-      setMessage('Server error');
+
+      setGeneralMessage('Server error');
+
     }
   };
 
@@ -98,39 +116,50 @@ const SignUp = () => {
                 <div className="form-grp">
                   <label htmlFor="firstName">First Name</label>
                   <input type="text" id="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" required />
+                    {errors.firstName && <span className="error" style={{ color: 'red', marginTop: '10px' }}>{errors.firstName}</span>}
                 </div>
 
                 <div className="form-grp">
                   <label htmlFor="lastName">Last Name</label>
                   <input type="text" id="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last Name" required />
+                    {errors.lastName && <span className="error" style={{ color: 'red', marginTop: '10px' }}>{errors.lastName}</span>}
                 </div>
               </div>
 
               <div className="form-grp">
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
+                  {errors.email && <span className="error" style={{ color: 'red', marginTop: '10px' }}>{errors.email}</span>}
               </div>
 
               <div className="form-grp">
                 <label htmlFor="number">Mobile Number</label>
                 <input type="text" id="number" value={formData.number} onChange={handleChange} placeholder="+1 (000) 000 0000" required />
+                 {errors.number && <span className="error" style={{ color: 'red', marginTop: '10px' }}>{errors.number}</span>}
               </div>
 
               <div className="form-grp">
+
                 <label htmlFor="password">Password</label>
+
                 <input type="password" id="password" value={formData.password} onChange={handleChange} placeholder="+8 characters" required />
+
                  <span>Use 8 or more characters, with a mix of letters, numbers and synbols</span>
+
+                 {errors.password && <span className="error" style={{ color: 'red', marginTop: '10px' }}>{errors.password}</span>}
+
               </div>
 
               <div className="form-grp">
                 <label htmlFor="confirmPassword">Confirm Password</label>
                 <input type="password" id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm a password" required />
+                 {errors.confirmPassword && <span className="error" style={{ color: 'red', marginTop: '10px' }} >{errors.confirmPassword}</span>}
               </div>
 
               <button type="submit" className="login-btn">Sign up</button>
             </form>
 
-            {message && <p style={{ color: 'red', marginTop: '10px' }}>{message}</p>}
+            {generalMessage && <p style={{ color: 'red', marginTop: '10px' }}>{generalMessage}</p>}
 
             <p className="terms">
              By signing up, signing in or continuing, I agree to the Handis Terms of Use and acknowledge the Handis Privacy Policy. I agree that Handis may use my email address for marketing purposes. I can opt out at any time through my settings.
