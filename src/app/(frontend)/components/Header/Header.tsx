@@ -1,6 +1,3 @@
-
-
-
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
@@ -13,6 +10,8 @@ import UserDropdown from "../UserDropdown";
 const Header = () => {
   const [isFixed, setIsFixed] = useState(false);
 
+  const [token, setToken] = useState<string | null>(null);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -22,49 +21,63 @@ const Header = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+      window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+      }, []);
+   
+  useEffect(() => {
+      const storedToken = localStorage.getItem("token");
+      setToken(storedToken);
+    }, []);
 
   return (
     <div className={`header ${isFixed ? "fixedtop" : ""}`}>
+
       <div className="containers">
-        <div className="header-div">
-          <div className="header-col1">
-            <div className="header-logo">
-              <Link href="/">
-                <Image src={logo} alt="logo" width={100} height={19} />
-              </Link>
+
+            <div className="header-div">
+
+              <>
+                <div className="header-col1">
+                  <div className="header-logo">
+                    <Link href="/">
+                      <Image src={logo} alt="logo" width={100} height={19} />
+                    </Link>
+                  </div>
+
+                  <div className="header-text">
+                    <p>Service Providers</p>
+                  </div>
+                </div>
+
+                <div className="header-col2">
+               
+                  <Link href="/login" className="h-login">
+                    Login
+                  </Link>
+
+                  <Link href="/signup" className="h-btn">
+                    Get Listed
+                  </Link>
+
+                </div>
+
+                {token && (
+
+                  <div className="logged-outer ">
+
+                    <div className="loged-inn-div">
+
+                      <UserDropdown />
+
+                    </div>
+
+                  </div>
+                )}
+
+              </>
+
             </div>
-
-            <div className="header-text">
-              <p>Service Providers</p>
-            </div>
-          </div>
-
-          <div className="header-col2">
-            {/* <LanguageSwitcher /> */}
-            <Link href="/login" className="h-login">
-              Login
-            </Link>
-            <Link href="/signup" className="h-btn">
-              Get Listed
-            </Link>
-          </div>
-<div className="logged-outer hidden">
-  <div className="loged-inn-div">
-            <UserDropdown />
-          </div>
-
-</div>
-
-
-
-          
-
-
-
-        </div>
       </div>
     </div>
   );
