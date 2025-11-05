@@ -90,7 +90,7 @@ const Banner = ({ lang }: { lang: string }) => {
 
               <input type="text" placeholder={t.placeholder} disabled={!token}  dir={lang === "ar" ? "rtl" : "ltr"}/>
 
-              <button className={`btn-home ${token ? 'active-btn' : 'disabled-btn' }`} >{t.button}</button>
+              <button className={`btn-sec-home ${token ? 'active-btn' : 'disabled-btn' }`} >{t.button}</button>
 
             </div>
 
