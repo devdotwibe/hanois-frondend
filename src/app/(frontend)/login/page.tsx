@@ -198,7 +198,7 @@ const Login = () => {
             <form className="login-form" onSubmit={(e) => handleLogin(e, router)}>
                 <div className="form-grp">
                 <label htmlFor="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Email" required />
+                <input type="email" className={`input-field ${loginError ? 'email-invalid' : ''}`} id="email" name="email" placeholder="Email" required />
               </div>
 
               <div className="form-grp">
@@ -209,6 +209,7 @@ const Login = () => {
                   name="password"
                   placeholder="+8 characters"
                   required
+                  className={`input-field ${loginError ? 'email-invalid' : ''}`}
                 />
               </div>
 
