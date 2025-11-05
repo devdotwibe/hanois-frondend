@@ -951,7 +951,6 @@ padding-block: 60px;
     padding: 50px;
     border-radius: 20px;
         padding-bottom: 0;
-            box-shadow: 0 -8px 20px -8px rgba(0, 0, 0, 0.5);
 }
 
 
@@ -959,7 +958,24 @@ padding-block: 60px;
   position: relative;
  
 }
+.serv-prov-form {
+  position: relative;
+  z-index: 1;
+}
 
+.serv-prov-form::after {
+  content: "";
+  position: absolute;
+  top: -28px; 
+  left: 0;
+  width: 100%;
+  height: 20px; /* thickness of shadow area */
+  background: rgba(0, 0, 0, 0.85); /* even dark tone */
+  filter: blur(18px); /* smooth blur to spread evenly */
+  border-radius: 50%; /* soft curve to prevent side bleed */
+  pointer-events: none;
+  z-index: -1;
+}
 
 .step {
   opacity: 0;
