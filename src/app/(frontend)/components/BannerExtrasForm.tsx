@@ -1,7 +1,13 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { API_URL } from "@/config";
+import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
+import "../../(admin)/admin/home/admin-home.css";
+
+// 🟩 Load Quill dynamically (avoids SSR issues)
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export default function BannerExtrasForm() {
   const [data, setData] = useState({
@@ -15,6 +21,20 @@ export default function BannerExtrasForm() {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  // 🧠 Quill Toolbar Configuration
+  const modules = useMemo(
+    () => ({
+      toolbar: [
+        [{ header: [1, 2, 3, false] }],
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["link"],
+        ["clean"],
+      ],
+    }),
+    []
+  );
 
   // 🟩 Fetch banner extras data on mount
   useEffect(() => {
@@ -76,14 +96,16 @@ export default function BannerExtrasForm() {
     <form onSubmit={handleSave}>
       <h2>Banner Extras (Tab 2)</h2>
 
+      {/* 🟩 English Section */}
       <div className="form-section">
         <h3>English Content</h3>
 
         <label>Subtitle (English)</label>
-        <input
-          type="text"
+        <ReactQuill
+          theme="snow"
           value={data.subtitle_en}
-          onChange={(e) => setData({ ...data, subtitle_en: e.target.value })}
+          onChange={(val) => setData({ ...data, subtitle_en: val })}
+          modules={modules}
         />
 
         <label>Subheading (English)</label>
@@ -101,15 +123,16 @@ export default function BannerExtrasForm() {
         />
       </div>
 
+      {/* 🟩 Arabic Section */}
       <div className="form-section">
         <h3>Arabic Content</h3>
 
         <label>Subtitle (Arabic)</label>
-        <input
-          type="text"
-          className="text-right"
+        <ReactQuill
+          theme="snow"
           value={data.subtitle_ar}
-          onChange={(e) => setData({ ...data, subtitle_ar: e.target.value })}
+          onChange={(val) => setData({ ...data, subtitle_ar: val })}
+          modules={modules}
         />
 
         <label>Subheading (Arabic)</label>
