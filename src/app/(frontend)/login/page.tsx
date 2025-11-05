@@ -43,19 +43,15 @@ const Login = () => {
   }, [searchParams]);
 
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     
     e.preventDefault();
 
      setLoginError(""); 
     
-      const target = e.target as typeof e.target & {
-        email: { value: string };
-        password: { value: string };
-      };
-
-      const email = target.email.value;
-      const password = target.password.value;
+      const formData = new FormData(e.currentTarget as HTMLFormElement);
+      const email = formData.get("email")?.toString() || "";
+      const password = formData.get("password")?.toString() || "";
 
     try {
         const res = await fetch(`${API_URL}users/login`, {
@@ -200,7 +196,7 @@ const Login = () => {
             <form className="login-form" onSubmit={(e) => handleLogin(e, router)}>
                 <div className="form-grp">
                 <label htmlFor="email">Email</label>
-                <input type="email" id="email" placeholder="Email" required />
+                <input type="email" id="email" name="email" placeholder="Email" required />
               </div>
 
               <div className="form-grp">
@@ -208,6 +204,7 @@ const Login = () => {
                 <input
                   type="password"
                   id="password"
+                  name="password"
                   placeholder="+8 characters"
                   required
                 />
