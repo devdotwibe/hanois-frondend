@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from '@/config'; 
-import './user-table.css'
+import '../styles/user-table.css'
 
 interface User {
   id: number;

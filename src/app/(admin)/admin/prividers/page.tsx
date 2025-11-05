@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from '@/config'; 
+import '../styles/user-table.css'
 
 interface User {
   id: number;
@@ -14,6 +15,10 @@ interface User {
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
+
+  const [loading, setLoading] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -38,7 +43,53 @@ export default function UsersPage() {
     fetchUsers();
   }, []);
 
+
+  const handleDeleteClick = (id: number) => {
+
+    setSelectedUserId(id);
+    setShowConfirm(true);
+
+  };
+
+  const confirmDelete = async () => {
+
+    if (!selectedUserId) return;
+
+    try {
+      setLoading(true);
+
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        alert("You must be logged in to perform this action.");
+        return;
+      }
+
+      const res = await axios.delete(`${API_URL}providers/${selectedUserId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      if (res.data?.success) {
+        setUsers((prev) => prev.filter((user) => user.id !== selectedUserId));
+      } else {
+        alert(res.data?.error || "Failed to delete user.");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("An error occurred while deleting the user.");
+    } finally {
+      setShowConfirm(false);
+      setSelectedUserId(null);
+      setLoading(false);
+    }
+  };
+
   return (
+
+  <>
     <div className="admin-page">
 
       <h1 className="admin-title">Providers</h1>
@@ -63,7 +114,12 @@ export default function UsersPage() {
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>
-                    <button className="btn-delete">Delete</button>
+                    <button
+                        className="btn-delete"
+                        onClick={() => handleDeleteClick(user.id)}
+                      >
+                        Delete
+                    </button>
                   </td>
                 </tr>
               ))
@@ -78,5 +134,28 @@ export default function UsersPage() {
         </table>
       </div>
     </div>
+
+      {showConfirm && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <h3>Confirm Delete</h3>
+              <p>Are you sure you want to delete this user?</p>
+              <div className="modal-actions">
+                <button
+                  className="btn-cancel"
+                  onClick={() => setShowConfirm(false)}
+                >
+                  Cancel
+                </button>
+                <button className="btn-confirm" onClick={confirmDelete}>
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+      )}
+
+    </>
+
   );
 }
