@@ -11,11 +11,21 @@ export default function AdminSidebar() {
   const router = useRouter();
   const handleLogout = async () => {
       try {
-        await axios.post(`${API_URL}admin/logout`, {}, { 
-          withCredentials: true 
-        });
 
-        router.push("/admin/login");
+         const res = await axios.post(`${API_URL}admin/logout`, {}, { 
+            withCredentials: true 
+          });
+
+        if (res.status === 200) {
+
+          localStorage.removeItem("token");
+          localStorage.removeItem("auth");
+
+          document.cookie = "auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+          document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+
+          router.push("/admin/login");
+        }
       } catch (err) {
         console.error("Logout failed", err);
       }

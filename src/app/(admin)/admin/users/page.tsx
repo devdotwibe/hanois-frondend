@@ -52,28 +52,40 @@ export default function UsersPage() {
   };
 
   const confirmDelete = async () => {
+    if (!selectedUserId) return;
 
-      if (!selectedUserId) return;
+    try {
+      setLoading(true);
 
-      try {
-        
-          setLoading(true);
-          const res = await axios.delete(`${API_URL}users/${selectedUserId}`);
+      const token = localStorage.getItem("token");
 
-          if (res.data?.success) {
-            setUsers((prev) => prev.filter((user) => user.id !== selectedUserId));
-          } else {
-            alert(res.data?.error || "Failed to delete user.");
-        }
-      } catch (error) {
-        console.error("Error deleting user:", error);
-        alert("An error occurred while deleting the user.");
-      } finally {
-        setShowConfirm(false);
-        setSelectedUserId(null);
-        setLoading(false);
+      if (!token) {
+        alert("You must be logged in to perform this action.");
+        return;
       }
+
+      const res = await axios.delete(`${API_URL}users/${selectedUserId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      if (res.data?.success) {
+        setUsers((prev) => prev.filter((user) => user.id !== selectedUserId));
+      } else {
+        alert(res.data?.error || "Failed to delete user.");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("An error occurred while deleting the user.");
+    } finally {
+      setShowConfirm(false);
+      setSelectedUserId(null);
+      setLoading(false);
+    }
   };
+
 
   return (
 
