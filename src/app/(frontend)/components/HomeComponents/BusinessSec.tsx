@@ -35,6 +35,13 @@ const BusinessSec = ({ lang }: { lang: string }) => {
             "Productive agents are happy agents. Give them all the support tools and information they need to best serve your customers.",
           imageSrc: image3,
         },
+        {
+          title1: '',
+          spanText: '',
+          discption: '',
+          
+
+        },
       ],
     },
 
@@ -64,6 +71,13 @@ const BusinessSec = ({ lang }: { lang: string }) => {
           discption:
             "الموظفون المنتجون هم الموظفون السعداء. امنحهم جميع أدوات الدعم والمعلومات التي يحتاجونها لخدمة عملائك بأفضل شكل.",
           imageSrc: image3,
+        },
+        {
+          title1: '',
+          spanText: '',
+          discption: '',
+          
+
         },
       ],
     },
