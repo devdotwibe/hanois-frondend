@@ -39,34 +39,45 @@ export default function FaqForm() {
   };
 
   // 🟩 Save or Update FAQ
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setMessage("");
 
-    try {
-      const endpoint = `${API_URL}faq`;
-      const res = await axios.post(endpoint, formData);
-      if (res.status === 200 || res.status === 201) {
-        setMessage("✅ FAQ saved successfully!");
-        fetchFaqs();
-        setFormData({
-          engtitle: "",
-          engquestion: "",
-          enganswer: "",
-          arabtitle: "",
-          arabquestion: "",
-          arabanswer: "",
-        });
-        setEditingId(null);
-      }
-    } catch (err) {
-      console.error("❌ Error saving FAQ:", err);
-      setMessage("❌ Failed to save FAQ.");
-    } finally {
-      setLoading(false);
+  try {
+    let res;
+
+    if (editingId) {
+      // 🟩 Update existing FAQ
+      res = await axios.put(`${API_URL}faq/${editingId}`, formData);
+    } else {
+      // 🟩 Create new FAQ
+      res = await axios.post(`${API_URL}faq`, formData);
     }
-  };
+
+    if (res.status === 200 || res.status === 201) {
+      setMessage(editingId ? "✅ FAQ updated successfully!" : "✅ FAQ created successfully!");
+      fetchFaqs();
+
+      // Reset form
+      setFormData({
+        engtitle: "",
+        engquestion: "",
+        enganswer: "",
+        arabtitle: "",
+        arabquestion: "",
+        arabanswer: "",
+      });
+
+      setEditingId(null);
+    }
+  } catch (err) {
+    console.error("❌ Error saving FAQ:", err);
+    setMessage("❌ Failed to save FAQ.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   // 🟩 Edit FAQ (populate form)
   const handleEdit = (faq) => {
