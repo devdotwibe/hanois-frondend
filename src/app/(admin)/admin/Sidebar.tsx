@@ -64,6 +64,15 @@ export default function AdminSidebar() {
                   </Link>
                 </li>
 
+                 <li>
+                  <Link
+                    href="/admin/get-list"
+                    className={pathname === "/admin/get-list" ? "active" : ""}
+                  >
+                    Get Listed
+                  </Link>
+                </li>
+
               </ul>
             )}
         </div>
