@@ -177,7 +177,7 @@ export default function HomeAdminPage() {
          <button className={activeTab === 3 ? "tab active" : "tab"} onClick={() => setActiveTab(3)}>Tab 3</button>
 
 
- <button className={activeTab === 4 ? "tab active" : "tab"} onClick={() => setActiveTab(4)}>Tab 4</button>
+            <button className={activeTab === 4 ? "tab active" : "tab"} onClick={() => setActiveTab(4)}>Tab 4</button>
 
       </div>
 
