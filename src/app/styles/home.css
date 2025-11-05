@@ -76,7 +76,7 @@ a:focus {
 .banner-div {
     text-align: center;
     max-width: 800px;
-    margin-inline: auto; margin-bottom: 80px;
+    margin-inline: auto; margin-bottom: 80px; margin-top: 70px;
 }
 
 .search-container {
@@ -991,7 +991,7 @@ padding-block: 60px;
 .tab-wrapper {
   display: flex;
 /* background: red; */
-  min-height: 80vh; color: #000000;
+  min-height: 80vh; color: #000000; margin-top: 70px;
 }
 
 /* Sidebar tabs */

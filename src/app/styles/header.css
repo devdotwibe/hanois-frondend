@@ -2,7 +2,10 @@
 
 
 .header {
-    padding: 50px 0 70px;
+    background-color: #ffffff;
+    padding: 50px 0 0px; transition: all 0.4s ease-in-out; 
+    border-bottom: 1px solid #ffffff;
+    
 }
 
 .header-div {
@@ -67,8 +70,18 @@
 
 
 
+.header.fixedtop {
+    position: fixed; background: #ffffff;
+    top: 0;
+    left: 0;
+    width: 100%; z-index: 9999; padding: 0;
+    margin-bottom: 0; border-bottom: 1px solid #ebeaea;
+}
+
+.header.fixedtop  .header-div{background-color: #ffffff;}
 
 
+body{position: relative;}
 
 
 @media (max-width: 1024px) {
