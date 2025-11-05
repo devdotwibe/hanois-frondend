@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter,useSearchParams } from 'next/navigation';
 import backarrow from "../../../../public/images/left-arrow.svg";
-import headerlogo from "../../../../public/images/logo.png";
+import headerlogo from "../../../../public/images/logo2.png";
 import loginimg from "../../../../public/images/login-sidebar.png";
 import { API_URL } from '@/config'; 
 
@@ -72,7 +72,8 @@ const SignUp = () => {
         {/* Left Column */}
         <div className="logincol1">
           <div className="bg-cover">
-            <Image src={loginimg} alt="Login background" width={571} height={919} className="login-img" />
+            <Image src={loginimg} alt="Login background" width={980}
+              height={1578} className="login-img" />
           </div>
 
           <div className="logo-div" onClick={() => router.push("/")} >
@@ -132,7 +133,7 @@ const SignUp = () => {
             {message && <p style={{ color: 'red', marginTop: '10px' }}>{message}</p>}
 
             <p className="terms">
-              By signing up, signing in or continuing, I agree to the Handis Terms of Use and acknowledge the Handis Privacy Policy.
+             By signing up, signing in or continuing, I agree to the Handis Terms of Use and acknowledge the Handis Privacy Policy. I agree that Handis may use my email address for marketing purposes. I can opt out at any time through my settings.
             </p>
           </div>
         </div>
