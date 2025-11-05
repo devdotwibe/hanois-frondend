@@ -53,11 +53,11 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6">
+    <div className=" mx-auto p-6">
       <h1 className="text-2xl font-semibold mb-6">Settings</h1>
 
-      <form onSubmit={handleSave}>
-        <div className="mb-4">
+      <form onSubmit={handleSave} className="settingsform">
+        <div className="mb-4 form-grp">
           <label htmlFor="contactEmail" className="block font-medium mb-2">
             Contact Email
           </label>
@@ -75,8 +75,13 @@ export default function SettingsPage() {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-2 rounded text-white ${
-            loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+          style={{
+    backgroundColor: loading ? "#2050f5" : "#2050f5", 
+    color: "#ffffff",
+
+  }}
+          className={`w-full py-2 rounded text-white bg-[#2050f5] setting-submit ${
+            loading ? "bg-gray-400" : "bg-blue-600 hover:bg-[#4c72f6]"
           }`}
         >
           {loading ? "Saving..." : "Save"}
