@@ -14,25 +14,13 @@ export default function AdminSidebar() {
   const [pagesOpen, setPagesOpen] = useState(false);
 
   const handleLogout = async () => {
-      try {
-
-         const res = await axios.post(`${API_URL}admin/logout`, {}, { 
-            withCredentials: true 
-          });
-
-        if (res.status === 200) {
-
+          localStorage.removeItem("user");
           localStorage.removeItem("token");
           localStorage.removeItem("auth");
 
-          document.cookie = "auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-          document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-
+          document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+          document.cookie = "auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
           router.push("/admin/login");
-        }
-      } catch (err) {
-        console.error("Logout failed", err);
-      }
   };
 
 
