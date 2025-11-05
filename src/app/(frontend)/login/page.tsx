@@ -7,7 +7,7 @@ import loginimg from "../../../../public/images/login-sidebar.png";
 import appleimg from "../../../../public/images/apple.svg";
 import googleimg from "../../../../public/images/google.svg";
 import backarrow from "../../../../public/images/left-arrow.svg";
-import headerlogo from "../../../../public/images/logo.png";
+import headerlogo from "../../../../public/images/logo2.png";
 
 import { createPortal } from "react-dom";
 import { useRouter,useSearchParams } from "next/navigation";
