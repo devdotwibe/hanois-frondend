@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { API_URL } from "@/config";
+import { useRouter } from "next/navigation";
 
 const FeedbackForm = () => {
   const [step, setStep] = useState(1);
@@ -20,9 +21,15 @@ const FeedbackForm = () => {
     social_media: "",
   });
 
+   const router = useRouter();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const HandleNavigate = () => {
+    router.push("/"); // navigate to home page
   };
 
   const handleContinue = () => setStep(2);
@@ -227,7 +234,7 @@ const FeedbackForm = () => {
               Thank you for registering at <b>Hands</b>. Verification process
               might take some time. You will receive an email once approved.
             </p>
-            <button onClick={closePopup} className="btn-home">
+            <button onClick={HandleNavigate} className="btn-home">
               Back to Home
             </button>
           </div>
