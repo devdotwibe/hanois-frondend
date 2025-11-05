@@ -9,6 +9,10 @@ import "./admin-home.css";
 import BannerExtrasForm from "@/app/(frontend)/components/BannerExtrasForm";
 import FaqForm from "@/app/(frontend)/components/FaqForm";
 
+import BannerSubExtrasForm from "@/app/(frontend)/components/BannerSubExtrasForm";
+
+
+
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 Quill.import("ui/icons")["source"] = "&lt;/&gt;";
@@ -290,7 +294,12 @@ export default function HomeAdminPage() {
 )}
 
 
-
+  {/* 🟩 Tab 4: Banner Sub Extras */}
+      {activeTab === 4 && (
+        <div className="tab-content">
+          <BannerSubExtrasForm />
+        </div>
+      )}
 
     </div>
   );
