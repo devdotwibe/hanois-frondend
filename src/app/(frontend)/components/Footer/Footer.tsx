@@ -152,11 +152,9 @@ const Footer = () => {
       {/* Bottom Section */}
       <div className="containers">
            <div className="footer-bottom">
-        <p>© Copyright 2022 Handis, Inc.</p>
+        <p>© Copyright {new Date().getFullYear()}  Handis, Inc.</p>
 
         {/* <LanguageSwitcher /> */}
-
-
 
       </div>
 
