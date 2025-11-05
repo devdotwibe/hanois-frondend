@@ -15,8 +15,8 @@ const Header = () => {
                 <Image
                   src={logo}
                   alt="logo"
-                  width={50}
-                  height={50}
+                  width={100}
+                  height={19}
                 />
               </Link>
             </div>
