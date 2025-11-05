@@ -6,6 +6,9 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../../../../public/images/logo.png";
+import profile from "../../../../../public/images/profile.png"
+import UserDropdown from "../UserDropdown";
+
 
 const Header = () => {
   const [isFixed, setIsFixed] = useState(false);
@@ -48,6 +51,19 @@ const Header = () => {
               Get Listed
             </Link>
           </div>
+<div className="logged-outer hidden">
+  <div className="loged-inn-div">
+            <UserDropdown />
+          </div>
+
+</div>
+
+
+
+          
+
+
+
         </div>
       </div>
     </div>
