@@ -35,12 +35,15 @@
 
 }
 
-.header-div .h-login{
-  
+.fixedtop .header-div .h-login{
+border: 1px solid #dcdcdc;
+}
+.fixedtop .header-div .h-login:hover{
+border: 1px solid #ffffff;
 }
 
 .header-div .h-login{
-background: #ffffff;color: #000000;font-size: 14px;padding: 10px 26px;border-radius: 5px; margin: 0 14px 0;font-family: 'Avenir-Black';display: inline-block;
+background: #ffffff; border: 1px solid #ffffff; color: #000000;font-size: 14px;padding: 10px 26px;border-radius: 5px; margin: 0 14px 0;font-family: 'Avenir-Black';display: inline-block;
 }
 
 .header-div .h-login:hover{
