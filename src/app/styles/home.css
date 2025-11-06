@@ -1412,7 +1412,11 @@ ul.tab-nav1 {
 
 .prov-dashboard .header .header-div{padding-inline: 0;}
 
-
+.seeker-dashboard1 .footer .footer-container,
+.prov-dashboard .footer .footer-container .containers {
+    justify-content: flex-start;
+    gap: 8%;
+}
 
 
 
@@ -1431,6 +1435,41 @@ ul.tab-nav1 {
 .house-div .h-logodiv {
     width: 100px;
 }
+
+.house-div button.house-card-btn{display: none;}
+
+.house-div .house-card-info h2{line-height: 1.2;}
+.house-div .house-card {
+    margin-bottom: 0px;}
+
+.house-div .house-card-info {
+    padding-block: 30px;
+}
+
+.details {
+
+    width: 80%;
+    display: flex; margin: 20px 0 0 ;
+}
+
+.det1 {
+    width: 48%;
+}
+
+.d-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 10px;
+}
+
+.repeat-house-div {
+    padding-block: 70px;
+       border-top: 1px solid #e0e0e0;
+     
+}
+
+
 /* ------------------------------------responsive */
 
 
