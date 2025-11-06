@@ -77,6 +77,8 @@ const Tabs = () => {
               <textarea name="notes" placeholder="Enter notes" required></textarea>
             </div>
 
+
+<br /><br />
             <h4>Online Presence</h4>
 
             <div className="form-grp">
@@ -98,7 +100,7 @@ const Tabs = () => {
               <label>Other</label>
               <input type="text" name="other" placeholder="Enter other social media URL" required />
             </div>
-
+<br /><br />
             <h4>Services</h4>
 
             {/* Services Dropdown (Multiple Select) */}
