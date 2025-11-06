@@ -1,6 +1,6 @@
 import React from 'react'
 import Intro from '../Components/Intro'
-// import ImageSlider from '../Components/ImageSlider'
+import ImageSlider from '../Components/ImageSlider'
 
 
 
