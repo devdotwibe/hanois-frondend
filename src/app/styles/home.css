@@ -1468,6 +1468,149 @@ ul.tab-nav1 {
        border-top: 1px solid #e0e0e0;
      
 }
+.intro-div h3 {
+  margin: 0 0 15px;
+  font-family: 'Avenir-Black';
+    font-size: 30px;
+}
+
+.intro-div {
+    margin-bottom: 60px;
+}
+
+
+
+
+.filter-container {
+  width: 320px;
+  padding: 32px 24px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.filter-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 24px 0;
+  letter-spacing: 0.5px;
+}
+
+.filter-section {
+  margin-bottom: 24px;
+}
+
+.section-label {
+  font-size: 14px;
+  color: #9ca3af;
+  margin: 0 0 12px 0;
+  font-weight: 400;
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.category-select {
+  width: 100%;
+  padding: 12px 40px 12px 16px;
+  font-size: 16px;
+  color: #6b7280;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.tag-text {
+  font-weight: 500;
+}
+
+.tag-close {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.hidden-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  transition: all 0.2s;
+}
+
+.custom-checkbox.checked {
+  background-color: #6366f1;
+  border-color: #6366f1;
+}
+
+.checkmark {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+.form-c {
+    position: relative;
+}
+.form-c .login-success{right: 0;}
+
+
+
+
+
+
 
 
 /* ------------------------------------responsive */

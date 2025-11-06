@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
-import { createPortal } from "react-dom";
 
 
 
@@ -184,7 +183,7 @@ const ContactForm = () => {
 
 
           {status.message &&
-           createPortal(
+           
             <div className="login-success">
                <p
               style={{
@@ -194,9 +193,8 @@ const ContactForm = () => {
               {status.message}
             </p>
             </div>
-            ,
-        document.body
-          )}
+          
+          }
 
 
 
