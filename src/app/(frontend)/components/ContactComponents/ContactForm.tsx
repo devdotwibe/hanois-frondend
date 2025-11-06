@@ -1,6 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
+import { createPortal } from "react-dom";
+
+
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -110,7 +113,7 @@ const ContactForm = () => {
               placeholder="First and Last Name"
             />
             {errors.fullName && (
-              <p style={{ color: "red", fontSize: "14px" }}>{errors.fullName}</p>
+              <p style={{ color: "red", fontSize: "14px", textAlign: "left", marginTop:"4px" }}>{errors.fullName}</p>
             )}
           </div>
 
@@ -125,7 +128,7 @@ const ContactForm = () => {
               placeholder="Business Email"
             />
             {errors.email && (
-              <p style={{ color: "red", fontSize: "14px" }}>{errors.email}</p>
+              <p style={{ color: "red", fontSize: "14px", textAlign: "left", marginTop:"4px" }}>{errors.email}</p>
             )}
           </div>
 
@@ -140,7 +143,7 @@ const ContactForm = () => {
               placeholder="Company Name"
             />
             {errors.companyName && (
-              <p style={{ color: "red", fontSize: "14px" }}>{errors.companyName}</p>
+              <p style={{ color: "red", fontSize: "14px", textAlign: "left", marginTop:"4px" }}>{errors.companyName}</p>
             )}
           </div>
 
@@ -177,17 +180,27 @@ const ContactForm = () => {
           </div>
 
           {/* Global Message */}
-          {status.message && (
-            <p
+
+
+
+          {status.message &&
+           createPortal(
+            <div className="login-success">
+               <p
               style={{
                 color: status.success ? "green" : "red",
-                marginTop: "10px",
-                textAlign: "center",
               }}
             >
               {status.message}
             </p>
+            </div>
+            ,
+        document.body
           )}
+
+
+
+
         </form>
       </div>
     </div>

@@ -61,6 +61,18 @@ background: #ffffff; border: 1px solid #ffffff; color: #000000;font-size: 14px;p
   transition: background 0.3s ease;
 }
 
+
+.search-container button.active-btn{
+   color: #fff;
+      background: var(--primary-color);
+}
+
+.search-container button.active-btn:hover{
+      background: #4c72f6;
+
+}
+
+
 .signup-btn {
     padding: 20px 45px;
      font-family: 'Avenir-Black';

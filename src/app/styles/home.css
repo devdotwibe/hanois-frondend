@@ -376,7 +376,7 @@ padding: 80px 0 0;
     border-radius: 8px;
     /* box-shadow: 0 -4px 12px rgba(0, 0, 0, .1); */
     /* box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px; */
-    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+    /* box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px; */
 }
 .business-block:hover {
     box-shadow: 0 10px 30px hsla(217, 91%, 60%, 0.2);
@@ -766,7 +766,7 @@ hr {
     padding: 80px 0 250px;
     text-align: center;
          width: 100%;
-    float: left;
+    float: left; overflow: hidden;
 }
 .buildimg-outer img {
     width: 100%;
