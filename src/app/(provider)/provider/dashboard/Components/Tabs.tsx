@@ -38,11 +38,9 @@ const Tabs = () => {
         
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
           <h2>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquid, voluptatum!</h2>
-  <form >
-
-
-                    <div className="form-field">
-                    <label> Title (English)</label>
+                <form className="settingsform" >
+                    <div className="form-grp">
+                    <label> Company/Business Name</label>
                     <input
                         type="text"
                         name="title"
@@ -51,8 +49,8 @@ const Tabs = () => {
                     />
                     </div>
 
-                    <div className="form-field">
-                    <label> Title (Arabic)</label>
+                    <div className="form-grp">
+                    <label> Company Categories</label>
                     <input
                         type="text"
                         name="title"
@@ -61,15 +59,58 @@ const Tabs = () => {
                     />
                     </div>
 
-                    <div className="form-field">
-                    <label> Content (English)</label>
-
+                    <div className="form-grp">
+                    <label> Company Phone Number</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        required
+                    />
                     </div>
 
-                    <div className="form-field">
-                    <label> Content (Arabic)</label>
 
+
+
+
+                    <div className="form-grp">
+                    <label> Location</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        required
+                    />
                     </div>
+
+
+
+
+                   <div className="form-grp">
+                    <label> Team Size</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        required
+                    />
+                    </div>
+
+
+
+
+                  <div className="form-grp">
+                    <label> Notes</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        required
+                    />
+                    </div>
+
+
+
 
                         <button type="submit" className="btn get-sub" >
 
