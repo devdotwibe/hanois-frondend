@@ -11,6 +11,8 @@ const FeedbackForm = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [touchedStep1, setTouchedStep1] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -34,7 +36,12 @@ const FeedbackForm = () => {
     router.push("/"); // navigate to home page
   };
 
-  const handleContinue = () => setStep(2);
+  const handleContinue = () => {
+    setTouchedStep1(true);
+    if (validateStep1()) {
+      setStep(2);
+    }
+  };
 
   const handleBack = () => setStep(1);
 
@@ -64,9 +71,11 @@ const FeedbackForm = () => {
 
   useEffect(() => {
 
-    setIsStep1Valid(validateStep1());
+     if (touchedStep1) {
+      setIsStep1Valid(validateStep1());
+    }
 
-  }, [formData]);
+  }, [formData,touchedStep1]);
 
 
 
@@ -196,7 +205,7 @@ const FeedbackForm = () => {
 
                 onClick={handleContinue}
 
-                 disabled={!isStep1Valid}
+                //  disabled={!isStep1Valid}
               >
                 Continue
               </button>
