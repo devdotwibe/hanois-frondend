@@ -27,7 +27,7 @@ const Login = () => {
 
   const [showPopup, setShowPopup] = useState(false);
 
-    const [mode, setMode] = useState("login");
+    const [mode, setMode] = useState("");
 
   const [resetToken, setResetToken] = useState("");
 
@@ -216,7 +216,9 @@ const Login = () => {
 
           {/* --------------------------------------------------------------- */}
 
-          <div className={`login-container ${mode === "login" ? "" : "hidden"}`}>
+      {mode === "login" && (
+
+          <div className="login-container">
 
 
             <h2 className="">{lang === "ar" ? "تسجيل الدخول إلى Handis" : "Log In to Handis"}</h2>
@@ -294,10 +296,13 @@ const Login = () => {
              By signing up, signing in or continuing, I agree to the Handis Terms of Use and acknowledge the Handis Privacy Policy. I agree that Handis may use my email address for marketing purposes. I can opt out at any time through my settings.
             </p>
           </div>
+      )}
 
           {/* -------forgotpassword----------------------------------------------------------- */}
 
-          <div className={`login-container forgot-pass ${mode === "forgot" ? "" : "hidden"}`}>
+      {mode === "forgot" && (
+
+          <div className="login-container forgot-pass">
 
              <h2 className="">Forgot Password</h2>
 
@@ -322,6 +327,7 @@ const Login = () => {
 
             
           </div>
+      )}
 
 
           {showPopup &&
@@ -349,69 +355,67 @@ const Login = () => {
         document.body
       )}
 
-      
- 
-
-
-
           {/* -------reset password-------- */}
 
-          <div className={`login-container reset-pass ${mode === "reset" ? "" : "hidden"}`}>
+        {mode === "reset" && (
 
-             <h2 className="">Reset Password</h2>
+            <div className="login-container reset-pass" >
 
-             
-               <form className="login-form" onSubmit={handleResetPassword} >
+              <h2 className="">Reset Password</h2>
 
-                    <div className="form-grp">
-                      <label htmlFor="password">Password</label>
-                      <input
-                        type="password"
-                        name="password"   
-                        id="password"
-                        placeholder="+8 characters"
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className={`input-field ${error && error!='Passwords do not match.' ? 'email-invalid' : ''}`}
-                      />
-                      <span>Use 8 or more characters, with a mix of letters, numbers and synbols</span>
-                    </div>
+              
+                <form className="login-form" onSubmit={handleResetPassword} >
 
-
-                    <div className="form-grp">
-                      <label htmlFor="conformpassword">Conform a Password</label>
-                      <input
-                        type="password"
-                        id="conformpassword"
-                        name="confirmPassword"  
-                        placeholder="Confirm a password"
-                        required
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        className={`input-field ${error =='Passwords do not match.' ? 'email-invalid' : ''}`}
-                      />
-                    </div>
-
-                    {error && <p style={{ color: "red", marginTop: "8px" }}>{error}</p>}
-
-                    {success && 
-                        createPortal(
-                        <div className='login-success'> 
-                        <p>{success}</p>  </div>
-                                ,
-                              document.body
-                        )
-                      }
-
-            
-              <button type="submit" className="login-btn">
-                Reset Password
-              </button>
+                      <div className="form-grp">
+                        <label htmlFor="password">Password</label>
+                        <input
+                          type="password"
+                          name="password"   
+                          id="password"
+                          placeholder="+8 characters"
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          className={`input-field ${error && error!='Passwords do not match.' ? 'email-invalid' : ''}`}
+                        />
+                        <span>Use 8 or more characters, with a mix of letters, numbers and synbols</span>
+                      </div>
 
 
-            </form>
+                      <div className="form-grp">
+                        <label htmlFor="conformpassword">Conform a Password</label>
+                        <input
+                          type="password"
+                          id="conformpassword"
+                          name="confirmPassword"  
+                          placeholder="Confirm a password"
+                          required
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          className={`input-field ${error =='Passwords do not match.' ? 'email-invalid' : ''}`}
+                        />
+                      </div>
 
-            
-          </div>
+                      {error && <p style={{ color: "red", marginTop: "8px" }}>{error}</p>}
+
+                      {success && 
+                          createPortal(
+                          <div className='login-success'> 
+                          <p>{success}</p>  </div>
+                                  ,
+                                document.body
+                          )
+                        }
+
+              
+                <button type="submit" className="login-btn">
+                  Reset Password
+                </button>
+
+
+              </form>
+
+              
+            </div>
+        )}
 
 
 
