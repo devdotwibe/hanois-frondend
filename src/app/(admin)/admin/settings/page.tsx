@@ -72,29 +72,29 @@ export default function SettingsPage() {
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-    backgroundColor: loading ? "#2050f5" : "#2050f5", 
-    color: "#ffffff",
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+            backgroundColor: loading ? "#2050f5" : "#2050f5", 
+            color: "#ffffff",
 
-  }}
-          className={`w-full py-2 rounded text-white bg-[#2050f5] setting-submit ${
-            loading ? "bg-gray-400" : "bg-blue-600 hover:bg-[#4c72f6]"
-          }`}
-        >
-          {loading ? "Saving..." : "Save"}
-        </button>
+            }}
+              className={`w-full py-2 rounded text-white bg-[#2050f5] setting-submit ${
+                loading ? "bg-gray-400" : "bg-blue-600 hover:bg-[#4c72f6]"
+              }`}
+            >
+            {loading ? "Saving..." : "Save"}
+          </button>
 
-        {message && (
-          <p
-            className={`mt-4 text-center text-sm ${
-              message.includes("✅") ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {message}
-          </p>
+          {message && (
+            <p
+              className={`mt-4 text-center text-sm ${
+                message.includes("✅") ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {message}
+            </p>
         )}
       </form>
     </div>
