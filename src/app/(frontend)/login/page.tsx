@@ -188,13 +188,16 @@ const Login = () => {
           </div>
 
           <div className="logo-div"    onClick={() => router.push("/")} >
-            <Image
+            <Link href="/">
+             <Image
               src={headerlogo}
               alt="Login background"
               width={100}
               height={18}
               className="login-img"
             />
+            </Link>
+           
           </div>
         </div>
 

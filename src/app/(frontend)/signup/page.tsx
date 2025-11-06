@@ -9,6 +9,8 @@ import loginimg from "../../../../public/images/login-sidebar.png";
 import { API_URL } from '@/config'; 
 import "./signup.css";
 import { createPortal } from "react-dom";
+import Link from 'next/link';
+
 
 const SignUp = () => {
   const router = useRouter();
@@ -122,7 +124,11 @@ const SignUp = () => {
 
           <div className="logo-div" onClick={() => router.push("/")} >
 
+            <Link href="/">
             <Image src={headerlogo} alt="Logo" width={100} height={18} className="login-img" />
+            </Link>
+
+            
             
           </div>
 
