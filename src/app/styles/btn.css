@@ -154,7 +154,7 @@ background: #ffffff; border: 1px solid #ffffff; color: #000000;font-size: 14px;p
 }
 
 .btn-continue {
-    background: #ACACB0;
+    background: #ACACB0; color: #ffffff;
     padding: 10px 40px;
     border-radius: 4px;
    font-family: 'Avenir-Black'; cursor: pointer;
