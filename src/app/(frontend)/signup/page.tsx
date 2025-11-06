@@ -183,7 +183,7 @@ const SignUp = () => {
               </div>
 
               <div className="form-grp">
-                <label htmlFor="confirmPassword">Confirm Password</label>+
+                <label htmlFor="confirmPassword">Confirm Password</label>
 
                 <input type="password" className={`input-field ${errors.confirmPassword ? 'email-invalid' : ''}`}  id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm a password" required />
 
