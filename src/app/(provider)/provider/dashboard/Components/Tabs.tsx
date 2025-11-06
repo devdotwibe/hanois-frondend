@@ -3,7 +3,7 @@
 "use client";
 import React, { useState } from "react";
 import ProjectComponent from "./ProjectComponent";
-
+import React, { useState, useEffect } from "react";
 const TABS = [
   { id: "companyinfo", label: "Company Information" },
   { id: "project", label: "Project" },
@@ -31,7 +31,12 @@ const [formData, setFormData] = useState({
 
 // Handle input change
 const handleChange = (e) => {
-  const { name, value, options } = e.target;
+  const { name, value, options } =             <select name="categories" multiple value={formData.categories} onChange={handleChange}>
+              <option value="1">Tech</option>
+              <option value="2">Finance</option>
+              ...
+            </select>
+e.target;
 
   if (options) {
     // handle multiple select
@@ -84,6 +89,39 @@ const handleSubmit = async (e) => {
   }
 };
 
+useEffect(() => {
+  const fetchProvider = async () => {
+    try {
+      const providerId = localStorage.getItem("providerId"); // or from JWT
+      const token = localStorage.getItem("token");
+      const res = await fetch(`https://your-api.com/providers/${providerId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to fetch provider");
+
+      const provider = data.provider;
+
+      setFormData({
+        companyName: provider.name || "",
+        categories: provider.categories_id || [],
+        phoneNumber: provider.phone || "",
+        location: provider.location || "",
+        teamSize: provider.team_size || "",
+        notes: provider.notes || "",
+        website: provider.website || "",
+        facebook: provider.facebook || "",
+        instagram: provider.instagram || "",
+        other: provider.other_link || "",
+        services: provider.service_id || []
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  fetchProvider();
+}, []);
   return (
     <div className="tab-wrapper1">
       {/* Sidebar Navigation */}
@@ -110,23 +148,36 @@ const handleSubmit = async (e) => {
         <form className="settingsform" onSubmit={handleSubmit}>
               <div className="form-grp">
               <label>Company/Business Name</label>
-              <input type="text" name="companyName" placeholder="Enter title" required />
-            </div>
+<input
+  type="text"
+  name="companyName"
+  value={formData.companyName}
+  onChange={handleChange}
+  placeholder="Enter title"
+  required
+/>            </div>
 
             {/* Categories Dropdown (Multiple Select) */}
             <div className="form-grp">
               <label>Company Categories</label>
-  <select name="categories" multiple value={formData.categories} onChange={handleChange}>
-    <option value="1">Tech</option>
-    <option value="2">Finance</option>
-    ...
-  </select>
+            <select name="categories" multiple value={formData.categories} onChange={handleChange}>
+              <option value="1">Tech</option>
+              <option value="2">Finance</option>
+              ...
+            </select>
             </div>
 
             <div className="form-grp">
               <label>Company Phone Number</label>
-              <input type="text" name="phoneNumber" placeholder="Enter phone number" required />
-            </div>
+
+<input
+  type="text"
+  name="phoneNumber"
+  value={formData.phoneNumber}
+  onChange={handleChange}
+  placeholder="Enter phone number"
+  required
+/>            </div>
 
             <div className="form-grp">
               <label>Location</label>
