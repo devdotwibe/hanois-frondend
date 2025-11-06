@@ -85,7 +85,7 @@ export default function CategoriesPage() {
 
       {/* Create category */}
       <form onSubmit={handleCreate} className="mb-6">
-        <div className="mb-4">
+        <div className="form-grp mb-4">
           <label className="block font-medium mb-2 text-gray-700">Category Name</label>
           <input
             type="text"
@@ -98,7 +98,7 @@ export default function CategoriesPage() {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-2 rounded text-white ${
+          className={`btn w-full py-2 rounded text-white ${
             loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-500"
           }`}
         >
@@ -120,13 +120,13 @@ export default function CategoriesPage() {
                 />
                 <button
                   onClick={() => handleUpdate(cat.id)}
-                  className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-400"
+                  className="btn bg-green-500 text-white px-3 py-1 rounded hover:bg-green-400"
                 >
                   Save
                 </button>
                 <button
                   onClick={() => setEditingCategory(null)}
-                  className="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-400"
+                  className="btn bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-400"
                 >
                   Cancel
                 </button>
@@ -140,13 +140,13 @@ export default function CategoriesPage() {
                       setEditingCategory(cat.id);
                       setEditingName(cat.name);
                     }}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-400"
+                    className="btn bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-400"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(cat.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-400"
+                    className="btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-400"
                   >
                     Delete
                   </button>
