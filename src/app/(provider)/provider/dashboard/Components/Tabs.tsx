@@ -1,5 +1,3 @@
-
-
 "use client";
 import React, { useState } from "react";
 import ProjectComponent from "./ProjectComponent";
@@ -7,12 +5,26 @@ import ProjectComponent from "./ProjectComponent";
 const TABS = [
   { id: "companyinfo", label: "Company Information" },
   { id: "project", label: "Project" },
-
 ];
 
 const Tabs = () => {
   // Default active tab = first one
   const [activeTab, setActiveTab] = useState("companyinfo");
+
+  // State to track selected categories and services
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
+
+  // Handle change for multi-select dropdown
+  const handleCategoriesChange = (event) => {
+    const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+    setSelectedCategories(selectedOptions);
+  };
+
+  const handleServicesChange = (event) => {
+    const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+    setSelectedServices(selectedOptions);
+  };
 
   return (
     <div className="tab-wrapper1">
@@ -33,12 +45,9 @@ const Tabs = () => {
       {/* Tab Content */}
       <div className="tab-content-wrap">
 
-      
-
-        
+        {/* Company Information Tab */}
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
-          <h2>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquid, voluptatum!</h2>
-  <form className="settingsform">
+          <form className="settingsform">
             <div className="form-grp">
               <label>Company/Business Name</label>
               <input type="text" name="companyName" placeholder="Enter title" required />
@@ -47,13 +56,18 @@ const Tabs = () => {
             {/* Categories Dropdown (Multiple Select) */}
             <div className="form-grp">
               <label>Company Categories</label>
-              <select name="categories" multiple required>
+              <select 
+                name="categories" 
+                multiple 
+                required
+                value={selectedCategories} 
+                onChange={handleCategoriesChange}
+              >
                 <option value="tech">Tech</option>
                 <option value="finance">Finance</option>
                 <option value="marketing">Marketing</option>
                 <option value="design">Design</option>
                 <option value="consulting">Consulting</option>
-                {/* You can add more categories here */}
               </select>
             </div>
 
@@ -105,13 +119,18 @@ const Tabs = () => {
             {/* Services Dropdown (Multiple Select) */}
             <div className="form-grp">
               <label>Select Services</label>
-              <select name="services" multiple required>
+              <select
+                name="services"
+                multiple
+                required
+                value={selectedServices}
+                onChange={handleServicesChange}
+              >
                 <option value="webDevelopment">Web Development</option>
                 <option value="appDevelopment">App Development</option>
                 <option value="seo">SEO</option>
                 <option value="marketing">Marketing</option>
                 <option value="consulting">Consulting</option>
-                {/* You can add more services here */}
               </select>
             </div>
 
@@ -121,18 +140,10 @@ const Tabs = () => {
           </form>
         </div>
 
-        <div
-          className={`tab-panel ${
-            activeTab === "project" ? "show" : ""
-          }`}
-        >
+        {/* Project Tab */}
+        <div className={`tab-panel ${activeTab === "project" ? "show" : ""}`}>
           <ProjectComponent />
-       
         </div>
-
-        
-
-
 
       </div>
     </div>
