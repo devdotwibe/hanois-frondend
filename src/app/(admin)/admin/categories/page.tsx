@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL } from "@/config"; // make sure API_URL is set to your backend
+import { API_URL } from "@/config";
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState([]);
@@ -84,36 +84,26 @@ export default function CategoriesPage() {
   };
 
   return (
-    <div className="mx-auto p-6 max-w-lg">
-      <h1 className="text-2xl font-semibold mb-6">Categories</h1>
+    <div className="mx-auto p-6 max-w-lg bg-white rounded-lg shadow-md">
+      <h1 className="text-3xl font-semibold mb-6 text-center text-gray-800">Categories</h1>
 
       {/* Create category */}
-      <form onSubmit={handleCreate} className="login-form">
-                <div className="mb-4 form-grp">
-
-             <label className="block font-medium mb-2">
-            Category
-          </label>
-        <input
-          type="text"
-          className="w-full border rounded px-3 py-2 mb-2"
-          placeholder="Add category name"
-          value={newCategory}
-          onChange={(e) => setNewCategory(e.target.value)}
-        />
-                </div>
-
+      <form onSubmit={handleCreate} className="mb-6">
+        <div className="mb-4">
+          <label className="block font-medium mb-2 text-gray-700">Add New Category</label>
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+            placeholder="Enter category name"
+            value={newCategory}
+            onChange={(e) => setNewCategory(e.target.value)}
+          />
+        </div>
         <button
           type="submit"
           disabled={loading}
-
-        style={{
-            backgroundColor: loading ? "#2050f5" : "#2050f5", 
-            color: "#ffffff",
-
-          }}
-          className={`w-full py-2 rounded text-white ${
-            loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-500"
+          className={`w-full py-2 rounded-lg text-white font-medium transition ${
+            loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-500"
           }`}
         >
           {loading ? "Saving..." : "Add Category"}
@@ -121,49 +111,51 @@ export default function CategoriesPage() {
       </form>
 
       {/* List categories */}
-      <ul className="space-y-2">
+      <ul className="space-y-3">
         {categories.map((cat) => (
           <li
             key={cat.id}
-            className="flex justify-between items-center border p-2 rounded"
+            className="flex justify-between items-center border border-gray-200 rounded-lg p-3 shadow-sm bg-gray-50"
           >
             {editingCategory === cat.id ? (
               <>
                 <input
                   type="text"
-                  className="border rounded px-2 py-1 flex-1 mr-2"
+                  className="border border-gray-300 rounded-lg px-3 py-1 flex-1 mr-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
                   value={editingName}
                   onChange={(e) => setEditingName(e.target.value)}
                 />
-                <button
-                  onClick={() => handleUpdate(cat.id)}
-                  className="bg-green-500 text-white px-2 py-1 rounded mr-1"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={() => setEditingCategory(null)}
-                  className="bg-gray-500 text-white px-2 py-1 rounded"
-                >
-                  Cancel
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleUpdate(cat.id)}
+                    className="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={() => setEditingCategory(null)}
+                    className="bg-gray-400 text-white px-3 py-1 rounded-lg hover:bg-gray-500 transition"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </>
             ) : (
               <>
-                <span>{cat.name}</span>
-                <div className="space-x-1">
+                <span className="text-gray-800 font-medium">{cat.name}</span>
+                <div className="flex gap-2">
                   <button
                     onClick={() => {
                       setEditingCategory(cat.id);
                       setEditingName(cat.name);
                     }}
-                    className="bg-yellow-500 text-white px-2 py-1 rounded"
+                    className="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(cat.id)}
-                    className="bg-red-500 text-white px-2 py-1 rounded"
+                    className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
                   >
                     Delete
                   </button>
@@ -177,7 +169,7 @@ export default function CategoriesPage() {
       {/* Message */}
       {message && (
         <p
-          className={`mt-4 text-center text-sm ${
+          className={`mt-4 text-center text-sm font-medium ${
             message.includes("✅") ? "text-green-600" : "text-red-600"
           }`}
         >
