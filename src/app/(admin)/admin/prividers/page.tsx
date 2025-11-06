@@ -27,7 +27,7 @@ export default function UsersPage() {
        
         const usersArray = response.data?.data?.providers || [];
 
-      const formattedUsers = usersArray.map((user: any) => ({
+        const formattedUsers = usersArray.map((user: any) => ({
           id: user.id,
           name: user.name,
           email: user.email,

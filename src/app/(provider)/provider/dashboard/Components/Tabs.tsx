@@ -100,14 +100,23 @@ const handleSubmit = async (e) => {
             service_id: formData.services,
         };
 
-const res = await fetch(`${API_URL}providers/${providerId}`, {
-  method: "PUT",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  credentials: "include", // send cookies along with the request
-  body: JSON.stringify(payload),
-});
+
+
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        alert("You must be logged in to perform this action.");
+        return;
+      }
+
+      const res = await fetch(`${API_URL}providers/${providerId}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
 
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Update failed");
