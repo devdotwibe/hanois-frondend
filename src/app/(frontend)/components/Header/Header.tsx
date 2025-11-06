@@ -65,7 +65,7 @@ const Header = () => {
                   <div className="header-col2">
                 
                     <Link href="/login" className="h-login">
-                      Login
+                      Log in
                     </Link>
 
                     <Link href="/signup" className="h-btn">
