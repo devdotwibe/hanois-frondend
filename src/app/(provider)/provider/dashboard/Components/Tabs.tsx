@@ -41,80 +41,84 @@ const Tabs = () => {
   };
 
   // Fetch existing provider details on mount
-  useEffect(() => {
+useEffect(() => {
     const fetchProvider = async () => {
-      try {
-        const providerId = localStorage.getItem("providerId"); // replace with dynamic provider ID
-        const token = localStorage.getItem("token");
-        const res = await fetch(`${API_URL}providers/${providerId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Failed to fetch provider");
+        try {
+            const providerId = localStorage.getItem("providerId");
+            const token = localStorage.getItem("token");
+            const res = await fetch(`${API_URL}providers/${providerId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Failed to fetch provider");
 
-        const provider = data.provider;
+            console.log("Fetched provider data:", data.provider); // Debug line
 
-        setFormData({
-          companyName: provider.name || "",
-          categories: provider.categories_id || [],
-          phoneNumber: provider.phone || "",
-          location: provider.location || "",
-          teamSize: provider.team_size ? provider.team_size.toString() : "",
-          notes: provider.notes || "",
-          website: provider.website || "",
-          facebook: provider.facebook || "",
-          instagram: provider.instagram || "",
-          other: provider.other_link || "",
-          services: provider.service_id || [],
-        });
-      } catch (err) {
-        console.error(err);
-      }
+            const provider = data.provider;
+
+            setFormData({
+                companyName: provider.name || "",
+                categories: provider.categories_id || [],
+                phoneNumber: provider.phone || "",
+                location: provider.location || "",
+                teamSize: provider.team_size ? provider.team_size.toString() : "",
+                notes: provider.notes || "",
+                website: provider.website || "",
+                facebook: provider.facebook || "",
+                instagram: provider.instagram || "",
+                other: provider.other_link || "",
+                services: provider.service_id || [],
+            });
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     fetchProvider();
-  }, []);
+}, []);
+
 
   // Handle form submit to update provider
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("Submitting form data:", formData); // Debug line to check if the data is correct
+    
     try {
-      const providerId = localStorage.getItem("providerId"); // replace with dynamic provider ID
-      const payload = {
-        name: formData.companyName,
-        phone: formData.phoneNumber,
-        location: formData.location,
-        team_size: parseInt(formData.teamSize),
-        notes: formData.notes,
-        website: formData.website,
-        facebook: formData.facebook,
-        instagram: formData.instagram,
-        other_link: formData.other,
-        categories_id: formData.categories,
-        service_id: formData.services,
-      };
+        const providerId = localStorage.getItem("providerId");
+        const token = localStorage.getItem("token");
+        const payload = {
+            name: formData.companyName,
+            phone: formData.phoneNumber,
+            location: formData.location,
+            team_size: parseInt(formData.teamSize),
+            notes: formData.notes,
+            website: formData.website,
+            facebook: formData.facebook,
+            instagram: formData.instagram,
+            other_link: formData.other,
+            categories_id: formData.categories,
+            service_id: formData.services,
+        };
 
-      const token = localStorage.getItem("token");
+        const res = await fetch(`${API_URL}providers/${providerId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(payload),
+        });
 
-      const res = await fetch(`${API_URL}providers/${providerId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Update failed");
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Update failed");
-
-      alert("Provider updated successfully!");
+        alert("Provider updated successfully!");
     } catch (err) {
-      console.error(err);
-      alert(err.message);
+        console.error(err);
+        alert(err.message);
     }
-  };
+};
+
 
   return (
     <div className="tab-wrapper1">
