@@ -97,7 +97,7 @@ export default function CategoriesPage() {
         <input
           type="text"
           className="w-full border rounded px-3 py-2 mb-2"
-          placeholder="New category name"
+          placeholder="Add category name"
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
         />
@@ -105,6 +105,13 @@ export default function CategoriesPage() {
 
         <button
           type="submit"
+          disabled={loading}
+
+        style={{
+            backgroundColor: loading ? "#2050f5" : "#2050f5", 
+            color: "#ffffff",
+
+          }}
           className={`w-full py-2 rounded text-white ${
             loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-500"
           }`}
