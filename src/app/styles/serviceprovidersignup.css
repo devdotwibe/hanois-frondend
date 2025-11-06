@@ -1,0 +1,17 @@
+
+.error-text {
+  color: #e11d48; 
+  font-size: 0.85rem;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.btn-continue.btn-active {
+  background-color: #2050f5; 
+  opacity: 1;
+  cursor: pointer;
+}
+
+.btn-continue.btn-active:hover {
+  background-color: #1e40af; 
+}

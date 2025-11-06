@@ -1,11 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "@/config";
 import { useRouter } from "next/navigation";
 
 const FeedbackForm = () => {
+
   const [step, setStep] = useState(1);
+
   const [showPopup, setShowPopup] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +35,41 @@ const FeedbackForm = () => {
   };
 
   const handleContinue = () => setStep(2);
+
   const handleBack = () => setStep(1);
+
+  const [isStep1Valid, setIsStep1Valid] = useState(false);
+
+  const [errors, setErrors] = useState<any>({}); 
+
+
+    const validateStep1 = () => {
+
+      const newErrors: any = {};
+
+      if (!formData.name.trim()) newErrors.name = "Company/Business Name is required";
+      if (!formData.email.trim()) {
+        newErrors.email = "Company Email is required";
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        newErrors.email = "Invalid email format";
+      }
+      if (!formData.phone.trim()) newErrors.phone = "Phone Number is required";
+      if (!formData.register_no.trim()) newErrors.register_no = "Registration Number is required";
+      if (!formData.location.trim()) newErrors.location = "Location is required";
+
+      setErrors(newErrors);
+
+      return Object.keys(newErrors).length === 0;
+  };
+
+  useEffect(() => {
+
+    setIsStep1Valid(validateStep1());
+
+  }, [formData]);
+
+
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,6 +129,9 @@ const FeedbackForm = () => {
                 onChange={handleChange}
                 required
               />
+
+              {errors.name && <p className="error-text">{errors.name}</p>}
+
             </div>
 
             <div className="form-grp">
@@ -106,6 +145,7 @@ const FeedbackForm = () => {
                 onChange={handleChange}
                 required
               />
+               {errors.email && <p className="error-text">{errors.email}</p>}
             </div>
 
             <div className="form-grp">
@@ -119,6 +159,7 @@ const FeedbackForm = () => {
                 onChange={handleChange}
                 required
               />
+                {errors.phone && <p className="error-text">{errors.phone}</p>}
             </div>
 
             <div className="form-grp">
@@ -131,6 +172,7 @@ const FeedbackForm = () => {
                 value={formData.register_no}
                 onChange={handleChange}
               />
+               {errors.register_no && <p className="error-text">{errors.register_no}</p>}
             </div>
 
             <div className="form-grp">
@@ -143,13 +185,18 @@ const FeedbackForm = () => {
                 value={formData.location}
                 onChange={handleChange}
               />
+               {errors.location && <p className="error-text">{errors.location}</p>}
             </div>
 
             <div className="btn-cvr">
               <button
+              
                 type="button"
-                className="btn-continue"
+                className={`btn-continue ${isStep1Valid ? "btn-active" : "btn-disabled"}`}
+
                 onClick={handleContinue}
+
+                 disabled={!isStep1Valid}
               >
                 Continue
               </button>
@@ -158,7 +205,6 @@ const FeedbackForm = () => {
         </div>
       )}
 
-      {/* STEP 2 */}
       {step === 2 && (
         <div className="serv-prov-form">
           <form className="company-form" onSubmit={handleSubmit}>
