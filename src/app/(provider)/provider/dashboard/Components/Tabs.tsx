@@ -46,7 +46,7 @@ const Tabs = () => {
       try {
         const providerId = localStorage.getItem("providerId"); // replace with dynamic provider ID
         const token = localStorage.getItem("token");
-        const res = await fetch(`${API_URL}/providers/${providerId}`, {
+        const res = await fetch(`${API_URL}providers/${providerId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -97,7 +97,7 @@ const Tabs = () => {
 
       const token = localStorage.getItem("token");
 
-      const res = await fetch(`${API_URL}/providers/${providerId}`, {
+      const res = await fetch(`${API_URL}providers/${providerId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
