@@ -1,9 +1,8 @@
 
 
 "use client";
-import React, { useState } from "react";
-import ProjectComponent from "./ProjectComponent";
 import React, { useState, useEffect } from "react";
+import ProjectComponent from "./ProjectComponent";
 const TABS = [
   { id: "companyinfo", label: "Company Information" },
   { id: "project", label: "Project" },
