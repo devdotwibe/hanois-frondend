@@ -107,13 +107,69 @@ const Tabs = () => {
                         placeholder="Enter title"
                         required
                     />
-                    </div>
+                  </div>
+                <h4>Online Presence</h4>
+
+                  <div className="form-grp">
+                    <label> Website</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        required
+                    />
+                  </div>
+
+
+                    <div className="form-grp">
+                    <label> Facebook</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        required
+                    />
+                  </div>
 
 
 
+                    <div className="form-grp">
+                    <label> Instagram</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        required
+                    />
+                  </div>
+
+
+
+                    <div className="form-grp">
+                    <label> Other</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        required
+                    />
+                  </div>
+
+
+                <h4>Services</h4>
+
+                    <div className="form-grp">
+                    <label> Select services</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        required
+                    />
+                  </div>
 
                         <button type="submit" className="btn get-sub" >
-
+save
                         </button>
 
                     {/* {message && (
