@@ -1268,7 +1268,6 @@ padding-left: 16px;
 
 .house-card {
     display: flex;
-    align-items: center;
         margin-bottom: 50px;
 }
 
@@ -1289,7 +1288,12 @@ button.house-card-btn {
     border-radius: 8px; cursor: pointer;
 }
 
-
+.house-card-logo {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #e0e0e0; border-radius: 4px;
+}
 
 
 ul.tab-nav1 {

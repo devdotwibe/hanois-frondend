@@ -20,7 +20,7 @@ const HouseCard: React.FC<HouseCardProps> = ({ logo, name, description }) => {
              <Image
           src={logo}
           alt={`${name} logo`}
-          width={128}
+          width={160}
           height={128}
           className="house-card-img"
         />
