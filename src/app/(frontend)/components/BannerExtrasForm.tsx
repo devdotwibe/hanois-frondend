@@ -94,7 +94,7 @@ export default function BannerExtrasForm() {
 
   return (
     <form onSubmit={handleSave}>
-      <h2>Banner Extras (Tab 2)</h2>
+    
 
       {/* 🟩 English Section */}
       <div className="form-section">

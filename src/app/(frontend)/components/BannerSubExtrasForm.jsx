@@ -68,7 +68,7 @@ export default function BannerSubExtrasForm() {
 
   return (
     <div className="extras-form-container">
-      <h2>Tab 4 — Banner Sub Extras</h2>
+     
 
       <form onSubmit={handleSubmit} className="extras-form">
         <div className="form-field">

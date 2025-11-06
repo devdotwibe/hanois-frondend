@@ -108,7 +108,7 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="faq-section">
-      <h2>FAQ Management (Tab 3)</h2>
+     
 
       <form onSubmit={handleSubmit} className="faq-form">
         <h3>{editingId ? "Edit FAQ" : "Create New FAQ"}</h3>
