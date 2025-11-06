@@ -120,13 +120,13 @@ export default function CategoriesPage() {
                 />
                 <button
                   onClick={() => handleUpdate(cat.id)}
-                  className="btn bg-green-500 text-white px-3 py-1 rounded hover:bg-green-400"
+                  className="btn-delete"
                 >
                   Save
                 </button>
                 <button
                   onClick={() => setEditingCategory(null)}
-                  className="btn bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-400"
+                  className="btn-delete"
                 >
                   Cancel
                 </button>
@@ -140,13 +140,13 @@ export default function CategoriesPage() {
                       setEditingCategory(cat.id);
                       setEditingName(cat.name);
                     }}
-                    className="btn bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-400"
+                    className="btn-delete"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(cat.id)}
-                    className="btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-400"
+                    className="btn-delete"
                   >
                     Delete
                   </button>
