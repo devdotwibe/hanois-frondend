@@ -14,6 +14,76 @@ const Tabs = () => {
   // Default active tab = first one
   const [activeTab, setActiveTab] = useState("companyinfo");
 
+  // Inside Tabs component
+const [formData, setFormData] = useState({
+  companyName: "",
+  categories: [],
+  phoneNumber: "",
+  location: "",
+  teamSize: "",
+  notes: "",
+  website: "",
+  facebook: "",
+  instagram: "",
+  other: "",
+  services: []
+});
+
+// Handle input change
+const handleChange = (e) => {
+  const { name, value, options } = e.target;
+
+  if (options) {
+    // handle multiple select
+    const values = Array.from(options).filter(opt => opt.selected).map(opt => opt.value);
+    setFormData({ ...formData, [name]: values });
+  } else {
+    setFormData({ ...formData, [name]: value });
+  }
+};
+
+// Handle form submit
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const providerId = "YOUR_PROVIDER_ID"; // dynamically from logged in user
+    const payload = {
+      name: formData.companyName,
+      phone: formData.phoneNumber,
+      location: formData.location,
+      team_size: parseInt(formData.teamSize),
+      notes: formData.notes,
+      website: formData.website,
+      facebook: formData.facebook,
+      instagram: formData.instagram,
+      other_link: formData.other,
+      categories_id: formData.categories, // array
+      service_id: formData.services // array
+    };
+
+    const token = localStorage.getItem("token"); // or wherever you store JWT
+
+    const res = await fetch(`https://your-api.com/providers/${providerId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || "Update failed");
+
+    alert("Provider updated successfully!");
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+
   return (
     <div className="tab-wrapper1">
       {/* Sidebar Navigation */}
@@ -37,8 +107,8 @@ const Tabs = () => {
 
         
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
-  <form className="settingsform">
-            <div className="form-grp">
+        <form className="settingsform" onSubmit={handleSubmit}>
+              <div className="form-grp">
               <label>Company/Business Name</label>
               <input type="text" name="companyName" placeholder="Enter title" required />
             </div>
@@ -46,14 +116,11 @@ const Tabs = () => {
             {/* Categories Dropdown (Multiple Select) */}
             <div className="form-grp">
               <label>Company Categories</label>
-              <select name="categories" multiple required>
-                <option value="tech">Tech</option>
-                <option value="finance">Finance</option>
-                <option value="marketing">Marketing</option>
-                <option value="design">Design</option>
-                <option value="consulting">Consulting</option>
-                {/* You can add more categories here */}
-              </select>
+  <select name="categories" multiple value={formData.categories} onChange={handleChange}>
+    <option value="1">Tech</option>
+    <option value="2">Finance</option>
+    ...
+  </select>
             </div>
 
             <div className="form-grp">
@@ -106,14 +173,10 @@ const Tabs = () => {
             {/* Services Dropdown (Multiple Select) */}
             <div className="form-grp">
               <label>Select Services</label>
-              <select name="services" multiple required>
-                <option value="webDevelopment">Web Development</option>
-                <option value="appDevelopment">App Development</option>
-                <option value="seo">SEO</option>
-                <option value="marketing">Marketing</option>
-                <option value="consulting">Consulting</option>
-                {/* You can add more services here */}
-              </select>
+  <select name="services" multiple value={formData.services} onChange={handleChange}>
+    <option value="1">Web Development</option>
+    ...
+  </select>
             </div>
 
             <button type="submit" className="btn get-sub">
