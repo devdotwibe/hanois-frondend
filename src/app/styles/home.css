@@ -914,7 +914,7 @@ padding-block: 60px;
     color: #e5e5e5;
 }
 .provider-intro h3 {
-    font-size: 30px;
+    font-size: 30px; color: #ffffff;
     margin: 0 0 20px;
     font-family: 'Avenir-Black';
 }
