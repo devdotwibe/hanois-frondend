@@ -89,8 +89,8 @@ export default function AdminSidebar() {
               <ul className="dropdown-menu">
                 <li>
                   <Link
-                    href="/admin/home"
-                    className={pathname === "" ? "active" : ""}
+                    href="/admin/categories"
+                    className={pathname === "/admin/categories" ? "active" : ""}
                   >
                     Categories
                   </Link>
