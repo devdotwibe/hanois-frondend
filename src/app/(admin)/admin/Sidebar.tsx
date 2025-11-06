@@ -77,6 +77,42 @@ export default function AdminSidebar() {
             )}
         </div>
 
+
+      <div
+            className="pages-dropdown"
+            onMouseEnter={() => setPagesOpen(true)}
+            onMouseLeave={() => setPagesOpen(false)}
+          >
+            <button className="dropdown-btn">Options</button>
+
+          {pagesOpen && (
+              <ul className="dropdown-menu">
+                <li>
+                  <Link
+                    href="/admin/home"
+                    className={pathname === "" ? "active" : ""}
+                  >
+                    Categories
+                  </Link>
+                </li>
+
+                             <li>
+                  <Link
+                    href="/admin/home"
+                    className={pathname === "" ? "active" : ""}
+                  >
+                    Services
+                  </Link>
+                </li>
+
+
+              </ul>
+            )}
+        </div>
+
+
+
+
         <Link
             href="/admin/settings"
             className={pathname === "/admin/settings" ? "active" : ""}
