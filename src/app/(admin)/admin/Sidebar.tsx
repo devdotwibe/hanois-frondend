@@ -98,8 +98,8 @@ export default function AdminSidebar() {
 
                              <li>
                   <Link
-                    href="/admin/home"
-                    className={pathname === "" ? "active" : ""}
+                    href="/admin/services"
+                    className={pathname === "/admin/services" ? "active" : ""}
                   >
                     Services
                   </Link>
