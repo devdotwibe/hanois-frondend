@@ -358,3 +358,15 @@ form.settingsform {
 .setting-submit:hover{
     background: #4c72f6 !important;
 }
+
+
+.modal-actions {
+    margin-top: 20px !important;
+}
+ .modal-overlay h3{
+      margin-bottom: 20px !important;
+
+}
+.modal-overlay p{
+    margin-bottom: 20px !important;
+}

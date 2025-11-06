@@ -6,6 +6,15 @@
   font-family: 'Avenir-Black';
   src: url('../fonts/Avenir-Black.woff');
 }
+@font-face {
+  font-family: 'Avenir-medium';
+  src: url('../fonts/Avenir-Medium.woff');
+}
+@font-face {
+  font-family: 'Avenir-heavy';
+  src: url('../fonts/Avenir-Heavy.woff');
+}
+
 
 :root {
   --primary-color: #2050F5;
@@ -210,6 +219,25 @@ button.new-proj {
 button.new-proj:hover{
         background: #4c72f6;
 
+}
+
+
+button.house-card-btn {
+    background: #ffffff;
+    border: 2px solid #000000;
+    padding: 10px 20px;
+    margin: 20px 0 20px;
+    border-radius: 8px; cursor: pointer;
+      font-family: 'Avenir-Black';
+}
+
+.add-proj{
+    font-family: 'Avenir-Black';
+  background: #ffffff;
+    border: 2px solid #2050f5;
+    padding: 10px 20px; color: #2050f5;
+    margin: 20px 0 20px;
+    border-radius: 8px; cursor: pointer; text-transform: capitalize;
 }
 
 

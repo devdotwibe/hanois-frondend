@@ -89,6 +89,18 @@ max-width: 400px;
 
 /* Inputs */
 
+.site-logo {
+    width: 180px;
+    margin: 0 auto 20px;
+}
+
+.site-logo img {
+    width: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+
 
 /* Button */
 .login-btn {
