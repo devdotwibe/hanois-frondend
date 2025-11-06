@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import "./login.css"; 
 import { API_URL } from '@/config'; 
+import Image from "next/image";
+import sitelogo from "../../../../../public/images/logo2.png";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -58,6 +60,13 @@ export default function AdminLoginPage() {
   return (
     <div className="login-page">
       <div className="login-card">
+
+        <div className="site-logo">
+
+            <Image src={sitelogo} alt="site logo"/>
+
+        </div>
+
         <h2 className="login-title">Admin Login</h2>
 
         {error && <p className="login-error">{error}</p>}
