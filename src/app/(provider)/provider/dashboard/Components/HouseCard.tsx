@@ -11,18 +11,25 @@ type HouseCardProps = {
 const HouseCard: React.FC<HouseCardProps> = ({ logo, name, description }) => {
   return (
     <div className="house-card">
-      {/* Left: Logo */}
+
+        
+   
       <div className="house-card-logo">
-        <Image
+
+        <div className="h-logodiv">
+             <Image
           src={logo}
           alt={`${name} logo`}
           width={128}
           height={128}
           className="house-card-img"
         />
+
+        </div>
+       
       </div>
 
-      {/* Right: Details */}
+     
       <div className="house-card-info">
         <h2 className="house-card-title">{name}</h2>
         {description && <p className="house-card-desc">{description}</p>}
