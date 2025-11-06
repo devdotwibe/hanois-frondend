@@ -1391,6 +1391,19 @@ ul.tab-nav1 {
 .upload-icon {
     margin: 0 auto 20px;
 }
+.seeker-dashboard1 .header .containers {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 250px;
+}
+.seeker-dashboard1 .footer .containers {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 250px;
+}
+
+.seeker-dashboard1 .header .header-div{padding-inline: 0;}
+
 
 /* ------------------------------------responsive */
 

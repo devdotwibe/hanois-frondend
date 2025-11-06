@@ -34,10 +34,12 @@
        
 }
 .sidebar-pages {
-    width: 100%; min-height: 500px;
+    width: 100%;
+     min-height: 500px;
   
-    width: calc(100% - 250px); padding: 0 40px;
-    max-width: 1310px;
+    width: calc(100% - 250px); 
+    padding: 0 250px 0 40px;
+    /* max-width: 1310px; */
 }
 ul.sidebarul {
     width: 250px;
