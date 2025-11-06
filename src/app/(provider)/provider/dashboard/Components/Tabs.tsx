@@ -75,7 +75,7 @@ const Tabs = () => {
 
                         </button>
 
-                    {message && (
+                    {/* {message && (
                     <p
                         className={`message ${
                         message.includes("✅")
@@ -87,7 +87,7 @@ const Tabs = () => {
                     >
                         {message}
                     </p>
-                    )}
+                    )} */}
                 </form>
         </div>
 
