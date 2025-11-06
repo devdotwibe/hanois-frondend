@@ -33,6 +33,16 @@ const Login = () => {
 
   const [loginError, setLoginError] = useState("");
 
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const passwordRegex =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+
   useEffect(() => {
     const token = searchParams.get("reset-password");
     if (token) {
@@ -111,11 +121,19 @@ const Login = () => {
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    const password = e.target.password.value;
-    const confirmPassword = e.target.confirmPassword.value;
+
+    setError("");
+    setSuccess("");
+
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Password must be at least 8 characters long, and include letters, numbers, and symbols."
+      );
+      return;
+    }
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setError("Passwords do not match.");
       return;
     }
 
@@ -131,9 +149,13 @@ const Login = () => {
       const data = await res.json();
       if (res.ok) {
 
-        alert("Password reset successful! Please log in.");
+        setSuccess("Password successfully reset!");
 
-        router.push("/login");
+        setTimeout(() => {
+
+          router.push('/login');
+          
+        }, 5000);
 
       } else {
 
@@ -196,31 +218,32 @@ const Login = () => {
 
             <h2 className="">{lang === "ar" ? "تسجيل الدخول إلى Handis" : "Log In to Handis"}</h2>
 
-            <form className="login-form" onSubmit={(e) => handleLogin(e, router)}>
+              <form className="login-form" onSubmit={(e) => handleLogin(e, router)}>
+                  <div className="form-grp">
+                  <label htmlFor="email">Email</label>
+                  <input type="email" className={`input-field ${loginError ? 'email-invalid' : ''}`} id="email" name="email" placeholder="Email" required />
+                </div>
+
                 <div className="form-grp">
-                <label htmlFor="email">Email</label>
-                <input type="email" className={`input-field ${loginError ? 'email-invalid' : ''}`} id="email" name="email" placeholder="Email" required />
-              </div>
+                  <label htmlFor="password">Password</label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="+8 characters"
+                    required
+                    className={`input-field ${loginError ? 'email-invalid' : ''}`}
+                  />
+                </div>
 
-              <div className="form-grp">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="+8 characters"
-                  required
-                  className={`input-field ${loginError ? 'email-invalid' : ''}`}
-                />
-              </div>
+                {loginError && <p style={{ color: 'red', marginTop: '10px' }} className="error-message">{loginError}</p>}
 
-               {loginError && <p style={{ color: 'red', marginTop: '10px' }} className="error-message">{loginError}</p>}
+                <Link href="" className="forget-pass">
+                  Forget password?
+                </Link>
 
-              <Link href="" className="forget-pass">
-                Forget password?
-              </Link>
+              <button type="submit" className="login-btn">Log in</button>
 
-            <button type="submit" className="login-btn">Log in</button>
             </form>
 
             <p className="signup-text">
@@ -337,33 +360,46 @@ const Login = () => {
              
                <form className="login-form" onSubmit={handleResetPassword} >
 
+                    <div className="form-grp">
+                      <label htmlFor="password">Password</label>
+                      <input
+                        type="password"
+                        name="password"   
+                        id="password"
+                        placeholder="+8 characters"
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className={`input-field ${error && error!='Passwords do not match.' ? 'email-invalid' : ''}`}
+                      />
+                      <span>Use 8 or more characters, with a mix of letters, numbers and synbols</span>
+                    </div>
 
-              <div className="form-grp">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  name="password"   
-                  id="password"
-                  placeholder="+8 characters"
-                  required
-                />
-                <span>Use 8 or more characters, with a mix of letters, numbers and synbols</span>
-              </div>
 
+                    <div className="form-grp">
+                      <label htmlFor="conformpassword">Conform a Password</label>
+                      <input
+                        type="password"
+                        id="conformpassword"
+                        name="confirmPassword"  
+                        placeholder="Confirm a password"
+                        required
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className={`input-field ${error =='Passwords do not match.' ? 'email-invalid' : ''}`}
+                      />
+                    </div>
 
-              <div className="form-grp">
-                <label htmlFor="conformpassword">Conform a Password</label>
-                <input
-                  type="password"
-                  id="conformpassword"
-                  name="confirmPassword"  
-                  placeholder="Confirm a password"
-                  required
-                />
-              </div>
+                    {error && <p style={{ color: "red", marginTop: "8px" }}>{error}</p>}
 
-              
+                    {success && 
+                        createPortal(
+                        <div className='login-success'> 
+                        <p>{success}</p>  </div>
+                                ,
+                              document.body
+                        )
+                      }
 
+            
               <button type="submit" className="login-btn">
                 Reset Password
               </button>
