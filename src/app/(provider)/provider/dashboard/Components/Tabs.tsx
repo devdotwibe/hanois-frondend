@@ -109,10 +109,6 @@ const res = await fetch(`${API_URL}providers/${providerId}`, {
   body: JSON.stringify(payload),
 });
 
-const data = await res.json();
-console.log(data);
-
-
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Update failed");
 
