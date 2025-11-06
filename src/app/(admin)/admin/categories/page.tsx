@@ -88,7 +88,12 @@ export default function CategoriesPage() {
       <h1 className="text-2xl font-semibold mb-6">Categories</h1>
 
       {/* Create category */}
-      <form onSubmit={handleCreate} className="mb-6">
+      <form onSubmit={handleCreate} className="login-form">
+                <div className="mb-4 form-grp">
+
+             <label className="block font-medium mb-2">
+            Category
+          </label>
         <input
           type="text"
           className="w-full border rounded px-3 py-2 mb-2"
@@ -96,6 +101,8 @@ export default function CategoriesPage() {
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
         />
+                </div>
+
         <button
           type="submit"
           className={`w-full py-2 rounded text-white ${

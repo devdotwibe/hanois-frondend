@@ -56,7 +56,7 @@ export default function SettingsPage() {
     <div className=" mx-auto p-6">
       <h1 className="text-2xl font-semibold mb-6">Settings</h1>
 
-      <form onSubmit={handleSave} className="login-form">
+      <form onSubmit={handleSave} className="settingsform">
         <div className="mb-4 form-grp">
           <label htmlFor="contactEmail" className="block font-medium mb-2">
             Contact Email
@@ -79,22 +79,22 @@ export default function SettingsPage() {
             backgroundColor: loading ? "#2050f5" : "#2050f5", 
             color: "#ffffff",
 
-            }}
-              className={`w-full py-2 rounded text-white bg-[#2050f5] setting-submit ${
-                loading ? "bg-gray-400" : "bg-blue-600 hover:bg-[#4c72f6]"
-              }`}
-            >
-            {loading ? "Saving..." : "Save"}
+          }}
+            className={`w-full py-2 rounded text-white bg-[#2050f5] setting-submit ${
+              loading ? "bg-gray-400" : "bg-blue-600 hover:bg-[#4c72f6]"
+            }`}
+          >
+          {loading ? "Saving..." : "Save"}
           </button>
 
-          {message && (
-            <p
-              className={`mt-4 text-center text-sm ${
-                message.includes("✅") ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {message}
-            </p>
+        {message && (
+          <p
+            className={`mt-4 text-center text-sm ${
+              message.includes("✅") ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {message}
+          </p>
         )}
       </form>
     </div>
