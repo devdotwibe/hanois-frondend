@@ -91,7 +91,7 @@ export default function AdminLoginPage() {
         </form>
 
         <p className="login-footer">
-          © {new Date().getFullYear()} Hanois Admin Portal
+          © {new Date().getFullYear()} Handis Admin Portal
         </p>
       </div>
     </div>
