@@ -69,7 +69,7 @@ const ImageSlider: React.FC = () => {
                 alt={`Slide ${index + 1}`}
                 width={400}
                 height={300}
-                className="w-full h-[250px] object-cover"
+                className="w-full h-[180px] object-cover"
               />
             </div>
           </div>

@@ -1391,12 +1391,18 @@ ul.tab-nav1 {
 .upload-icon {
     margin: 0 auto 20px;
 }
-.seeker-dashboard1 .header .containers {
+
+
+
+
+.seeker-dashboard1 .header .containers ,
+.prov-dashboard .header .containers {
     width: 100%;
     max-width: 100%;
     padding-inline: 250px;
 }
-.seeker-dashboard1 .footer .containers {
+.seeker-dashboard1 .footer .containers, 
+.prov-dashboard .footer .containers {
     width: 100%;
     max-width: 100%;
     padding-inline: 250px;
@@ -1404,7 +1410,27 @@ ul.tab-nav1 {
 
 .seeker-dashboard1 .header .header-div{padding-inline: 0;}
 
+.prov-dashboard .header .header-div{padding-inline: 0;}
 
+
+
+
+
+
+.spd-outer .slick-slide {
+  padding: 0 5px; 
+}
+.spd-outer .slick-list {
+  margin: 0 -5px; 
+}
+.house-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.house-div .h-logodiv {
+    width: 100px;
+}
 /* ------------------------------------responsive */
 
 

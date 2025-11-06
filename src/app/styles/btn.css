@@ -240,7 +240,20 @@ button.house-card-btn {
     border-radius: 8px; cursor: pointer; text-transform: capitalize;
 }
 
+.detail-btn{
+  background: var(--primary-color);
+    color: #fff;
+    border-radius: 5px;
+    padding: 18px 26px; line-height: 1;
+   
+    font-size: 16px;
+    display: inline-block; cursor: pointer;
+}
 
+.detail-btn:hover{
+        background: #4c72f6;
+
+}
 
 /* ---------------------------------------- */
 @media (max-width: 1204px) {
