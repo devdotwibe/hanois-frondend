@@ -85,7 +85,7 @@ const handleSubmit = async (e) => {
     
     try {
         const providerId = localStorage.getItem("providerId");
-        const token = localStorage.getItem("token");
+        // const token = localStorage.getItem("token");
         const payload = {
             name: formData.companyName,
             phone: formData.phoneNumber,
@@ -102,10 +102,10 @@ const handleSubmit = async (e) => {
 
         const res = await fetch(`${API_URL}providers/${providerId}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
+            // headers: {
+            //     "Content-Type": "application/json",
+            //     Authorization: `Bearer ${token}`,
+            // },
             body: JSON.stringify(payload),
         });
 
