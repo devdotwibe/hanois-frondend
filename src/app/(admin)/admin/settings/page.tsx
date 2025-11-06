@@ -56,7 +56,7 @@ export default function SettingsPage() {
     <div className=" mx-auto p-6">
       <h1 className="text-2xl font-semibold mb-6">Settings</h1>
 
-      <form onSubmit={handleSave} className="settingsform">
+      <form onSubmit={handleSave} className="login-form">
         <div className="mb-4 form-grp">
           <label htmlFor="contactEmail" className="block font-medium mb-2">
             Contact Email
