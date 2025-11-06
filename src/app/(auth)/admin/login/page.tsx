@@ -57,11 +57,17 @@ export default function AdminLoginPage() {
     }
   };
 
+  const HandRedirect = () => {
+
+    router.push("/"); 
+    
+  };
+
   return (
     <div className="login-page">
       <div className="login-card">
 
-        <div className="site-logo">
+        <div className="site-logo" onClick={HandRedirect}>
 
             <Image src={sitelogo} alt="site logo"/>
 
