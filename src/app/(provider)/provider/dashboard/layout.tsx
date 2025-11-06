@@ -1,19 +1,16 @@
 import type { Metadata } from "next";
 
 
-import "../../../app/globals.css"
-
-
-import "../../../app/styles/header.css"
-
-import "../../../app/styles/footer.css"
-import "../../../app/styles/home.css"
-import "../../../app/styles/languageswitcher.css"
-import "../../../app/styles/rtl.css"
-import "../../../app/styles/popup.css"
-import "../../../app/styles/btn.css"
-import "../../../app/styles/serviceprovidersignup.css"
-import "../../../app/styles/sidebar.css"
+import "../../../globals.css"
+import "../../../styles/header.css"
+import "../../../styles/footer.css"
+import "../../../styles/home.css"
+import "../../../styles/languageswitcher.css"
+import "../../../styles/rtl.css"
+import "../../../styles/popup.css"
+import "../../../styles/btn.css"
+import "../../../styles/serviceprovidersignup.css"
+import "../../../styles/sidebar.css"
 
 
 
@@ -21,7 +18,8 @@ import "../../../app/styles/sidebar.css"
 import Header from "@/app/(frontend)/components/Header/Header";
 import Footer from "@/app/(frontend)/components/Footer/Footer";
 import BodyClassManager from "@/app/(frontend)/components/BodyClassManager";
-import DirectorySidebar from "../Components/DirectorySidebar";
+import SideBar from "@/app/(user)/user/Componrnts/SideBar";
+import SidebarProvider from "./Components/SidebarProvider";
 
 export const metadata: Metadata = {
   title: "hanois",
@@ -43,9 +41,10 @@ export default function RootLayout({
 
 
        <div className="sidebar-div">
-        <DirectorySidebar />
 
-      
+          {/* <SideBar /> */}
+
+          <SidebarProvider />
 
           <div className="sidebar-pages">
              {children}
