@@ -68,7 +68,7 @@ const Header = () => {
                       Log in
                     </Link>
 
-                    <Link href="/signup" className="h-btn">
+                    <Link href="/get-listed" className="h-btn">
                       Get Listed
                     </Link>
 
