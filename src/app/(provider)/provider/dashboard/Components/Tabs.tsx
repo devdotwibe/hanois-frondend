@@ -38,7 +38,57 @@ const Tabs = () => {
         
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
           <h2>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquid, voluptatum!</h2>
-      
+  <form >
+
+
+                    <div className="form-field">
+                    <label> Title (English)</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        required
+                    />
+                    </div>
+
+                    <div className="form-field">
+                    <label> Title (Arabic)</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter title"
+                        required
+                    />
+                    </div>
+
+                    <div className="form-field">
+                    <label> Content (English)</label>
+
+                    </div>
+
+                    <div className="form-field">
+                    <label> Content (Arabic)</label>
+
+                    </div>
+
+                        <button type="submit" className="btn get-sub" >
+
+                        </button>
+
+                    {message && (
+                    <p
+                        className={`message ${
+                        message.includes("✅")
+                            ? "success"
+                            : message.includes("⚠️")
+                            ? "warning"
+                            : "error"
+                        }`}
+                    >
+                        {message}
+                    </p>
+                    )}
+                </form>
         </div>
 
         <div
