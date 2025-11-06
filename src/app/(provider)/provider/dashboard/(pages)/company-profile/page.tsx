@@ -1,11 +1,25 @@
-import React from 'react'
+"use client";
+import React from "react";
+import HouseCard from "../../Components/HouseCard";
+import Tabs from "../../Components/Tabs";
+import HouseOuter from "../../Components/HouseOuter";
 
-const page = () => {
+const CompanyProfile = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <div className="company-profile">
 
-export default page
+      <HouseOuter />
+      
+
+
+      <Tabs />
+
+
+
+
+
+    </div>
+  );
+};
+
+export default CompanyProfile;
