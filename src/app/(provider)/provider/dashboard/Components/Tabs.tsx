@@ -2,6 +2,7 @@
 
 "use client";
 import React, { useState } from "react";
+import ProjectComponent from "./ProjectComponent";
 
 const TABS = [
   { id: "companyinfo", label: "Company Information" },
@@ -45,7 +46,7 @@ const Tabs = () => {
             activeTab === "project" ? "show" : ""
           }`}
         >
-          <h2>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aliquid, voluptatum!</h2>
+          <ProjectComponent />
        
         </div>
 
