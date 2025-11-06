@@ -156,7 +156,7 @@ const Tabs = () => {
                   </div>
 
 
-                <h4>Services</h4>
+                <p>Services</p>
 
                     <div className="form-grp">
                     <label> Select services</label>
