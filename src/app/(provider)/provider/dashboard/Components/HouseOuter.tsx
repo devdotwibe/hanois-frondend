@@ -11,7 +11,6 @@ const HouseOuter: React.FC = () => {
   useEffect(() => {
     const loadProviderData = async () => {
       try {
-        // 1️⃣ Get provider ID
         const userData = localStorage.getItem("user");
         let id: number | null = null;
 
@@ -34,14 +33,12 @@ const HouseOuter: React.FC = () => {
 
         setProviderId(id);
 
-        // 2️⃣ Load cached data
         const cached = localStorage.getItem(`provider_${id}`);
         if (cached) {
           setProviderData(JSON.parse(cached));
           setLoading(false);
         }
 
-        // 3️⃣ Fetch fresh data for the logged-in provider
         const token = localStorage.getItem("token");
         const res = await fetch(`${API_URL}providers/${id}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
