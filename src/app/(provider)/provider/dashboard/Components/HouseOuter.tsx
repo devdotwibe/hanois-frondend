@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import HouseCard from "./HouseCard";
-import { API_URL } from "@/config";
+import { API_URL } from "@/config"; 
 
 const HouseOuter: React.FC = () => {
   const [providerId, setProviderId] = useState<number | null>(null);
@@ -39,7 +39,7 @@ const HouseOuter: React.FC = () => {
         setLoading(false);
       }
 
-      // Fetch fresh data
+      // Fetch fresh data in background
       (async () => {
         try {
           const res = await fetch(`${API_URL}providers`);
@@ -63,14 +63,17 @@ const HouseOuter: React.FC = () => {
     }
   }, []);
 
-  if (loading) return null;
+  if (loading) return null; // or show a skeleton loader
+
   if (!providerId || !providerData) return null;
 
   return (
     <div>
       <HouseCard
         providerId={providerId}
-        provider={providerData}
+        name={providerData.name || ""}
+        initialDescription={providerData.professional_headline || ""}
+        initialImagePath={providerData.image || null}
       />
     </div>
   );
