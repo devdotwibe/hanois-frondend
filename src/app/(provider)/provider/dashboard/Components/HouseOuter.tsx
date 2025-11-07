@@ -9,8 +9,7 @@ const HouseOuter = () => {
         logo={logo1}
         name="American House Improvements Inc."
         providerId={5}
-        initialDescription="LA’s Highly Rated, Award-Winning Construction & Renovation Firm"
-        initialImagePath="/uploads/1762501777711.jpg"
+        // no initialDescription / initialImagePath passed on purpose
       />
     </div>
   );
