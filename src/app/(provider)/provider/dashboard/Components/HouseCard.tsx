@@ -37,9 +37,9 @@ const HouseCard: React.FC<HouseCardProps> = ({
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
 
-    let base = API_URL.replace(/\/+$/, "");            
-    base = base.replace(/\/api\/api$/i, "/api");       
-    base = base.replace(/\/api$/i, "/api");     
+    let base = API_URL.replace(/\/+$/, "");
+    base = base.replace(/\/api\/api$/i, "/api");
+    base = base.replace(/\/api$/i, "/api");
 
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
   };
@@ -121,6 +121,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
 
   return (
     <div className="house-card" style={{ position: "relative" }}>
+      {/* Logo / Image */}
       <div className="house-card-logo" style={{ position: "relative" }}>
         <div className="h-logodiv">
           {imagePath ? (
@@ -183,9 +184,11 @@ const HouseCard: React.FC<HouseCardProps> = ({
         </div>
       </div>
 
+      {/* Info Section */}
       <div className="house-card-info">
         <h2 className="house-card-title">{name}</h2>
 
+        {/* Headline + Edit Icon */}
         {editing ? (
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <input
@@ -220,33 +223,54 @@ const HouseCard: React.FC<HouseCardProps> = ({
             </button>
           </div>
         ) : (
-          <>
-            <p className="house-card-desc">{headline}</p>
-            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              <button
-                className="house-card-btn"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
-              >
-                {uploading ? "Uploading..." : "Upload New Image"}
-              </button>
-              <button
-                className="house-card-edit-btn"
-                onClick={() => setEditing(true)}
-                title="Edit description"
-                style={{
-                  border: "none",
-                  background: "transparent",
-                  cursor: "pointer",
-                }}
-              >
-                ✎
-              </button>
-            </div>
-          </>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 8,
+            }}
+          >
+            <p
+              className="house-card-desc"
+              style={{
+                flex: 1,
+                margin: 0,
+                wordBreak: "break-word",
+              }}
+            >
+              {headline || "No headline set"}
+            </p>
+            <button
+              className="house-card-edit-btn"
+              onClick={() => setEditing(true)}
+              title="Edit description"
+              style={{
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+                fontSize: "1.1rem",
+                marginLeft: "4px",
+              }}
+            >
+              ✎
+            </button>
+          </div>
         )}
+
+        {/* Upload Button */}
+        <div style={{ marginTop: 10 }}>
+          <button
+            className="house-card-btn"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+          >
+            {uploading ? "Uploading..." : "Upload New Image"}
+          </button>
+        </div>
       </div>
 
+      {/* Hidden File Input */}
       <input
         ref={fileInputRef}
         type="file"
