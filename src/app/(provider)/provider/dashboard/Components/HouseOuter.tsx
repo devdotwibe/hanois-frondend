@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import HouseCard from "./HouseCard";
-import { API_URL } from "@/config"; // ✅ Import from your config file
+import { API_URL } from "@/config"; 
 
 const HouseOuter: React.FC = () => {
   const [providerId, setProviderId] = useState<number | null>(null);
