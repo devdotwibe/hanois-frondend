@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { API_URL } from "@/config"; // "https://hanois.dotwibe.com/api/api/"
+import { API_URL } from "@/config";
 
 type HouseCardProps = {
   logo?: string | StaticImageData;
@@ -19,11 +19,9 @@ const HouseCard: React.FC<HouseCardProps> = ({
   initialImagePath = null,
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
   const [imagePath, setImagePath] = useState<string | null>(initialImagePath);
   const [uploading, setUploading] = useState(false);
   const [removing, setRemoving] = useState(false);
-
   const [editing, setEditing] = useState(false);
   const [headline, setHeadline] = useState(initialDescription);
   const [savingHeadline, setSavingHeadline] = useState(false);
@@ -33,18 +31,27 @@ const HouseCard: React.FC<HouseCardProps> = ({
 
   const endpoint = `${API_URL}providers/update-profile/${providerId}`;
 
-  // Build absolute URL like:
-  // https://hanois.dotwibe.com/api/uploads/1762501777711.jpg
+  // Helper: always build correct absolute image URL
   const resolveImageUrl = (path: string | null) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-
-    // Normalize API_URL -> base like "https://hanois.dotwibe.com/api"
-    let base = API_URL.replace(/\/+$/, "");                // remove trailing slashes
-    base = base.replace(/\/api\/api$/i, "/api");           // handle "/api/api"
-    base = base.replace(/\/api$/i, "/api");                // ensure ends with "/api"
-
+    let base = API_URL.replace(/\/+$/, "");
+    base = base.replace(/\/api\/api$/i, "/api");
+    base = base.replace(/\/api$/i, "/api");
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
+  };
+
+  // ✅ Unified function to send formData with token
+  const sendFormData = async (formData: FormData) => {
+    const res = await fetch(endpoint, {
+      method: "PUT",
+      body: formData,
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return await res.json();
   };
 
   const uploadFile = async (file: File) => {
@@ -53,15 +60,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
       const formData = new FormData();
       formData.append("image", file);
       formData.append("professional_headline", headline ?? "");
-
-      const res = await fetch(endpoint, {
-        method: "PUT",
-        body: formData,
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      });
-
-      if (!res.ok) throw new Error(await res.text());
-      const data = await res.json();
+      const data = await sendFormData(formData);
       setImagePath(data?.data?.provider?.image ?? null);
     } catch (err) {
       console.error("Upload error:", err);
@@ -84,13 +83,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
       setRemoving(true);
       const formData = new FormData();
       formData.append("professional_headline", headline ?? "");
-      const res = await fetch(endpoint, {
-        method: "PUT",
-        body: formData,
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      });
-      if (!res.ok) throw new Error(await res.text());
-      const data = await res.json();
+      const data = await sendFormData(formData);
       setImagePath(data?.data?.provider?.image ?? null);
     } catch (err) {
       console.error("Remove error:", err);
@@ -105,13 +98,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
       setSavingHeadline(true);
       const formData = new FormData();
       formData.append("professional_headline", headline ?? "");
-      const res = await fetch(endpoint, {
-        method: "PUT",
-        body: formData,
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      });
-      if (!res.ok) throw new Error(await res.text());
-      const data = await res.json();
+      const data = await sendFormData(formData);
       setHeadline(data?.data?.provider?.professional_headline ?? headline);
       setEditing(false);
     } catch (err) {
@@ -128,7 +115,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
         <div className="h-logodiv">
           {imagePath ? (
             <div style={{ position: "relative", width: 160, height: 128 }}>
-              {/* Use plain img for remote uploads to avoid next/image host config issues */}
               <img
                 src={resolveImageUrl(imagePath) as string}
                 alt={`${name} logo`}
@@ -139,9 +125,8 @@ const HouseCard: React.FC<HouseCardProps> = ({
               />
             </div>
           ) : logo ? (
-            // keep next/image for local static import logos
             <Image
-              src={logo as StaticImageData | string}
+              src={logo}
               alt={`${name} logo`}
               width={160}
               height={128}
