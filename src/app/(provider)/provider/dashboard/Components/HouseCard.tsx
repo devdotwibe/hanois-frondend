@@ -54,7 +54,32 @@ const HouseCard: React.FC<HouseCardProps> = ({
       );
     } catch (e) {
       // ignore if dispatch fails in strange environments
-      // console.warn("notifyProviderUpdated failed", e);
+    }
+  };
+
+  // helper to normalize different response shapes
+  const extractProviderFromResponse = (data: any) => {
+    // common shapes:
+    // 1) { data: { provider: { ... } } }
+    // 2) { provider: { ... } }
+    // 3) { data: { ...provider... } }
+    // 4) provider object directly
+    if (!data) return null;
+    if (data.data && data.data.provider) return data.data.provider;
+    if (data.provider) return data.provider;
+    if (data.data && typeof data.data === "object" && data.data.id) return data.data;
+    if (data.id) return data;
+    return null;
+  };
+
+  // Save provider to local cache so other UI can read updated values
+  const cacheProvider = (provider: any) => {
+    try {
+      if (provider && provider.id) {
+        localStorage.setItem(`provider_${provider.id}`, JSON.stringify(provider));
+      }
+    } catch (e) {
+      // ignore storage errors
     }
   };
 
@@ -77,10 +102,18 @@ const HouseCard: React.FC<HouseCardProps> = ({
         throw new Error(text || "Upload failed");
       }
       const data = await res.json();
-      const newImage = data?.data?.provider?.image ?? null;
-      setImagePath(newImage);
-      setHeadline(data?.data?.provider?.professional_headline ?? headline);
-      notifyProviderUpdated(data?.data?.provider);
+      const provider = extractProviderFromResponse(data);
+      if (provider) {
+        const newImage = provider.image ?? null;
+        setImagePath(newImage);
+        setHeadline(provider.professional_headline ?? headline);
+        cacheProvider(provider);
+        notifyProviderUpdated(provider);
+      } else {
+        // fallback: try other shapes
+        const newImage = data?.data?.provider?.image ?? data?.provider?.image ?? null;
+        setImagePath(newImage);
+      }
     } catch (err) {
       console.error("Upload error:", err);
       alert("Failed to upload image.");
@@ -96,29 +129,43 @@ const HouseCard: React.FC<HouseCardProps> = ({
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  // Remove image: send JSON with image: null so backend's updateProfile sees `image` explicitly
   const handleRemoveImage = async () => {
     if (!confirm("Remove image?")) return;
     try {
       setRemoving(true);
-      const formData = new FormData();
-      // explicit instruction to remove image (most backends expect an explicit flag)
-      formData.append("remove_image", "1");
-      // include current headline so it isn't lost
-      formData.append("professional_headline", headline ?? "");
+
+      // Send JSON payload { image: null, professional_headline } - backend checks for image !== undefined
+      const payload = {
+        image: null,
+        professional_headline: headline ?? "",
+      };
 
       const res = await fetch(endpoint, {
         method: "PUT",
-        body: formData,
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
       });
+
       if (!res.ok) {
         const text = await res.text();
         throw new Error(text || "Remove failed");
       }
+
       const data = await res.json();
-      setImagePath(data?.data?.provider?.image ?? null);
-      setHeadline(data?.data?.provider?.professional_headline ?? headline);
-      notifyProviderUpdated(data?.data?.provider);
+      const provider = extractProviderFromResponse(data);
+      if (provider) {
+        setImagePath(provider.image ?? null);
+        setHeadline(provider.professional_headline ?? headline);
+        cacheProvider(provider);
+        notifyProviderUpdated(provider);
+      } else {
+        // fallback
+        setImagePath(null);
+      }
     } catch (err) {
       console.error("Remove error:", err);
       alert("Failed to remove image.");
@@ -130,8 +177,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const handleSaveHeadline = async () => {
     try {
       setSavingHeadline(true);
-      // Send JSON when we only update the text — this avoids the backend treating a missing
-      // image field as "clear the image".
+      // Send JSON when we only update the text — backend will detect professional_headline
       const payload = { professional_headline: headline ?? "" };
 
       const res = await fetch(endpoint, {
@@ -148,13 +194,18 @@ const HouseCard: React.FC<HouseCardProps> = ({
         throw new Error(text || "Save headline failed");
       }
       const data = await res.json();
-      // update local state with server-provided value if available
-      setHeadline(data?.data?.provider?.professional_headline ?? headline);
-      // the server might return the provider object with image, so keep the image path in sync
-      if (typeof data?.data?.provider?.image !== "undefined") {
-        setImagePath(data?.data?.provider?.image ?? null);
+      const provider = extractProviderFromResponse(data);
+      if (provider) {
+        setHeadline(provider.professional_headline ?? headline);
+        if (typeof provider.image !== "undefined") {
+          setImagePath(provider.image ?? null);
+        }
+        cacheProvider(provider);
+        notifyProviderUpdated(provider);
+      } else {
+        // server didn't return a provider object but likely saved — keep local headline
+        notifyProviderUpdated();
       }
-      notifyProviderUpdated(data?.data?.provider);
       setEditing(false);
     } catch (err) {
       console.error("Save headline error:", err);
@@ -255,8 +306,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
             <button
               onClick={() => {
                 setEditing(false);
-                // revert to last saved headline if user cancels (optional)
-                // could request latest from server, but keep simple:
               }}
               style={{
                 border: "none",
