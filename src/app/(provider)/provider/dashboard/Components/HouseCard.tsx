@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { API_URL } from "@/config"; // ✅ your base URL (e.g., "https://hanois.dotwibe.com/api/api")
+import { API_URL } from "@/config"; // "https://hanois.dotwibe.com/api/api/"
 
 type HouseCardProps = {
   logo?: string | StaticImageData;
@@ -31,21 +31,21 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-  // ✅ Use your central API_URL
   const endpoint = `${API_URL}providers/update-profile/${providerId}`;
 
-const resolveImageUrl = (path: string | null) => {
-  if (!path) return null;
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  // Build absolute URL like:
+  // https://hanois.dotwibe.com/api/uploads/1762501777711.jpg
+  const resolveImageUrl = (path: string | null) => {
+    if (!path) return null;
+    if (path.startsWith("http://") || path.startsWith("https://")) return path;
 
-  // Normalize API_URL: remove trailing slashes, convert "/api/api" -> "/api"
-  let base = API_URL.replace(/\/+$/, "");                // remove trailing slashes
-  base = base.replace(/\/api\/api$/, "/api");            // handle "api/api"
-  base = base.replace(/\/api\/?$/, "/api");              // ensure ends with "/api"
+    // Normalize API_URL -> base like "https://hanois.dotwibe.com/api"
+    let base = API_URL.replace(/\/+$/, "");                // remove trailing slashes
+    base = base.replace(/\/api\/api$/i, "/api");           // handle "/api/api"
+    base = base.replace(/\/api$/i, "/api");                // ensure ends with "/api"
 
-  // Ensure the path is appended with exactly one slash
-  return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
-};
+    return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
+  };
 
   const uploadFile = async (file: File) => {
     try {
@@ -128,15 +128,18 @@ const resolveImageUrl = (path: string | null) => {
         <div className="h-logodiv">
           {imagePath ? (
             <div style={{ position: "relative", width: 160, height: 128 }}>
-              <Image
+              {/* Use plain img for remote uploads to avoid next/image host config issues */}
+              <img
                 src={resolveImageUrl(imagePath) as string}
                 alt={`${name} logo`}
                 width={160}
                 height={128}
                 className="house-card-img"
+                style={{ objectFit: "cover", width: 160, height: 128 }}
               />
             </div>
           ) : logo ? (
+            // keep next/image for local static import logos
             <Image
               src={logo as StaticImageData | string}
               alt={`${name} logo`}
