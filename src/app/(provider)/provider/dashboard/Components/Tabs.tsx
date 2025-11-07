@@ -12,7 +12,6 @@ const Tabs = () => {
   const [activeTab, setActiveTab] = useState("companyinfo");
   const [categoriesList, setCategoriesList] = useState([]);
   const [servicesList, setServicesList] = useState([]);
-  const [loadingProvider, setLoadingProvider] = useState(true);
 
   const [formData, setFormData] = useState({
     companyName: "",
@@ -33,9 +32,7 @@ const Tabs = () => {
   // Handle input change
   const handleChange = (e) => {
     const { name, value, options } = e.target;
-
     if (options) {
-      // handle multiple select
       const values = Array.from(options)
         .filter((opt) => opt.selected)
         .map((opt) => opt.value);
@@ -57,7 +54,6 @@ const Tabs = () => {
         const catData = await catRes.json();
         const servData = await servRes.json();
 
-        // If API wraps arrays, handle that, otherwise assume arrays returned
         setCategoriesList(Array.isArray(catData) ? catData : catData.data || []);
         setServicesList(Array.isArray(servData) ? servData : servData.data || []);
       } catch (err) {
@@ -68,13 +64,10 @@ const Tabs = () => {
     fetchOptions();
   }, []);
 
-  // Fetch existing provider details and fill form with defaults
+  // Fetch provider details and populate form
   useEffect(() => {
     const fetchProvider = async () => {
       try {
-        setLoadingProvider(true);
-
-        // First try providerId in localStorage (common), fallback to token payload
         let providerId = localStorage.getItem("providerId");
         const token = localStorage.getItem("token");
 
@@ -83,31 +76,20 @@ const Tabs = () => {
             const base64 = token.split(".")[1];
             const payload = JSON.parse(atob(base64));
             providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
-          } catch (e) {
-            // ignore parse errors
-          }
+          } catch (e) {}
         }
 
-        if (!providerId) {
-          console.warn("No providerId found in localStorage or token");
-          setLoadingProvider(false);
-          return;
-        }
+        if (!providerId) return;
 
         const res = await fetch(`${API_URL}providers/${providerId}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
 
         const data = await res.json();
-        if (!res.ok) {
-          // attempt to handle APIs that return success=false with message
-          throw new Error(data?.error || data?.message || "Failed to fetch provider");
-        }
+        if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
 
-        // Support two shapes: { provider: {...} } or the provider object directly
         const provider = data?.provider ?? data ?? {};
 
-        // Normalize values so we never set null into the form (useful for select's value)
         setFormData({
           companyName: provider.name ?? "",
           categories: Array.isArray(provider.categories_id)
@@ -136,8 +118,6 @@ const Tabs = () => {
         });
       } catch (err) {
         console.error("Error fetching provider:", err);
-      } finally {
-        setLoadingProvider(false);
       }
     };
 
@@ -157,9 +137,7 @@ const Tabs = () => {
           const base64 = token.split(".")[1];
           const payload = JSON.parse(atob(base64));
           providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
-        } catch (e) {
-          // ignore
-        }
+        } catch (e) {}
       }
 
       if (!token) {
@@ -206,7 +184,6 @@ const Tabs = () => {
     }
   };
 
-  // simple helper to render image preview if present
   const resolveImageUrl = (path) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
@@ -215,11 +192,6 @@ const Tabs = () => {
     base = base.replace(/\/api$/i, "/api");
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
   };
-
-  // show a basic loading placeholder until provider defaults are loaded
-  if (loadingProvider) {
-    return <div>Loading provider defaults…</div>;
-  }
 
   return (
     <div className="tab-wrapper1">
@@ -253,7 +225,6 @@ const Tabs = () => {
               />
             </div>
 
-            {/* Dynamic Categories */}
             <div className="form-grp">
               <label>Company Categories</label>
               <select
@@ -321,7 +292,6 @@ const Tabs = () => {
               ></textarea>
             </div>
 
-            <br />
             <h4>Online Presence</h4>
 
             <div className="form-grp">
@@ -368,10 +338,8 @@ const Tabs = () => {
               />
             </div>
 
-            <br />
             <h4>Services</h4>
 
-            {/* Dynamic Services */}
             <div className="form-grp">
               <label>Select Services</label>
               <select
@@ -392,7 +360,6 @@ const Tabs = () => {
               </select>
             </div>
 
-            <br />
             <h4>Profile</h4>
 
             <div className="form-grp">
