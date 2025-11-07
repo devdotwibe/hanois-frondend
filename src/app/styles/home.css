@@ -1148,6 +1148,24 @@ padding-left: 16px;
   cursor: pointer;
 }
 
+.loged-inn-div > .loged-inn-div{
+ padding-right: 20px;
+}
+
+
+.loged-inn-div > .loged-inn-div::after{
+  position: absolute; top: 4px; content: "";
+   right: 0;
+      background: url(../../../public/images/arr-down.svg) no-repeat 50% / contain;
+    width: 20px;
+    height: 20px;
+    transition: transform .3s ease;
+}
+.loged-inn-div > .loged-inn-div.open::after{
+      transform: rotate(180deg);
+}
+
+
 .user-logo img {
   border-radius: 50%;
 }
