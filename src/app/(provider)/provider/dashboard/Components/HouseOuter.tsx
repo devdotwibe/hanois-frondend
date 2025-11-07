@@ -1,12 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import HouseCard from "./HouseCard";
-import logo1 from "../../../../../../public/images/ahi-logo.jpg";
 
 const API_URL = "https://hanois.dotwibe.com/api/api/";
 
 const HouseOuter: React.FC = () => {
-  // Read providerId directly
   let providerId: number | null = null;
 
   if (typeof window !== "undefined") {
@@ -28,7 +26,8 @@ const HouseOuter: React.FC = () => {
     }
   }
 
-  providerId = providerId || 5;
+  // If no user logged in, render nothing
+  if (!providerId) return null;
 
   // Load cached provider data if available
   const cachedData =
@@ -36,10 +35,10 @@ const HouseOuter: React.FC = () => {
       ? localStorage.getItem(`provider_${providerId}`)
       : null;
 
-  let providerData: any = cachedData ? JSON.parse(cachedData) : {};
+  let providerData: any = cachedData ? JSON.parse(cachedData) : null;
 
-  // Kick off background fetch (non-blocking)
-  if (typeof window !== "undefined") {
+  // Fetch in background to refresh cache
+  if (typeof window !== "undefined" && !providerData) {
     (async () => {
       try {
         const res = await fetch(`${API_URL}providers`);
@@ -56,14 +55,16 @@ const HouseOuter: React.FC = () => {
     })();
   }
 
+  // Don’t render anything until real data is present
+  if (!providerData) return null;
+
   return (
     <div>
       <HouseCard
-        logo={logo1}
-        name={providerData?.name || "American House Improvements Inc."}
         providerId={providerId}
-        initialDescription={providerData?.professional_headline || ""}
-        initialImagePath={providerData?.image || null}
+        name={providerData.name || ""}
+        initialDescription={providerData.professional_headline || ""}
+        initialImagePath={providerData.image || null}
       />
     </div>
   );
