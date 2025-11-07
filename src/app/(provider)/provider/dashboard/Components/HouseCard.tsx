@@ -28,6 +28,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const [headline, setHeadline] = useState(initialDescription);
   const [savingHeadline, setSavingHeadline] = useState(false);
 
+  // Read token from localStorage (you said you store it there)
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
@@ -40,11 +41,29 @@ const HouseCard: React.FC<HouseCardProps> = ({
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
 
     // Normalize API_URL -> base like "https://hanois.dotwibe.com/api"
-    let base = API_URL.replace(/\/+$/, "");                // remove trailing slashes
-    base = base.replace(/\/api\/api$/i, "/api");           // handle "/api/api"
-    base = base.replace(/\/api$/i, "/api");                // ensure ends with "/api"
+    let base = API_URL.replace(/\/+$/, ""); // remove trailing slashes
+    base = base.replace(/\/api\/api$/i, "/api"); // handle "/api/api"
+    base = base.replace(/\/api$/i, "/api"); // ensure ends with "/api"
 
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
+  };
+
+  // Helper to log endpoint + token for debug
+  const logDebugInfo = (action: string) => {
+    try {
+      console.debug(`[HouseCard:${action}] endpoint:`, endpoint);
+      // Print full token for debugging — remove in production!
+      console.debug(`[HouseCard:${action}] token (raw):`, token);
+      // Also print a masked version so you can visually confirm without exposing the whole value
+      if (token) {
+        const masked = token.length > 12 ? `${token.slice(0, 6)}...${token.slice(-6)}` : token;
+        console.debug(`[HouseCard:${action}] token (masked):`, masked);
+      } else {
+        console.debug(`[HouseCard:${action}] token: null`);
+      }
+    } catch (e) {
+      console.warn("[HouseCard] failed to log debug info", e);
+    }
   };
 
   const uploadFile = async (file: File) => {
@@ -54,15 +73,28 @@ const HouseCard: React.FC<HouseCardProps> = ({
       formData.append("image", file);
       formData.append("professional_headline", headline ?? "");
 
+      logDebugInfo("uploadFile");
+
       const res = await fetch(endpoint, {
         method: "PUT",
         body: formData,
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        // include credentials if your API requires cookie-based auth as well
+        credentials: "include",
       });
 
-      if (!res.ok) throw new Error(await res.text());
+      console.debug("[HouseCard:uploadFile] response status:", res.status);
+      if (!res.ok) {
+        const text = await res.text().catch(() => "(no body)");
+        console.error("[HouseCard:uploadFile] server error:", res.status, text);
+        throw new Error(text);
+      }
       const data = await res.json();
       setImagePath(data?.data?.provider?.image ?? null);
+      // update headline if backend returned it
+      if (data?.data?.provider?.professional_headline) {
+        setHeadline(data.data.provider.professional_headline);
+      }
     } catch (err) {
       console.error("Upload error:", err);
       alert("Failed to upload image.");
@@ -84,14 +116,29 @@ const HouseCard: React.FC<HouseCardProps> = ({
       setRemoving(true);
       const formData = new FormData();
       formData.append("professional_headline", headline ?? "");
+      // If backend expects a remove flag uncomment below:
+      // formData.append("remove_image", "1");
+
+      logDebugInfo("removeImage");
+
       const res = await fetch(endpoint, {
         method: "PUT",
         body: formData,
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        credentials: "include",
       });
-      if (!res.ok) throw new Error(await res.text());
+
+      console.debug("[HouseCard:removeImage] response status:", res.status);
+      if (!res.ok) {
+        const text = await res.text().catch(() => "(no body)");
+        console.error("[HouseCard:removeImage] server error:", res.status, text);
+        throw new Error(text);
+      }
       const data = await res.json();
       setImagePath(data?.data?.provider?.image ?? null);
+      if (data?.data?.provider?.professional_headline) {
+        setHeadline(data.data.provider.professional_headline);
+      }
     } catch (err) {
       console.error("Remove error:", err);
       alert("Failed to remove image.");
@@ -105,12 +152,22 @@ const HouseCard: React.FC<HouseCardProps> = ({
       setSavingHeadline(true);
       const formData = new FormData();
       formData.append("professional_headline", headline ?? "");
+
+      logDebugInfo("saveHeadline");
+
       const res = await fetch(endpoint, {
         method: "PUT",
         body: formData,
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        credentials: "include",
       });
-      if (!res.ok) throw new Error(await res.text());
+
+      console.debug("[HouseCard:saveHeadline] response status:", res.status);
+      if (!res.ok) {
+        const text = await res.text().catch(() => "(no body)");
+        console.error("[HouseCard:saveHeadline] server error:", res.status, text);
+        throw new Error(text);
+      }
       const data = await res.json();
       setHeadline(data?.data?.provider?.professional_headline ?? headline);
       setEditing(false);
