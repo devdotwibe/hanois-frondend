@@ -33,16 +33,13 @@ const HouseCard: React.FC<HouseCardProps> = ({
 
   const endpoint = `${API_URL}providers/update-profile/${providerId}`;
 
-  // Build absolute URL like:
-  // https://hanois.dotwibe.com/api/uploads/1762501777711.jpg
   const resolveImageUrl = (path: string | null) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
 
-    // Normalize API_URL -> base like "https://hanois.dotwibe.com/api"
-    let base = API_URL.replace(/\/+$/, "");                // remove trailing slashes
-    base = base.replace(/\/api\/api$/i, "/api");           // handle "/api/api"
-    base = base.replace(/\/api$/i, "/api");                // ensure ends with "/api"
+    let base = API_URL.replace(/\/+$/, "");            
+    base = base.replace(/\/api\/api$/i, "/api");       
+    base = base.replace(/\/api$/i, "/api");     
 
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
   };
@@ -128,7 +125,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
         <div className="h-logodiv">
           {imagePath ? (
             <div style={{ position: "relative", width: 160, height: 128 }}>
-              {/* Use plain img for remote uploads to avoid next/image host config issues */}
               <img
                 src={resolveImageUrl(imagePath) as string}
                 alt={`${name} logo`}
@@ -139,7 +135,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
               />
             </div>
           ) : logo ? (
-            // keep next/image for local static import logos
             <Image
               src={logo as StaticImageData | string}
               alt={`${name} logo`}
