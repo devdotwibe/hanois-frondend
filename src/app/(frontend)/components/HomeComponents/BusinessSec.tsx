@@ -122,7 +122,7 @@ const BusinessSec = ({ lang }: { lang: string }) => {
             {/* 🧩 Dynamic or fallback description */}
             {subDescription ? (
               <div
-                className="business-div1"
+                className="business-div11"
                 dangerouslySetInnerHTML={{ __html: subDescription }}
               />
             ) : (

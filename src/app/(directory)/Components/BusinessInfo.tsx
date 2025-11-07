@@ -22,7 +22,9 @@ const BusinessInfo = () => {
                 
                 <div className="info-item">
                     <span className="info-label">Location</span>
-                    <div className="info-value">Woodland Hills, Los Angeles 91364 United States</div>
+                    <div className="info-value">Woodland Hills, Los Angeles 91364 
+                        <span>United States</span>
+                        </div>
                 </div>
                 
                 <div className="info-item">
@@ -38,21 +40,33 @@ const BusinessInfo = () => {
                      <div className="info-item">
                     <span className="info-label">Website</span>
                     <div className="info-value">
-                        <a href="https://ahlbuilders.com/" className="contact-button">Visit Our Website</a>
+                        <a href="https://ahlbuilders.com/" className="contact-button">https://ahlbuilders.com/</a>
                     </div>
                 </div>
                 
                 <div className="info-item">
-                    <span className="info-label">Company Phone Number</span>
-                    <div className="info-value">+1 (866) 919-2416</div>
-                    <a href="tel:+18669192416" className="contact-button">Call Now</a>
+                    <span className="info-label">
+                       Social Medias
+
+                    </span>
+                    <div className="info-value">
+                         <a href="">instagram</a>
+                        <a href="" className="">facebook</a>
+
+
+
+                    </div>
                 </div>
                 
                 <div className="info-item">
-                    <span className="info-label">Social Media</span>
-                    <div className="social-links">
-                       
+                    <span className="info-label">Company Phone number</span>
+
+                   <div className="info-value">
+                         <a href="">+1 (866) 919-2416</a>
                         
+
+
+
                     </div>
                 </div>
 

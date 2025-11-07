@@ -91,7 +91,7 @@ max-width: 400px;
 
 .site-logo {
     width: 180px;
-    margin: 0 auto 20px;
+    margin: 0 auto 20px !important;
 }
 
 .site-logo img {

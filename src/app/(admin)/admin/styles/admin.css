@@ -44,7 +44,7 @@ body{
     padding: 12px 26px;
   font-family: 'Avenir-Book';
     font-size: 16px;
-    display: inline-block; border: none;
+    display: inline-block; border: none; cursor: pointer;
 }
 .admin-nav button:hover{
      background: #4c72f6;
@@ -64,7 +64,7 @@ body{
 }
 .admin-nav .dropdown-menu a{
   width: 100% !important; text-align: left; list-style: none; 
-   padding: 12px 19px; margin-bottom: 10px !important;  display: inline-block;
+   padding: 12px 19px 12px 40px; margin-bottom: 10px !important;  display: inline-block;
 }
 
 .admin-nav .dropdown-menu ul li{list-style: none; text-align: left;}
@@ -76,7 +76,7 @@ body{
   font-family: 'Avenir-medium';
     text-decoration: none;
     transition: background-color .3s;
-    margin: 0 0 10px !important; width: 100%; text-align: left; position: relative;
+    margin: 0 0 10px !important; width: 100%; text-align: left; position: relative; transition: all 0.5s ease-in-out;
 }
 .admin-nav button.dropdown-btn::after {
   content: "▼"; 
@@ -84,6 +84,16 @@ body{
   margin-left: 8px;
   font-size: 0.75rem; 
   transition: transform 0.3s ease;
+      position: absolute;
+    right: 0; top: 15px;
+}
+
+.img-div {
+    margin: 40px 0 !important;
+}
+
+.img-div button{
+  margin-bottom: 10px !important;
 }
 
 
@@ -207,7 +217,7 @@ color: #2050f5;
   font-size: 1.8rem;
   font-weight: 600;
   margin-bottom: 10px !important;
-  color: #000000;
+  color: #000000; text-align: left;
 }
 
 .admin-subtitle {
@@ -230,7 +240,7 @@ color: #2050f5;
 .admin-table th,
 .admin-table td {
   padding: 12px 16px;
-  text-align: left;
+  text-align: left !important;
   border-bottom: 1px solid #e5e7eb;
 }
 

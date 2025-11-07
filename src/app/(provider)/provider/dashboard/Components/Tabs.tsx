@@ -25,81 +25,99 @@ const Tabs = () => {
     instagram: "",
     other: "",
     services: [],
+    professionalHeadline: "",
+    image: null,
   });
 
   // Handle input change
   const handleChange = (e) => {
     const { name, value, options } = e.target;
-
     if (options) {
-      // handle multiple select
       const values = Array.from(options)
         .filter((opt) => opt.selected)
         .map((opt) => opt.value);
-      setFormData({ ...formData, [name]: values });
+      setFormData((s) => ({ ...s, [name]: values }));
     } else {
-      setFormData({ ...formData, [name]: value });
+      setFormData((s) => ({ ...s, [name]: value }));
     }
   };
 
   // Fetch categories & services
-useEffect(() => {
-  const fetchOptions = async () => {
-    try {
-      const [catRes, servRes] = await Promise.all([
-        fetch(`${API_URL}categories`),
-        fetch(`${API_URL}services`),
-      ]);
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const [catRes, servRes] = await Promise.all([
+          fetch(`${API_URL}categories`),
+          fetch(`${API_URL}services`),
+        ]);
 
-      const catData = await catRes.json();
-      const servData = await servRes.json();
+        const catData = await catRes.json();
+        const servData = await servRes.json();
 
-      if (!catRes.ok) throw new Error("Failed to fetch categories");
-      if (!servRes.ok) throw new Error("Failed to fetch services");
+        setCategoriesList(Array.isArray(catData) ? catData : catData.data || []);
+        setServicesList(Array.isArray(servData) ? servData : servData.data || []);
+      } catch (err) {
+        console.error("Error fetching categories/services:", err);
+      }
+    };
 
-      // Your API returns arrays directly, so assign them directly
-      setCategoriesList(Array.isArray(catData) ? catData : []);
-      setServicesList(Array.isArray(servData) ? servData : []);
-    } catch (err) {
-      console.error("Error fetching categories/services:", err);
-    }
-  };
+    fetchOptions();
+  }, []);
 
-  fetchOptions();
-}, []);
-
-
-  // Fetch existing provider details
+  // Fetch provider details and populate form
   useEffect(() => {
     const fetchProvider = async () => {
       try {
-        const providerId = localStorage.getItem("providerId");
+        let providerId = localStorage.getItem("providerId");
         const token = localStorage.getItem("token");
 
+        if (!providerId && token) {
+          try {
+            const base64 = token.split(".")[1];
+            const payload = JSON.parse(atob(base64));
+            providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
+          } catch (e) {}
+        }
+
+        if (!providerId) return;
+
         const res = await fetch(`${API_URL}providers/${providerId}`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
 
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Failed to fetch provider");
+        if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
 
-        const provider = data.provider;
+        const provider = data?.provider ?? data ?? {};
 
         setFormData({
-          companyName: provider.name || "",
-          categories: provider.categories_id || [],
-          phoneNumber: provider.phone || "",
-          location: provider.location || "",
-          teamSize: provider.team_size ? provider.team_size.toString() : "",
-          notes: provider.notes || "",
-          website: provider.website || "",
-          facebook: provider.facebook || "",
-          instagram: provider.instagram || "",
-          other: provider.other_link || "",
-          services: provider.service_id || [],
+          companyName: provider.name ?? "",
+          categories: Array.isArray(provider.categories_id)
+            ? provider.categories_id
+            : provider.categories_id
+            ? [provider.categories_id]
+            : [],
+          phoneNumber: provider.phone ?? "",
+          location: provider.location ?? "",
+          teamSize:
+            typeof provider.team_size === "number"
+              ? String(provider.team_size)
+              : provider.team_size ?? "",
+          notes: provider.notes ?? "",
+          website: provider.website ?? provider.web ?? "",
+          facebook: provider.facebook ?? "",
+          instagram: provider.instagram ?? "",
+          other: provider.other_link ?? provider.other ?? "",
+          services: Array.isArray(provider.service_id)
+            ? provider.service_id
+            : provider.service_id
+            ? [provider.service_id]
+            : [],
+          professionalHeadline: provider.professional_headline ?? "",
+          image: provider.image ?? null,
         });
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching provider:", err);
       }
     };
 
@@ -111,11 +129,24 @@ useEffect(() => {
     e.preventDefault();
 
     try {
-      const providerId = localStorage.getItem("providerId");
+      let providerId = localStorage.getItem("providerId");
       const token = localStorage.getItem("token");
+
+      if (!providerId && token) {
+        try {
+          const base64 = token.split(".")[1];
+          const payload = JSON.parse(atob(base64));
+          providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
+        } catch (e) {}
+      }
 
       if (!token) {
         alert("You must be logged in to perform this action.");
+        return;
+      }
+
+      if (!providerId) {
+        alert("No provider id found.");
         return;
       }
 
@@ -123,7 +154,7 @@ useEffect(() => {
         name: formData.companyName,
         phone: formData.phoneNumber,
         location: formData.location,
-        team_size: parseInt(formData.teamSize),
+        team_size: formData.teamSize ? parseInt(formData.teamSize) : null,
         notes: formData.notes,
         website: formData.website,
         facebook: formData.facebook,
@@ -131,6 +162,7 @@ useEffect(() => {
         other_link: formData.other,
         categories_id: formData.categories,
         service_id: formData.services,
+        professional_headline: formData.professionalHeadline,
       };
 
       const res = await fetch(`${API_URL}providers/${providerId}`, {
@@ -148,8 +180,17 @@ useEffect(() => {
       alert("Provider updated successfully!");
     } catch (err) {
       console.error(err);
-      alert(err.message);
+      alert(err.message || "Save failed");
     }
+  };
+
+  const resolveImageUrl = (path) => {
+    if (!path) return null;
+    if (path.startsWith("http://") || path.startsWith("https://")) return path;
+    let base = API_URL.replace(/\/+$/, "");
+    base = base.replace(/\/api\/api$/i, "/api");
+    base = base.replace(/\/api$/i, "/api");
+    return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 
   return (
@@ -184,7 +225,6 @@ useEffect(() => {
               />
             </div>
 
-            {/* Dynamic Categories */}
             <div className="form-grp">
               <label>Company Categories</label>
               <select
@@ -252,7 +292,6 @@ useEffect(() => {
               ></textarea>
             </div>
 
-            <br />
             <h4>Online Presence</h4>
 
             <div className="form-grp">
@@ -299,10 +338,8 @@ useEffect(() => {
               />
             </div>
 
-            <br />
             <h4>Services</h4>
 
-            {/* Dynamic Services */}
             <div className="form-grp">
               <label>Select Services</label>
               <select
@@ -321,6 +358,34 @@ useEffect(() => {
                   <option disabled>Loading services...</option>
                 )}
               </select>
+            </div>
+
+            <h4>Profile</h4>
+
+            <div className="form-grp">
+              <label>Professional Headline</label>
+              <input
+                type="text"
+                name="professionalHeadline"
+                value={formData.professionalHeadline}
+                onChange={handleChange}
+                placeholder="Professional headline"
+              />
+            </div>
+
+            <div className="form-grp">
+              <label>Current Image</label>
+              {formData.image ? (
+                <div style={{ marginTop: 8 }}>
+                  <img
+                    src={resolveImageUrl(formData.image)}
+                    alt="provider"
+                    style={{ maxWidth: 240, maxHeight: 180, objectFit: "cover" }}
+                  />
+                </div>
+              ) : (
+                <div style={{ marginTop: 8, color: "#666" }}>No image set</div>
+              )}
             </div>
 
             <button type="submit" className="btn get-sub">

@@ -289,7 +289,7 @@ const handleSave = async (e) => {
   </div>
 
             {[0, 1, 2].map((i) => (
-              <div key={i}>
+              <div className="img-div" key={i}>
                 <label>Upload Image {i + 1}</label>
                 <button
                   type="button"

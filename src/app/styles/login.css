@@ -265,7 +265,8 @@ p.terms
     border-radius: 10px;
     border: 1px solid #00a056;
         max-width: 300px;
-    max-height: 50px;
+    max-height: 50px; background-color: #ffffff;
+    box-shadow: 0 0 8px rgba(46, 204, 113, .3);
 }
 .login-success p{
    color: #00a056; line-height: 1; position: relative; padding-left: 20px;
