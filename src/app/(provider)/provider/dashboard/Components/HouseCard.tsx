@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { API_URL } from "@/config";
+import { API_URL } from "@/config"; // "https://hanois.dotwibe.com/api/api/"
 
 type HouseCardProps = {
   logo?: string | StaticImageData;
@@ -26,12 +26,17 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const [headline, setHeadline] = useState(initialDescription);
   const [savingHeadline, setSavingHeadline] = useState(false);
 
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  // ✅ Get token from cookies instead of localStorage
+  const getTokenFromCookies = (): string | null => {
+    if (typeof document === "undefined") return null;
+    const match = document.cookie.match(/(?:^|;\s*)token=([^;]+)/);
+    return match ? decodeURIComponent(match[1]) : null;
+  };
 
+  const token = getTokenFromCookies();
   const endpoint = `${API_URL}providers/update-profile/${providerId}`;
 
-  // Helper: always build correct absolute image URL
+  // Helper to resolve image path correctly
   const resolveImageUrl = (path: string | null) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
@@ -41,7 +46,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 
-  // ✅ Unified function to send formData with token
+  // ✅ Always include token in requests
   const sendFormData = async (formData: FormData) => {
     const res = await fetch(endpoint, {
       method: "PUT",
@@ -49,7 +54,14 @@ const HouseCard: React.FC<HouseCardProps> = ({
       headers: {
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
+      credentials: "include", // ensure cookies also go with the request
     });
+
+    if (res.status === 401) {
+      alert("Session expired. Please log in again.");
+      return null;
+    }
+
     if (!res.ok) throw new Error(await res.text());
     return await res.json();
   };
@@ -60,8 +72,9 @@ const HouseCard: React.FC<HouseCardProps> = ({
       const formData = new FormData();
       formData.append("image", file);
       formData.append("professional_headline", headline ?? "");
+
       const data = await sendFormData(formData);
-      setImagePath(data?.data?.provider?.image ?? null);
+      if (data) setImagePath(data?.data?.provider?.image ?? null);
     } catch (err) {
       console.error("Upload error:", err);
       alert("Failed to upload image.");
@@ -84,7 +97,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
       const formData = new FormData();
       formData.append("professional_headline", headline ?? "");
       const data = await sendFormData(formData);
-      setImagePath(data?.data?.provider?.image ?? null);
+      if (data) setImagePath(data?.data?.provider?.image ?? null);
     } catch (err) {
       console.error("Remove error:", err);
       alert("Failed to remove image.");
@@ -99,7 +112,8 @@ const HouseCard: React.FC<HouseCardProps> = ({
       const formData = new FormData();
       formData.append("professional_headline", headline ?? "");
       const data = await sendFormData(formData);
-      setHeadline(data?.data?.provider?.professional_headline ?? headline);
+      if (data)
+        setHeadline(data?.data?.provider?.professional_headline ?? headline);
       setEditing(false);
     } catch (err) {
       console.error("Save headline error:", err);
@@ -153,7 +167,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
               type="button"
               onClick={handleRemoveImage}
               disabled={removing}
-              className="image-remove-btn"
               style={{
                 position: "absolute",
                 top: 6,
