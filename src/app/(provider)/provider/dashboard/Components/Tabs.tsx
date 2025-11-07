@@ -360,33 +360,7 @@ const Tabs = () => {
               </select>
             </div>
 
-            <h4>Profile</h4>
-
-            <div className="form-grp">
-              <label>Professional Headline</label>
-              <input
-                type="text"
-                name="professionalHeadline"
-                value={formData.professionalHeadline}
-                onChange={handleChange}
-                placeholder="Professional headline"
-              />
-            </div>
-
-            <div className="form-grp">
-              <label>Current Image</label>
-              {formData.image ? (
-                <div style={{ marginTop: 8 }}>
-                  <img
-                    src={resolveImageUrl(formData.image)}
-                    alt="provider"
-                    style={{ maxWidth: 240, maxHeight: 180, objectFit: "cover" }}
-                  />
-                </div>
-              ) : (
-                <div style={{ marginTop: 8, color: "#666" }}>No image set</div>
-              )}
-            </div>
+         
 
             <button type="submit" className="btn get-sub">
               Save
