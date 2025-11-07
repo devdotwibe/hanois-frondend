@@ -34,11 +34,18 @@ const HouseCard: React.FC<HouseCardProps> = ({
   // ✅ Use your central API_URL
   const endpoint = `${API_URL}providers/update-profile/${providerId}`;
 
-  const resolveImageUrl = (path: string | null) => {
-    if (!path) return null;
-    if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    return `${API_URL.replace("/api", "")}${path}`; // ensures absolute path (e.g. https://hanois.dotwibe.com/uploads/xxx)
-  };
+const resolveImageUrl = (path: string | null) => {
+  if (!path) return null;
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+
+  // Normalize API_URL: remove trailing slashes, convert "/api/api" -> "/api"
+  let base = API_URL.replace(/\/+$/, "");                // remove trailing slashes
+  base = base.replace(/\/api\/api$/, "/api");            // handle "api/api"
+  base = base.replace(/\/api\/?$/, "/api");              // ensure ends with "/api"
+
+  // Ensure the path is appended with exactly one slash
+  return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
+};
 
   const uploadFile = async (file: File) => {
     try {
