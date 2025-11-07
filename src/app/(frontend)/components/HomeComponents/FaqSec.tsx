@@ -77,7 +77,7 @@ export default function FaqSec({ lang }: { lang: string }) {
                   onClick={() => toggleFaq(index)}
                   dir={lang === "ar" ? "rtl" : "ltr"}
                 >
-                  <div
+                  <div  className="faq-question1"
                     dangerouslySetInnerHTML={{
                       __html: faq.question,
                     }}
