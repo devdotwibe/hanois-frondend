@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import ProjectComponent from "./ProjectComponent";
 import { API_URL } from "@/config"; // import your API_URL
@@ -10,7 +11,6 @@ const TABS = [
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState("companyinfo");
-
   const [formData, setFormData] = useState({
     companyName: "",
     categories: [],
@@ -25,10 +25,42 @@ const Tabs = () => {
     services: [],
   });
 
+  const [categories, setCategories] = useState([]);
+  const [services, setServices] = useState([]);
+
+  // Fetch categories from the API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("https://hanois.dotwibe.com/api/api/categories");
+        if (!res.ok) throw new Error("Failed to fetch categories");
+        const data = await res.json();
+        setCategories(data.categories); // Assuming the response has a `categories` array
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Fetch services from the API
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await fetch("https://hanois.dotwibe.com/api/api/services");
+        if (!res.ok) throw new Error("Failed to fetch services");
+        const data = await res.json();
+        setServices(data.services); // Assuming the response has a `services` array
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchServices();
+  }, []);
+
   // Handle input change for both text and multi-select
   const handleChange = (e) => {
     const { name, value, options } = e.target;
-
     if (options) {
       // handle multiple select
       const values = Array.from(options)
@@ -41,93 +73,80 @@ const Tabs = () => {
   };
 
   // Fetch existing provider details on mount
-useEffect(() => {
+  useEffect(() => {
     const fetchProvider = async () => {
-        try {
-            const providerId = localStorage.getItem("providerId");
-            const token = localStorage.getItem("token");
-            const res = await fetch(`${API_URL}providers/${providerId}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || "Failed to fetch provider");
-
-            console.log("Fetched provider data:", data.provider); // Debug line
-
-            const provider = data.provider;
-
-            setFormData({
-                companyName: provider.name || "",
-                categories: provider.categories_id || [],
-                phoneNumber: provider.phone || "",
-                location: provider.location || "",
-                teamSize: provider.team_size ? provider.team_size.toString() : "",
-                notes: provider.notes || "",
-                website: provider.website || "",
-                facebook: provider.facebook || "",
-                instagram: provider.instagram || "",
-                other: provider.other_link || "",
-                services: provider.service_id || [],
-            });
-        } catch (err) {
-            console.error(err);
-        }
+      try {
+        const providerId = localStorage.getItem("providerId");
+        const token = localStorage.getItem("token");
+        const res = await fetch(`${API_URL}providers/${providerId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to fetch provider");
+        console.log("Fetched provider data:", data.provider); // Debug line
+        const provider = data.provider;
+        setFormData({
+          companyName: provider.name || "",
+          categories: provider.categories_id || [],
+          phoneNumber: provider.phone || "",
+          location: provider.location || "",
+          teamSize: provider.team_size ? provider.team_size.toString() : "",
+          notes: provider.notes || "",
+          website: provider.website || "",
+          facebook: provider.facebook || "",
+          instagram: provider.instagram || "",
+          other: provider.other_link || "",
+          services: provider.service_id || [],
+        });
+      } catch (err) {
+        console.error(err);
+      }
     };
-
     fetchProvider();
-}, []);
-
+  }, []);
 
   // Handle form submit to update provider
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting form data:", formData); // Debug line to check if the data is correct
-    
     try {
-        const providerId = localStorage.getItem("providerId");
-        // const token = localStorage.getItem("token");
-        const payload = {
-            name: formData.companyName,
-            phone: formData.phoneNumber,
-            location: formData.location,
-            team_size: parseInt(formData.teamSize),
-            notes: formData.notes,
-            website: formData.website,
-            facebook: formData.facebook,
-            instagram: formData.instagram,
-            other_link: formData.other,
-            categories_id: formData.categories,
-            service_id: formData.services,
-        };
-
-
-
+      const providerId = localStorage.getItem("providerId");
+      const payload = {
+        name: formData.companyName,
+        phone: formData.phoneNumber,
+        location: formData.location,
+        team_size: parseInt(formData.teamSize),
+        notes: formData.notes,
+        website: formData.website,
+        facebook: formData.facebook,
+        instagram: formData.instagram,
+        other_link: formData.other,
+        categories_id: formData.categories,
+        service_id: formData.services,
+      };
       const token = localStorage.getItem("token");
-
       if (!token) {
         alert("You must be logged in to perform this action.");
         return;
       }
-
       const res = await fetch(`${API_URL}providers/${providerId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify(payload),
         withCredentials: true,
       });
-
-
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Update failed");
-
-        alert("Provider updated successfully!");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Update failed");
+      alert("Provider updated successfully!");
     } catch (err) {
-        console.error(err);
-        alert(err.message);
+      console.error(err);
+      alert(err.message);
     }
-};
-
+  };
 
   return (
     <div className="tab-wrapper1">
@@ -147,6 +166,7 @@ const handleSubmit = async (e) => {
 
       {/* Tab Content */}
       <div className="tab-content-wrap">
+        {/* Company Information Tab */}
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
           <form className="settingsform" onSubmit={handleSubmit}>
             <div className="form-grp">
@@ -170,11 +190,11 @@ const handleSubmit = async (e) => {
                 value={formData.categories}
                 onChange={handleChange}
               >
-                <option value="1">Tech</option>
-                <option value="2">Finance</option>
-                <option value="3">Marketing</option>
-                <option value="4">Design</option>
-                <option value="5">Consulting</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -227,7 +247,6 @@ const handleSubmit = async (e) => {
 
             <br />
             <h4>Online Presence</h4>
-
             <div className="form-grp">
               <label>Website</label>
               <input
@@ -278,7 +297,6 @@ const handleSubmit = async (e) => {
 
             <br />
             <h4>Services</h4>
-
             <div className="form-grp">
               <label>Select Services</label>
               <select
@@ -287,11 +305,11 @@ const handleSubmit = async (e) => {
                 value={formData.services}
                 onChange={handleChange}
               >
-                <option value="1">Web Development</option>
-                <option value="2">App Development</option>
-                <option value="3">SEO</option>
-                <option value="4">Marketing</option>
-                <option value="5">Consulting</option>
+                {services.map((service) => (
+                  <option key={service.id} value={service.id}>
+                    {service.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -301,6 +319,7 @@ const handleSubmit = async (e) => {
           </form>
         </div>
 
+        {/* Project Tab */}
         <div className={`tab-panel ${activeTab === "project" ? "show" : ""}`}>
           <ProjectComponent />
         </div>
