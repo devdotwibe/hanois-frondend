@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { API_URL } from "@/config"; // "https://hanois.dotwibe.com/api/api/"
+import { API_URL } from "@/config";
 
 type HouseCardProps = {
   logo?: string | StaticImageData;
@@ -26,44 +26,102 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const [headline, setHeadline] = useState(initialDescription);
   const [savingHeadline, setSavingHeadline] = useState(false);
 
-  // ✅ Get token from cookies instead of localStorage
+  // Try a few common cookie names. If the cookie is HttpOnly you will NOT see it here.
   const getTokenFromCookies = (): string | null => {
     if (typeof document === "undefined") return null;
-    const match = document.cookie.match(/(?:^|;\s*)token=([^;]+)/);
-    return match ? decodeURIComponent(match[1]) : null;
+    const cookieString = document.cookie || "";
+    if (!cookieString) return null;
+    const cookieNames = ["token", "access_token", "jwt", "auth_token"];
+    for (const name of cookieNames) {
+      const match = cookieString.match(new RegExp("(?:^|;\\s*)" + name + "=([^;]+)"));
+      if (match) return decodeURIComponent(match[1]);
+    }
+    return null;
   };
 
   const token = getTokenFromCookies();
-  const endpoint = `${API_URL}providers/update-profile/${providerId}`;
+  const endpoint = `${API_URL.replace(/\/+$/, "")}/providers/update-profile/${providerId}`;
 
-  // Helper to resolve image path correctly
   const resolveImageUrl = (path: string | null) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
+    // Ensure base ends with no trailing slash, and API root is correct
     let base = API_URL.replace(/\/+$/, "");
+    // If your API_URL contains /api twice, fix it; adjust as needed
     base = base.replace(/\/api\/api$/i, "/api");
     base = base.replace(/\/api$/i, "/api");
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 
-  // ✅ Always include token in requests
+  // Diagnostics helper
+  const logRequestDiagnostics = (method: string, url: string, hasToken: boolean) => {
+    console.info(`[HouseCard] ${method} ${url} — tokenReadable: ${hasToken}`);
+    try {
+      console.info("[HouseCard] document.cookie:", typeof document !== "undefined" ? document.cookie : "(server)");
+    } catch (e) {
+      console.info("[HouseCard] document.cookie: (unavailable)");
+    }
+  };
+
   const sendFormData = async (formData: FormData) => {
-    const res = await fetch(endpoint, {
-      method: "PUT",
-      body: formData,
-      headers: {
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-      credentials: "include", // ensure cookies also go with the request
-    });
+    logRequestDiagnostics("PUT", endpoint, Boolean(token));
+
+    // Only attach Authorization header if we actually read a token from cookies.
+    // If token is HttpOnly, token === null and we rely on cookies being sent via credentials: "include"
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+      // DO NOT set Content-Type when sending FormData. Browser sets it automatically.
+    }
+
+    let res: Response;
+    try {
+      res = await fetch(endpoint, {
+        method: "PUT",
+        body: formData,
+        headers,
+        credentials: "include", // ensures browser sends cookies (HttpOnly or not)
+      });
+    } catch (fetchErr) {
+      console.error("[HouseCard] network/fetch error:", fetchErr);
+      throw new Error(`Network error: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`);
+    }
 
     if (res.status === 401) {
       alert("Session expired. Please log in again.");
       return null;
     }
 
-    if (!res.ok) throw new Error(await res.text());
-    return await res.json();
+    if (!res.ok) {
+      // try to get response body for debugging
+      let text = "";
+      try {
+        text = await res.text();
+      } catch (e) {
+        text = `(failed reading response text)`;
+      }
+      console.error("[HouseCard] server error:", res.status, res.statusText, text);
+      throw new Error(`Request failed: ${res.status} ${res.statusText} — ${text}`);
+    }
+
+    // parse JSON safely
+    const contentType = res.headers.get("content-type") || "";
+    if (contentType.includes("application/json")) {
+      try {
+        return await res.json();
+      } catch (e) {
+        console.warn("[HouseCard] invalid JSON response", e);
+        return null;
+      }
+    } else {
+      // If server responds with plain text, return it
+      try {
+        const text = await res.text();
+        return text;
+      } catch {
+        return null;
+      }
+    }
   };
 
   const uploadFile = async (file: File) => {
@@ -72,12 +130,22 @@ const HouseCard: React.FC<HouseCardProps> = ({
       const formData = new FormData();
       formData.append("image", file);
       formData.append("professional_headline", headline ?? "");
-
       const data = await sendFormData(formData);
-      if (data) setImagePath(data?.data?.provider?.image ?? null);
+      // If the server returns the updated provider object, update UI from it
+      if (data && typeof data === "object") {
+        // safe path lookups
+        const provider = (data as any)?.data?.provider ?? (data as any)?.provider ?? null;
+        if (provider) {
+          setImagePath(provider.image ?? null);
+          if (provider.professional_headline) setHeadline(provider.professional_headline);
+        } else {
+          // fallback: if server returned image path directly
+          if ((data as any)?.image) setImagePath((data as any).image);
+        }
+      }
     } catch (err) {
       console.error("Upload error:", err);
-      alert("Failed to upload image.");
+      alert("Failed to upload image. See console for details.");
     } finally {
       setUploading(false);
     }
@@ -95,12 +163,22 @@ const HouseCard: React.FC<HouseCardProps> = ({
     try {
       setRemoving(true);
       const formData = new FormData();
+      // If server expects some field to indicate removal, include it. 
+      // If not, we'll just send headline (which is what your original code did).
       formData.append("professional_headline", headline ?? "");
+      // Optionally some APIs expect image to be empty or a remove flag:
+      // formData.append("remove_image", "1");
       const data = await sendFormData(formData);
-      if (data) setImagePath(data?.data?.provider?.image ?? null);
+      if (data && typeof data === "object") {
+        const provider = (data as any)?.data?.provider ?? null;
+        if (provider) {
+          setImagePath(provider.image ?? null);
+          if (provider.professional_headline) setHeadline(provider.professional_headline);
+        }
+      }
     } catch (err) {
       console.error("Remove error:", err);
-      alert("Failed to remove image.");
+      alert("Failed to remove image. See console for details.");
     } finally {
       setRemoving(false);
     }
@@ -112,12 +190,16 @@ const HouseCard: React.FC<HouseCardProps> = ({
       const formData = new FormData();
       formData.append("professional_headline", headline ?? "");
       const data = await sendFormData(formData);
-      if (data)
-        setHeadline(data?.data?.provider?.professional_headline ?? headline);
+      if (data && typeof data === "object") {
+        const provider = (data as any)?.data?.provider ?? null;
+        if (provider && provider.professional_headline) {
+          setHeadline(provider.professional_headline);
+        }
+      }
       setEditing(false);
     } catch (err) {
       console.error("Save headline error:", err);
-      alert("Failed to save headline.");
+      alert("Failed to save headline. See console for details.");
     } finally {
       setSavingHeadline(false);
     }
@@ -139,13 +221,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
               />
             </div>
           ) : logo ? (
-            <Image
-              src={logo}
-              alt={`${name} logo`}
-              width={160}
-              height={128}
-              className="house-card-img"
-            />
+            <Image src={logo} alt={`${name} logo`} width={160} height={128} className="house-card-img" />
           ) : (
             <div
               style={{
@@ -226,11 +302,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
           <>
             <p className="house-card-desc">{headline}</p>
             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              <button
-                className="house-card-btn"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
-              >
+              <button className="house-card-btn" onClick={() => fileInputRef.current?.click()} disabled={uploading}>
                 {uploading ? "Uploading..." : "Upload New Image"}
               </button>
               <button
@@ -250,13 +322,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
         )}
       </div>
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        style={{ display: "none" }}
-        onChange={handleFileChange}
-      />
+      <input ref={fileInputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleFileChange} />
     </div>
   );
 };
