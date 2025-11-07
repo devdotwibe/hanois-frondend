@@ -71,7 +71,7 @@ const ReadySec = ({ lang }: { lang: string }) => {
         <div className="containers">
           <div className="ready-div">
             {loading ? (
-              <p>Loading content...</p>
+              <p></p>
             ) : (
               <>
               
