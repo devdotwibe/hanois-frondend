@@ -374,33 +374,14 @@ padding: 80px 0 0;
     margin: 0 0 30px;
     border: 1px solid #ffffff;
     border-radius: 8px;
-    /* box-shadow: 0 -4px 12px rgba(0, 0, 0, .1); */
-    /* box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px; */
-    /* box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px; */
+   
 }
 .business-block:hover {
     box-shadow: 0 10px 30px hsla(217, 91%, 60%, 0.2);
     border: 1px solid var(--primary-color);
 }
 
-/* .business-block:first-child {
-top: 100px; 
-}
 
-
-.business-block:nth-child(2) {
-top: 230px;
-}
-
-
-.business-block:nth-child(3) {
-top: 350px; 
-}
-
-.business-block:nth-child(4) {
-top: 400px;  opacity: 0;
-
-} */
 
 
 
@@ -1100,13 +1081,6 @@ padding-block: 60px;
 
 
 
-  .seeker-dashboard1 .header {
-    padding-top: 0;
-}
-
-.seeker-dashboard1 .header-div {
-    background: #ffffff;
-}
 
 
 
@@ -1393,30 +1367,53 @@ ul.tab-nav1 {
 }
 
 
-
+/* ----------------------custom------------------------------------- */
 
 .seeker-dashboard1 .header .containers ,
-.prov-dashboard .header .containers {
+.prov-dashboard .header .containers,
+.directory .header .containers{
     width: 100%;
     max-width: 100%;
-    padding-inline: 250px;
+    padding-inline: 300px;
 }
-.seeker-dashboard1 .footer .containers, 
-.prov-dashboard .footer .containers {
+
+.seeker-dashboard1 .header .header-div,
+.prov-dashboard .header .header-div,
+.directory .header .header-div
+{padding-inline: 0;}
+
+
+
+.seeker-dashboard1 .footer .containers,
+.prov-dashboard .footer .containers,
+.directory .footer .containers
+ {
+   justify-content: flex-start; 
+    gap: 9%; 
     width: 100%;
     max-width: 100%;
-    padding-inline: 250px;
+    max-width: 100%;
+    padding-inline: 300px;
 }
 
-.seeker-dashboard1 .header .header-div{padding-inline: 0;}
 
-.prov-dashboard .header .header-div{padding-inline: 0;}
 
-.seeker-dashboard1 .footer .footer-container,
-.prov-dashboard .footer .footer-container .containers {
-    justify-content: flex-start;
-    gap: 8%;
+.seeker-dashboard1 .header,
+.directory .header
+ {
+    padding-top: 0;
 }
+
+.seeker-dashboard1 .header-div,
+.directory .header-div
+ {
+    background: #ffffff;
+}
+.sidebar-div1{margin-top: 70px;}
+
+.containers-limit{padding-inline: 300px;}
+
+/* ----------------------------------------------------------------------- */
 
 
 
@@ -1482,11 +1479,15 @@ ul.tab-nav1 {
 
 
 .filter-container {
-  width: 320px;
+  width: 300px;
   padding: 32px 24px;
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+border-right: 1px solid #e0e0e0;
+}
+
+.spd-outer1 {
+    width: calc(100% - 300px); padding: 0 300px 0 40px;
 }
 
 .filter-title {
@@ -1590,8 +1591,8 @@ ul.tab-nav1 {
 }
 
 .custom-checkbox.checked {
-  background-color: #6366f1;
-  border-color: #6366f1;
+  background-color: #2050f5;
+  border-color: #2050f5;
 }
 
 .checkmark {
@@ -1607,10 +1608,239 @@ ul.tab-nav1 {
 .form-c .login-success{right: 0;}
 
 
+.sidebar-div1 {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.outline-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 0 0 20px;
+}
+
+.outline-items {
+    border: 1px solid #000000;
+    padding: 10px 20px;
+    border-radius: 24px;
+     font-family: 'Avenir-medium';
+
+}
+.detail-card .house-card-info {
+    padding-block: 20px;
+}
+
+.detailpage {
+    padding: 50px 0;
+}
+.detcol-1 {
+    width: 60%;
+}
+
+.detcol-2 {
+    width: 40%;
+}
+.about-content h3 {
+    margin: 0 0 8px;
+  font-family: 'Avenir-Black';
+    font-size: 23px;
+}
+
+.about-content {
+    margin: 0 0 50px;
+}
+
+
+.businesscontainer h2 {
+    margin: 0 0 8px;
+  font-family: 'Avenir-Black';
+    font-size: 23px;
+}
+
+.info-label {
+    font-size: 20px;
+    font-family: 'Avenir-medium';
+
+}
+
+
+.info1 {
+    width: 50%;
+}
+
+.info-grid {
+    display: flex;
+}
+
+.info2 {
+    padding-left: 50px;
+}
+
+.info-item {
+    margin: 0 0 20px;
+}
+
+.serv-div h2 {
+    margin: 0 0 8px;
+    font-family: Avenir-Black;
+    font-size: 23px;
+}
+.serv-div{
+  margin: 50px 0;
+   max-width: 780px;
+}
+
+.businesscontainer {
+    max-width: 780px;
+}
+.build-col {
+    display: flex;
+    flex-wrap: wrap;
+    background: #f1f3fa;
+    margin: 0 0 20px;
+    border-radius: 10px;
+}
+
+.build-col1 {
+    width: 50%;
+    padding: 20px;
+}
+
+.build-col2 {
+    border-left: 1px solid #e0e0e0;
+}
+.para-serv {
+    margin: 40px 0 0;
+}
+
+
+.torrence-slider .slick-slide{
+    padding: 0 5px;
+}
+
+
+.torrence-slider .slick-list {
+  margin: 0 -5px; 
+}
+
+
+.torrance-slider-wrapper {
+  position: relative;
+  margin: 0 auto;
+  padding: 60px 0px;
+}
+
+/* Arrows */
+.arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.arrow-btn:hover {
+  background: #f3f3f3;
+}
 
 
 
 
+.torrance-slider-wrapper .arrow-btn.prev {
+    left: -70px;
+}
+
+.torrance-slider-wrapper .arrow-btn.next {
+  right: -70px;
+}
+
+/* Card Styles */
+.torrance-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+.torrance-card-img {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+}
+
+.torrance-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.category-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  border: 1px solid white;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(3px);
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 9999px;
+}
+
+.torrance-card-info {
+  padding: 20px;
+}
+
+.torrance-card-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.torrance-card-info .desc {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.torrance-card-info p {
+  font-size: 14px;
+  color: #333;
+  margin: 2px 0;
+}
+.torrance-slider-wrapper .torrance-card {
+    width: 100%;
+}
+
+
+.torrance-slider-wrapper .slick-slide {
+    padding: 0 5px;
+}
+
+.torrance-slider-wrapper .slick-list {
+    margin: 0 -5px;
+}
 
 
 /* ------------------------------------responsive */

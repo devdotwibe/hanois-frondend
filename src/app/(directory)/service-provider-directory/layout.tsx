@@ -42,18 +42,18 @@ export default function RootLayout({
        <Header />
 
 
-       <div className="sidebar-div">
-        <DirectorySidebar />
+       
+       
 
       
 
-          <div className="sidebar-pages">
+        
+
              {children}
 
-          </div>
+   
            
 
-       </div>
 
           
 
