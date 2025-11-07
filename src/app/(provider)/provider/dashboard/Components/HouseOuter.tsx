@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import HouseCard from "./HouseCard";
-import { API_URL } from "@/config";
+import { API_URL } from "@/config"; 
 
 const HouseOuter: React.FC = () => {
   const [providerId, setProviderId] = useState<number | null>(null);
@@ -9,66 +9,46 @@ const HouseOuter: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
-      try {
-        // determine provider id (from local "user" or JWT token)
-        const userData = localStorage.getItem("user");
-        let id: number | null = null;
+    try {
+      const userData = localStorage.getItem("user");
+      let id: number | null = null;
 
-        if (userData) {
-          const parsed = JSON.parse(userData);
-          id = Number(parsed?.id || parsed?.provider_id || parsed?.user_id) || null;
-        } else {
-          const token = localStorage.getItem("token");
-          if (token) {
-            try {
-              const base64 = token.split(".")[1];
-              const payload = JSON.parse(atob(base64));
-              id = Number(payload?.provider_id || payload?.id || payload?.user_id) || null;
-            } catch (e) {
-              // ignore token parse errors
-              id = null;
-            }
-          }
+      if (userData) {
+        const parsed = JSON.parse(userData);
+        id = Number(parsed?.id || parsed?.provider_id || parsed?.user_id);
+      } else {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const base64 = token.split(".")[1];
+          const payload = JSON.parse(atob(base64));
+          id = Number(payload?.provider_id || payload?.id || payload?.user_id);
         }
+      }
 
-        if (!id) {
-          setLoading(false);
-          return;
-        }
+      if (!id) {
+        setLoading(false);
+        return;
+      }
 
-        setProviderId(id);
+      setProviderId(id);
 
-        // try cache first
-        const cached = localStorage.getItem(`provider_${id}`);
-        if (cached) {
-          try {
-            setProviderData(JSON.parse(cached));
-          } catch (e) {
-            // ignore parse error and continue to fetch fresh
-          }
-        }
+      // Load cached data
+      const cached = localStorage.getItem(`provider_${id}`);
+      if (cached) {
+        setProviderData(JSON.parse(cached));
+        setLoading(false);
+      }
 
-        // fetch single provider by id (NOT the whole list)
+      // Fetch fresh data in background
+      (async () => {
         try {
-          const token = localStorage.getItem("token");
-          const res = await fetch(`${API_URL}providers/${id}`, {
-            headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-          });
-
+          const res = await fetch(`${API_URL}providers`);
           const json = await res.json();
-
-          // support both shapes: { provider: {...} } or provider object directly
-          const provider = json?.provider ?? json ?? null;
-
-          if (provider) {
-            localStorage.setItem(`provider_${id}`, JSON.stringify(provider));
-            setProviderData(provider);
-          } else {
-            // If API returned success wrapper, try other common shapes
-            if (json?.data?.provider) {
-              localStorage.setItem(`provider_${id}`, JSON.stringify(json.data.provider));
-              setProviderData(json.data.provider);
+          if (json?.success) {
+            const match = json.data.providers.find((p: any) => p.id === id);
+            if (match) {
+              localStorage.setItem(`provider_${id}`, JSON.stringify(match));
+              setProviderData(match);
             }
           }
         } catch (err) {
@@ -76,15 +56,15 @@ const HouseOuter: React.FC = () => {
         } finally {
           setLoading(false);
         }
-      } catch (err) {
-        console.error("Error getting provider ID:", err);
-        setLoading(false);
-      }
-    })();
+      })();
+    } catch (err) {
+      console.error("Error getting provider ID:", err);
+      setLoading(false);
+    }
   }, []);
 
-  // keep original behavior: render nothing if still loading or no provider
-  if (loading) return null;
+  if (loading) return null; // or show a skeleton loader
+
   if (!providerId || !providerData) return null;
 
   return (
