@@ -4,18 +4,16 @@ import HouseCard from "./HouseCard";
 import logo1 from "../../../../../../public/images/ahi-logo.jpg";
 
 type HouseOuterProps = {
-  providerId?: number; // now dynamic via prop
+  providerId: number; // required now
 };
 
-const HouseOuter: React.FC<HouseOuterProps> = ({ providerId = 5 }) => {
-  // default stays 5 if caller doesn't provide one
+const HouseOuter: React.FC<HouseOuterProps> = ({ providerId }) => {
   return (
     <div>
       <HouseCard
         logo={logo1}
         name="American House Improvements Inc."
         providerId={providerId}
-        // no initialDescription / initialImagePath passed on purpose
       />
     </div>
   );
