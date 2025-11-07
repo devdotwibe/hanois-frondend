@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import HouseCard from "./HouseCard";
-
-const API_URL = "https://hanois.dotwibe.com/api/api/";
+import { API_URL } from "@/config"; // ✅ Import from your config file
 
 const HouseOuter: React.FC = () => {
   const [providerId, setProviderId] = useState<number | null>(null);
