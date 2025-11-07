@@ -1,62 +1,72 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HouseCard from "./HouseCard";
 
 const API_URL = "https://hanois.dotwibe.com/api/api/";
 
 const HouseOuter: React.FC = () => {
-  let providerId: number | null = null;
+  const [providerId, setProviderId] = useState<number | null>(null);
+  const [providerData, setProviderData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (typeof window !== "undefined") {
+  useEffect(() => {
     try {
       const userData = localStorage.getItem("user");
+      let id: number | null = null;
+
       if (userData) {
         const parsed = JSON.parse(userData);
-        providerId = Number(parsed?.id || parsed?.provider_id || parsed?.user_id);
+        id = Number(parsed?.id || parsed?.provider_id || parsed?.user_id);
       } else {
         const token = localStorage.getItem("token");
         if (token) {
           const base64 = token.split(".")[1];
           const payload = JSON.parse(atob(base64));
-          providerId = Number(payload?.provider_id || payload?.id || payload?.user_id);
+          id = Number(payload?.provider_id || payload?.id || payload?.user_id);
         }
       }
+
+      if (!id) {
+        setLoading(false);
+        return;
+      }
+
+      setProviderId(id);
+
+      // Load cached data
+      const cached = localStorage.getItem(`provider_${id}`);
+      if (cached) {
+        setProviderData(JSON.parse(cached));
+        setLoading(false);
+      }
+
+      // Fetch fresh data in background
+      (async () => {
+        try {
+          const res = await fetch(`${API_URL}providers`);
+          const json = await res.json();
+          if (json?.success) {
+            const match = json.data.providers.find((p: any) => p.id === id);
+            if (match) {
+              localStorage.setItem(`provider_${id}`, JSON.stringify(match));
+              setProviderData(match);
+            }
+          }
+        } catch (err) {
+          console.error("Failed to fetch provider data:", err);
+        } finally {
+          setLoading(false);
+        }
+      })();
     } catch (err) {
       console.error("Error getting provider ID:", err);
+      setLoading(false);
     }
-  }
+  }, []);
 
-  // If no user logged in, render nothing
-  if (!providerId) return null;
+  if (loading) return null; // or show a skeleton loader
 
-  // Load cached provider data if available
-  const cachedData =
-    typeof window !== "undefined"
-      ? localStorage.getItem(`provider_${providerId}`)
-      : null;
-
-  let providerData: any = cachedData ? JSON.parse(cachedData) : null;
-
-  // Fetch in background to refresh cache
-  if (typeof window !== "undefined" && !providerData) {
-    (async () => {
-      try {
-        const res = await fetch(`${API_URL}providers`);
-        const json = await res.json();
-        if (json?.success) {
-          const match = json.data.providers.find((p: any) => p.id === providerId);
-          if (match) {
-            localStorage.setItem(`provider_${providerId}`, JSON.stringify(match));
-          }
-        }
-      } catch (err) {
-        console.error("Failed to fetch provider data:", err);
-      }
-    })();
-  }
-
-  // Don’t render anything until real data is present
-  if (!providerData) return null;
+  if (!providerId || !providerData) return null;
 
   return (
     <div>
