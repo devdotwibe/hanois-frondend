@@ -44,7 +44,7 @@ body{
     padding: 12px 26px;
   font-family: 'Avenir-Book';
     font-size: 16px;
-    display: inline-block; border: none;
+    display: inline-block; border: none; cursor: pointer;
 }
 .admin-nav button:hover{
      background: #4c72f6;
