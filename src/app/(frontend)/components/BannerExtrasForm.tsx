@@ -22,20 +22,28 @@ export default function BannerExtrasForm() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  const [showSource, setShowSource] = useState(false);
   // 🧠 Quill Toolbar Configuration
-  const modules = useMemo(
-    () => ({
-      toolbar: [
+const modules = useMemo(
+  () => ({
+    toolbar: {
+      container: [
         [{ header: [1, 2, 3, false] }],
         ["bold", "italic", "underline", "strike"],
         [{ list: "ordered" }, { list: "bullet" }],
         ["link"],
         ["clean"],
+        ["showHtml"], // custom button
       ],
-    }),
-    []
-  );
-
+      handlers: {
+        showHtml: function () {
+          setShowSource((prev) => !prev);
+        },
+      },
+    },
+  }),
+  []
+);
   // 🟩 Fetch banner extras data on mount
   useEffect(() => {
     (async () => {
@@ -100,14 +108,21 @@ export default function BannerExtrasForm() {
       <div className="form-section">
         <h3>English Content</h3>
 
-        <label>Subtitle (English)</label>
-        <ReactQuill
-          theme="snow"
-          value={data.subtitle_en}
-          onChange={(val) => setData({ ...data, subtitle_en: val })}
-          modules={modules}
-        />
-
+    <label>Subtitle (English)</label>
+{showSource ? (
+  <textarea
+    value={data.subtitle_en}
+    onChange={(e) => setData({ ...data, subtitle_en: e.target.value })}
+    style={{ width: "100%", height: "200px" }}
+  />
+) : (
+  <ReactQuill
+    theme="snow"
+    value={data.subtitle_en}
+    onChange={(val) => setData({ ...data, subtitle_en: val })}
+    modules={modules}
+  />
+)}
         <label>Subheading (English)</label>
         <input
           type="text"
@@ -124,7 +139,7 @@ export default function BannerExtrasForm() {
       </div>
 
       {/* 🟩 Arabic Section */}
-      <div className="form-section">
+      <div className="form-section" style={{ display: "none" }}>
         <h3>Arabic Content</h3>
 
         <label>Subtitle (Arabic)</label>

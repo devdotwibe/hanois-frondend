@@ -1,8 +1,13 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
+import dynamic from "next/dynamic";
 import { API_URL } from "@/config";
+import "react-quill-new/dist/quill.snow.css";
 import "../../(admin)/admin/home/admin-home.css";
+
+// 🟩 Dynamically import Quill (avoids SSR issues)
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export default function BannerSubExtrasForm() {
   const [formData, setFormData] = useState({
@@ -14,6 +19,40 @@ export default function BannerSubExtrasForm() {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [showSource, setShowSource] = useState(false);
+
+  // 🧠 Quill Toolbar Configuration (same as before)
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline", "strike"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["link"],
+          ["clean"],
+          ["codeView"], // Custom source toggle button
+        ],
+        handlers: {
+          codeView: function () {
+            setShowSource((prev) => !prev);
+          },
+        },
+      },
+    }),
+    []
+  );
+
+if (typeof window !== "undefined" && window.Quill) {
+  const Quill = window.Quill;
+  const icons = Quill.import("ui/icons");
+  icons["codeView"] = `
+    <svg viewBox="0 0 18 18">
+      <polyline class="ql-even" points="5 7 3 9 5 11"></polyline>
+      <polyline class="ql-even" points="13 7 15 9 13 11"></polyline>
+      <line class="ql-even" x1="10" x2="8" y1="5" y2="13"></line>
+    </svg>`;
+}
 
   // 🟩 Fetch existing data (on mount)
   useEffect(() => {
@@ -39,13 +78,13 @@ export default function BannerSubExtrasForm() {
     fetchSubExtras();
   }, []);
 
-  // 🟩 Handle input
-  const handleChange = (e) => {
+  // 🟩 Handle input change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 🟩 Submit updated sub extras
-  const handleSubmit = async (e) => {
+  // 🟩 Handle save/update
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
@@ -68,21 +107,41 @@ export default function BannerSubExtrasForm() {
 
   return (
     <div className="extras-form-container">
-     
-
       <form onSubmit={handleSubmit} className="extras-form">
+        {/* 🟩 Sub Description (English) - ReactQuill */}
         <div className="form-field">
           <label>Sub Description (English)</label>
-          <input
-            type="text"
-            name="subdescription"
-            value={formData.subdescription}
-            onChange={handleChange}
-            placeholder="Enter sub description in English"
-            required
-          />
+          {showSource ? (
+            <textarea
+              name="subdescription"
+              value={formData.subdescription}
+              onChange={(e) =>
+                setFormData({ ...formData, subdescription: e.target.value })
+              }
+              style={{
+                width: "100%",
+                height: "200px",
+                border: "1px solid #ccc",
+                borderRadius: "6px",
+                padding: "10px",
+                fontFamily: "monospace",
+                backgroundColor: "#1e1e1e",
+                color: "#dcdcdc",
+              }}
+            />
+          ) : (
+            <ReactQuill
+              theme="snow"
+              value={formData.subdescription}
+              onChange={(val) =>
+                setFormData({ ...formData, subdescription: val })
+              }
+              modules={modules}
+            />
+          )}
         </div>
 
+        {/* 🟩 Sub Button Name (English) */}
         <div className="form-field">
           <label>Sub Button Name (English)</label>
           <input
@@ -97,7 +156,8 @@ export default function BannerSubExtrasForm() {
 
         <hr />
 
-        <div className="form-field">
+        {/* 🟩 Arabic Section */}
+        <div className="form-field" style={{ display: "none" }} >
           <label>Sub Description (Arabic)</label>
           <input
             type="text"
@@ -106,11 +166,11 @@ export default function BannerSubExtrasForm() {
             value={formData.arabicsubdescription}
             onChange={handleChange}
             placeholder="Enter Arabic sub description"
-            required
+          
           />
         </div>
 
-        <div className="form-field">
+        <div className="form-field" style={{ display: "none" }}>
           <label>Sub Button Name (Arabic)</label>
           <input
             type="text"
@@ -119,14 +179,16 @@ export default function BannerSubExtrasForm() {
             value={formData.arabicsubbuttonname}
             onChange={handleChange}
             placeholder="Enter Arabic sub button name"
-            required
+           
           />
         </div>
 
+        {/* 🟩 Submit Button */}
         <button type="submit" disabled={loading}>
           {loading ? "Saving..." : "Save Changes"}
         </button>
 
+        {/* 🟩 Status Message */}
         {message && (
           <p
             className={`message ${

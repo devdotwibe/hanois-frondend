@@ -1,8 +1,13 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
+import dynamic from "next/dynamic";
 import { API_URL } from "@/config";
+import "react-quill-new/dist/quill.snow.css";
 import "../../(admin)/admin/home/admin-home.css";
+
+// 🟩 Dynamically import ReactQuill (avoids SSR issues)
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export default function FaqForm() {
   const [faqs, setFaqs] = useState([]);
@@ -17,49 +22,96 @@ export default function FaqForm() {
   const [editingId, setEditingId] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showSourceQuestion, setShowSourceQuestion] = useState(false);
+  const [showSourceAnswer, setShowSourceAnswer] = useState(false);
+
+  // 🧠 Quill Toolbar Configuration
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline", "strike"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["link"],
+          ["clean"],
+          ["codeView"], // custom Source button
+        ],
+        handlers: {
+          codeView: function () {
+            // Handled per editor separately
+          },
+        },
+      },
+    }),
+    []
+  );
+
+  // 🟢 Add custom Source icon for toolbar
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.Quill) {
+      const Quill = window.Quill;
+      const icons = Quill.import("ui/icons");
+      icons["codeView"] = `
+        <svg viewBox="0 0 18 18">
+          <polyline class="ql-even" points="5 7 3 9 5 11"></polyline>
+          <polyline class="ql-even" points="13 7 15 9 13 11"></polyline>
+          <line class="ql-even" x1="10" x2="8" y1="5" y2="13"></line>
+        </svg>`;
+    }
+  }, []);
 
   // 🟩 Fetch FAQs on mount
   useEffect(() => {
     fetchFaqs();
   }, []);
 
-  const fetchFaqs = async () => {
-    try {
-      const res = await axios.get(`${API_URL}faq`);
-      setFaqs(res.data?.data?.faqs || []);
-    } catch (err) {
-      console.error("❌ Error fetching FAQs:", err);
-      setMessage("❌ Failed to load FAQs.");
-    }
-  };
+const fetchFaqs = async () => {
+  try {
+    const res = await axios.get(`${API_URL}faq`);
+    const allFaqs = res.data?.data?.faqs || [];
+
+    // ✅ Filter only English FAQs
+    const englishFaqs = allFaqs.filter(
+      (faq) => (faq.language || "").trim().toLowerCase() === "en"
+    );
+
+    setFaqs(englishFaqs);
+  } catch (err) {
+    console.error("❌ Error fetching FAQs:", err);
+    setMessage("❌ Failed to load FAQs.");
+  }
+};
+
 
   // 🟩 Handle form input
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 🟩 Save or Update FAQ
 const handleSubmit = async (e) => {
   e.preventDefault();
   setLoading(true);
   setMessage("");
 
+  const englishFaqData = {
+    title: formData.engtitle,
+    question: formData.engquestion,
+    answer: formData.enganswer,
+    language: "en",
+  };
+
   try {
     let res;
-
     if (editingId) {
-      // 🟩 Update existing FAQ
-      res = await axios.put(`${API_URL}faq/${editingId}`, formData);
+      res = await axios.put(`${API_URL}faq/${editingId}`, englishFaqData);
     } else {
-      // 🟩 Create new FAQ
-      res = await axios.post(`${API_URL}faq`, formData);
+      res = await axios.post(`${API_URL}faq`, englishFaqData);
     }
 
     if (res.status === 200 || res.status === 201) {
       setMessage(editingId ? "✅ FAQ updated successfully!" : "✅ FAQ created successfully!");
       fetchFaqs();
-
-      // Reset form
       setFormData({
         engtitle: "",
         engquestion: "",
@@ -68,10 +120,8 @@ const handleSubmit = async (e) => {
         arabquestion: "",
         arabanswer: "",
       });
-
       setEditingId(null);
     }
-    
   } catch (err) {
     console.error("❌ Error saving FAQ:", err);
     setMessage("❌ Failed to save FAQ.");
@@ -80,7 +130,7 @@ const handleSubmit = async (e) => {
   }
 };
 
-  // 🟩 Edit FAQ (populate form)
+  // 🟩 Edit FAQ
   const handleEdit = (faq) => {
     setEditingId(faq.id);
     setFormData({
@@ -108,63 +158,119 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="faq-section">
-     
-
       <form onSubmit={handleSubmit} className="faq-form">
         <h3>{editingId ? "Edit FAQ" : "Create New FAQ"}</h3>
 
-        <label>English Title</label>
+        {/* <label>English Title</label>
         <input
           type="text"
           name="engtitle"
           value={formData.engtitle}
           onChange={handleChange}
-          required
-        />
 
+        /> */}
+
+        {/* 🟩 English Question with ReactQuill */}
         <label>English Question</label>
-        <textarea
-          name="engquestion"
-          value={formData.engquestion}
-          onChange={handleChange}
-          required
-        />
+        {showSourceQuestion ? (
+          <textarea
+            value={formData.engquestion}
+            onChange={(e) =>
+              setFormData({ ...formData, engquestion: e.target.value })
+            }
+            style={{
+              width: "100%",
+              height: "200px",
+              border: "1px solid #ccc",
+              borderRadius: "6px",
+              padding: "10px",
+              fontFamily: "monospace",
+              backgroundColor: "#1e1e1e",
+              color: "#dcdcdc",
+            }}
+          />
+        ) : (
+          <ReactQuill
+            theme="snow"
+            value={formData.engquestion}
+            onChange={(val) => setFormData({ ...formData, engquestion: val })}
+            modules={{
+              ...modules,
+              toolbar: {
+                ...modules.toolbar,
+                handlers: {
+                  codeView: () =>
+                    setShowSourceQuestion((prev) => !prev),
+                },
+              },
+            }}
+          />
+        )}
 
+        {/* 🟩 English Answer with ReactQuill */}
         <label>English Answer</label>
-        <textarea
-          name="enganswer"
-          value={formData.enganswer}
-          onChange={handleChange}
-          required
-        />
+        {showSourceAnswer ? (
+          <textarea
+            value={formData.enganswer}
+            onChange={(e) =>
+              setFormData({ ...formData, enganswer: e.target.value })
+            }
+            style={{
+              width: "100%",
+              height: "200px",
+              border: "1px solid #ccc",
+              borderRadius: "6px",
+              padding: "10px",
+              fontFamily: "monospace",
+              backgroundColor: "#1e1e1e",
+              color: "#dcdcdc",
+            }}
+          />
+        ) : (
+          <ReactQuill
+            theme="snow"
+            value={formData.enganswer}
+            onChange={(val) => setFormData({ ...formData, enganswer: val })}
+            modules={{
+              ...modules,
+              toolbar: {
+                ...modules.toolbar,
+                handlers: {
+                  codeView: () => setShowSourceAnswer((prev) => !prev),
+                },
+              },
+            }}
+          />
+        )}
 
-        <label>Arabic Title</label>
+        {/* 🟩 Arabic Fields */}
+        {/* <label>Arabic Title</label>
         <input
           type="text"
           className="text-right"
           name="arabtitle"
           value={formData.arabtitle}
           onChange={handleChange}
-         
-        />
+        /> */}
 
-        <label>Arabic Question</label>
-        <textarea
-          className="text-right"
-          name="arabquestion"
-          value={formData.arabquestion}
-          onChange={handleChange}
-         
-        />
+       <div style={{ display: "none" }}>
+  <label>Arabic Question</label>
+  <textarea
+    className="text-right"
+    name="arabquestion"
+    value={formData.arabquestion}
+    onChange={handleChange}
+  />
 
-        <label>Arabic Answer</label>
-        <textarea
-          className="text-right"
-          name="arabanswer"
-          value={formData.arabanswer}
-          onChange={handleChange}
-          
-        />
+  <label>Arabic Answer</label>
+  <textarea
+    className="text-right"
+    name="arabanswer"
+    value={formData.arabanswer}
+    onChange={handleChange}
+  />
+</div>
+
 
         <button type="submit" disabled={loading}>
           {loading ? "Saving..." : editingId ? "Update FAQ" : "Create FAQ"}
@@ -183,7 +289,7 @@ const handleSubmit = async (e) => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Title</th>
+            
               <th>Question</th>
               <th>Answer</th>
               <th>Actions</th>
@@ -193,9 +299,9 @@ const handleSubmit = async (e) => {
             {faqs.map((faq) => (
               <tr key={faq.id}>
                 <td>{faq.id}</td>
-                <td>{faq.title}</td>
-                <td>{faq.question}</td>
-                <td>{faq.answer}</td>
+              
+                <td dangerouslySetInnerHTML={{ __html: faq.question }} />
+                <td dangerouslySetInnerHTML={{ __html: faq.answer }} />
                 <td>
                   <button onClick={() => handleEdit(faq)}>✏️ Edit</button>
                   <button onClick={() => handleDelete(faq.id)}>🗑️ Delete</button>

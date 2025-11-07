@@ -2,15 +2,13 @@
 import { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import axios from "axios";
-import { API_URL } from "@/config";
+import { API_URL ,IMG_URL} from "@/config";
 import "react-quill-new/dist/quill.snow.css";
 import Quill from "quill";
 import "./admin-home.css";
 import BannerExtrasForm from "@/app/(frontend)/components/BannerExtrasForm";
 import FaqForm from "@/app/(frontend)/components/FaqForm";
-
 import BannerSubExtrasForm from "@/app/(frontend)/components/BannerSubExtrasForm";
-
 
 
 
@@ -19,6 +17,7 @@ Quill.import("ui/icons")["source"] = "&lt;/&gt;";
 
 const initialHeadings = { english: ["", "", ""], arabic: ["", "", ""] };
 const initialImages = ["", "", ""];
+
 
 export default function HomeAdminPage() {
   const [activeTab, setActiveTab] = useState(1);
@@ -29,6 +28,8 @@ export default function HomeAdminPage() {
   const [headings, setHeadings] = useState(initialHeadings);
   const [images, setImages] = useState(initialImages);
   const [ids, setIds] = useState({ en: null, ar: null });
+  const [selectedFiles, setSelectedFiles] = useState([null, null, null]);
+
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -51,88 +52,143 @@ export default function HomeAdminPage() {
   );
 
   // 🟩 Fetch banners on mount
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        const banners = (await axios.get(`${API_URL}banner`)).data?.data?.banners || [];
-        const getLang = (lang) => (lang || "").trim().toLowerCase();
-
-        const en = banners.find((b) => getLang(b.language) === "en") || {};
-        const ar = banners.find((b) => getLang(b.language) === "ar") || {};
-
-        setTitles({ en: en.title || "", ar: ar.title || "" });
-        setDescs({ en: en.description || "", ar: ar.description || "" });
-        setHeadings({
-          english: [en.heading1 || "", en.heading2 || "", en.heading3 || ""],
-          arabic: [ar.heading1 || "", ar.heading2 || "", ar.heading3 || ""],
-        });
-        setImages([en.image1 || "", en.image2 || "", en.image3 || ""]);
-        setIds({ en: en.id || null, ar: ar.id || null });
-      } catch (err) {
-        console.error("❌ Fetch failed:", err);
-        setMessage("❌ Unable to load banner data");
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  // 🟩 File upload (local preview only)
-  const uploadFile = (idx) => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.click();
-
-    input.onchange = () => {
-      const file = input.files?.[0];
-      if (!file) return;
-
-      const localPreview = URL.createObjectURL(file);
-      setImages((prev) => prev.map((img, i) => (i === idx ? localPreview : img)));
-    };
-  };
-
-  // 🟩 Save or update banner
-  const handleSave = async (e) => {
-    e.preventDefault();
+useEffect(() => {
+  (async () => {
     setLoading(true);
-    setMessage("");
 
     try {
-      const payload = {
-        engtitle: titles.en, // Backend expects these keys for request mapping
-        engdescription: descs.en,
-        arabtitle: titles.ar,
-        arabdescription: descs.ar,
-        englishheading1: headings.english[0],
-        englishheading2: headings.english[1],
-        englishheading3: headings.english[2],
-        arabicheading1: headings.arabic[0],
-        arabicheading2: headings.arabic[1],
-        arabicheading3: headings.arabic[2],
-        image1: images[0] || "",
-        image2: images[1] || "",
-        image3: images[2] || "",
+      const response = await axios.get(`${API_URL}banner`);
+      const banners = response.data?.data?.banners || [];
+
+      const getLang = (lang: string) => (lang || "").trim().toLowerCase();
+
+      // 🟩 Extract English & Arabic versions (if available)
+      const en = banners.find((b) => getLang(b.language) === "en") || {};
+      const ar = banners.find((b) => getLang(b.language) === "ar") || {};
+
+      const fixImageURL = (img?: string): string => {
+        if (!img) return "";
+        // ✅ If image is already a full URL, use it as is.
+        // ✅ Otherwise, prepend base API URL.
+        return img.startsWith("http") ? img : `${IMG_URL}${img}`;
       };
 
-      const endpoint = ids.en || ids.ar ? `${API_URL}banner/update-single` : `${API_URL}banner`;
-      const method = ids.en || ids.ar ? "put" : "post";
+      // 🟩 Set states safely
+      setTitles({
+        en: en.title || "",
+        ar: ar.title || "",
+      });
 
-      const res = await axios[method](endpoint, payload);
-      setMessage(
-        res.status === 200 || res.status === 201
-          ? "✅ Banner saved successfully!"
-          : "❌ Failed to save banner."
-      );
+      setDescs({
+        en: en.description || "",
+        ar: ar.description || "",
+      });
+
+      setHeadings({
+        english: [en.heading1 || "", en.heading2 || "", en.heading3 || ""],
+        arabic: [ar.heading1 || "", ar.heading2 || "", ar.heading3 || ""],
+      });
+
+      // 🟩 Convert all image paths into valid URLs
+      setImages([
+        fixImageURL(en.image1),
+        fixImageURL(en.image2),
+        fixImageURL(en.image3),
+      ]);
+
+      setIds({
+        en: en.id || null,
+        ar: ar.id || null,
+      });
     } catch (err) {
-      console.error("❌ Save failed:", err);
-      setMessage("❌ Something went wrong while saving.");
+      console.error("❌ Fetch failed:", err);
+      setMessage("❌ Unable to load banner data");
     } finally {
       setLoading(false);
     }
+  })();
+}, []);
+
+  // 🟩 File upload (local preview only)
+const uploadFile = (idx) => {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.click();
+
+  input.onchange = () => {
+    const file = input.files?.[0];
+    if (!file) return;
+
+    const localPreview = URL.createObjectURL(file);
+
+    setImages(prev => prev.map((img, i) => (i === idx ? localPreview : img)));
+
+    setSelectedFiles(prev => {
+      const updated = [...prev];
+      updated[idx] = file;
+      return updated;
+    });
   };
+};
+
+const handleSave = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setMessage("");
+
+  try {
+    const formData = new FormData();
+
+    // Append text fields
+    formData.append("engtitle", titles.en);
+    formData.append("engdescription", descs.en);
+    formData.append("arabtitle", titles.ar);
+    formData.append("arabdescription", descs.ar);
+
+    formData.append("englishheading1", headings.english[0]);
+    formData.append("englishheading2", headings.english[1]);
+    formData.append("englishheading3", headings.english[2]);
+    formData.append("arabicheading1", headings.arabic[0]);
+    formData.append("arabicheading2", headings.arabic[1]);
+    formData.append("arabicheading3", headings.arabic[2]);
+
+    // Append files (if selected), fallback to empty string for fields not changed
+    selectedFiles.forEach((file, idx) => {
+      if (file) {
+        formData.append(`image${idx + 1}`, file);
+      } else {
+        // If no new file selected, send current image URL so backend can fallback
+        formData.append(`image${idx + 1}`, images[idx] || "");
+      }
+    });
+
+    // Determine endpoint/method
+    const endpoint = ids.en || ids.ar ? `${API_URL}banner/update-single` : `${API_URL}banner`;
+    const method = ids.en || ids.ar ? "put" : "post";
+
+    const res = await axios({
+      method,
+      url: endpoint,
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    setMessage(
+      res.status === 200 || res.status === 201
+        ? "✅ Banner saved successfully!"
+        : "❌ Failed to save banner."
+    );
+  } catch (err) {
+    console.error("❌ Save failed:", err);
+    setMessage("❌ Something went wrong while saving.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const renderHeadingsInputs = (label, array, index) =>
     [0, 1, 2].map((i) => (
@@ -203,7 +259,7 @@ export default function HomeAdminPage() {
             </div>
           </div>
 
-          <div className="section">
+          <div className="section" style={{ display: "none" }}>
             <label>Title (Arabic)</label>
             <input
               type="text"
@@ -222,11 +278,15 @@ export default function HomeAdminPage() {
             </div>
           </div>
 
-          <div className="form-field">
-            <label>English Headings</label>
-            {renderHeadingsInputs("English Heading", headings.english, "english")}
-            <label>Arabic Headings</label>
-            {renderHeadingsInputs("Arabic Heading", headings.arabic, "arabic")}
+         <div className="form-field">
+  <label>English Headings</label>
+  {renderHeadingsInputs("English Heading", headings.english, "english")}
+
+  {/* Arabic headings hidden */}
+  <label style={{ display: "none" }}>Arabic Headings</label>
+  <div style={{ display: "none" }}>
+    {renderHeadingsInputs("Arabic Heading", headings.arabic, "arabic")}
+  </div>
 
             {[0, 1, 2].map((i) => (
               <div key={i}>
