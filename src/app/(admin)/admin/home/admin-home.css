@@ -1,6 +1,27 @@
- * {
+
+@font-face {
+  font-family: 'Avenir-Book';
+  src: url('../../../fonts/Avenir-Book.woff');
+}
+@font-face {
+  font-family: 'Avenir-Black';
+  src: url('../../../fonts/Avenir-Black.woff');
+}
+@font-face {
+  font-family: 'Avenir-medium';
+  src: url('../../../fonts/Avenir-Medium.woff');
+}
+@font-face {
+  font-family: 'Avenir-heavy';
+  src: url('../../../fonts/Avenir-Heavy.woff');
+}
+
+
+
+
+* {
      box-sizing: border-box;
-     font-family: "Inter", sans-serif;
+  font-family: 'Avenir-Book';
  }
 
  .container {
@@ -35,7 +56,7 @@
      color: #334155;
  }
 
- input[type="text"] {
+ /* input[type="text"] {
      width: 100%;
      padding: 10px;
      border: 1px solid #cbd5e1;
@@ -47,10 +68,10 @@
      outline: none;
      border-color: #3b82f6;
      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
- }
+ } */
 
  .section {
-     margin-bottom: 30px;
+     margin-bottom: 40px !important;
      border: 1px solid #e2e8f0;
      border-radius: 8px;
      background: #fff;
@@ -158,10 +179,16 @@ input[type="text"]:focus {
   margin-bottom: 24px;
 }
 
+.tabs .button{
+    background-color: #e2e8f0;
+}
+
+
+
 /* Button styling */
 .button,
 button[type="button"] {
-  background-color: #0070f3;
+  background-color: #2050F5;
   color: white;
   border: none;
   padding: 10px 24px;
@@ -173,10 +200,10 @@ button[type="button"] {
   transition: background-color 0.2s ease;
 }
 
-/* Button hover */
 .button:hover,
-button[type="button"]:hover {
-  background-color: #005bb5;
+button[type="button"]:hover{
+        background: #4c72f6;
+
 }
 
 /* Disabled button */
@@ -237,7 +264,6 @@ img {
 
 .form-section {
   background: #fafbfc;
-  padding: 24px 20px;
   margin-bottom: 28px;
   border-radius: 12px;
   box-shadow: 0 1px 4px rgba(20, 30, 70, 0.05);
@@ -270,23 +296,27 @@ input[type="text"]:focus {
   text-align: right;
 }
 
-button[type="submit"] {
+/* button[type="submit"] {
   padding: 12px 32px;
   background: #2563eb;
   color: #fff;
-  font-weight: 600;
   font-size: 1rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s;
   margin-top: 18px;
-}
+} */
 
-button[type="submit"]:disabled {
+
+
+/* button[type="submit"]:disabled {
   background: #a5b4fc;
   cursor: not-allowed;
-}
+} */
+
+
+
 
 .message {
   margin-top: 16px;
@@ -347,9 +377,9 @@ h3 {
 }
 
 h2, h3 {
-  color: #1e2a47;
-  font-weight: 700;
-  margin-bottom: 16px;
+  color: #000000;
+
+  margin-bottom: 16px !important;
 }
 
 .faq-form {
@@ -368,25 +398,44 @@ label {
   color: #38425a;
 }
 
-input[type="text"],
-textarea {
-  width: 100%;
-  padding: 10px 12px;
-  font-size: 1rem;
-  border: 1.5px solid #d1d7e0;
-  border-radius: 6px;
-  transition: border-color 0.2s ease;
-  background-color: #ffffff;
-  resize: vertical;
-  min-height: 36px;
+
+
+.ql-toolbar.ql-snow{
+    color: #000;
+    background: #fff;
+    border: 2px solid #d7dbec;
+    border-radius: 4px 4px 0 0;
+    transition: all .5s ease-in-out;
+  
+}
+
+.ql-container.ql-snow{
+   color: #000;
+    background: #fff;
+    border: 2px solid #d7dbec;
+    border-radius:0 0 4px 4px;
+    
+    transition: all .5s ease-in-out;
 }
 
 input[type="text"]:focus,
 textarea:focus {
-  border-color: #2563eb;
+  background: #ffffff;
   outline: none;
-  box-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
+   border: 2px solid var(--primary-color); 
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
 }
+
+
+
+
+
+
+
+.quill{margin: 0 0 15px !important;}
+
+
+
 
 .text-right {
   text-align: right;
@@ -399,7 +448,6 @@ button[type="submit"] {
   border: none;
   border-radius: 8px;
   color: white;
-  font-weight: 700;
   font-size: 1.1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -527,18 +575,17 @@ hr {
   border-top: 1px solid #e5e7eb;
 }
 
-button[type="submit"] {
+/* button[type="submit"] {
   background-color: #2563eb;
   color: #fff;
   padding: 14px 32px;
   font-size: 1.1rem;
-  font-weight: 700;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   align-self: flex-start;
   transition: background-color 0.3s ease;
-}
+} */
 
 button[type="submit"]:hover:not(:disabled) {
   background-color: #1d4ed8;
@@ -596,7 +643,7 @@ button[type="submit"]:disabled {
 h1 {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 24px !important;
   color: #1e2a47;
   text-align: center;
 }
@@ -616,7 +663,6 @@ h1 {
   border-radius: 8px;
   padding: 12px 24px;
   font-size: 1.1rem;
-  font-weight: 600;
   color: #475569;
   cursor: pointer;
   transition: background-color 0.25s ease, color 0.25s ease;
@@ -624,16 +670,10 @@ h1 {
 
 /* Active tab styling */
 .tab.active {
-  background-color: #2563eb;
+  background-color: #2050F5;
   color: white;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4);
 }
 
-/* Tab button hover */
-.tab:not(.active):hover {
-  background-color: #60a5fa;
-  color: white;
-}
 
 /* Content area for each tab */
 .tab-content,
@@ -650,11 +690,15 @@ form {
 }
 
 /* Labels */
+
+
 label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #34495e;
+
+
+    color: #1b1b25;
+    margin-bottom: 8px !important;
+
+
 }
 
 /* Input and ReactQuill containers */
@@ -667,10 +711,13 @@ input[type="text"],
 
 /* Input spacing */
 input[type="text"] {
-  padding: 10px 14px;
-  border: 1.5px solid #d1d5db;
-  transition: border-color 0.2s ease;
-  margin-bottom: 16px;
+
+    color: #000;
+    background: #fff;
+    border: 2px solid #d7dbec;
+    border-radius: 4px;
+    padding: 20px 15px;
+    transition: all .5s ease-in-out; margin: 0 0 12px !important;
 }
 
 input[type="text"]:focus {
@@ -723,7 +770,6 @@ input[type="text"]:focus {
 button[type="submit"] {
   background-color: #2563eb;
   color: white;
-  font-weight: 700;
   padding: 14px 36px;
   border-radius: 12px;
   border: none;
