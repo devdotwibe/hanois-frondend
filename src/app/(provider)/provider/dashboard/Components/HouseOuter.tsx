@@ -1,36 +1,42 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import HouseCard from "./HouseCard";
 import logo1 from "../../../../../../public/images/ahi-logo.jpg";
 
 const HouseOuter: React.FC = () => {
-  const [providerId, setProviderId] = useState<number | null>(null);
+  // Read directly at render time
+  let providerId: number | null = null;
 
-  useEffect(() => {
-    // Example: assuming user data is stored in localStorage as JSON
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      try {
+  if (typeof window !== "undefined") {
+    try {
+      // Option 1: user stored as JSON object
+      const userData = localStorage.getItem("user");
+      if (userData) {
         const parsed = JSON.parse(userData);
-        if (parsed?.id) {
-          setProviderId(Number(parsed.id));
+        providerId = Number(parsed?.id || parsed?.provider_id || parsed?.user_id);
+      } else {
+        // Option 2: decode JWT token if user not found
+        const token = localStorage.getItem("token");
+        if (token) {
+          const base64 = token.split(".")[1];
+          const payload = JSON.parse(atob(base64));
+          providerId = Number(payload?.provider_id || payload?.id || payload?.user_id);
         }
-      } catch (err) {
-        console.error("Error parsing user data:", err);
       }
+    } catch (err) {
+      console.error("Error getting provider ID:", err);
     }
-  }, []);
-
-  if (!providerId) {
-    return <p>Loading user data...</p>;
   }
+
+  // fallback if still missing
+  providerId = providerId || 5;
 
   return (
     <div>
       <HouseCard
         logo={logo1}
         name="American House Improvements Inc."
-        providerId={providerId} // dynamically from logged-in user
+        providerId={providerId}
       />
     </div>
   );
