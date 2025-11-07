@@ -43,29 +43,31 @@ const Tabs = () => {
   };
 
   // Fetch categories & services
-  useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const [catRes, servRes] = await Promise.all([
-          fetch(`${API_URL}categories`),
-          fetch(`${API_URL}services`),
-        ]);
+useEffect(() => {
+  const fetchOptions = async () => {
+    try {
+      const [catRes, servRes] = await Promise.all([
+        fetch(`${API_URL}categories`),
+        fetch(`${API_URL}services`),
+      ]);
 
-        const catData = await catRes.json();
-        const servData = await servRes.json();
+      const catData = await catRes.json();
+      const servData = await servRes.json();
 
-        if (!catRes.ok) throw new Error(catData.error || "Failed to fetch categories");
-        if (!servRes.ok) throw new Error(servData.error || "Failed to fetch services");
+      if (!catRes.ok) throw new Error("Failed to fetch categories");
+      if (!servRes.ok) throw new Error("Failed to fetch services");
 
-        setCategoriesList(catData.categories || []);
-        setServicesList(servData.services || []);
-      } catch (err) {
-        console.error("Error fetching categories/services:", err);
-      }
-    };
+      // Your API returns arrays directly, so assign them directly
+      setCategoriesList(Array.isArray(catData) ? catData : []);
+      setServicesList(Array.isArray(servData) ? servData : []);
+    } catch (err) {
+      console.error("Error fetching categories/services:", err);
+    }
+  };
 
-    fetchOptions();
-  }, []);
+  fetchOptions();
+}, []);
+
 
   // Fetch existing provider details
   useEffect(() => {
