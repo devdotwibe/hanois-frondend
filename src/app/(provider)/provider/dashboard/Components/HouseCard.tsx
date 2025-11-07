@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { API_URL } from "@/config"; 
+import { API_URL } from "@/config";
 
 type HouseCardProps = {
   logo?: string | StaticImageData;
@@ -44,11 +44,26 @@ const HouseCard: React.FC<HouseCardProps> = ({
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 
+  // helper to notify other parts of the app that this provider changed
+  const notifyProviderUpdated = (providerData?: any) => {
+    try {
+      window.dispatchEvent(
+        new CustomEvent("providerUpdated", {
+          detail: { providerId, provider: providerData ?? null },
+        })
+      );
+    } catch (e) {
+      // ignore if dispatch fails in strange environments
+      // console.warn("notifyProviderUpdated failed", e);
+    }
+  };
+
   const uploadFile = async (file: File) => {
     try {
       setUploading(true);
       const formData = new FormData();
       formData.append("image", file);
+      // include headline when uploading so backend keeps it in sync
       formData.append("professional_headline", headline ?? "");
 
       const res = await fetch(endpoint, {
@@ -57,9 +72,15 @@ const HouseCard: React.FC<HouseCardProps> = ({
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       });
 
-      if (!res.ok) throw new Error(await res.text());
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "Upload failed");
+      }
       const data = await res.json();
-      setImagePath(data?.data?.provider?.image ?? null);
+      const newImage = data?.data?.provider?.image ?? null;
+      setImagePath(newImage);
+      setHeadline(data?.data?.provider?.professional_headline ?? headline);
+      notifyProviderUpdated(data?.data?.provider);
     } catch (err) {
       console.error("Upload error:", err);
       alert("Failed to upload image.");
@@ -80,15 +101,24 @@ const HouseCard: React.FC<HouseCardProps> = ({
     try {
       setRemoving(true);
       const formData = new FormData();
+      // explicit instruction to remove image (most backends expect an explicit flag)
+      formData.append("remove_image", "1");
+      // include current headline so it isn't lost
       formData.append("professional_headline", headline ?? "");
+
       const res = await fetch(endpoint, {
         method: "PUT",
         body: formData,
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       });
-      if (!res.ok) throw new Error(await res.text());
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "Remove failed");
+      }
       const data = await res.json();
       setImagePath(data?.data?.provider?.image ?? null);
+      setHeadline(data?.data?.provider?.professional_headline ?? headline);
+      notifyProviderUpdated(data?.data?.provider);
     } catch (err) {
       console.error("Remove error:", err);
       alert("Failed to remove image.");
@@ -100,16 +130,31 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const handleSaveHeadline = async () => {
     try {
       setSavingHeadline(true);
-      const formData = new FormData();
-      formData.append("professional_headline", headline ?? "");
+      // Send JSON when we only update the text — this avoids the backend treating a missing
+      // image field as "clear the image".
+      const payload = { professional_headline: headline ?? "" };
+
       const res = await fetch(endpoint, {
         method: "PUT",
-        body: formData,
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
       });
-      if (!res.ok) throw new Error(await res.text());
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "Save headline failed");
+      }
       const data = await res.json();
+      // update local state with server-provided value if available
       setHeadline(data?.data?.provider?.professional_headline ?? headline);
+      // the server might return the provider object with image, so keep the image path in sync
+      if (typeof data?.data?.provider?.image !== "undefined") {
+        setImagePath(data?.data?.provider?.image ?? null);
+      }
+      notifyProviderUpdated(data?.data?.provider);
       setEditing(false);
     } catch (err) {
       console.error("Save headline error:", err);
@@ -123,7 +168,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
     <div className="house-card" style={{ position: "relative" }}>
       {/* Logo / Image */}
       <div className="house-card-logo" style={{ position: "relative" }}>
-        <div className="h-logodiv">
+        <div className="h-logodiv" style={{ position: "relative" }}>
           {imagePath ? (
             <div style={{ position: "relative", width: 160, height: 128 }}>
               <img
@@ -134,6 +179,26 @@ const HouseCard: React.FC<HouseCardProps> = ({
                 className="house-card-img"
                 style={{ objectFit: "cover", width: 160, height: 128 }}
               />
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                disabled={removing}
+                className="image-remove-btn"
+                style={{
+                  position: "absolute",
+                  top: 6,
+                  right: 6,
+                  border: "none",
+                  background: "rgba(255,255,255,0.9)",
+                  borderRadius: "50%",
+                  width: 28,
+                  height: 28,
+                  cursor: "pointer",
+                }}
+                title="Remove image"
+              >
+                ✕
+              </button>
             </div>
           ) : logo ? (
             <Image
@@ -157,29 +222,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
             >
               No image
             </div>
-          )}
-
-          {imagePath && (
-            <button
-              type="button"
-              onClick={handleRemoveImage}
-              disabled={removing}
-              className="image-remove-btn"
-              style={{
-                position: "absolute",
-                top: 6,
-                right: 6,
-                border: "none",
-                background: "rgba(255,255,255,0.9)",
-                borderRadius: "50%",
-                width: 28,
-                height: 28,
-                cursor: "pointer",
-              }}
-              title="Remove image"
-            >
-              ✕
-            </button>
           )}
         </div>
       </div>
@@ -211,7 +253,11 @@ const HouseCard: React.FC<HouseCardProps> = ({
               ✅
             </button>
             <button
-              onClick={() => setEditing(false)}
+              onClick={() => {
+                setEditing(false);
+                // revert to last saved headline if user cancels (optional)
+                // could request latest from server, but keep simple:
+              }}
               style={{
                 border: "none",
                 background: "transparent",
