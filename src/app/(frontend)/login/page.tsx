@@ -81,7 +81,7 @@ const Login = () => {
 
           console.log("Login Success:", data);
           
-          localStorage.setItem("token", data.token);
+          localStorage.setItem("token", data.data.token);
 
           localStorage.setItem("auth", data.data.role);
 
