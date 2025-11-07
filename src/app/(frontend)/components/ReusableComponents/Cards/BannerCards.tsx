@@ -16,7 +16,7 @@ const BannerCards: React.FC<BannerCardsProps> = ({ title1, imageSrc }) => {
 
       <div className="b-img">
         {imageSrc && (
-        <Image
+        <img
           src={imageSrc}
           alt={title1 || 'img'}
           width={273}
