@@ -34,9 +34,9 @@ const Page = () => {
         <div className="detcol-1">
           {/* Pass provider data dynamically */}
           <DetailIntro provider={providerData} />
-          <AboutContainer provider={providerData} />
-          <BusinessInfo provider={providerData} />
-          <ServiceDiv provider={providerData} />
+          <AboutContainer  />
+          <BusinessInfo  />
+          <ServiceDiv  />
         </div>
 
         <div className="detcol-2">
