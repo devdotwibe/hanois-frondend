@@ -16,7 +16,7 @@ const Tabs = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [servicesList, setServicesList] = useState([]);
 
-  // selectedServices: array of { id, name, cost, currency, service_note }
+  // selectedServices: array of { id, name, cost, currency }
   const [selectedServices, setSelectedServices] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -85,7 +85,6 @@ const Tabs = () => {
             name: svc ? svc.name : "",
             cost: "",
             currency: DEFAULT_CURRENCY,
-            service_note: "",
           };
         });
 
@@ -175,29 +174,6 @@ const Tabs = () => {
           professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
           image: provider.image ?? null,
         });
-
-        // Now fetch provider-specific service data (cost, currency, service_note)
-        try {
-          // endpoint (user-provided): /providers/all-provider-services?provider_id=ID
-          const svcRes = await fetch(`${API_URL}providers/all-provider-services?provider_id=${providerId}`);
-          const svcData = await svcRes.json();
-          if (svcRes.ok && svcData && Array.isArray(svcData.data)) {
-            const svcList = svcData.data.map((s) => ({
-              id: String(s.service_id ?? s.service_id),
-              name: s.service_name ?? "",
-              cost: s.average_cost ?? "",
-              currency: s.currency ?? DEFAULT_CURRENCY,
-              service_note: s.service_note ?? "",
-            }));
-
-            // sync selectedServices and formData.services with returned data
-            setSelectedServices(svcList);
-            setFormData((prev) => ({ ...prev, services: svcList.map((s) => s.id) }));
-          }
-        } catch (e) {
-          console.error("Error fetching provider services:", e);
-        }
-
       } catch (err) {
         console.error("Error fetching provider:", err);
       }
@@ -227,7 +203,6 @@ const Tabs = () => {
             name: svcMeta ? svcMeta.name : existing?.name ?? "",
             cost: existing?.cost ?? "",
             currency: existing?.currency ?? DEFAULT_CURRENCY,
-            service_note: existing?.service_note ?? "",
           };
         });
       });
@@ -281,7 +256,6 @@ const Tabs = () => {
           name: s.name,
           cost: s.cost,
           currency: s.currency,
-          service_note: s.service_note ?? null,
         })),
         professional_headline: formData.professionalHeadline,
       };
@@ -337,18 +311,13 @@ const Tabs = () => {
           </li>
         ))}
       </ul>
-
+     
       {/* Tab Content */}
       <div className="tab-content-wrap">
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
           <form className="settingsform" onSubmit={handleSubmit}>
 
-            {/* status message (success / error) */}
-            {status.message && (
-              <div className="login-success contact-sucess" style={{ marginBottom: 12 }}>
-                <p style={{ color: status.success ? "green" : "red", margin: 0 }}>{status.message}</p>
-              </div>
-            )}
+
 
             <div className="form-grp">
               <label>Company/Business Name</label>
@@ -508,76 +477,65 @@ const Tabs = () => {
               {selectedServices.length > 0 && (
                 <div style={{ marginTop: 12 }}>
                   {selectedServices.map((svc, idx) => (
-                    <div key={svc.id} style={{ marginBottom: 10 }}>
-                      <div
+                    <div
+                      key={svc.id}
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 160px 90px 36px",
+                        gap: 8,
+                        alignItems: "center",
+                        border: "1px solid #e6e9ee",
+                        padding: 12,
+                        borderRadius: 6,
+                        marginBottom: 10,
+                        background: "#fff"
+                      }}
+                    >
+                      {/* service name (pre-filled/readOnly) */}
+                      <input
+                        type="text"
+                        value={svc.name}
+                        readOnly
+                        style={{ padding: "10px", border: "none", background: "transparent" }}
+                      />
+
+                      {/* cost input */}
+                      <input
+                        type="number"
+                        placeholder="Average Cost"
+                        value={svc.cost}
+                        onChange={(e) => handleServiceFieldChange(idx, "cost", e.target.value)}
+                        style={{ padding: "10px", border: "none", background: "transparent" }}
+                      />
+
+                      {/* currency select */}
+                      <select
+                        value={svc.currency}
+                        onChange={(e) => handleServiceFieldChange(idx, "currency", e.target.value)}
+                        style={{ padding: "8px" }}
+                      >
+                        <option value="KD">KD</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                      </select>
+
+                      {/* remove button */}
+                      <button
+                        type="button"
+                        onClick={() => removeService(svc.id)}
+                        aria-label="Remove service"
                         style={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 120px 90px 36px",
-                          gap: 8,
-                          alignItems: "center",
-                          border: "1px solid #e6e9ee",
-                          padding: 12,
-                          borderRadius: 6,
-                          background: "#fff"
+                          width: 28,
+                          height: 28,
+                          borderRadius: "50%",
+                          border: "none",
+                          background: "#f0f2f5",
+                          cursor: "pointer",
+                          fontSize: 16,
                         }}
                       >
-                        {/* service name (pre-filled/readOnly) */}
-                        <input
-                          type="text"
-                          value={svc.name}
-                          readOnly
-                          style={{ padding: "10px", border: "none", background: "transparent" }}
-                        />
-
-                        {/* cost input */}
-                        <input
-                          type="number"
-                          placeholder="Average Cost"
-                          value={svc.cost}
-                          onChange={(e) => handleServiceFieldChange(idx, "cost", e.target.value)}
-                          style={{ padding: "10px", border: "none", background: "transparent" }}
-                        />
-
-                        {/* currency select */}
-                        <select
-                          value={svc.currency}
-                          onChange={(e) => handleServiceFieldChange(idx, "currency", e.target.value)}
-                          style={{ padding: "8px" }}
-                        >
-                          <option value="KD">KD</option>
-                          <option value="USD">USD</option>
-                          <option value="EUR">EUR</option>
-                        </select>
-
-                        {/* remove button */}
-                        <button
-                          type="button"
-                          onClick={() => removeService(svc.id)}
-                          aria-label="Remove service"
-                          style={{
-                            width: 28,
-                            height: 28,
-                            borderRadius: "50%",
-                            border: "none",
-                            background: "#f0f2f5",
-                            cursor: "pointer",
-                            fontSize: 16,
-                          }}
-                        >
-                          ×
-                        </button>
-                      </div>
-
-                      {/* per-service note */}
-                      <div style={{ marginTop: 8 }}>
-                        <input
-                          type="text"
-                          placeholder="Service Note"
-                          value={svc.service_note ?? ""}
-                          onChange={(e) => handleServiceFieldChange(idx, "service_note", e.target.value)}
-                          style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #e6e9ee" }}
-                        />
-                      </div>
+                        ×
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -618,6 +576,12 @@ const Tabs = () => {
             </button>
           </div>
 
+       {/* status message (success / error) */}
+            {status.message && (
+              <div className="login-success contact-sucess" style={{ marginBottom: 12 }}>
+                <p style={{ color: status.success ? "green" : "red", margin: 0 }}>{status.message}</p>
+              </div>
+            )}
 
           </form>
         </div>
