@@ -6,7 +6,7 @@ import { API_URL } from "@/config";
 type HouseCardProps = {
   logo?: string | StaticImageData;
   name: string;
-  providerId: number;
+  providerId?: number; // made optional
   initialDescription?: string;
   initialImagePath?: string | null;
 };
@@ -31,7 +31,11 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-  const endpoint = `${API_URL}providers/update-profile/${providerId}`;
+  // endpoint is null when providerId is not available
+  const endpoint =
+    providerId && typeof providerId === "number"
+      ? `${API_URL}providers/update-profile/${providerId}`
+      : null;
 
   const resolveImageUrl = (path: string | null) => {
     if (!path) return null;
@@ -44,7 +48,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 
-  // helper to notify other parts of the app that this provider changed
   const notifyProviderUpdated = (providerData?: any) => {
     try {
       window.dispatchEvent(
@@ -53,17 +56,11 @@ const HouseCard: React.FC<HouseCardProps> = ({
         })
       );
     } catch (e) {
-      // ignore if dispatch fails in strange environments
+      // ignore
     }
   };
 
-  // helper to normalize different response shapes
   const extractProviderFromResponse = (data: any) => {
-    // common shapes:
-    // 1) { data: { provider: { ... } } }
-    // 2) { provider: { ... } }
-    // 3) { data: { ...provider... } }
-    // 4) provider object directly
     if (!data) return null;
     if (data.data && data.data.provider) return data.data.provider;
     if (data.provider) return data.provider;
@@ -72,7 +69,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
     return null;
   };
 
-  // Save provider to local cache so other UI can read updated values
   const cacheProvider = (provider: any) => {
     try {
       if (provider && provider.id) {
@@ -84,11 +80,14 @@ const HouseCard: React.FC<HouseCardProps> = ({
   };
 
   const uploadFile = async (file: File) => {
+    if (!endpoint) {
+      alert("You must be signed in to upload an image.");
+      return;
+    }
     try {
       setUploading(true);
       const formData = new FormData();
       formData.append("image", file);
-      // include headline when uploading so backend keeps it in sync
       formData.append("professional_headline", headline ?? "");
 
       const res = await fetch(endpoint, {
@@ -110,7 +109,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
         cacheProvider(provider);
         notifyProviderUpdated(provider);
       } else {
-        // fallback: try other shapes
         const newImage = data?.data?.provider?.image ?? data?.provider?.image ?? null;
         setImagePath(newImage);
       }
@@ -129,13 +127,15 @@ const HouseCard: React.FC<HouseCardProps> = ({
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // Remove image: send JSON with image: null so backend's updateProfile sees `image` explicitly
   const handleRemoveImage = async () => {
+    if (!endpoint) {
+      alert("You must be signed in to remove the image.");
+      return;
+    }
     if (!confirm("Remove image?")) return;
     try {
       setRemoving(true);
 
-      // Send JSON payload { image: null, professional_headline } - backend checks for image !== undefined
       const payload = {
         image: null,
         professional_headline: headline ?? "",
@@ -163,7 +163,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
         cacheProvider(provider);
         notifyProviderUpdated(provider);
       } else {
-        // fallback
         setImagePath(null);
       }
     } catch (err) {
@@ -175,9 +174,12 @@ const HouseCard: React.FC<HouseCardProps> = ({
   };
 
   const handleSaveHeadline = async () => {
+    if (!endpoint) {
+      alert("You must be signed in to save your headline.");
+      return;
+    }
     try {
       setSavingHeadline(true);
-      // Send JSON when we only update the text — backend will detect professional_headline
       const payload = { professional_headline: headline ?? "" };
 
       const res = await fetch(endpoint, {
@@ -203,7 +205,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
         cacheProvider(provider);
         notifyProviderUpdated(provider);
       } else {
-        // server didn't return a provider object but likely saved — keep local headline
         notifyProviderUpdated();
       }
       setEditing(false);
@@ -214,6 +215,8 @@ const HouseCard: React.FC<HouseCardProps> = ({
       setSavingHeadline(false);
     }
   };
+
+  const isEditable = typeof providerId === "number" && !isNaN(providerId);
 
   return (
     <div className="house-card" style={{ position: "relative" }}>
@@ -233,7 +236,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
               <button
                 type="button"
                 onClick={handleRemoveImage}
-                disabled={removing}
+                disabled={removing || !isEditable}
                 className="image-remove-btn"
                 style={{
                   position: "absolute",
@@ -244,9 +247,9 @@ const HouseCard: React.FC<HouseCardProps> = ({
                   borderRadius: "50%",
                   width: 28,
                   height: 28,
-                  cursor: "pointer",
+                  cursor: isEditable ? "pointer" : "not-allowed",
                 }}
-                title="Remove image"
+                title={isEditable ? "Remove image" : "Sign in to remove image"}
               >
                 ✕
               </button>
@@ -290,16 +293,17 @@ const HouseCard: React.FC<HouseCardProps> = ({
               onChange={(e) => setHeadline(e.target.value)}
               placeholder="Professional headline"
               style={{ flex: 1 }}
+              disabled={!isEditable}
             />
             <button
               onClick={handleSaveHeadline}
-              disabled={savingHeadline}
+              disabled={savingHeadline || !isEditable}
               style={{
                 border: "none",
                 background: "transparent",
-                cursor: "pointer",
+                cursor: isEditable ? "pointer" : "not-allowed",
               }}
-              title="Save"
+              title={isEditable ? "Save" : "Sign in to save"}
             >
               ✅
             </button>
@@ -339,14 +343,15 @@ const HouseCard: React.FC<HouseCardProps> = ({
             <button
               className="house-card-edit-btn"
               onClick={() => setEditing(true)}
-              title="Edit description"
+              title={isEditable ? "Edit description" : "Sign in to edit"}
               style={{
                 border: "none",
                 background: "transparent",
-                cursor: "pointer",
+                cursor: isEditable ? "pointer" : "not-allowed",
                 fontSize: "1.1rem",
                 marginLeft: "4px",
               }}
+              disabled={!isEditable}
             >
               ✎
             </button>
@@ -358,11 +363,19 @@ const HouseCard: React.FC<HouseCardProps> = ({
           <button
             className="house-card-btn"
             onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
+            disabled={uploading || !isEditable}
+            title={isEditable ? "Upload new image" : "Sign in to upload"}
           >
             {uploading ? "Uploading..." : "Upload New Image"}
           </button>
         </div>
+
+        {/* If not editable, show small hint */}
+        {!isEditable && (
+          <div style={{ marginTop: 8, fontSize: 12, color: "#666" }}>
+            Sign in to edit profile image and headline.
+          </div>
+        )}
       </div>
 
       {/* Hidden File Input */}
