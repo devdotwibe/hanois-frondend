@@ -195,14 +195,17 @@ const Tabs = () => {
     }
   };
 
-  const resolveImageUrl = (path) => {
-    if (!path) return null;
-    if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    let base = API_URL.replace(/\/+$, "");
-    base = base.replace(/\/api\/api$/i, "/api");
-    base = base.replace(/\/api$/i, "/api");
-    return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
-  };
+const resolveImageUrl = (path) => {
+  if (!path) return null;
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+
+  // fixed regex: added the missing closing slash before the $
+  let base = API_URL.replace(/\/+$/, "");
+  base = base.replace(/\/api\/api$/i, "/api");
+  base = base.replace(/\/api$/i, "/api");
+  return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
+};
+
 
   const notesRemaining = MAX_NOTES - (formData.notes ? formData.notes.length : 0);
 
