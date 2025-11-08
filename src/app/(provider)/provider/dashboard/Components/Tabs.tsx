@@ -9,15 +9,11 @@ const TABS = [
 ];
 
 const MAX_NOTES = 1024;
-const DEFAULT_CURRENCY = "KD";
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState("companyinfo");
   const [categoriesList, setCategoriesList] = useState([]);
   const [servicesList, setServicesList] = useState([]);
-
-  // selectedServices: array of { id, name, cost, currency }
-  const [selectedServices, setSelectedServices] = useState([]);
 
   const [formData, setFormData] = useState({
     companyName: "",
@@ -30,17 +26,16 @@ const Tabs = () => {
     facebook: "",
     instagram: "",
     other: "",
-    services: [], // array of service ids (strings)
+    services: [],
     professionalHeadline: "",
     image: null,
   });
 
-  // Generic handleChange (keeps support for multiple selects like categories)
+  // Handle input change
   const handleChange = (e) => {
     const { name, value, options } = e.target;
 
-    if (options && name !== "services") {
-      // for multi-selects (categories), except services which we handle separately
+    if (options) {
       const values = Array.from(options)
         .filter((opt) => opt.selected)
         .map((opt) => opt.value);
@@ -48,6 +43,7 @@ const Tabs = () => {
       return;
     }
 
+    // Enforce max length for notes and show decreasing counter
     if (name === "notes") {
       const trimmed = value.slice(0, MAX_NOTES);
       setFormData((s) => ({ ...s, notes: trimmed }));
@@ -57,154 +53,89 @@ const Tabs = () => {
     setFormData((s) => ({ ...s, [name]: value }));
   };
 
-  // Services select change handler (creates/updates service cards)
-  const handleServicesSelect = (e) => {
-    const values = Array.from(e.target.options)
-      .filter((opt) => opt.selected)
-      .map((opt) => opt.value);
+  // Fetch categories & services
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const [catRes, servRes] = await Promise.all([
+          fetch(`${API_URL}categories`),
+          fetch(`${API_URL}services`),
+        ]);
 
-    setFormData((s) => ({ ...s, services: values }));
+        const catData = await catRes.json();
+        const servData = await servRes.json();
 
-    // ensure selectedServices reflects chosen IDs, preserve existing entries where possible
-    setSelectedServices((prev) => {
-      const ids = values.map(String);
-      // Keep existing that are still selected
-      const kept = prev.filter((p) => ids.includes(String(p.id)));
+        setCategoriesList(Array.isArray(catData) ? catData : catData.data || []);
+        setServicesList(Array.isArray(servData) ? servData : servData.data || []);
+      } catch (err) {
+        console.error("Error fetching categories/services:", err);
+      }
+    };
 
-      // Add any new ones
-      const additions = ids
-        .filter((id) => !kept.some((k) => String(k.id) === id))
-        .map((id) => {
-          const svc = servicesList.find((s) => String(s.id) === String(id));
-          return {
-            id,
-            name: svc ? svc.name : "",
-            cost: "",
-            currency: DEFAULT_CURRENCY,
-          };
+    fetchOptions();
+  }, []);
+
+  // Fetch provider details and populate form
+  useEffect(() => {
+    const fetchProvider = async () => {
+      try {
+        let providerId = localStorage.getItem("providerId");
+        const token = localStorage.getItem("token");
+
+        if (!providerId && token) {
+          try {
+            const base64 = token.split(".")[1];
+            const payload = JSON.parse(atob(base64));
+            providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
+          } catch (e) {}
+        }
+
+        if (!providerId) return;
+
+        const res = await fetch(`${API_URL}providers/${providerId}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
 
-      return [...kept, ...additions];
-    });
-  };
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
 
-  const handleServiceFieldChange = (index, key, value) => {
-    setSelectedServices((prev) => {
-      const copy = [...prev];
-      copy[index] = { ...copy[index], [key]: value };
-      return copy;
-    });
-  };
+        const provider = data?.provider ?? data ?? {};
 
-  const removeService = (idToRemove) => {
-    setSelectedServices((prev) => prev.filter((s) => String(s.id) !== String(idToRemove)));
-    setFormData((prev) => ({ ...prev, services: prev.services.filter((id) => String(id) !== String(idToRemove)) }));
-  };
-
-// Fetch categories & services lists
-useEffect(() => {
-  const fetchOptions = async () => {
-    try {
-      const [catRes, servRes] = await Promise.all([
-        fetch(`${API_URL}categories`),
-        fetch(`${API_URL}services`),
-      ]);
-      const catData = await catRes.json();
-      const servData = await servRes.json();
-      const cats = Array.isArray(catData) ? catData : catData.data || [];
-      const svcs = Array.isArray(servData) ? servData : servData.data || [];
-      // normalize ids to strings to avoid type mismatch with form state
-      setCategoriesList(cats.map(c => ({ ...c, id: String(c.id) })));
-      setServicesList(svcs.map(s => ({ ...s, id: String(s.id) })));
-    } catch (err) {
-      console.error("Error fetching categories/services:", err);
-    }
-  };
-  fetchOptions();
-}, []);
-
-
-// Fetch provider details and populate form
-useEffect(() => {
-  const fetchProvider = async () => {
-    try {
-      let providerId = localStorage.getItem("providerId");
-      const token = localStorage.getItem("token");
-      if (!providerId && token) {
-        try {
-          const base64 = token.split(".")[1];
-          const payload = JSON.parse(atob(base64));
-          providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
-        } catch (e) { /* ignore */ }
+        setFormData({
+          companyName: provider.name ?? "",
+          categories: Array.isArray(provider.categories_id)
+            ? provider.categories_id
+            : provider.categories_id
+            ? [provider.categories_id]
+            : [],
+          phoneNumber: provider.phone ?? "",
+          location: provider.location ?? "",
+          teamSize:
+            typeof provider.team_size === "number"
+              ? String(provider.team_size)
+              : provider.team_size ?? "",
+          notes: provider.notes ?? "",
+          website: provider.website ?? provider.web ?? "",
+          facebook: provider.facebook ?? "",
+          instagram: provider.instagram ?? "",
+          other: provider.other_link ?? provider.other ?? "",
+          services: Array.isArray(provider.service_id)
+            ? provider.service_id
+            : provider.service_id
+            ? [provider.service_id]
+            : [],
+          professionalHeadline: provider.professional_headline ?? "",
+          image: provider.image ?? null,
+        });
+      } catch (err) {
+        console.error("Error fetching provider:", err);
       }
-      if (!providerId) return;
+    };
 
-      const res = await fetch(`${API_URL}providers/${providerId}`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
-      const provider = data?.provider ?? data ?? {};
+    fetchProvider();
+  }, []);
 
-      // Normalize categories/service ids to strings to match options
-      const categories = Array.isArray(provider.categories_id)
-        ? provider.categories_id.map(String)
-        : provider.categories_id ? [String(provider.categories_id)] : [];
-
-      const services = Array.isArray(provider.service_id)
-        ? provider.service_id.map(String)
-        : provider.service_id ? [String(provider.service_id)] : [];
-
-      setFormData({
-        companyName: provider.name ?? "",
-        categories,
-        phoneNumber: provider.phone ?? "",
-        location: provider.location ?? "",
-        teamSize: provider.team_size != null ? String(provider.team_size) : "",
-        notes: provider.notes ?? "",
-        website: provider.website ?? provider.web ?? provider.social_media ?? "",
-        facebook: provider.facebook ?? "",
-        instagram: provider.instagram ?? "",
-        other: provider.other_link ?? provider.other ?? "",
-        services,
-        professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
-        image: provider.image ?? null,
-      });
-    } catch (err) {
-      console.error("Error fetching provider:", err);
-    }
-  };
-  fetchProvider();
-}, []);
-
-
-  // When servicesList or formData.services change, initialize selectedServices (preserve any existing cost/currency if ids match)
-  useEffect(() => {
-    if (!servicesList || servicesList.length === 0) return;
-    if (!formData.services || formData.services.length === 0) {
-      setSelectedServices([]);
-      return;
-    }
-
-    setSelectedServices((prev) => {
-      // create map of existing entered values so we preserve cost/currency if possible
-      const prevMap = new Map(prev.map((p) => [String(p.id), p]));
-
-      return formData.services.map((id) => {
-        const sid = String(id);
-        const svcMeta = servicesList.find((s) => String(s.id) === sid);
-        const existing = prevMap.get(sid);
-        return {
-          id: sid,
-          name: svcMeta ? svcMeta.name : existing?.name ?? "",
-          cost: existing?.cost ?? "",
-          currency: existing?.currency ?? DEFAULT_CURRENCY,
-        };
-      });
-    });
-  }, [servicesList, formData.services]);
-
-  // Handle submit
+  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -241,14 +172,7 @@ useEffect(() => {
         instagram: formData.instagram,
         other_link: formData.other,
         categories_id: formData.categories,
-        // send service ids & details
-        service_id: selectedServices.map((s) => s.id),
-        service_details: selectedServices.map((s) => ({
-          id: s.id,
-          name: s.name,
-          cost: s.cost,
-          currency: s.currency,
-        })),
+        service_id: formData.services,
         professional_headline: formData.professionalHeadline,
       };
 
@@ -271,16 +195,17 @@ useEffect(() => {
     }
   };
 
-  const resolveImageUrl = (path) => {
-    if (!path) return null;
-    if (path.startsWith("http://") || path.startsWith("https://")) return path;
+const resolveImageUrl = (path) => {
+  if (!path) return null;
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
 
-    // fixed regex: added the missing closing slash before the $
-    let base = API_URL.replace(/\/+$/, "");
-    base = base.replace(/\/api\/api$/i, "/api");
-    base = base.replace(/\/api$/i, "/api");
-    return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
-  };
+  // fixed regex: added the missing closing slash before the $
+  let base = API_URL.replace(/\/+$/, "");
+  base = base.replace(/\/api\/api$/i, "/api");
+  base = base.replace(/\/api$/i, "/api");
+  return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
+};
+
 
   const notesRemaining = MAX_NOTES - (formData.notes ? formData.notes.length : 0);
 
@@ -373,7 +298,14 @@ useEffect(() => {
             </div>
 
             <div className="form-grp">
-              <label>Notes</label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <label style={{ fontWeight: 600 }}>Brief description for your profile</label>
+                  <div style={{ fontSize: 12, color: '#666' }}>Add a short summary that will appear on your profile</div>
+                </div>
+                <div style={{ fontSize: 13, color: '#333' }}>{notesRemaining} characters remaining</div>
+              </div>
+
               <textarea
                 name="notes"
                 value={formData.notes}
@@ -383,14 +315,9 @@ useEffect(() => {
                 maxLength={MAX_NOTES}
                 rows={6}
               ></textarea>
-
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
-                <div style={{ fontSize: 12, color: "#666" }}>Add a short summary that will appear on your profile</div>
-                <div style={{ fontSize: 13, color: "#333" }}>{notesRemaining} characters remaining</div>
-              </div>
             </div>
 
-            <h4 style={{ fontWeight: 600, marginTop: 24  }}>Online Presence</h4>
+            <h4>Online Presence</h4>
 
             <div className="form-grp">
               <label>Website</label>
@@ -401,7 +328,6 @@ useEffect(() => {
                 onChange={handleChange}
                 placeholder="Enter website URL"
               />
-              <div style={{ fontSize: 12, color: "#666", marginTop: 6 }}>Your homepage, company site or blog</div>
             </div>
 
             <div className="form-grp">
@@ -437,7 +363,7 @@ useEffect(() => {
               />
             </div>
 
-            <h4 style={{ fontWeight: 600,  marginTop: 24  }} >Services</h4>
+            <h4>Services</h4>
 
             <div className="form-grp">
               <label>Select Services</label>
@@ -445,7 +371,7 @@ useEffect(() => {
                 name="services"
                 multiple
                 value={formData.services}
-                onChange={handleServicesSelect}
+                onChange={handleChange}
               >
                 {servicesList.length > 0 ? (
                   servicesList.map((serv) => (
@@ -457,110 +383,11 @@ useEffect(() => {
                   <option disabled>Loading services...</option>
                 )}
               </select>
-
-              {/* Selected service cards */}
-              {selectedServices.length > 0 && (
-                <div style={{ marginTop: 12 }}>
-                  {selectedServices.map((svc, idx) => (
-                    <div
-                      key={svc.id}
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 160px 90px 36px",
-                        gap: 8,
-                        alignItems: "center",
-                        border: "1px solid #e6e9ee",
-                        padding: 12,
-                        borderRadius: 6,
-                        marginBottom: 10,
-                        background: "#fff"
-                      }}
-                    >
-                      {/* service name (pre-filled/readOnly) */}
-                      <input
-                        type="text"
-                        value={svc.name}
-                        readOnly
-                        style={{ padding: "10px", border: "none", background: "transparent" }}
-                      />
-
-                      {/* cost input */}
-                      <input
-                        type="number"
-                        placeholder="Average Cost"
-                        value={svc.cost}
-                        onChange={(e) => handleServiceFieldChange(idx, "cost", e.target.value)}
-                        style={{ padding: "10px", border: "none", background: "transparent" }}
-                      />
-
-                      {/* currency select */}
-                      <select
-                        value={svc.currency}
-                        onChange={(e) => handleServiceFieldChange(idx, "currency", e.target.value)}
-                        style={{ padding: "8px" }}
-                      >
-                        <option value="KD">KD</option>
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                      </select>
-
-                      {/* remove button */}
-                      <button
-                        type="button"
-                        onClick={() => removeService(svc.id)}
-                        aria-label="Remove service"
-                        style={{
-                          width: 28,
-                          height: 28,
-                          borderRadius: "50%",
-                          border: "none",
-                          background: "#f0f2f5",
-                          cursor: "pointer",
-                          fontSize: 16,
-                        }}
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
 
-
-            <div className="form-grp">
-              <label>Service Note</label>
-              <input
-                type="text"
-                name="servicenote"
-                placeholder="Enter Service Note"
-              />
-            </div>
-
-
-
-          <div style={{ textAlign: "right", marginTop: "32px" }}>
-            <button
-              type="submit"
-              style={{
-                backgroundColor: "#007bff",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                padding: "10px 85px",
-                fontSize: "16px",
-                fontWeight: "600",
-                cursor: "pointer",
-                transition: "background-color 0.2s ease",
-              }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = "#0069d9")}
-              onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
-            >
+            <button type="submit" className="btn get-sub">
               Save
             </button>
-          </div>
-
-
           </form>
         </div>
 
