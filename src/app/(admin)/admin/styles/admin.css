@@ -37,6 +37,10 @@ body{
 }
 
 
+h1{
+  margin-bottom: 24px !important;
+}
+
 .admin-nav button{
       background: var(--primary-color);
     color: #fff;
@@ -295,7 +299,7 @@ form.settingsform {
     border: 2px solid #d7dbec;
      color: #000000;
     padding: 20px 15px;
-    border-radius: 4px !important; transition: all 0.5s ease-in-out;
+    border-radius: 4px !important; transition: all 0.5s ease-in-out; margin-bottom: 12px !important;
 }
 
 .form-grp input:focus,
@@ -380,4 +384,22 @@ form.settingsform {
 }
 .modal-overlay p{
     margin-bottom: 20px !important;
+}
+
+button[type="submit"] {
+ margin-bottom: 20px !important;
+
+ background: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 26px;
+    font-family: Avenir-Book;
+    font-size: 16px;
+    display: inline-block;
+}
+
+button[type="submit"] {
+    background: #4c72f6;
 }
