@@ -94,20 +94,23 @@ const handleSubmit = async (e) => {
   setLoading(true);
   setMessage("");
 
-  const englishFaqData = {
-    title: formData.engtitle,
-    question: formData.engquestion,
-    answer: formData.enganswer,
-    language: "en",
-  };
+const faqData = {
+  engtitle: formData.engtitle,
+  engquestion: formData.engquestion,
+  enganswer: formData.enganswer,
+  arabtitle: formData.arabtitle,
+  arabquestion: formData.arabquestion,
+  arabanswer: formData.arabanswer,
+};
 
   try {
     let res;
-    if (editingId) {
-      res = await axios.put(`${API_URL}faq/${editingId}`, englishFaqData);
-    } else {
-      res = await axios.post(`${API_URL}faq`, englishFaqData);
-    }
+if (editingId) {
+  res = await axios.put(`${API_URL}faq/${editingId}`, faqData);
+} else {
+  res = await axios.post(`${API_URL}faq`, faqData);
+}
+
 
     if (res.status === 200 || res.status === 201) {
       setMessage(editingId ? "✅ FAQ updated successfully!" : "✅ FAQ created successfully!");

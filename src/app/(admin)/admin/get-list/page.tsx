@@ -194,7 +194,7 @@ const fetchData = async (sectionKey: string) => {
       <h1>Get Listed Page</h1>
 
       <div className="tabs">
-        {[{ id: 1, label: "Get Listed Banner" }, { id: 2, label: "Get Listed Cards" },    { id: 3, label: "Get Listed Handis Cards" }, { id: 4, label: "Get Listed Meaningfull Card" },  { id: 5, label: "Get Listed Help Card" }, ].map(({ id, label }) => (
+        {[{ id: 1, label: "Get Listed Banner" },    { id: 3, label: "Get Listed Handis Cards" }, { id: 4, label: "Get Listed Meaningfull Card" },  { id: 5, label: "Get Listed Help Card" }, ].map(({ id, label }) => (
           <button
             key={id}
             type="button"
@@ -206,52 +206,64 @@ const fetchData = async (sectionKey: string) => {
         ))}
       </div>
 
-      {activeTab === 1 && (
-        <form onSubmit={(e) => handleSubmit(e, false)}>
-          <InputField label="Title (English)" value={titles.en} onChange={(v) => setTitles({ ...titles, en: v })} />
-          <InputField label="Title (Arabic)" value={titles.ar} onChange={(v) => setTitles({ ...titles, ar: v })}  />
-          <div className="form-field">
-            <label>Content (English)</label>
-            <ReactQuill
-              theme="snow"
-              value={content.en}
-              onChange={(v) => setContent((prev) => ({ ...prev, en: v }))}
-              modules={modules}
-            />
-          </div>
-          <div className="form-field">
-            <label>Content (Arabic)</label>
-            <ReactQuill
-              theme="snow"
-              value={content.ar}
-              onChange={(v) => setContent((prev) => ({ ...prev, ar: v }))}
-              modules={modules}
-            />
-          </div>
-          <button type="submit" className="btn get-sub" disabled={loading}>
-            {loading ? "Saving..." : "Save Page"}
-          </button>
-          {message && (
-            <p
-              className={`message ${
-                message.includes("✅") ? "success" : message.includes("⚠️") ? "warning" : "error"
-              }`}
-            >
-              {message}
-            </p>
-          )}
-        </form>
-      )}
+     {activeTab === 1 && (
+  <form onSubmit={(e) => handleSubmit(e, false)}>
+    {/* English Title */}
+    <InputField
+      label="Title"
+      value={titles.en}
+      onChange={(v) => setTitles({ ...titles, en: v })}
+    />
 
-{activeTab === 2 && (
-  <CardsTabContent
-    cards={cards}
-    setCards={setCards}
-    handleSubmit={(e) => handleSubmit(e, true)}
-    loading={loading}
-    message={message}
-  />
+    {/* Arabic Title (Hidden) */}
+    <div style={{ display: "none" }}>
+      <InputField
+        label="Title (Arabic)"
+        value={titles.ar}
+        onChange={(v) => setTitles({ ...titles, ar: v })}
+      />
+    </div>
+
+    {/* English Content */}
+    <div className="form-field">
+      <label>Content</label>
+      <ReactQuill
+        theme="snow"
+        value={content.en}
+        onChange={(v) => setContent((prev) => ({ ...prev, en: v }))}
+        modules={modules}
+      />
+    </div>
+
+    {/* Arabic Content (Hidden) */}
+    <div className="form-field" style={{ display: "none" }}>
+      <label>Content (Arabic)</label>
+      <ReactQuill
+        theme="snow"
+        value={content.ar}
+        onChange={(v) => setContent((prev) => ({ ...prev, ar: v }))}
+        modules={modules}
+      />
+    </div>
+
+    <button type="submit" className="btn get-sub" disabled={loading}>
+      {loading ? "Saving..." : "Save"}
+    </button>
+
+    {message && (
+      <p
+        className={`message ${
+          message.includes("✅") ? "success" : message.includes("⚠️") ? "warning" : "error"
+        }`}
+      >
+        {message}
+      </p>
+    )}
+  </form>
 )}
+
+
+
 
 {activeTab === 3 && <HandisTabContent />}
 

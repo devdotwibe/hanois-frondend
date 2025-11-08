@@ -77,9 +77,8 @@ export default function HandisTabContent() {
     <form onSubmit={handleSubmit}>
       {cards.map((card, i) => (
         <div key={i} className="card-section">
-          <h3>Handis Card {i + 1}</h3>
-
-          <label>Handis Title</label>
+       
+          <label>Title</label>
           <input
             type="text"
             value={card.handistitle}
@@ -113,7 +112,7 @@ export default function HandisTabContent() {
         </div>
       ))}
       <button type="submit" disabled={loading}>
-        {loading ? "Saving..." : "Save Handis Cards"}
+        {loading ? "Saving..." : "Save"}
       </button>
       {message && (
         <p className={`message ${message.includes("✅") ? "success" : "error"}`}>{message}</p>

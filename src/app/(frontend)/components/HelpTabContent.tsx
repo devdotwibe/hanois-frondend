@@ -25,6 +25,7 @@ export default function HelpTabContent() {
     })();
   }, []);
 
+  // 🟩 Handle form submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -41,6 +42,14 @@ export default function HelpTabContent() {
 
       if (res.ok) {
         setMessage("✅ Help card saved successfully!");
+        // Reload updated data
+        const refreshed = await (await fetch(`${API_URL}page/get?sectionKey=get_listedhelp`)).json();
+        if (refreshed.success && refreshed.data?.card) {
+          setCard({
+            helptext: refreshed.data.card.helptext || "",
+            helpbuttonname: refreshed.data.card.helpbuttonname || "",
+          });
+        }
       } else {
         setMessage(`❌ ${data.error || "Failed to save"}`);
       }
@@ -55,7 +64,7 @@ export default function HelpTabContent() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-field">
-        <label>Help Text</label>
+        <label>Title</label>
         <input
           type="text"
           value={card.helptext}
@@ -65,7 +74,7 @@ export default function HelpTabContent() {
       </div>
 
       <div className="form-field">
-        <label>Help Button Name</label>
+        <label>Button Name</label>
         <input
           type="text"
           value={card.helpbuttonname}
@@ -75,7 +84,7 @@ export default function HelpTabContent() {
       </div>
 
       <button type="submit" disabled={loading}>
-        {loading ? "Saving..." : "Save Help Card"}
+        {loading ? "Saving..." : "Save"}
       </button>
 
       {message && (

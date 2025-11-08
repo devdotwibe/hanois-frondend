@@ -71,7 +71,7 @@ export default function MeaningfullTabContent() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-field">
-        <label>Meaningfull Text</label>
+        <label>Title</label>
         <input
           type="text"
           value={card.meaningfull}
@@ -91,7 +91,7 @@ export default function MeaningfullTabContent() {
         )}
       </div>
 
-      <button type="submit" disabled={loading}>{loading ? "Saving..." : "Save Meaningfull Card"}</button>
+      <button type="submit" disabled={loading}>{loading ? "Saving..." : "Save"}</button>
 
       {message && <p className={`message ${message.includes("✅") ? "success" : "error"}`}>{message}</p>}
     </form>
