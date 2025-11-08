@@ -319,7 +319,7 @@ useEffect(() => {
         <form onSubmit={handleSave}>
           {/* 🟩 English Title */}
 <div className="section">
-  <label>Title</label>
+  <label>Header Content</label>
   <textarea
     value={titles.en}
     onChange={(e) => setTitles({ ...titles, en: e.target.value })}
