@@ -1,32 +1,86 @@
-// app/(directory)/Components/DetailIntro.jsx
-import React from 'react'
-import DetailCard from '@/app/(directory)/Components/DetailCard'
-import Image from 'next/image'
+"use client";
 
-const DetailIntro = ({ name, description, image }) => {
-  // If you want to keep a default local logo, import it and use as fallback
-  // import logoFallback from '../../../../public/images/ahi-logo.jpg'
-  // const logoSrc = image ?? logoFallback
+import React, { useEffect, useState } from "react";
+import DetailCard from "@/app/(directory)/Components/DetailCard";
+import { useSearchParams } from "next/navigation";
+import { API_URL } from "@/config";
+
+const DEFAULT_LOGO = "/images/default-logo.png"; // fallback if no image
+
+const resolveImageUrl = (path) => {
+  if (!path) return null;
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+
+  let base = API_URL.replace(/\/+$/, "");
+  base = base.replace(/\/api\/api$/i, "/api");
+  base = base.replace(/\/api$/i, "/api");
+  return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
+};
+
+const DetailIntro = () => {
+  const searchParams = useSearchParams();
+  const providerId = searchParams?.get("providerId");
+
+  const [provider, setProvider] = useState(null);
+  const [loading, setLoading] = useState(Boolean(providerId));
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!providerId) {
+      setError("No providerId provided in URL.");
+      setLoading(false);
+      return;
+    }
+
+    const fetchProvider = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const res = await fetch(`${API_URL}providers/${providerId}`);
+        const body = await res.json();
+        if (!res.ok) {
+          throw new Error(body?.error || body?.message || "Failed to fetch provider");
+        }
+        const pv = body?.provider ?? body;
+        setProvider(pv);
+      } catch (err) {
+        console.error("Error fetching provider:", err);
+        setError(err.message || "Error fetching provider");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProvider();
+  }, [providerId]);
+
+  // Loading / error states
+  if (loading) {
+    return <div className="detail-page-intro">Loading provider…</div>;
+  }
+
+  if (error) {
+    return <div className="detail-page-intro">Error: {error}</div>;
+  }
+
+  if (!provider) {
+    return <div className="detail-page-intro">No provider data found.</div>;
+  }
+
+  const logoSrc = provider.image ? resolveImageUrl(provider.image) : DEFAULT_LOGO;
+  const description = provider.professional_headline ?? provider.service ?? provider.notes ?? "";
 
   return (
     <div className="detail-page-intro">
-      <div className="">
+      <div>
         <DetailCard
-          // DetailCard should accept logo, name, description. If not, update it similarly.
-          logo={image}
-          name={name ?? 'Unknown Provider'}
-          description={description ?? ''}
+          logo={logoSrc}
+          name={provider.name || "No name"}
+          description={description}
         />
-
-        {/* If DetailCard doesn't handle an image prop, you can also render here: */}
-        {/* {image && (
-          <div className="provider-image">
-            <Image src={image} alt={name ?? 'provider image'} width={120} height={120} />
-          </div>
-        )} */}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DetailIntro
+export default DetailIntro;
