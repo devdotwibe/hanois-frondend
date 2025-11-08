@@ -16,7 +16,10 @@ const Tabs = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [servicesList, setServicesList] = useState([]);
 
-  // selectedServices: array of { id, name, cost, currency }
+  // map of provider_service entries by service_id -> { average_cost, currency, service_note, service_name }
+  const [providerServicesMap, setProviderServicesMap] = useState({});
+
+  // selectedServices: array of { id, name, cost, currency, service_note }
   const [selectedServices, setSelectedServices] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -80,11 +83,14 @@ const Tabs = () => {
         .filter((id) => !kept.some((k) => String(k.id) === id))
         .map((id) => {
           const svc = servicesList.find((s) => String(s.id) === String(id));
+          // if providerServicesMap has data, use it
+          const ps = providerServicesMap[String(id)];
           return {
             id,
-            name: svc ? svc.name : "",
-            cost: "",
-            currency: DEFAULT_CURRENCY,
+            name: svc ? svc.name : (ps?.service_name ?? ""),
+            cost: ps?.average_cost != null ? String(ps.average_cost) : "",
+            currency: ps?.currency ?? DEFAULT_CURRENCY,
+            service_note: ps?.service_note ?? "",
           };
         });
 
@@ -127,8 +133,7 @@ const Tabs = () => {
     fetchOptions();
   }, []);
 
-
-  // Fetch provider details and populate form
+  // Fetch provider details and provider_services, populate form
   useEffect(() => {
     const fetchProvider = async () => {
       try {
@@ -143,6 +148,7 @@ const Tabs = () => {
         }
         if (!providerId) return;
 
+        // fetch provider
         const res = await fetch(`${API_URL}providers/${providerId}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
@@ -159,7 +165,8 @@ const Tabs = () => {
           ? provider.service_id.map(String)
           : provider.service_id ? [String(provider.service_id)] : [];
 
-        setFormData({
+        setFormData((prev) => ({
+          ...prev,
           companyName: provider.name ?? "",
           categories,
           phoneNumber: provider.phone ?? "",
@@ -173,40 +180,84 @@ const Tabs = () => {
           services,
           professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
           image: provider.image ?? null,
-        });
+        }));
+
+        // fetch provider_services
+        try {
+          const svcRes = await fetch(`${API_URL}providers/all-provider-services?providerId=${providerId}`);
+          const svcJson = await svcRes.json();
+          if (svcRes.ok && Array.isArray(svcJson.data)) {
+            // build map keyed by service_id (string)
+            const map = {};
+            svcJson.data.forEach((item) => {
+              const sid = String(item.service_id ?? item.serviceId ?? item.id ?? "");
+              map[sid] = {
+                average_cost: item.average_cost != null ? String(item.average_cost) : "",
+                currency: item.currency ?? DEFAULT_CURRENCY,
+                service_note: item.service_note ?? "",
+                service_name: item.service_name ?? "",
+              };
+            });
+            setProviderServicesMap(map);
+
+            // initialize selectedServices using services list + providerServicesMap
+            setSelectedServices((prev) => {
+              const prevMap = new Map(prev.map((p) => [String(p.id), p]));
+              const result = (services || []).map((sid) => {
+                const sidStr = String(sid);
+                const ps = map[sidStr];
+                const svcMeta = servicesList.find((s) => String(s.id) === sidStr);
+                const existing = prevMap.get(sidStr);
+                return {
+                  id: sidStr,
+                  name: svcMeta ? svcMeta.name : (ps?.service_name ?? existing?.name ?? ""),
+                  cost: existing?.cost ?? (ps?.average_cost ?? ""),
+                  currency: existing?.currency ?? (ps?.currency ?? DEFAULT_CURRENCY),
+                  service_note: existing?.service_note ?? (ps?.service_note ?? ""),
+                };
+              });
+              return result;
+            });
+          }
+        } catch (err) {
+          console.error("Error fetching provider_services:", err);
+        }
+
       } catch (err) {
         console.error("Error fetching provider:", err);
       }
     };
     fetchProvider();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // When servicesList or formData.services or providerServicesMap change, initialize selectedServices (preserve any existing cost/currency if ids match)
+  useEffect(() => {
+    if (!servicesList || servicesList.length === 0) return;
+    if (!formData.services || formData.services.length === 0) {
+      setSelectedServices([]);
+      return;
+    }
 
-    // When servicesList or formData.services change, initialize selectedServices (preserve any existing cost/currency if ids match)
-    useEffect(() => {
-      if (!servicesList || servicesList.length === 0) return;
-      if (!formData.services || formData.services.length === 0) {
-        setSelectedServices([]);
-        return;
-      }
+    setSelectedServices((prev) => {
+      // create map of existing entered values so we preserve cost/currency if possible
+      const prevMap = new Map(prev.map((p) => [String(p.id), p]));
 
-      setSelectedServices((prev) => {
-        // create map of existing entered values so we preserve cost/currency if possible
-        const prevMap = new Map(prev.map((p) => [String(p.id), p]));
-
-        return formData.services.map((id) => {
-          const sid = String(id);
-          const svcMeta = servicesList.find((s) => String(s.id) === sid);
-          const existing = prevMap.get(sid);
-          return {
-            id: sid,
-            name: svcMeta ? svcMeta.name : existing?.name ?? "",
-            cost: existing?.cost ?? "",
-            currency: existing?.currency ?? DEFAULT_CURRENCY,
-          };
-        });
+      return formData.services.map((id) => {
+        const sid = String(id);
+        const svcMeta = servicesList.find((s) => String(s.id) === sid);
+        const existing = prevMap.get(sid);
+        const ps = providerServicesMap[sid];
+        return {
+          id: sid,
+          name: svcMeta ? svcMeta.name : existing?.name ?? ps?.service_name ?? "",
+          cost: existing?.cost ?? (ps?.average_cost ?? ""),
+          currency: existing?.currency ?? (ps?.currency ?? DEFAULT_CURRENCY),
+          service_note: existing?.service_note ?? (ps?.service_note ?? ""),
+        };
       });
-    }, [servicesList, formData.services]);
+    });
+  }, [servicesList, formData.services, providerServicesMap]);
 
   // Handle submit
   const handleSubmit = async (e) => {
@@ -254,8 +305,12 @@ const Tabs = () => {
         service_details: selectedServices.map((s) => ({
           id: s.id,
           name: s.name,
-          cost: s.cost,
+          // include both keys so backend accepts either
+          cost: s.cost === "" ? null : s.cost,
+          average_cost: s.cost === "" ? null : s.cost,
           currency: s.currency,
+          note: s.service_note ?? null,
+          service_note: s.service_note ?? null,
         })),
         professional_headline: formData.professionalHeadline,
       };
@@ -311,13 +366,11 @@ const Tabs = () => {
           </li>
         ))}
       </ul>
-     
+
       {/* Tab Content */}
       <div className="tab-content-wrap">
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
           <form className="settingsform" onSubmit={handleSubmit}>
-
-
 
             <div className="form-grp">
               <label>Company/Business Name</label>
@@ -536,12 +589,27 @@ const Tabs = () => {
                       >
                         ×
                       </button>
+
+                      {/* service note spans full width under the row (use gridColumn to span) */}
+                      <input
+                        type="text"
+                        value={svc.service_note ?? ""}
+                        placeholder="Service note (optional)"
+                        onChange={(e) => handleServiceFieldChange(idx, "service_note", e.target.value)}
+                        style={{
+                          gridColumn: "1 / -1",
+                          marginTop: 8,
+                          padding: "8px 10px",
+                          border: "1px solid #e6e9ee",
+                          borderRadius: 6,
+                          background: "#fafafa"
+                        }}
+                      />
                     </div>
                   ))}
                 </div>
               )}
             </div>
-
 
             <div className="form-grp">
               <label>Service Note</label>
@@ -552,31 +620,30 @@ const Tabs = () => {
               />
             </div>
 
+            <div style={{ textAlign: "right", marginTop: "32px" }}>
+              <button
+                type="submit"
+                disabled={status.loading}
+                style={{
+                  backgroundColor: "#007bff",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "6px",
+                  padding: "10px 85px",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  cursor: status.loading ? "not-allowed" : "pointer",
+                  transition: "background-color 0.2s ease",
+                  opacity: status.loading ? 0.8 : 1,
+                }}
+                onMouseEnter={(e) => (e.target.style.backgroundColor = "#0069d9")}
+                onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
+              >
+                {status.loading ? "Saving..." : "Save"}
+              </button>
+            </div>
 
-          <div style={{ textAlign: "right", marginTop: "32px" }}>
-            <button
-              type="submit"
-              disabled={status.loading}
-              style={{
-                backgroundColor: "#007bff",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                padding: "10px 85px",
-                fontSize: "16px",
-                fontWeight: "600",
-                cursor: status.loading ? "not-allowed" : "pointer",
-                transition: "background-color 0.2s ease",
-                opacity: status.loading ? 0.8 : 1,
-              }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = "#0069d9")}
-              onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
-            >
-              {status.loading ? "Saving..." : "Save"}
-            </button>
-          </div>
-
-       {/* status message (success / error) */}
+            {/* status message (success / error) */}
             {status.message && (
               <div className="login-success contact-sucess" style={{ marginBottom: 12 }}>
                 <p style={{ color: status.success ? "green" : "red", margin: 0 }}>{status.message}</p>
