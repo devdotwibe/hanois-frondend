@@ -294,7 +294,7 @@ const Tabs = () => {
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
 
     // fixed regex: added the missing closing slash before the $
-    let base = API_URL.replace(/\/+$, "");
+    let base = API_URL.replace(/\/+$/, "");
     base = base.replace(/\/api\/api$/i, "/api");
     base = base.replace(/\/api$/i, "/api");
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
