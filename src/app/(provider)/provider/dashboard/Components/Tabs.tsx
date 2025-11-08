@@ -380,7 +380,7 @@ const Tabs = () => {
             </div>
 
             <div className="form-grp">
-              <label>Team Size</label>
+              <label>Notes</label>
               <textarea
                 name="notes"
                 value={formData.notes}
