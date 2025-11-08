@@ -533,10 +533,14 @@ const Tabs = () => {
                 </div>
               )}
             </div>
+        <button
+          type="submit"
+          className={`btn w-full py-2 rounded text-white :
+             "bg-gray-400" : "bg-blue-600 hover:bg-blue-500"
+          }`}
+        >
+        </button>
 
-            <button type="submit" className="btn get-sub">
-              Save
-            </button>
           </form>
         </div>
 
