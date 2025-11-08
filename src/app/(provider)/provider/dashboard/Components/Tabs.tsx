@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import ProjectComponent from "./ProjectComponent";
 import { API_URL } from "@/config";
+import { useRouter } from "next/navigation";
 
 const TABS = [
   { id: "companyinfo", label: "Company Information" },
@@ -12,6 +13,7 @@ const MAX_NOTES = 1024;
 const DEFAULT_CURRENCY = "KD";
 
 const Tabs = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("companyinfo");
   const [categoriesList, setCategoriesList] = useState([]);
   const [servicesList, setServicesList] = useState([]);
@@ -275,6 +277,10 @@ const Tabs = () => {
       // replaced alert with status message div
       setStatus({ loading: false, message: "Provider updated successfully!", success: true });
 
+      // Navigate to detail page after successful update
+      // Use an internal route; adjust if you want to navigate to the absolute host
+      router.push('/service-provider-directory/details');
+
       // optional: clear errors
       setErrors({});
     } catch (err) {
@@ -288,7 +294,7 @@ const Tabs = () => {
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
 
     // fixed regex: added the missing closing slash before the $
-    let base = API_URL.replace(/\/+$/, "");
+    let base = API_URL.replace(/\/+$, "");
     base = base.replace(/\/api\/api$/i, "/api");
     base = base.replace(/\/api$/i, "/api");
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
@@ -316,6 +322,7 @@ const Tabs = () => {
       <div className="tab-content-wrap">
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
           <form className="settingsform" onSubmit={handleSubmit}>
+
 
 
 

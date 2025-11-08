@@ -7,7 +7,7 @@ const BusinessInfo = () => {
 
     <div className="businesscontainer">
         
-        
+         
         <div className="content">
             <h2>Business Information</h2>
             

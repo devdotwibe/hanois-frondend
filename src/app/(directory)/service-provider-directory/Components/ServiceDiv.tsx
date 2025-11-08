@@ -7,7 +7,7 @@ const ServiceDiv = () => {
         <h2>Service</h2>
 
 
-        <div className="build-row">
+        <div className="build-row"> 
 
             <div className="build-col">
 
