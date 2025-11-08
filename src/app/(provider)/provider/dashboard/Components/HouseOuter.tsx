@@ -25,7 +25,7 @@ const HouseOuter: React.FC = () => {
     if (cached) providerData = JSON.parse(cached);
   }
 
-if (!providerId) return null;
+  if (!providerId || !providerData) return null;
 
   return (
     <div>
