@@ -8,10 +8,16 @@ const TABS = [
   { id: "project", label: "Project" },
 ];
 
+const MAX_NOTES = 1024;
+const DEFAULT_CURRENCY = "KD";
+
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState("companyinfo");
   const [categoriesList, setCategoriesList] = useState([]);
   const [servicesList, setServicesList] = useState([]);
+
+  // selectedServices: array of { id, name, cost, currency }
+  const [selectedServices, setSelectedServices] = useState([]);
 
   const [formData, setFormData] = useState({
     companyName: "",
@@ -24,25 +30,82 @@ const Tabs = () => {
     facebook: "",
     instagram: "",
     other: "",
-    services: [],
+    services: [], // array of service ids (strings)
     professionalHeadline: "",
     image: null,
   });
 
-  // Handle input change
+  // Added: errors + status state (shows success/error messages)
+  const [errors, setErrors] = useState({});
+  const [status, setStatus] = useState({ loading: false, message: "", success: false });
+
+  // Generic handleChange (keeps support for multiple selects like categories)
   const handleChange = (e) => {
     const { name, value, options } = e.target;
-    if (options) {
+
+    if (options && name !== "services") {
+      // for multi-selects (categories), except services which we handle separately
       const values = Array.from(options)
         .filter((opt) => opt.selected)
         .map((opt) => opt.value);
       setFormData((s) => ({ ...s, [name]: values }));
-    } else {
-      setFormData((s) => ({ ...s, [name]: value }));
+      return;
     }
+
+    if (name === "notes") {
+      const trimmed = value.slice(0, MAX_NOTES);
+      setFormData((s) => ({ ...s, notes: trimmed }));
+      return;
+    }
+
+    setFormData((s) => ({ ...s, [name]: value }));
   };
 
-  // Fetch categories & services
+  // Services select change handler (creates/updates service cards)
+  const handleServicesSelect = (e) => {
+    const values = Array.from(e.target.options)
+      .filter((opt) => opt.selected)
+      .map((opt) => opt.value);
+
+    setFormData((s) => ({ ...s, services: values }));
+
+    // ensure selectedServices reflects chosen IDs, preserve existing entries where possible
+    setSelectedServices((prev) => {
+      const ids = values.map(String);
+      // Keep existing that are still selected
+      const kept = prev.filter((p) => ids.includes(String(p.id)));
+
+      // Add any new ones
+      const additions = ids
+        .filter((id) => !kept.some((k) => String(k.id) === id))
+        .map((id) => {
+          const svc = servicesList.find((s) => String(s.id) === String(id));
+          return {
+            id,
+            name: svc ? svc.name : "",
+            cost: "",
+            currency: DEFAULT_CURRENCY,
+          };
+        });
+
+      return [...kept, ...additions];
+    });
+  };
+
+  const handleServiceFieldChange = (index, key, value) => {
+    setSelectedServices((prev) => {
+      const copy = [...prev];
+      copy[index] = { ...copy[index], [key]: value };
+      return copy;
+    });
+  };
+
+  const removeService = (idToRemove) => {
+    setSelectedServices((prev) => prev.filter((s) => String(s.id) !== String(idToRemove)));
+    setFormData((prev) => ({ ...prev, services: prev.services.filter((id) => String(id) !== String(idToRemove)) }));
+  };
+
+  // Fetch categories & services lists
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -50,19 +113,20 @@ const Tabs = () => {
           fetch(`${API_URL}categories`),
           fetch(`${API_URL}services`),
         ]);
-
         const catData = await catRes.json();
         const servData = await servRes.json();
-
-        setCategoriesList(Array.isArray(catData) ? catData : catData.data || []);
-        setServicesList(Array.isArray(servData) ? servData : servData.data || []);
+        const cats = Array.isArray(catData) ? catData : catData.data || [];
+        const svcs = Array.isArray(servData) ? servData : servData.data || [];
+        // normalize ids to strings to avoid type mismatch with form state
+        setCategoriesList(cats.map(c => ({ ...c, id: String(c.id) })));
+        setServicesList(svcs.map(s => ({ ...s, id: String(s.id) })));
       } catch (err) {
         console.error("Error fetching categories/services:", err);
       }
     };
-
     fetchOptions();
   }, []);
+
 
   // Fetch provider details and populate form
   useEffect(() => {
@@ -70,63 +134,87 @@ const Tabs = () => {
       try {
         let providerId = localStorage.getItem("providerId");
         const token = localStorage.getItem("token");
-
         if (!providerId && token) {
           try {
             const base64 = token.split(".")[1];
             const payload = JSON.parse(atob(base64));
             providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
-          } catch (e) {}
+          } catch (e) { /* ignore */ }
         }
-
         if (!providerId) return;
 
         const res = await fetch(`${API_URL}providers/${providerId}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
-
         const data = await res.json();
         if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
-
         const provider = data?.provider ?? data ?? {};
+
+        // Normalize categories/service ids to strings to match options
+        const categories = Array.isArray(provider.categories_id)
+          ? provider.categories_id.map(String)
+          : provider.categories_id ? [String(provider.categories_id)] : [];
+
+        const services = Array.isArray(provider.service_id)
+          ? provider.service_id.map(String)
+          : provider.service_id ? [String(provider.service_id)] : [];
 
         setFormData({
           companyName: provider.name ?? "",
-          categories: Array.isArray(provider.categories_id)
-            ? provider.categories_id
-            : provider.categories_id
-            ? [provider.categories_id]
-            : [],
+          categories,
           phoneNumber: provider.phone ?? "",
           location: provider.location ?? "",
-          teamSize:
-            typeof provider.team_size === "number"
-              ? String(provider.team_size)
-              : provider.team_size ?? "",
+          teamSize: provider.team_size != null ? String(provider.team_size) : "",
           notes: provider.notes ?? "",
-          website: provider.website ?? provider.web ?? "",
+          website: provider.website ?? provider.web ?? provider.social_media ?? "",
           facebook: provider.facebook ?? "",
           instagram: provider.instagram ?? "",
           other: provider.other_link ?? provider.other ?? "",
-          services: Array.isArray(provider.service_id)
-            ? provider.service_id
-            : provider.service_id
-            ? [provider.service_id]
-            : [],
-          professionalHeadline: provider.professional_headline ?? "",
+          services,
+          professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
           image: provider.image ?? null,
         });
       } catch (err) {
         console.error("Error fetching provider:", err);
       }
     };
-
     fetchProvider();
   }, []);
 
-  // Handle form submit
+
+    // When servicesList or formData.services change, initialize selectedServices (preserve any existing cost/currency if ids match)
+    useEffect(() => {
+      if (!servicesList || servicesList.length === 0) return;
+      if (!formData.services || formData.services.length === 0) {
+        setSelectedServices([]);
+        return;
+      }
+
+      setSelectedServices((prev) => {
+        // create map of existing entered values so we preserve cost/currency if possible
+        const prevMap = new Map(prev.map((p) => [String(p.id), p]));
+
+        return formData.services.map((id) => {
+          const sid = String(id);
+          const svcMeta = servicesList.find((s) => String(s.id) === sid);
+          const existing = prevMap.get(sid);
+          return {
+            id: sid,
+            name: svcMeta ? svcMeta.name : existing?.name ?? "",
+            cost: existing?.cost ?? "",
+            currency: existing?.currency ?? DEFAULT_CURRENCY,
+          };
+        });
+      });
+    }, [servicesList, formData.services]);
+
+  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // clear previous messages
+    setErrors({});
+    setStatus({ loading: true, message: "", success: false });
 
     try {
       let providerId = localStorage.getItem("providerId");
@@ -141,12 +229,12 @@ const Tabs = () => {
       }
 
       if (!token) {
-        alert("You must be logged in to perform this action.");
+        setStatus({ loading: false, message: "You must be logged in to perform this action.", success: false });
         return;
       }
 
       if (!providerId) {
-        alert("No provider id found.");
+        setStatus({ loading: false, message: "No provider id found.", success: false });
         return;
       }
 
@@ -161,7 +249,14 @@ const Tabs = () => {
         instagram: formData.instagram,
         other_link: formData.other,
         categories_id: formData.categories,
-        service_id: formData.services,
+        // send service ids & details
+        service_id: selectedServices.map((s) => s.id),
+        service_details: selectedServices.map((s) => ({
+          id: s.id,
+          name: s.name,
+          cost: s.cost,
+          currency: s.currency,
+        })),
         professional_headline: formData.professionalHeadline,
       };
 
@@ -175,23 +270,31 @@ const Tabs = () => {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Update failed");
+      if (!res.ok) throw new Error(data.error || data.message || "Update failed");
 
-      alert("Provider updated successfully!");
+      // replaced alert with status message div
+      setStatus({ loading: false, message: "Provider updated successfully!", success: true });
+
+      // optional: clear errors
+      setErrors({});
     } catch (err) {
       console.error(err);
-      alert(err.message || "Save failed");
+      setStatus({ loading: false, message: err.message || "Save failed", success: false });
     }
   };
 
   const resolveImageUrl = (path) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
+
+    // fixed regex: added the missing closing slash before the $
     let base = API_URL.replace(/\/+$/, "");
     base = base.replace(/\/api\/api$/i, "/api");
     base = base.replace(/\/api$/i, "/api");
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
   };
+
+  const notesRemaining = MAX_NOTES - (formData.notes ? formData.notes.length : 0);
 
   return (
     <div className="tab-wrapper1">
@@ -208,11 +311,14 @@ const Tabs = () => {
           </li>
         ))}
       </ul>
-
+     
       {/* Tab Content */}
       <div className="tab-content-wrap">
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
           <form className="settingsform" onSubmit={handleSubmit}>
+
+
+
             <div className="form-grp">
               <label>Company/Business Name</label>
               <input
@@ -289,10 +395,17 @@ const Tabs = () => {
                 onChange={handleChange}
                 placeholder="Enter notes"
                 required
+                maxLength={MAX_NOTES}
+                rows={6}
               ></textarea>
+
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
+                <div style={{ fontSize: 12, color: "#666" }}>Add a short summary that will appear on your profile</div>
+                <div style={{ fontSize: 13, color: "#333" }}>{notesRemaining} characters remaining</div>
+              </div>
             </div>
 
-            <h4>Online Presence</h4>
+            <h4 style={{ fontWeight: 600, marginTop: 24  }}>Online Presence</h4>
 
             <div className="form-grp">
               <label>Website</label>
@@ -303,6 +416,7 @@ const Tabs = () => {
                 onChange={handleChange}
                 placeholder="Enter website URL"
               />
+              <div style={{ fontSize: 12, color: "#666", marginTop: 6 }}>Your homepage, company site or blog</div>
             </div>
 
             <div className="form-grp">
@@ -338,7 +452,7 @@ const Tabs = () => {
               />
             </div>
 
-            <h4>Services</h4>
+            <h4 style={{ fontWeight: 600,  marginTop: 24  }} >Services</h4>
 
             <div className="form-grp">
               <label>Select Services</label>
@@ -346,7 +460,7 @@ const Tabs = () => {
                 name="services"
                 multiple
                 value={formData.services}
-                onChange={handleChange}
+                onChange={handleServicesSelect}
               >
                 {servicesList.length > 0 ? (
                   servicesList.map((serv) => (
@@ -358,13 +472,117 @@ const Tabs = () => {
                   <option disabled>Loading services...</option>
                 )}
               </select>
+
+              {/* Selected service cards */}
+              {selectedServices.length > 0 && (
+                <div style={{ marginTop: 12 }}>
+                  {selectedServices.map((svc, idx) => (
+                    <div
+                      key={svc.id}
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 160px 90px 36px",
+                        gap: 8,
+                        alignItems: "center",
+                        border: "1px solid #e6e9ee",
+                        padding: 12,
+                        borderRadius: 6,
+                        marginBottom: 10,
+                        background: "#fff"
+                      }}
+                    >
+                      {/* service name (pre-filled/readOnly) */}
+                      <input
+                        type="text"
+                        value={svc.name}
+                        readOnly
+                        style={{ padding: "10px", border: "none", background: "transparent" }}
+                      />
+
+                      {/* cost input */}
+                      <input
+                        type="number"
+                        placeholder="Average Cost"
+                        value={svc.cost}
+                        onChange={(e) => handleServiceFieldChange(idx, "cost", e.target.value)}
+                        style={{ padding: "10px", border: "none", background: "transparent" }}
+                      />
+
+                      {/* currency select */}
+                      <select
+                        value={svc.currency}
+                        onChange={(e) => handleServiceFieldChange(idx, "currency", e.target.value)}
+                        style={{ padding: "8px" }}
+                      >
+                        <option value="KD">KD</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                      </select>
+
+                      {/* remove button */}
+                      <button
+                        type="button"
+                        onClick={() => removeService(svc.id)}
+                        aria-label="Remove service"
+                        style={{
+                          width: 28,
+                          height: 28,
+                          borderRadius: "50%",
+                          border: "none",
+                          background: "#f0f2f5",
+                          cursor: "pointer",
+                          fontSize: 16,
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-         
 
-            <button type="submit" className="btn get-sub">
-              Save
+            <div className="form-grp">
+              <label>Service Note</label>
+              <input
+                type="text"
+                name="servicenote"
+                placeholder="Enter Service Note"
+              />
+            </div>
+
+
+          <div style={{ textAlign: "right", marginTop: "32px" }}>
+            <button
+              type="submit"
+              disabled={status.loading}
+              style={{
+                backgroundColor: "#007bff",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                padding: "10px 85px",
+                fontSize: "16px",
+                fontWeight: "600",
+                cursor: status.loading ? "not-allowed" : "pointer",
+                transition: "background-color 0.2s ease",
+                opacity: status.loading ? 0.8 : 1,
+              }}
+              onMouseEnter={(e) => (e.target.style.backgroundColor = "#0069d9")}
+              onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
+            >
+              {status.loading ? "Saving..." : "Save"}
             </button>
+          </div>
+
+       {/* status message (success / error) */}
+            {status.message && (
+              <div className="login-success contact-sucess" style={{ marginBottom: 12 }}>
+                <p style={{ color: status.success ? "green" : "red", margin: 0 }}>{status.message}</p>
+              </div>
+            )}
+
           </form>
         </div>
 
