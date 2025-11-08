@@ -35,10 +35,6 @@ const Tabs = () => {
     image: null,
   });
 
-  // Added: errors + status state (shows success/error messages)
-  const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState({ loading: false, message: "", success: false });
-
   // Generic handleChange (keeps support for multiple selects like categories)
   const handleChange = (e) => {
     const { name, value, options } = e.target;
@@ -105,116 +101,112 @@ const Tabs = () => {
     setFormData((prev) => ({ ...prev, services: prev.services.filter((id) => String(id) !== String(idToRemove)) }));
   };
 
-  // Fetch categories & services lists
-  useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const [catRes, servRes] = await Promise.all([
-          fetch(`${API_URL}categories`),
-          fetch(`${API_URL}services`),
-        ]);
-        const catData = await catRes.json();
-        const servData = await servRes.json();
-        const cats = Array.isArray(catData) ? catData : catData.data || [];
-        const svcs = Array.isArray(servData) ? servData : servData.data || [];
-        // normalize ids to strings to avoid type mismatch with form state
-        setCategoriesList(cats.map(c => ({ ...c, id: String(c.id) })));
-        setServicesList(svcs.map(s => ({ ...s, id: String(s.id) })));
-      } catch (err) {
-        console.error("Error fetching categories/services:", err);
+// Fetch categories & services lists
+useEffect(() => {
+  const fetchOptions = async () => {
+    try {
+      const [catRes, servRes] = await Promise.all([
+        fetch(`${API_URL}categories`),
+        fetch(`${API_URL}services`),
+      ]);
+      const catData = await catRes.json();
+      const servData = await servRes.json();
+      const cats = Array.isArray(catData) ? catData : catData.data || [];
+      const svcs = Array.isArray(servData) ? servData : servData.data || [];
+      // normalize ids to strings to avoid type mismatch with form state
+      setCategoriesList(cats.map(c => ({ ...c, id: String(c.id) })));
+      setServicesList(svcs.map(s => ({ ...s, id: String(s.id) })));
+    } catch (err) {
+      console.error("Error fetching categories/services:", err);
+    }
+  };
+  fetchOptions();
+}, []);
+
+
+// Fetch provider details and populate form
+useEffect(() => {
+  const fetchProvider = async () => {
+    try {
+      let providerId = localStorage.getItem("providerId");
+      const token = localStorage.getItem("token");
+      if (!providerId && token) {
+        try {
+          const base64 = token.split(".")[1];
+          const payload = JSON.parse(atob(base64));
+          providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
+        } catch (e) { /* ignore */ }
       }
-    };
-    fetchOptions();
-  }, []);
+      if (!providerId) return;
 
-
-  // Fetch provider details and populate form
-  useEffect(() => {
-    const fetchProvider = async () => {
-      try {
-        let providerId = localStorage.getItem("providerId");
-        const token = localStorage.getItem("token");
-        if (!providerId && token) {
-          try {
-            const base64 = token.split(".")[1];
-            const payload = JSON.parse(atob(base64));
-            providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
-          } catch (e) { /* ignore */ }
-        }
-        if (!providerId) return;
-
-        const res = await fetch(`${API_URL}providers/${providerId}`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
-        const provider = data?.provider ?? data ?? {};
-
-        // Normalize categories/service ids to strings to match options
-        const categories = Array.isArray(provider.categories_id)
-          ? provider.categories_id.map(String)
-          : provider.categories_id ? [String(provider.categories_id)] : [];
-
-        const services = Array.isArray(provider.service_id)
-          ? provider.service_id.map(String)
-          : provider.service_id ? [String(provider.service_id)] : [];
-
-        setFormData({
-          companyName: provider.name ?? "",
-          categories,
-          phoneNumber: provider.phone ?? "",
-          location: provider.location ?? "",
-          teamSize: provider.team_size != null ? String(provider.team_size) : "",
-          notes: provider.notes ?? "",
-          website: provider.website ?? provider.web ?? provider.social_media ?? "",
-          facebook: provider.facebook ?? "",
-          instagram: provider.instagram ?? "",
-          other: provider.other_link ?? provider.other ?? "",
-          services,
-          professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
-          image: provider.image ?? null,
-        });
-      } catch (err) {
-        console.error("Error fetching provider:", err);
-      }
-    };
-    fetchProvider();
-  }, []);
-
-
-    // When servicesList or formData.services change, initialize selectedServices (preserve any existing cost/currency if ids match)
-    useEffect(() => {
-      if (!servicesList || servicesList.length === 0) return;
-      if (!formData.services || formData.services.length === 0) {
-        setSelectedServices([]);
-        return;
-      }
-
-      setSelectedServices((prev) => {
-        // create map of existing entered values so we preserve cost/currency if possible
-        const prevMap = new Map(prev.map((p) => [String(p.id), p]));
-
-        return formData.services.map((id) => {
-          const sid = String(id);
-          const svcMeta = servicesList.find((s) => String(s.id) === sid);
-          const existing = prevMap.get(sid);
-          return {
-            id: sid,
-            name: svcMeta ? svcMeta.name : existing?.name ?? "",
-            cost: existing?.cost ?? "",
-            currency: existing?.currency ?? DEFAULT_CURRENCY,
-          };
-        });
+      const res = await fetch(`${API_URL}providers/${providerId}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
-    }, [servicesList, formData.services]);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
+      const provider = data?.provider ?? data ?? {};
+
+      // Normalize categories/service ids to strings to match options
+      const categories = Array.isArray(provider.categories_id)
+        ? provider.categories_id.map(String)
+        : provider.categories_id ? [String(provider.categories_id)] : [];
+
+      const services = Array.isArray(provider.service_id)
+        ? provider.service_id.map(String)
+        : provider.service_id ? [String(provider.service_id)] : [];
+
+      setFormData({
+        companyName: provider.name ?? "",
+        categories,
+        phoneNumber: provider.phone ?? "",
+        location: provider.location ?? "",
+        teamSize: provider.team_size != null ? String(provider.team_size) : "",
+        notes: provider.notes ?? "",
+        website: provider.website ?? provider.web ?? provider.social_media ?? "",
+        facebook: provider.facebook ?? "",
+        instagram: provider.instagram ?? "",
+        other: provider.other_link ?? provider.other ?? "",
+        services,
+        professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
+        image: provider.image ?? null,
+      });
+    } catch (err) {
+      console.error("Error fetching provider:", err);
+    }
+  };
+  fetchProvider();
+}, []);
+
+
+  // When servicesList or formData.services change, initialize selectedServices (preserve any existing cost/currency if ids match)
+  useEffect(() => {
+    if (!servicesList || servicesList.length === 0) return;
+    if (!formData.services || formData.services.length === 0) {
+      setSelectedServices([]);
+      return;
+    }
+
+    setSelectedServices((prev) => {
+      // create map of existing entered values so we preserve cost/currency if possible
+      const prevMap = new Map(prev.map((p) => [String(p.id), p]));
+
+      return formData.services.map((id) => {
+        const sid = String(id);
+        const svcMeta = servicesList.find((s) => String(s.id) === sid);
+        const existing = prevMap.get(sid);
+        return {
+          id: sid,
+          name: svcMeta ? svcMeta.name : existing?.name ?? "",
+          cost: existing?.cost ?? "",
+          currency: existing?.currency ?? DEFAULT_CURRENCY,
+        };
+      });
+    });
+  }, [servicesList, formData.services]);
 
   // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // clear previous messages
-    setErrors({});
-    setStatus({ loading: true, message: "", success: false });
 
     try {
       let providerId = localStorage.getItem("providerId");
@@ -229,12 +221,12 @@ const Tabs = () => {
       }
 
       if (!token) {
-        setStatus({ loading: false, message: "You must be logged in to perform this action.", success: false });
+        alert("You must be logged in to perform this action.");
         return;
       }
 
       if (!providerId) {
-        setStatus({ loading: false, message: "No provider id found.", success: false });
+        alert("No provider id found.");
         return;
       }
 
@@ -270,16 +262,12 @@ const Tabs = () => {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || data.message || "Update failed");
+      if (!res.ok) throw new Error(data.error || "Update failed");
 
-      // replaced alert with status message div
-      setStatus({ loading: false, message: "Provider updated successfully!", success: true });
-
-      // optional: clear errors
-      setErrors({});
+      alert("Provider updated successfully!");
     } catch (err) {
       console.error(err);
-      setStatus({ loading: false, message: err.message || "Save failed", success: false });
+      alert(err.message || "Save failed");
     }
   };
 
@@ -311,14 +299,11 @@ const Tabs = () => {
           </li>
         ))}
       </ul>
-     
+
       {/* Tab Content */}
       <div className="tab-content-wrap">
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
           <form className="settingsform" onSubmit={handleSubmit}>
-
-
-
             <div className="form-grp">
               <label>Company/Business Name</label>
               <input
@@ -553,10 +538,10 @@ const Tabs = () => {
             </div>
 
 
+
           <div style={{ textAlign: "right", marginTop: "32px" }}>
             <button
               type="submit"
-              disabled={status.loading}
               style={{
                 backgroundColor: "#007bff",
                 color: "#fff",
@@ -565,23 +550,16 @@ const Tabs = () => {
                 padding: "10px 85px",
                 fontSize: "16px",
                 fontWeight: "600",
-                cursor: status.loading ? "not-allowed" : "pointer",
+                cursor: "pointer",
                 transition: "background-color 0.2s ease",
-                opacity: status.loading ? 0.8 : 1,
               }}
               onMouseEnter={(e) => (e.target.style.backgroundColor = "#0069d9")}
               onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
             >
-              {status.loading ? "Saving..." : "Save"}
+              Save
             </button>
           </div>
 
-       {/* status message (success / error) */}
-            {status.message && (
-              <div className="login-success contact-sucess" style={{ marginBottom: 12 }}>
-                <p style={{ color: status.success ? "green" : "red", margin: 0 }}>{status.message}</p>
-              </div>
-            )}
 
           </form>
         </div>
