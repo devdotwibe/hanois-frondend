@@ -25,10 +25,9 @@
  }
 
  .container {
-     max-width: 960px;
      margin: 40px auto;
      padding: 20px;
-     background: #f8fafc;
+     background: #f8fafc; 
  }
 
  h1 {
@@ -39,10 +38,8 @@
  }
 
  form {
-     background: #fff;
-     padding: 20px;
+     padding: 50px 0;
      border-radius: 10px;
-     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
  }
 
  .form-field {
@@ -131,9 +128,7 @@
 
  /* Container for the form */
 .container {
-  max-width: 820px;
   margin: 30px auto;
-  font-family: 'Inter', sans-serif;
   padding: 0 15px;
 }
 
@@ -192,7 +187,7 @@ button[type="button"] {
   color: white;
   border: none;
   padding: 10px 24px;
-  border-radius: 6px;
+  border-radius: 5px; line-height: 1;
   font-size: 16px;
   cursor: pointer;
   display: inline-block;
@@ -205,6 +200,23 @@ button[type="button"]:hover{
         background: #4c72f6;
 
 }
+
+
+button.tab{
+  background: #f1f3fa;
+  color: #475569
+}
+button.tab:hover{
+  background: #f1f3fa;
+  color: #475569
+}
+button.tab.active:hover {
+    color: #fff;
+      background: #4c72f6;
+}
+
+
+
 
 /* Disabled button */
 button:disabled,
@@ -629,14 +641,13 @@ button[type="submit"]:disabled {
 
 /* Container styling */
 .container {
-  max-width: 900px;
   margin: 0 auto;
   padding: 24px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #2c3e50;
-  background-color: #f9fafb;
+ 
   border-radius: 14px;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+  padding-right: 250px;
 }
 
 /* Page header */
@@ -645,14 +656,13 @@ h1 {
   font-weight: 700;
   margin-bottom: 24px !important;
   color: #1e2a47;
-  text-align: center;
 }
 
 /* Tab buttons container */
 .tabs {
   display: flex;
   gap: 12px;
-  justify-content: center;
+  
   margin-bottom: 28px;
 }
 
@@ -678,10 +688,10 @@ h1 {
 /* Content area for each tab */
 .tab-content,
 form {
-  background-color: white;
-  padding: 28px 32px;
+
+
   border-radius: 12px;
-  box-shadow: 0 3px 12px rgba(32, 45, 70, 0.1);
+  
 }
 
 /* For Tab 1 form sections */
@@ -768,19 +778,19 @@ input[type="text"]:focus {
 
 /* Submit button styling */
 button[type="submit"] {
-  background-color: #2563eb;
+  background-color: #2050f5;
   color: white;
   padding: 14px 36px;
-  border-radius: 12px;
+  border-radius: 5px;
   border: none;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 16px;
   margin-top: 24px;
   transition: background-color 0.3s ease;
 }
 
 button[type="submit"]:hover:not(:disabled) {
-  background-color: #1d4ed8;
+      background: #4c72f6;
 }
 
 button[type="submit"]:disabled {

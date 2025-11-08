@@ -38,7 +38,7 @@ const Page = () => {
 
 
 
-              <div className="project-details">
+      <div className="project-details">
       <h2 className="project-title">Kitchen Redesign</h2>
       <p className="project-type">Project Type</p>
 
@@ -129,7 +129,66 @@ const Page = () => {
         <div className="scope-item">Landscape Design</div>
         <div className="scope-item">Building Engineering</div>
       </div>
-    </div>
+           </div>
+
+
+           <div className="proj-details">
+                  <h3 className="scope-title">Project Details</h3>
+
+                  <div className="proj-grid">
+                    <div className="proj-grid2">
+                     
+                      <div className="proj-col1">
+                        <p><strong>Location</strong></p>
+                        <p>Kuwait city</p>
+
+                      </div>
+
+                       <div className="proj-col1">
+                        <p><strong>Style</strong></p>
+                        <p>Modern</p>
+                      </div>
+                      
+
+                    </div>
+
+                    <div className="proj-grid2">
+
+                      <div className="proj-col1">
+                        <p><strong>Type</strong></p>
+                        <p>housing</p>
+                      </div>
+
+                      <div className="proj-col1">
+                        <p><strong>Space Size</strong></p>
+                        <p>117M</p>
+                      </div>
+
+
+                    </div>
+
+                  </div>
+
+           </div>
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
 
 

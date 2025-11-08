@@ -2015,8 +2015,8 @@ border-right: 1px solid #e0e0e0;
 }
 
 .scope-title {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 21px;
+  font-family: 'Avenir-Black';
   color: #111;
   margin-bottom: 16px;
 }
@@ -2046,9 +2046,51 @@ border-right: 1px solid #e0e0e0;
 .profile-page {
     margin: 80px 0 0;
 }
+.proj-details {
+    margin-top: 50px;
+}
+
+.proj-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 220px;
+}
+
+.proj-col1 {
+    margin: 0 0 30px;
+}
+
+.proj-col1 p strong {
+    margin: 0 0 12px;
+
+}
+
+.add-newformouter h2 {
+    color: #000;
+    margin: 0 0 10px;
+  font-family: 'Avenir-Black';
+    font-size: 28px;
+    line-height: 1;
+}
 
 
 
+
+form small {
+    color: #a3a3a7;
+    margin: 10px 0 0;
+}
+
+.add-newformouter {
+    max-width: 800px;
+}
+
+.budget-calc {
+    padding: 40px;
+    margin: 40px 0 0;
+    background: grey;
+}
 
 /* ------------------------------------responsive */
 
