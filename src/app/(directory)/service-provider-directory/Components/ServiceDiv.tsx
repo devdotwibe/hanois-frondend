@@ -46,17 +46,6 @@ const ServiceDiv = () => {
             </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
         </div>
 
 
