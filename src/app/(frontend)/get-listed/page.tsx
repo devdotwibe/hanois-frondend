@@ -31,7 +31,7 @@ const page = () => {
 
       <BuildSec />
 
-      <FaqSec />
+       <FaqSec lang={lang} />
 
 
     </div>
