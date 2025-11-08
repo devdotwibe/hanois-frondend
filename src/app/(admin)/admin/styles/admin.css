@@ -40,7 +40,12 @@ body{
 h1{
   margin-bottom: 24px !important;
 }
-
+.form-group label{margin-bottom: 6px !important;}
+.login-form {
+    flex-direction: column;
+    gap: 18px !important;
+    display: flex;
+}
 .admin-nav button{
       background: var(--primary-color);
     color: #fff;
@@ -388,6 +393,7 @@ form.settingsform {
 
 button[type="submit"] {
  margin-bottom: 20px !important;
+ margin-top: 20px !important;
 
  background: var(--primary-color);
     color: #fff;
@@ -403,3 +409,6 @@ button[type="submit"] {
 button[type="submit"] {
     background: #4c72f6;
 }
+
+.login-footer {
+    margin-top: 20px !important;}
