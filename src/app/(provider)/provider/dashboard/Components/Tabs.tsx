@@ -101,89 +101,82 @@ const Tabs = () => {
     setFormData((prev) => ({ ...prev, services: prev.services.filter((id) => String(id) !== String(idToRemove)) }));
   };
 
-  // Fetch categories & services lists
-  useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const [catRes, servRes] = await Promise.all([
-          fetch(`${API_URL}categories`),
-          fetch(`${API_URL}services`),
-        ]);
+// Fetch categories & services lists
+useEffect(() => {
+  const fetchOptions = async () => {
+    try {
+      const [catRes, servRes] = await Promise.all([
+        fetch(`${API_URL}categories`),
+        fetch(`${API_URL}services`),
+      ]);
+      const catData = await catRes.json();
+      const servData = await servRes.json();
+      const cats = Array.isArray(catData) ? catData : catData.data || [];
+      const svcs = Array.isArray(servData) ? servData : servData.data || [];
+      // normalize ids to strings to avoid type mismatch with form state
+      setCategoriesList(cats.map(c => ({ ...c, id: String(c.id) })));
+      setServicesList(svcs.map(s => ({ ...s, id: String(s.id) })));
+    } catch (err) {
+      console.error("Error fetching categories/services:", err);
+    }
+  };
+  fetchOptions();
+}, []);
 
-        const catData = await catRes.json();
-        const servData = await servRes.json();
 
-        setCategoriesList(Array.isArray(catData) ? catData : catData.data || []);
-        setServicesList(Array.isArray(servData) ? servData : servData.data || []);
-      } catch (err) {
-        console.error("Error fetching categories/services:", err);
+// Fetch provider details and populate form
+useEffect(() => {
+  const fetchProvider = async () => {
+    try {
+      let providerId = localStorage.getItem("providerId");
+      const token = localStorage.getItem("token");
+      if (!providerId && token) {
+        try {
+          const base64 = token.split(".")[1];
+          const payload = JSON.parse(atob(base64));
+          providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
+        } catch (e) { /* ignore */ }
       }
-    };
+      if (!providerId) return;
 
-    fetchOptions();
-  }, []);
+      const res = await fetch(`${API_URL}providers/${providerId}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
+      const provider = data?.provider ?? data ?? {};
 
-  // Fetch provider details and populate form
-  useEffect(() => {
-    const fetchProvider = async () => {
-      try {
-        let providerId = localStorage.getItem("providerId");
-        const token = localStorage.getItem("token");
+      // Normalize categories/service ids to strings to match options
+      const categories = Array.isArray(provider.categories_id)
+        ? provider.categories_id.map(String)
+        : provider.categories_id ? [String(provider.categories_id)] : [];
 
-        if (!providerId && token) {
-          try {
-            const base64 = token.split(".")[1];
-            const payload = JSON.parse(atob(base64));
-            providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
-          } catch (e) {
-            // ignore
-          }
-        }
+      const services = Array.isArray(provider.service_id)
+        ? provider.service_id.map(String)
+        : provider.service_id ? [String(provider.service_id)] : [];
 
-        if (!providerId) return;
+      setFormData({
+        companyName: provider.name ?? "",
+        categories,
+        phoneNumber: provider.phone ?? "",
+        location: provider.location ?? "",
+        teamSize: provider.team_size != null ? String(provider.team_size) : "",
+        notes: provider.notes ?? "",
+        website: provider.website ?? provider.web ?? provider.social_media ?? "",
+        facebook: provider.facebook ?? "",
+        instagram: provider.instagram ?? "",
+        other: provider.other_link ?? provider.other ?? "",
+        services,
+        professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
+        image: provider.image ?? null,
+      });
+    } catch (err) {
+      console.error("Error fetching provider:", err);
+    }
+  };
+  fetchProvider();
+}, []);
 
-        const res = await fetch(`${API_URL}providers/${providerId}`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
-
-        const data = await res.json();
-        if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
-
-        const provider = data?.provider ?? data ?? {};
-
-        setFormData({
-          companyName: provider.name ?? "",
-          categories: Array.isArray(provider.categories_id)
-            ? provider.categories_id
-            : provider.categories_id
-            ? [provider.categories_id]
-            : [],
-          phoneNumber: provider.phone ?? "",
-          location: provider.location ?? "",
-          teamSize:
-            typeof provider.team_size === "number"
-              ? String(provider.team_size)
-              : provider.team_size ?? "",
-          notes: provider.notes ?? "",
-          website: provider.website ?? provider.web ?? "",
-          facebook: provider.facebook ?? "",
-          instagram: provider.instagram ?? "",
-          other: provider.other_link ?? provider.other ?? "",
-          services: Array.isArray(provider.service_id)
-            ? provider.service_id.map((s) => String(s))
-            : provider.service_id
-            ? [String(provider.service_id)]
-            : [],
-          professionalHeadline: provider.professional_headline ?? "",
-          image: provider.image ?? null,
-        });
-      } catch (err) {
-        console.error("Error fetching provider:", err);
-      }
-    };
-
-    fetchProvider();
-  }, []);
 
   // When servicesList or formData.services change, initialize selectedServices (preserve any existing cost/currency if ids match)
   useEffect(() => {
