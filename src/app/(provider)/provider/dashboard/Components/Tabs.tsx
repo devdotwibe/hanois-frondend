@@ -311,12 +311,7 @@ const Tabs = () => {
           </li>
         ))}
       </ul>
-            {/* status message (success / error) */}
-            {status.message && (
-              <div className="login-success contact-sucess" style={{ marginBottom: 12 }}>
-                <p style={{ color: status.success ? "green" : "red", margin: 0 }}>{status.message}</p>
-              </div>
-            )}
+     
       {/* Tab Content */}
       <div className="tab-content-wrap">
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
@@ -557,7 +552,12 @@ const Tabs = () => {
               />
             </div>
 
-
+       {/* status message (success / error) */}
+            {status.message && (
+              <div className="login-success contact-sucess" style={{ marginBottom: 12 }}>
+                <p style={{ color: status.success ? "green" : "red", margin: 0 }}>{status.message}</p>
+              </div>
+            )}
           <div style={{ textAlign: "right", marginTop: "32px" }}>
             <button
               type="submit"
