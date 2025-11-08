@@ -39,14 +39,19 @@ const HouseOuter: React.FC = () => {
     let id: number | null = null;
     if (parsedUser) {
       id = Number(parsedUser?.id ?? parsedUser?.provider_id ?? parsedUser?.user_id ?? null) || null;
+      console.log("HouseOuter: parsed user object found, provider id candidate:", id);
     } else {
       const rawToken = localStorage.getItem("token");
       const payload = parseJwtPayload(rawToken);
       if (payload) {
         id = Number(payload?.provider_id ?? payload?.id ?? payload?.user_id ?? null) || null;
+        console.log("HouseOuter: parsed token payload, provider id candidate:", id);
+      } else {
+        console.log("HouseOuter: no user or token found in localStorage");
       }
     }
 
+    console.log("HouseOuter: final provider id to set:", id);
     if (id) {
       setProviderId(id);
     } else {
@@ -58,20 +63,23 @@ const HouseOuter: React.FC = () => {
   useEffect(() => {
     if (!providerId) return;
 
+    console.log("HouseOuter: providerId state changed ->", providerId);
+
     const controller = new AbortController();
     const signal = controller.signal;
 
     const cached = safeParse<any>(localStorage.getItem(`provider_${providerId}`));
     if (cached) {
+      console.log(`HouseOuter: using cached provider_${providerId}`, cached);
       setProviderData(cached);
-      // still attempt to refresh in background if you want — commented out
-      // fetchProvider(true);
+      // optionally still refresh in background
       return;
     }
 
     const fetchProvider = async () => {
       setLoading(true);
       setError(null);
+      console.log(`HouseOuter: fetching provider from API for id ${providerId}...`);
 
       try {
         const token = localStorage.getItem("token");
@@ -83,22 +91,26 @@ const HouseOuter: React.FC = () => {
           { method: "GET", headers, signal }
         );
 
+        console.log("HouseOuter: fetch response status", res.status, res.statusText);
+
         if (!res.ok) {
           const text = await res.text().catch(() => "");
           throw new Error(`Fetch failed: ${res.status} ${res.statusText} ${text}`);
         }
 
         const data = await res.json();
+        console.log("HouseOuter: provider data received", data);
         setProviderData(data);
 
         try {
           localStorage.setItem(`provider_${providerId}`, JSON.stringify(data));
+          console.log(`HouseOuter: cached provider_${providerId} in localStorage`);
         } catch (e) {
           console.warn("Could not cache provider data", e);
         }
       } catch (err: any) {
         if (err.name === "AbortError") {
-          // ignore abort
+          console.log("HouseOuter: fetch aborted");
         } else {
           console.warn("Failed to fetch provider:", err);
           setError(err.message ?? String(err));
@@ -115,10 +127,8 @@ const HouseOuter: React.FC = () => {
     };
   }, [providerId]);
 
-  // Optionally show loading / error for debugging. HouseCard will still render with defaults.
   return (
     <div>
-      {/* You can show loading/error UI here if you want */}
       {loading && <div style={{ marginBottom: 8 }}>Loading provider…</div>}
       {error && <div style={{ color: "red", marginBottom: 8 }}>Provider load error: {error}</div>}
 
