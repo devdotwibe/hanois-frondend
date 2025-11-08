@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import DetailIntro from '@/app/(directory)/Components/DetailIntro';
 import AboutContainer from '../../Components/AboutContainer';
