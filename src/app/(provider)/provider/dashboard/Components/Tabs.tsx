@@ -207,6 +207,7 @@ const resolveImageUrl = (path) => {
 };
 
 
+
   const notesRemaining = MAX_NOTES - (formData.notes ? formData.notes.length : 0);
 
   return (
@@ -326,6 +327,7 @@ const resolveImageUrl = (path) => {
                 onChange={handleChange}
                 placeholder="Enter website URL"
               />
+              <div style={{ fontSize: 12, color: '#666', marginTop: 6 }}>Your homepage, company site or blog</div>
             </div>
 
             <div className="form-grp">
