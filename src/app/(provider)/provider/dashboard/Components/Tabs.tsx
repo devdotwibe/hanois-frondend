@@ -533,13 +533,27 @@ const Tabs = () => {
                 </div>
               )}
             </div>
-        <button
-          type="submit"
-          className={`btn w-full py-2 rounded text-white :
-             "bg-gray-400" : "bg-blue-600 hover:bg-blue-500"
-          }`}
-        >
-        </button>
+<div style={{ textAlign: "right", marginTop: "32px" }}>
+  <button
+    type="submit"
+    style={{
+      backgroundColor: "#007bff",
+      color: "#fff",
+      border: "none",
+      borderRadius: "6px",
+      padding: "10px 24px",
+      fontSize: "16px",
+      fontWeight: "600",
+      cursor: "pointer",
+      transition: "background-color 0.2s ease",
+    }}
+    onMouseEnter={(e) => (e.target.style.backgroundColor = "#0069d9")}
+    onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
+  >
+    💾 Save Changes
+  </button>
+</div>
+
 
           </form>
         </div>
