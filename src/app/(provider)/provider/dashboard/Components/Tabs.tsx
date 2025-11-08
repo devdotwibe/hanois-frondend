@@ -541,7 +541,7 @@ const Tabs = () => {
       color: "#fff",
       border: "none",
       borderRadius: "6px",
-      padding: "10px 24px",
+      padding: "10px 85px",
       fontSize: "16px",
       fontWeight: "600",
       cursor: "pointer",
