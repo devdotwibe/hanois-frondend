@@ -1,84 +1,101 @@
-import React from "react";
+"use client";
+import React from 'react'
+import { useEffect, useState } from "react";
 import axios from "axios";
-import Link from "next/link";
-import { API_URL } from "@/config";
+import { API_URL } from '@/config';
 
-interface BannerData {
-  title: string;
-  description: string;
-  placeholder: string;
-  buttonlabel: string;
-  language: string;
-}
+const Banner = ({ lang }: { lang: string }) => {
 
-async function getBannerData() {
-  const res = await axios.get(`${API_URL}banner`);
-  const banners: BannerData[] = res.data?.data?.banners || [];
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
 
-  return banners;
-}
+    const [token, setToken] = useState<string | null>(null);
 
-export default async function Banner({ lang }: { lang: string }) {
-  const banners = await getBannerData();
+    const [text, setText] = useState({
+      en: {
+        title:"Bringing people and <span>professionals together</span>",
+        desc: "An awesome & powerful tool for your business — increase business revenue with enterprise-grade links built to acquire and engage customers.",
+        placeholder: "Search for a Service provider",
+        button: "Search",
+      },
+      ar: {
+        title: "<span>جمع الناس</span> والمحترفين معًا",
+        desc: "أداة قوية ورائعة لعملك — قم بزيادة إيرادات عملك باستخدام روابط احترافية مصممة لجذب العملاء والتفاعل معهم.",
+        placeholder: "ابحث عن مقدم الخدمة",
+        button: "بحث",
+      },
+    });
 
-  // Normalize and find by language
-  const normalize = (l: string) => (l || "").trim().toLowerCase();
-  const selected =
-    banners.find((b) => normalize(b.language) === lang.toLowerCase()) ||
-    banners.find((b) => normalize(b.language) === "en"); // fallback to English
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
 
-  if (!selected) {
-    return (
-      <div className="banner-wrapp">
-        <div className="containers">
-          <div className="banner-div">
-            <p>No banner data found.</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
-  const t = {
-    title: selected.title || "",
-    desc: selected.description || "",
-    placeholder: selected.placeholder || "Search...",
-    button: selected.buttonlabel || "Search",
-  };
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        setLoading(true);
+        setMessage("");
 
-  // Token is only accessible client-side, so we use a disabled state
-  const token = null;
+        const res = await axios.get(`${API_URL}banner`);
+        const banners = res.data?.data?.banners || res.data?.banners || [];
+        console.log("📦 Banners fetched:", banners);
+
+        const normalize = (lang: string) => (lang || "").trim().toLowerCase();
+        const en = banners.find((b: any) => normalize(b.language) === "en");
+        const ar = banners.find((b: any) => normalize(b.language) === "ar");
+
+        setText((prev) => ({
+          en: {
+            ...prev.en,
+            title: en?.title,
+            desc: en?.description || prev.en.desc,
+          },
+          ar: {
+            ...prev.ar,
+            title: ar?.title,
+            desc: ar?.description || prev.ar.desc,
+          },
+        }));
+      } catch (err) {
+
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBanners();
+  }, []);
+
+  const t = lang === "ar" ? text.ar : text.en;
+
+  console.log('ar',lang);
 
   return (
-    <div className={`banner-wrapp ${lang === "ar" ? "rtl" : ""}`}>
+
+    <div className={`banner-wrapp ${lang === "ar" ? "rtl" : ""}`} >
+
       <div className="containers">
+
         <div className="banner-div">
-          {/* 🧩 Dynamic title */}
-          <div dangerouslySetInnerHTML={{ __html: t.title }} />
 
-          {/* 🧩 Search bar */}
-          <div
-            className={`search-container ${
-              token ? "active-search" : "disabled"
-            }`}
-          >
-            <input
-              type="text"
-              placeholder={t.placeholder}
-              disabled={!token}
-              dir={lang === "ar" ? "rtl" : "ltr"}
-            />
+        <div dangerouslySetInnerHTML={{ __html: t.title }} />
+           
+        
+            <div className={`search-container ${token ? 'active-search' : 'disabled' }`}>
 
-            <button
-              className={`btn-sec-home ${
-                token ? "active-btn" : "disabled-btn"
-              }`}
-            >
-              {t.button}
-            </button>
-          </div>
+              <input type="text" placeholder={t.placeholder} disabled={!token}  dir={lang === "ar" ? "rtl" : "ltr"}/>
+
+              <button className={`btn-sec-home ${token ? 'active-btn' : 'disabled-btn' }`} >{t.button}</button>
+
+            </div>
+
         </div>
       </div>
+
     </div>
-  );
+  )
 }
+
+export default Banner
