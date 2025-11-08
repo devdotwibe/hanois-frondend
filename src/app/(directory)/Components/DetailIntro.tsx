@@ -1,27 +1,16 @@
-import React from 'react'
-import DetailCard from '@/app/(directory)/Components/DetailCard'
-import logo1 from "../../../../public/images/ahi-logo.jpg"; 
+import React from 'react';
+import DetailCard from '@/app/(directory)/Components/DetailCard';
 
-
-
-const DetailIntro = () => {
+const DetailIntro = ({ provider }) => {
   return (
-      <div className="detail-page-intro">
-        <div className="">
-             <DetailCard 
-         logo={logo1}   
-        name="American House Improvements Inc."
-        description="LA’s Highly Rated, Award-Winning Construction & Renovation Firm"
-        />
+    <div className="detail-page-intro">
+      <DetailCard
+        logo={provider.image}
+        name={provider.name}
+        description={provider.service}
+      />
+    </div>
+  );
+};
 
-        </div>
-
-
-       
-
-        </div>
-
-  )
-}
-
-export default DetailIntro
+export default DetailIntro;
