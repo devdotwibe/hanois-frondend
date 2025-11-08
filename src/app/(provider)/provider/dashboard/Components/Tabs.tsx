@@ -311,13 +311,18 @@ const Tabs = () => {
           </li>
         ))}
       </ul>
-     
+
       {/* Tab Content */}
       <div className="tab-content-wrap">
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
           <form className="settingsform" onSubmit={handleSubmit}>
 
-
+            {/* status message (success / error) */}
+            {status.message && (
+              <div className="login-success contact-sucess" style={{ marginBottom: 12 }}>
+                <p style={{ color: status.success ? "green" : "red", margin: 0 }}>{status.message}</p>
+              </div>
+            )}
 
             <div className="form-grp">
               <label>Company/Business Name</label>
@@ -576,12 +581,6 @@ const Tabs = () => {
             </button>
           </div>
 
-       {/* status message (success / error) */}
-            {status.message && (
-              <div className="login-success contact-sucess" style={{ marginBottom: 12 }}>
-                <p style={{ color: status.success ? "green" : "red", margin: 0 }}>{status.message}</p>
-              </div>
-            )}
 
           </form>
         </div>
