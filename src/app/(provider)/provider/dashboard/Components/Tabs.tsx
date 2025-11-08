@@ -526,26 +526,41 @@ useEffect(() => {
                 </div>
               )}
             </div>
-<div style={{ textAlign: "right", marginTop: "32px" }}>
-  <button
-    type="submit"
-    style={{
-      backgroundColor: "#007bff",
-      color: "#fff",
-      border: "none",
-      borderRadius: "6px",
-      padding: "10px 85px",
-      fontSize: "16px",
-      fontWeight: "600",
-      cursor: "pointer",
-      transition: "background-color 0.2s ease",
-    }}
-    onMouseEnter={(e) => (e.target.style.backgroundColor = "#0069d9")}
-    onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
-  >
-     Save
-  </button>
-</div>
+
+
+            <div className="form-grp">
+              <label>Other</label>
+              <input
+                type="text"
+                name="other"
+                value={formData.other}
+                onChange={handleChange}
+                placeholder="Enter other social media URL"
+              />
+            </div>
+
+
+
+          <div style={{ textAlign: "right", marginTop: "32px" }}>
+            <button
+              type="submit"
+              style={{
+                backgroundColor: "#007bff",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                padding: "10px 85px",
+                fontSize: "16px",
+                fontWeight: "600",
+                cursor: "pointer",
+                transition: "background-color 0.2s ease",
+              }}
+              onMouseEnter={(e) => (e.target.style.backgroundColor = "#0069d9")}
+              onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
+            >
+              Save
+            </button>
+          </div>
 
 
           </form>
