@@ -529,13 +529,11 @@ useEffect(() => {
 
 
             <div className="form-grp">
-              <label>Other</label>
+              <label>Service Note</label>
               <input
                 type="text"
-                name="other"
-                value={formData.other}
-                onChange={handleChange}
-                placeholder="Enter other social media URL"
+                name="servicenote"
+                placeholder="Enter Service Note"
               />
             </div>
 
