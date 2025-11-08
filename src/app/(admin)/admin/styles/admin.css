@@ -279,7 +279,7 @@ color: #2050f5;
 }
 form.settingsform {
     margin-top: 30px !important;
-    max-width: 450px;
+ 
 }
 
 .form-grp label {
@@ -330,7 +330,8 @@ form.settingsform {
   padding: 6px 10px;
   margin-right: 5px;
   font-size: 0.85rem;
-  cursor: pointer;
+  cursor: pointer; 
+  margin: 10px 10px 10px 0 !important;
   transition: background 0.3s;
 }
 

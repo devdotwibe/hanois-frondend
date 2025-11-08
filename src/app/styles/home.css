@@ -70,8 +70,18 @@ a:focus {
     color: var(--secondary-color);
     margin: 0 0 22px; line-height: 1.4;
     font-family: 'Avenir-Black';
+     float: left;
+    width: 100%;
 
 }
+
+.banner-div p{
+    font-family: 'Avenir-Book';
+        float: left;
+    width: 100%;
+
+}
+
 
 .banner-div {
     text-align: center;
@@ -1148,17 +1158,35 @@ padding-left: 16px;
   cursor: pointer;
 }
 
-.loged-inn-div > .loged-inn-div{
- padding-right: 20px;
+.loged-inn-div > .loged-inn-div {
+    padding-right: 40px;
+    background: #f1f3fa;
+    padding: 10px 50px 10px 30px;
+    border-radius: 10px;
+}
+
+.loged-inn-div > .loged-inn-div:hover {
+  background: #ffffff;
+}
+
+.header.fixedtop .loged-inn-div > .loged-inn-div {
+  
+    background: #ffffff;
+   
+}
+
+.header.fixedtop .loged-inn-div > .loged-inn-div:hover {
+  background: #f1f3fa;
 }
 
 
 .loged-inn-div > .loged-inn-div::after{
-  position: absolute; top: 4px; content: "";
-   right: 0;
+  position: absolute;  content: "";
+   right: 6px;
       background: url(../../../public/images/arr-down.svg) no-repeat 50% / contain;
     width: 20px;
     height: 20px;
+     top: 12px;
     transition: transform .3s ease;
 }
 .loged-inn-div > .loged-inn-div.open::after{
@@ -1191,7 +1219,6 @@ padding-left: 16px;
   z-index: 100;
 }
 
-.user-dropdown a{margin-bottom: 10px;}
 
 .user-dropdown a,
 .user-dropdown button {
@@ -1203,6 +1230,8 @@ padding-left: 16px;
   color: #333;
   cursor: pointer;
   width: 100%; 
+    font-family: 'Avenir-medium';
+font-size: 17px;
 }
 
 .user-dropdown a:hover,
@@ -1216,7 +1245,7 @@ padding-left: 16px;
   font-family: 'Avenir-medium';
 }
 
-.user-logo{border-radius: 50%; overflow: hidden; width: 24px; height: 24px;}
+.user-logo{border-radius: 50%; overflow: hidden; width: 20px; height: 20px;}
 
 
 .user-logo img{width: 100%; height: 100%; object-fit: contain;}
@@ -1407,6 +1436,21 @@ ul.tab-nav1 {
 .prov-dashboard .header .header-div,
 .directory .header .header-div
 {padding-inline: 0;}
+
+.seeker-dashboard1 .loged-inn-div > .loged-inn-div,
+.prov-dashboard .loged-inn-div > .loged-inn-div,
+.directory .loged-inn-div > .loged-inn-div
+ {
+    background: #ffffff; 
+}
+
+
+.seeker-dashboard1 .loged-inn-div > .loged-inn-div:hover,
+.prov-dashboard .loged-inn-div > .loged-inn-div:hover,
+.directory .loged-inn-div > .loged-inn-div:hover
+ {
+  background: #f1f3fa;
+}
 
 
 
@@ -2089,8 +2133,117 @@ form small {
 .budget-calc {
     padding: 40px;
     margin: 40px 0 0;
-    background: grey;
+    background: #f1f3fa;
+    
 }
+.budget-calculator {
+    display: flex;
+}
+
+.budget-calculator .bud-col1 {
+    width: 50%;
+}
+
+.bud-row {
+    margin: 0 0 15px;
+}
+
+.create-btn{
+
+    color: #fff;
+    background: var(--primary-color);
+    border-radius: 5px;
+    padding: 10px 50px;
+    font-size: 13px;
+    font-weight: 400;
+    display: inline-block;
+    margin: 30px 0 0; cursor: pointer;
+    
+}
+
+
+.create-btn:hover{
+      background: #4c72f6;
+
+}
+
+.create-btn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+.create-btn-container{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.listing-ul li {
+    color: #a3a3a7;
+    margin: 0px 0 20px;
+    font-size: 13px; position: relative;
+    padding: 0 0 0 12px;
+}
+
+.listing-ul li:last-child {
+    margin-bottom: 0;
+}
+
+
+
+.listing-ul li:before {   
+    content: "•";
+    color: #a3a3a7;
+    font-size: 10px;
+    line-height: normal;
+    position: absolute;
+    top: 3px;
+    left: -1px;} 
+.add-newformouter .radio-group {
+    margin: 30px 0 0;
+}
+.add-newformouter .radio-group h5{
+  font-family: 'Avenir-Black';
+  margin: 0 0 20px;
+
+}
+
+
+.listing-styleouter h5 {
+    margin: 0 0 10px;
+  font-family: 'Avenir-Black';
+}
+
+
+
+.listing-style {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 20px;
+}
+
+
+.radio-row {
+    display: flex;
+    align-items: center;
+}
+
+.radio-col {
+    margin-right: 20px;
+}
+
+.radio-option input {
+    margin-right: 6px; cursor: pointer;
+width: 20px; height: 20px;
+
+}
+
+
+
+
+
+
 
 /* ------------------------------------responsive */
 

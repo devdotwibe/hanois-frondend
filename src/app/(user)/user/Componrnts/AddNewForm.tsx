@@ -57,19 +57,41 @@ const AddNewForm = () => {
 
 
         <div className="radio-group">
-    <h5>Do you have a Basement</h5>
-    
-    <label className="radio-option">
+    <h5>Do you have a Basement?</h5>
+
+
+
+    <div className="radio-row">
+
+            <div className="radio-col">
+        <label className="radio-option">
         <input type="radio" name="listing" value="private" />
         <span className="radio-custom"></span>
         Yes
     </label>
-    
-    <label className="radio-option">
+        
+    </div>
+
+
+    <div className="radio-col">
+         <label className="radio-option">
         <input type="radio" name="listing" value="public" />
         <span className="radio-custom"></span>
         No
     </label>
+
+
+    </div>
+    
+
+    </div>
+
+
+    
+    
+   
+
+
 </div>
 
 
@@ -97,21 +119,6 @@ const AddNewForm = () => {
             </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
              <div className="budget-calc">
                 <h2>Budget Calculator</h2>
                 <div className="budget-calculator">
@@ -122,16 +129,18 @@ const AddNewForm = () => {
 
 
                         <div className="bud-row">
-                            <p>  </p>
+                         
                             
-                           <p>Total max buildable area</p>
+                           <p><strong>Total max buildable area</strong></p>
+
                            <p><span className="">870</span></p>
 
                         </div>
                     
                         <div className="bud-row">
+                            
 
-                            <p>Cost with finish</p>
+                            <p><strong>Cost with finish</strong></p>
                            <p><span className="">117 700</span></p>
 
                         </div>
@@ -148,28 +157,25 @@ const AddNewForm = () => {
 
 
                         
-                        <div className="cost-item">
-                            <p><span className="cost-label">Design Fee Cost</span></p>
-                            <p><span className="cost-value">$<span id="design-fee">1,177</span> (5%)</span></p>
-                            
-                            
+                        <div className="bud-row">
+                            <p>
+                                <strong>Design Fee Cost</strong>
+                                </p>
+                            <p><span className="cost-value">
+                              
+                               1,177</span> (5%)</p>
                         </div>
 
-                        <div className="cost-item total">
-                            
-                            <p><span className="cost-label">Total Project Cost</span></p>
-                            <p><span className="cost-value">$<span id="total-cost">118,877</span></span></p>
-
-
-                           
-                            
-
-
+                        <div className="bud-row">
+                            <p><strong>Total Project Cost</strong></p>
+                            <p><span className="">118,877</span></p>
                         </div>
 
 
 
                     </div>
+
+                    
 
 
 
@@ -177,6 +183,16 @@ const AddNewForm = () => {
 
 
                 </div>
+
+
+
+            </div>
+
+
+            <div className="create-btn-container">
+
+                        <button className='create-btn'>Create</button>
+
             </div>
 
 
