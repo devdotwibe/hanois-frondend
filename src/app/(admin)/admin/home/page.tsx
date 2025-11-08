@@ -307,11 +307,11 @@ useEffect(() => {
       <button className={activeTab === 3 ? "tab active" : "tab"} onClick={() => setActiveTab(3)}>Tab 3</button>
 
 
-         <button className={activeTab === 4 ? "tab active" : "tab"} onClick={() => setActiveTab(4)}>Tab 4</button>
+      
 
- <button className={activeTab === 5 ? "tab active" : "tab"} onClick={() => setActiveTab(5)}>Tab 5</button>
+ <button className={activeTab === 4 ? "tab active" : "tab"} onClick={() => setActiveTab(4)}>Tab 4</button>
           
-
+   <button className={activeTab === 5 ? "tab active" : "tab"} onClick={() => setActiveTab(5)}>Tab 5</button>
       </div>
 
       {/* 🟩 Tab 1: Banner Form */}
@@ -447,15 +447,10 @@ useEffect(() => {
 
 
 
-{activeTab === 4 && (
-  <div className="tab-content">
-    <FaqForm />
-  </div>
-)}
 
 
  {/* 🟩 Tab 5: Cards Section */}
-{activeTab === 5 && (
+{activeTab === 4 && (
   <div className="tab-content">
     <form
       onSubmit={(e) => {
@@ -568,6 +563,16 @@ useEffect(() => {
     </form>
   </div>
 )}
+
+
+{activeTab === 5 && (
+  <div className="tab-content">
+    <FaqForm />
+  </div>
+)}
+
+
+
 
 
     </div>
