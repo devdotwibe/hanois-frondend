@@ -8,8 +8,6 @@ const TABS = [
   { id: "project", label: "Project" },
 ];
 
-const MAX_NOTES = 1024;
-
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState("companyinfo");
   const [categoriesList, setCategoriesList] = useState([]);
@@ -34,23 +32,14 @@ const Tabs = () => {
   // Handle input change
   const handleChange = (e) => {
     const { name, value, options } = e.target;
-
     if (options) {
       const values = Array.from(options)
         .filter((opt) => opt.selected)
         .map((opt) => opt.value);
       setFormData((s) => ({ ...s, [name]: values }));
-      return;
+    } else {
+      setFormData((s) => ({ ...s, [name]: value }));
     }
-
-    // Enforce max length for notes and show decreasing counter
-    if (name === "notes") {
-      const trimmed = value.slice(0, MAX_NOTES);
-      setFormData((s) => ({ ...s, notes: trimmed }));
-      return;
-    }
-
-    setFormData((s) => ({ ...s, [name]: value }));
   };
 
   // Fetch categories & services
@@ -195,19 +184,14 @@ const Tabs = () => {
     }
   };
 
-const resolveImageUrl = (path) => {
-  if (!path) return null;
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-
-  // fixed regex: added the missing closing slash before the $
-  let base = API_URL.replace(/\/+$/, "");
-  base = base.replace(/\/api\/api$/i, "/api");
-  base = base.replace(/\/api$/i, "/api");
-  return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
-};
-
-
-  const notesRemaining = MAX_NOTES - (formData.notes ? formData.notes.length : 0);
+  const resolveImageUrl = (path) => {
+    if (!path) return null;
+    if (path.startsWith("http://") || path.startsWith("https://")) return path;
+    let base = API_URL.replace(/\/+$/, "");
+    base = base.replace(/\/api\/api$/i, "/api");
+    base = base.replace(/\/api$/i, "/api");
+    return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
+  };
 
   return (
     <div className="tab-wrapper1">
@@ -298,22 +282,13 @@ const resolveImageUrl = (path) => {
             </div>
 
             <div className="form-grp">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                  <label style={{ fontWeight: 600 }}>Brief description for your profile</label>
-                  <div style={{ fontSize: 12, color: '#666' }}>Add a short summary that will appear on your profile</div>
-                </div>
-                <div style={{ fontSize: 13, color: '#333' }}>{notesRemaining} characters remaining</div>
-              </div>
-
+              <label>Notes</label>
               <textarea
                 name="notes"
                 value={formData.notes}
                 onChange={handleChange}
                 placeholder="Enter notes"
                 required
-                maxLength={MAX_NOTES}
-                rows={6}
               ></textarea>
             </div>
 
@@ -384,6 +359,8 @@ const resolveImageUrl = (path) => {
                 )}
               </select>
             </div>
+
+         
 
             <button type="submit" className="btn get-sub">
               Save
