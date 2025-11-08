@@ -550,7 +550,7 @@ const Tabs = () => {
     onMouseEnter={(e) => (e.target.style.backgroundColor = "#0069d9")}
     onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
   >
-    💾 Save Changes
+     Save
   </button>
 </div>
 
