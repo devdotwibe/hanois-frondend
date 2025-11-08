@@ -209,7 +209,7 @@ const fetchData = async (sectionKey: string) => {
       {activeTab === 1 && (
         <form onSubmit={(e) => handleSubmit(e, false)}>
           <InputField label="Title (English)" value={titles.en} onChange={(v) => setTitles({ ...titles, en: v })} />
-          <InputField label="Title (Arabic)" value={titles.ar} onChange={(v) => setTitles({ ...titles, ar: v })} />
+          <InputField label="Title (Arabic)" value={titles.ar} onChange={(v) => setTitles({ ...titles, ar: v })}  />
           <div className="form-field">
             <label>Content (English)</label>
             <ReactQuill

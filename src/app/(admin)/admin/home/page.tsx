@@ -33,23 +33,39 @@ export default function HomeAdminPage() {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-
-  // 🧠 Quill setup
-  const modules = useMemo(
-    () => ({
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, false] }],
-          ["bold", "italic", "underline", "strike"],
-          [{ list: "ordered" }, { list: "bullet" }],
-          ["link", "image"],
-          ["clean"],
-          ["source"],
-        ],
+  const [showSource, setShowSource] = useState(false);
+const modules = useMemo(
+  () => ({
+    toolbar: {
+      container: [
+        [{ header: [1, 2, 3, false] }],
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["link", "image"],
+        ["clean"],
+        ["showHtml"], // 🟩 custom toggle button
+      ],
+      handlers: {
+        showHtml: function () {
+          setShowSource((prev) => !prev);
+        },
       },
-    }),
-    []
-  );
+    },
+  }),
+  []
+);
+
+// 🟩 Tab 5 (Cards Section) State
+const initLanguageContent = { en: "", ar: "" };
+const [cards, setCards] = useState([
+  { title: { ...initLanguageContent }, content: { ...initLanguageContent }, image: null, imageUrl: "" },
+  { title: { ...initLanguageContent }, content: { ...initLanguageContent }, image: null, imageUrl: "" },
+  { title: { ...initLanguageContent }, content: { ...initLanguageContent }, image: null, imageUrl: "" },
+]);
+
+
+
+
 
   // 🟩 Fetch banners on mount
 useEffect(() => {
@@ -108,6 +124,8 @@ useEffect(() => {
     }
   })();
 }, []);
+
+
 
   // 🟩 File upload (local preview only)
 const uploadFile = (idx) => {
@@ -190,6 +208,65 @@ const handleSave = async (e) => {
 };
 
 
+const handleCardsSave = async () => {
+  setLoading(true);
+  setMessage("");
+
+  try {
+    const formData = new FormData();
+    formData.append("sectionKey", "get_banner_cards"); // You can rename if needed
+
+    cards.forEach((card, idx) => {
+      formData.append(`card_${idx + 1}_title_en`, card.title.en);
+      formData.append(`card_${idx + 1}_title_ar`, card.title.ar);
+      formData.append(`card_${idx + 1}_content_en`, card.content.en);
+      formData.append(`card_${idx + 1}_content_ar`, card.content.ar);
+      if (card.image) formData.append(`card_${idx + 1}_image`, card.image);
+    });
+
+    const res = await axios.post(`${API_URL}page/save`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    setMessage(res.data.success ? "✅ Cards saved successfully!" : "❌ Failed to save cards");
+  } catch (err) {
+    console.error("❌ Card Save Failed:", err);
+    setMessage("❌ Something went wrong while saving cards.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+useEffect(() => {
+  if (activeTab === 5) {
+    (async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(`${API_URL}page/get?sectionKey=get_banner_cards`);
+        if (res.data.success && Array.isArray(res.data.data?.cards)) {
+          const cardsData = res.data.data.cards.map((card: any) => ({
+            title: { en: card.title_en || "", ar: card.title_ar || "" },
+            content: { en: card.content_en || "", ar: card.content_ar || "" },
+            image: null,
+            imageUrl: card.image ? (card.image.startsWith("http") ? card.image : `${IMG_URL}${card.image}`) : "",
+          }));
+          setCards(cardsData);
+        } else {
+          console.warn("⚠️ No cards data found in response");
+        }
+      } catch (err) {
+        console.error("❌ Failed to load cards:", err);
+        setMessage("❌ Unable to load existing cards data.");
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }
+}, [activeTab]);
+
+
   const renderHeadingsInputs = (label, array, index) =>
     [0, 1, 2].map((i) => (
       <input
@@ -213,115 +290,128 @@ const handleSave = async (e) => {
       {/* Tabs */}
       <div className="tabs">
         <button
-          type="button"
+       
           className={activeTab === 1 ? "tab active" : "tab"}
           onClick={() => setActiveTab(1)}
         >
           Tab 1
         </button>
         <button
-          type="button"
+        
           className={activeTab === 2 ? "tab active" : "tab"}
           onClick={() => setActiveTab(2)}
         >
           Tab 2
         </button>
 
+      <button className={activeTab === 3 ? "tab active" : "tab"} onClick={() => setActiveTab(3)}>Tab 3</button>
 
 
+         <button className={activeTab === 4 ? "tab active" : "tab"} onClick={() => setActiveTab(4)}>Tab 4</button>
 
-         <button className={activeTab === 3 ? "tab active" : "tab"} onClick={() => setActiveTab(3)}>Tab 3</button>
-
-
-            <button className={activeTab === 4 ? "tab active" : "tab"} onClick={() => setActiveTab(4)}>Tab 4</button>
+ <button className={activeTab === 5 ? "tab active" : "tab"} onClick={() => setActiveTab(5)}>Tab 5</button>
+          
 
       </div>
 
       {/* 🟩 Tab 1: Banner Form */}
       {activeTab === 1 && (
         <form onSubmit={handleSave}>
-          <div className="section">
-            <label>Title (English)</label>
-            <input
-              type="text"
-              value={titles.en}
-              required
-              onChange={(e) => setTitles({ ...titles, en: e.target.value })}
-            />
-            <div className="form-field">
-              <label>Description (English)</label>
-              <ReactQuill
-                theme="snow"
-                value={descs.en}
-                onChange={(v) => setDescs((prev) => ({ ...prev, en: v }))}
-                modules={modules}
-              />
-            </div>
-          </div>
+          {/* 🟩 English Title */}
+<div className="section">
+  <label>Title</label>
+  <textarea
+    value={titles.en}
+    onChange={(e) => setTitles({ ...titles, en: e.target.value })}
+    style={{
+      width: "100%",
+      height: "150px",
+      border: "1px solid #ccc",
+      borderRadius: "8px",
+      padding: "10px",
+      fontSize: "15px",
+      lineHeight: "1.5",
+      fontFamily: "Arial, sans-serif",
+      resize: "vertical",
+    }}
+  />
+</div>
 
-          <div className="section" style={{ display: "none" }}>
-            <label>Title (Arabic)</label>
-            <input
-              type="text"
-              className="text-right"
-              value={titles.ar}
-              onChange={(e) => setTitles({ ...titles, ar: e.target.value })}
-            />
-            <div className="form-field">
-              <label>Description (Arabic)</label>
-              <ReactQuill
-                theme="snow"
-                value={descs.ar}
-                onChange={(v) => setDescs((prev) => ({ ...prev, ar: v }))}
-                modules={modules}
-              />
-            </div>
-          </div>
+{/* 🟨 Arabic Title (hidden for now) */}
+<div className="section" style={{ display: "none" }}>
+  <label>Title (Arabic)</label>
+  <textarea
+    value={titles.ar}
+    onChange={(e) => setTitles({ ...titles, ar: e.target.value })}
+    style={{
+      width: "100%",
+      height: "150px",
+      border: "1px solid #ccc",
+      borderRadius: "8px",
+      padding: "10px",
+      fontSize: "15px",
+      lineHeight: "1.5",
+      fontFamily: "Arial, sans-serif",
+      resize: "vertical",
+      direction: "rtl", // text alignment for Arabic
+    }}
+  />
+</div>
 
-         <div className="form-field">
-  <label>English Headings</label>
-  {renderHeadingsInputs("English Heading", headings.english, "english")}
 
-  {/* Arabic headings hidden */}
-  <label style={{ display: "none" }}>Arabic Headings</label>
-  <div style={{ display: "none" }}>
-    {renderHeadingsInputs("Arabic Heading", headings.arabic, "arabic")}
-  </div>
+        <div className="form-field">
+  <label>Headings & images</label>
 
-            {[0, 1, 2].map((i) => (
-              <div className="img-div" key={i}>
-                <label>Upload Image {i + 1}</label>
-                <button
-                  type="button"
-                  disabled={loading}
-                  onClick={() => uploadFile(i)}
-                >
-                  Upload
-                </button>
-                {images[i] && (
-                  <img
-                    src={images[i]}
-                    alt={`Preview Image ${i + 1}`}
-                    style={{
-                      width: "180px",
-                      borderRadius: "8px",
-                      marginTop: "8px",
-                      border: "1px solid #ccc",
-                    }}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
+  {[0, 1, 2].map((i) => (
+    <div key={i} className="heading-image-pair">
+      {/* 🟩 Heading Input */}
+      <input
+        type="text"
+        placeholder={`English Heading ${i + 1}`}
+        value={headings.english[i]}
+        onChange={(e) => {
+          const newArr = [...headings.english];
+          newArr[i] = e.target.value;
+          setHeadings((prev) => ({ ...prev, english: newArr }));
+        }}
+      />
+
+      {/* 🟩 Image Upload */}
+      <div className="img-div">
+       
+        <button
+          type="button"
+          disabled={loading}
+          onClick={() => uploadFile(i)}
+        >
+          Upload
+        </button>
+        {images[i] && (
+          <img
+            src={images[i]}
+            alt={`Preview Image ${i + 1}`}
+            style={{
+              width: "180px",
+              borderRadius: "8px",
+              marginTop: "8px",
+              border: "1px solid #ccc",
+            }}
+          />
+        )}
+      </div>
+    </div>
+  ))}
+</div>
+
 
           <button type="submit" disabled={loading}>
             {loading
               ? ids.en || ids.ar
-                ? "Updating..."
-                : "Creating..."
+                ? "Saving..."
+                : "Saving..."
               : ids.en || ids.ar
-              ? "Update Banner"
-              : "Create Banner"}
+              ? "Save"
+              : "Save"}
           </button>
 
           {message && (
@@ -348,20 +438,137 @@ const handleSave = async (e) => {
       )}
 
 
-      {/* 🟩 Tab 3: FAQ Management */}
-{activeTab === 3 && (
+
+      {activeTab === 3 && (
+        <div className="tab-content">
+          <BannerSubExtrasForm />
+        </div>
+      )}
+
+
+
+{activeTab === 4 && (
   <div className="tab-content">
     <FaqForm />
   </div>
 )}
 
 
-  {/* 🟩 Tab 4: Banner Sub Extras */}
-      {activeTab === 4 && (
-        <div className="tab-content">
-          <BannerSubExtrasForm />
+ {/* 🟩 Tab 5: Cards Section */}
+{activeTab === 5 && (
+  <div className="tab-content">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleCardsSave();
+      }}
+    >
+      {cards.map((card, idx) => (
+        <div key={idx} className="card-section">
+        
+
+          {/* Title Fields */}
+          <div className="form-field">
+            <label>Title</label>
+            <input
+              type="text"
+              value={card.title.en}
+              onChange={(e) => {
+                const updated = [...cards];
+                updated[idx].title.en = e.target.value;
+                setCards(updated);
+              }}
+            />
+          </div>
+
+          <div className="form-field" style={{ display: "none" }}>
+            <label>Title (Arabic)</label>
+            <input
+              type="text"
+              value={card.title.ar}
+              onChange={(e) => {
+                const updated = [...cards];
+                updated[idx].title.ar = e.target.value;
+                setCards(updated);
+              }}
+            />
+          </div>
+
+          {/* Content Fields */}
+          <div className="form-field">
+            <label>Content</label>
+            <textarea
+              value={card.content.en}
+              onChange={(e) => {
+                const updated = [...cards];
+                updated[idx].content.en = e.target.value;
+                setCards(updated);
+              }}
+            />
+          </div>
+
+          <div className="form-field" style={{ display: "none" }}>
+            <label>Content (Arabic)</label>
+            <textarea
+              value={card.content.ar}
+              onChange={(e) => {
+                const updated = [...cards];
+                updated[idx].content.ar = e.target.value;
+                setCards(updated);
+              }}
+            />
+          </div>
+
+          {/* Image Upload */}
+          <div className="form-field">
+            <label>Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0] ?? null;
+                const updated = [...cards];
+                updated[idx].image = file;
+                if (file) updated[idx].imageUrl = URL.createObjectURL(file);
+                setCards(updated);
+              }}
+            />
+            {card.imageUrl && (
+              <img
+                src={card.imageUrl}
+                alt={`Card ${idx + 1}`}
+                style={{
+                  width: "160px",
+                  height: "auto",
+                  marginTop: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                }}
+              />
+            )}
+          </div>
+
+          <hr />
         </div>
+      ))}
+
+      <button type="submit" disabled={loading}>
+        {loading ? "Saving..." : "Save"}
+      </button>
+
+      {message && (
+        <p
+          className={`message ${
+            message.includes("✅") ? "success" : "error"
+          }`}
+        >
+          {message}
+        </p>
       )}
+    </form>
+  </div>
+)}
+
 
     </div>
   );

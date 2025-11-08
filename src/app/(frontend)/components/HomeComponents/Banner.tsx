@@ -80,12 +80,9 @@ const Banner = ({ lang }: { lang: string }) => {
 
         <div className="banner-div">
 
-          <h2 dangerouslySetInnerHTML={{ __html: t.title }} />
+        <div dangerouslySetInnerHTML={{ __html: t.title }} />
            
-          <p>
-              <span dangerouslySetInnerHTML={{ __html: t.desc }} />
-          </p>
-
+        
             <div className={`search-container ${token ? 'active-search' : 'disabled' }`}>
 
               <input type="text" placeholder={t.placeholder} disabled={!token}  dir={lang === "ar" ? "rtl" : "ltr"}/>

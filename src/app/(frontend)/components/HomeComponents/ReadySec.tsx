@@ -82,13 +82,13 @@ const ReadySec = ({ lang }: { lang: string }) => {
                   />
                 )}
 
-                {buttonname && (
-                  <Link href="/signup" className="signup-btn">
-                    {buttonname}
-                  </Link>
-                )}
+              
 
-                {subheading && <h6>{subheading}</h6>}
+                  <Link href="" className='signup-btn'>Sign Up Now</Link>
+                  <h6>Full access. No credit card required.</h6>
+
+
+
               </>
             )}
           </div>

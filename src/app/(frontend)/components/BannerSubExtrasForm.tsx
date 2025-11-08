@@ -110,7 +110,7 @@ if (typeof window !== "undefined" && window.Quill) {
       <form onSubmit={handleSubmit} className="extras-form">
         {/* 🟩 Sub Description (English) - ReactQuill */}
         <div className="form-field">
-          <label>Sub Description (English)</label>
+          <label>Sub Description</label>
           {showSource ? (
             <textarea
               name="subdescription"
@@ -143,7 +143,7 @@ if (typeof window !== "undefined" && window.Quill) {
 
         {/* 🟩 Sub Button Name (English) */}
         <div className="form-field">
-          <label>Sub Button Name (English)</label>
+          <label>Button Name</label>
           <input
             type="text"
             name="subbuttonname"
@@ -185,7 +185,7 @@ if (typeof window !== "undefined" && window.Quill) {
 
         {/* 🟩 Submit Button */}
         <button type="submit" disabled={loading}>
-          {loading ? "Saving..." : "Save Changes"}
+          {loading ? "Saving..." : "Save"}
         </button>
 
         {/* 🟩 Status Message */}

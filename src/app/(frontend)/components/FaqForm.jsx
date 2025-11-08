@@ -171,7 +171,7 @@ const handleSubmit = async (e) => {
         /> */}
 
         {/* 🟩 English Question with ReactQuill */}
-        <label>English Question</label>
+        <label>Question</label>
         {showSourceQuestion ? (
           <textarea
             value={formData.engquestion}
@@ -208,7 +208,7 @@ const handleSubmit = async (e) => {
         )}
 
         {/* 🟩 English Answer with ReactQuill */}
-        <label>English Answer</label>
+        <label>Answer</label>
         {showSourceAnswer ? (
           <textarea
             value={formData.enganswer}
@@ -273,7 +273,7 @@ const handleSubmit = async (e) => {
 
 
         <button type="submit" disabled={loading}>
-          {loading ? "Saving..." : editingId ? "Update FAQ" : "Create FAQ"}
+          {loading ? "Saving..." : editingId ? "Update FAQ" : "Save FAQ"}
         </button>
 
         {message && <p className="message">{message}</p>}
@@ -288,7 +288,7 @@ const handleSubmit = async (e) => {
         <table className="faq-table">
           <thead>
             <tr>
-              <th>ID</th>
+              
             
               <th>Question</th>
               <th>Answer</th>
@@ -298,7 +298,7 @@ const handleSubmit = async (e) => {
           <tbody>
             {faqs.map((faq) => (
               <tr key={faq.id}>
-                <td>{faq.id}</td>
+                
               
                 <td dangerouslySetInnerHTML={{ __html: faq.question }} />
                 <td dangerouslySetInnerHTML={{ __html: faq.answer }} />

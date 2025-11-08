@@ -106,9 +106,9 @@ const modules = useMemo(
 
       {/* 🟩 English Section */}
       <div className="form-section">
-        <h3>English Content</h3>
+       
 
-    <label>Subtitle (English)</label>
+    <label>Subtitle</label>
 {showSource ? (
   <textarea
     value={data.subtitle_en}
@@ -123,19 +123,7 @@ const modules = useMemo(
     modules={modules}
   />
 )}
-        <label>Subheading (English)</label>
-        <input
-          type="text"
-          value={data.subheading_en}
-          onChange={(e) => setData({ ...data, subheading_en: e.target.value })}
-        />
-
-        <label>Button Name (English)</label>
-        <input
-          type="text"
-          value={data.buttonname_en}
-          onChange={(e) => setData({ ...data, buttonname_en: e.target.value })}
-        />
+       
       </div>
 
       {/* 🟩 Arabic Section */}
@@ -168,7 +156,7 @@ const modules = useMemo(
       </div>
 
       <button type="submit" disabled={loading}>
-        {loading ? "Saving..." : "Save Changes"}
+        {loading ? "Saving..." : "Save"}
       </button>
 
       {message && (
