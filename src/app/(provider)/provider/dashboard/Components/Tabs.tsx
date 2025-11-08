@@ -380,7 +380,7 @@ const Tabs = () => {
             </div>
 
             <div className="form-grp">
-              <label style={{ fontWeight: 600 }}>Brief description for your profile</label>
+              <label>Team Size</label>
               <textarea
                 name="notes"
                 value={formData.notes}
@@ -397,7 +397,7 @@ const Tabs = () => {
               </div>
             </div>
 
-            <h4>Online Presence</h4>
+            <h4 style={{ fontWeight: 600 }}>Online Presence</h4>
 
             <div className="form-grp">
               <label>Website</label>
@@ -444,7 +444,7 @@ const Tabs = () => {
               />
             </div>
 
-            <h4>Services</h4>
+            <h4 style={{ fontWeight: 600 }} >Services</h4>
 
             <div className="form-grp">
               <label>Select Services</label>
