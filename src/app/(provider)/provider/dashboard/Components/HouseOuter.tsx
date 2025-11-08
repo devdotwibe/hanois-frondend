@@ -7,7 +7,7 @@ const HouseOuter: React.FC = () => {
   let providerId: number | null = null;
   let providerData: any = null;
 
-  const userData = localStorage.getItem("user");
+  const userData = localStorage.getItem("provider");
   if (userData) {
     const parsed = JSON.parse(userData);
     providerId = Number(parsed?.id || parsed?.provider_id || parsed?.user_id);
