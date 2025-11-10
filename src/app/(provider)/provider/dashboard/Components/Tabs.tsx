@@ -16,10 +16,8 @@ const Tabs = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("companyinfo");
 
-  // ---------- ADD THIS ----------
 const handleTabClick = (tabId) => {
   if (tabId === "project") {
-    // dynamically build full URL from API_URL
     const base = (SITE_URL || "").replace(/\/+$/, "");
     const target = `${base}/provider/dashboard/projects`;
     router.push(target);
@@ -28,24 +26,11 @@ const handleTabClick = (tabId) => {
   setActiveTab(tabId);
 };
 
-// ---------- END ADD ----------
-
-
-
 
   const [categoriesList, setCategoriesList] = useState([]);
   const [servicesList, setServicesList] = useState([]);
 
 
-
-
-
-
-
-
-
-
-  // selectedServices: array of { id, name, cost, currency }
   const [selectedServices, setSelectedServices] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -59,21 +44,18 @@ const handleTabClick = (tabId) => {
     facebook: "",
     instagram: "",
     other: "",
-    services: [], // array of service ids (strings)
+    services: [], 
     professionalHeadline: "",
     image: null,
   });
 
-  // Added: errors + status state (shows success/error messages)
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ loading: false, message: "", success: false });
 
-  // Generic handleChange (keeps support for multiple selects like categories)
   const handleChange = (e) => {
     const { name, value, options } = e.target;
 
     if (options && name !== "services") {
-      // for multi-selects (categories), except services which we handle separately
       const values = Array.from(options)
         .filter((opt) => opt.selected)
         .map((opt) => opt.value);
@@ -90,7 +72,6 @@ const handleTabClick = (tabId) => {
     setFormData((s) => ({ ...s, [name]: value }));
   };
 
-  // Services select change handler (creates/updates service cards)
   const handleServicesSelect = (e) => {
     const values = Array.from(e.target.options)
       .filter((opt) => opt.selected)
@@ -98,13 +79,10 @@ const handleTabClick = (tabId) => {
 
     setFormData((s) => ({ ...s, services: values }));
 
-    // ensure selectedServices reflects chosen IDs, preserve existing entries where possible
     setSelectedServices((prev) => {
       const ids = values.map(String);
-      // Keep existing that are still selected
       const kept = prev.filter((p) => ids.includes(String(p.id)));
 
-      // Add any new ones
       const additions = ids
         .filter((id) => !kept.some((k) => String(k.id) === id))
         .map((id) => {
@@ -134,7 +112,6 @@ const handleTabClick = (tabId) => {
     setFormData((prev) => ({ ...prev, services: prev.services.filter((id) => String(id) !== String(idToRemove)) }));
   };
 
-  // Fetch categories & services lists
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -146,7 +123,6 @@ const handleTabClick = (tabId) => {
         const servData = await servRes.json();
         const cats = Array.isArray(catData) ? catData : catData.data || [];
         const svcs = Array.isArray(servData) ? servData : servData.data || [];
-        // normalize ids to strings to avoid type mismatch with form state
         setCategoriesList(cats.map(c => ({ ...c, id: String(c.id) })));
         setServicesList(svcs.map(s => ({ ...s, id: String(s.id) })));
       } catch (err) {
@@ -157,7 +133,6 @@ const handleTabClick = (tabId) => {
   }, []);
 
 
-  // Fetch provider details and populate form
   useEffect(() => {
     const fetchProvider = async () => {
       try {
@@ -179,7 +154,6 @@ const handleTabClick = (tabId) => {
         if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
         const provider = data?.provider ?? data ?? {};
 
-        // Normalize categories/service ids to strings to match options
         const categories = Array.isArray(provider.categories_id)
           ? provider.categories_id.map(String)
           : provider.categories_id ? [String(provider.categories_id)] : [];
@@ -211,7 +185,6 @@ const handleTabClick = (tabId) => {
   }, []);
 
 
-    // When servicesList or formData.services change, initialize selectedServices (preserve any existing cost/currency if ids match)
     useEffect(() => {
       if (!servicesList || servicesList.length === 0) return;
       if (!formData.services || formData.services.length === 0) {
@@ -220,7 +193,6 @@ const handleTabClick = (tabId) => {
       }
 
       setSelectedServices((prev) => {
-        // create map of existing entered values so we preserve cost/currency if possible
         const prevMap = new Map(prev.map((p) => [String(p.id), p]));
 
         return formData.services.map((id) => {
@@ -237,11 +209,9 @@ const handleTabClick = (tabId) => {
       });
     }, [servicesList, formData.services]);
 
-  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // clear previous messages
     setErrors({});
     setStatus({ loading: true, message: "", success: false });
 
@@ -278,7 +248,6 @@ const handleTabClick = (tabId) => {
         instagram: formData.instagram,
         other_link: formData.other,
         categories_id: formData.categories,
-        // send service ids & details
         service_id: selectedServices.map((s) => s.id),
         service_details: selectedServices.map((s) => ({
           id: s.id,
@@ -301,14 +270,10 @@ const handleTabClick = (tabId) => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || data.message || "Update failed");
 
-      // replaced alert with status message div
       setStatus({ loading: false, message: "Provider updated successfully!", success: true });
 
-      // Navigate to detail page after successful update
-      // push providerId as a query param so the detail page can fetch it
       router.push(`/provider/dashboard/details?providerId=${encodeURIComponent(providerId)}`);
 
-      // optional: clear errors
       setErrors({});
     } catch (err) {
       console.error(err);
@@ -320,7 +285,6 @@ const handleTabClick = (tabId) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
 
-    // fixed regex: added the missing closing slash before the $
     let base = API_URL.replace(/\/+$/, "");
     base = base.replace(/\/api\/api$/i, "/api");
     base = base.replace(/\/api$/i, "/api");
