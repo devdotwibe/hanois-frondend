@@ -79,11 +79,11 @@ const ServiceDiv = async ({ provider }) => {
                     ? `${svc.average_cost} ${svc.currency ?? ""}`
                     : "Contact for price"}
                 </p>
-                {svc.created_at && (
+                {/* {svc.created_at && (
                   <small style={{ display: 'block', marginTop: 6, color: '#666' }}>
                     Updated: {new Date(svc.updated_at ?? svc.created_at).toLocaleDateString()}
                   </small>
-                )}
+                )} */}
                 {svc.service_note && (
                   <div style={{ marginTop: 8, color: '#333' }}>
                     <strong>Note:</strong> {svc.service_note}
