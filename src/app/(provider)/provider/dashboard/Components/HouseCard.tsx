@@ -46,24 +46,15 @@ const HouseCard: React.FC<HouseCardProps> = ({
 
   // helper to notify other parts of the app that this provider changed
   const notifyProviderUpdated = (providerData?: any) => {
-    try {
-      window.dispatchEvent(
-        new CustomEvent("providerUpdated", {
-          detail: { providerId, provider: providerData ?? null },
-        })
-      );
-    } catch (e) {
-      // ignore if dispatch fails in strange environments
-    }
+    window.dispatchEvent(
+      new CustomEvent("providerUpdated", {
+        detail: { providerId, provider: providerData ?? null },
+      })
+    );
   };
 
   // helper to normalize different response shapes
   const extractProviderFromResponse = (data: any) => {
-    // common shapes:
-    // 1) { data: { provider: { ... } } }
-    // 2) { provider: { ... } }
-    // 3) { data: { ...provider... } }
-    // 4) provider object directly
     if (!data) return null;
     if (data.data && data.data.provider) return data.data.provider;
     if (data.provider) return data.provider;
@@ -72,147 +63,120 @@ const HouseCard: React.FC<HouseCardProps> = ({
     return null;
   };
 
-  // Save provider to local cache so other UI can read updated values
-  const cacheProvider = (provider: any) => {
-    try {
-      if (provider && provider.id) {
-        localStorage.setItem(`provider_${provider.id}`, JSON.stringify(provider));
-      }
-    } catch (e) {
-      // ignore storage errors
-    }
-  };
-
   const uploadFile = async (file: File) => {
-    try {
-      setUploading(true);
-      const formData = new FormData();
-      formData.append("image", file);
-      // include headline when uploading so backend keeps it in sync
-      formData.append("professional_headline", headline ?? "");
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("professional_headline", headline ?? "");
 
-      const res = await fetch(endpoint, {
-        method: "PUT",
-        body: formData,
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      });
+    const res = await fetch(endpoint, {
+      method: "PUT",
+      body: formData,
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    });
 
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || "Upload failed");
-      }
-      const data = await res.json();
-      const provider = extractProviderFromResponse(data);
-      if (provider) {
-        const newImage = provider.image ?? null;
-        setImagePath(newImage);
-        setHeadline(provider.professional_headline ?? headline);
-        cacheProvider(provider);
-        notifyProviderUpdated(provider);
-      } else {
-        // fallback: try other shapes
-        const newImage = data?.data?.provider?.image ?? data?.provider?.image ?? null;
-        setImagePath(newImage);
-      }
-    } catch (err) {
-      console.error("Upload error:", err);
-      alert("Failed to upload image.");
-    } finally {
+    if (!res.ok) {
+      const text = await res.text();
       setUploading(false);
+      throw new Error(text || "Upload failed");
     }
+
+    const data = await res.json();
+    const provider = extractProviderFromResponse(data);
+    if (provider) {
+      const newImage = provider.image ?? null;
+      setImagePath(newImage);
+      setHeadline(provider.professional_headline ?? headline);
+      notifyProviderUpdated(provider);
+    } else {
+      const newImage = data?.data?.provider?.image ?? data?.provider?.image ?? null;
+      setImagePath(newImage);
+      notifyProviderUpdated();
+    }
+    setUploading(false);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    uploadFile(file);
+    uploadFile(file).catch((err) => {
+      console.error("Upload error:", err);
+      alert("Failed to upload image.");
+    });
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   // Remove image: send JSON with image: null so backend's updateProfile sees `image` explicitly
   const handleRemoveImage = async () => {
     if (!confirm("Remove image?")) return;
-    try {
-      setRemoving(true);
+    setRemoving(true);
 
-      // Send JSON payload { image: null, professional_headline } - backend checks for image !== undefined
-      const payload = {
-        image: null,
-        professional_headline: headline ?? "",
-      };
+    const payload = {
+      image: null,
+      professional_headline: headline ?? "",
+    };
 
-      const res = await fetch(endpoint, {
-        method: "PUT",
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
+    const res = await fetch(endpoint, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
 
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || "Remove failed");
-      }
-
-      const data = await res.json();
-      const provider = extractProviderFromResponse(data);
-      if (provider) {
-        setImagePath(provider.image ?? null);
-        setHeadline(provider.professional_headline ?? headline);
-        cacheProvider(provider);
-        notifyProviderUpdated(provider);
-      } else {
-        // fallback
-        setImagePath(null);
-      }
-    } catch (err) {
-      console.error("Remove error:", err);
-      alert("Failed to remove image.");
-    } finally {
+    if (!res.ok) {
+      const text = await res.text();
       setRemoving(false);
+      throw new Error(text || "Remove failed");
     }
+
+    const data = await res.json();
+    const provider = extractProviderFromResponse(data);
+    if (provider) {
+      setImagePath(provider.image ?? null);
+      setHeadline(provider.professional_headline ?? headline);
+      notifyProviderUpdated(provider);
+    } else {
+      setImagePath(null);
+      notifyProviderUpdated();
+    }
+
+    setRemoving(false);
   };
 
   const handleSaveHeadline = async () => {
-    try {
-      setSavingHeadline(true);
-      // Send JSON when we only update the text — backend will detect professional_headline
-      const payload = { professional_headline: headline ?? "" };
+    setSavingHeadline(true);
+    const payload = { professional_headline: headline ?? "" };
 
-      const res = await fetch(endpoint, {
-        method: "PUT",
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
+    const res = await fetch(endpoint, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
 
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || "Save headline failed");
-      }
-      const data = await res.json();
-      const provider = extractProviderFromResponse(data);
-      if (provider) {
-        setHeadline(provider.professional_headline ?? headline);
-        if (typeof provider.image !== "undefined") {
-          setImagePath(provider.image ?? null);
-        }
-        cacheProvider(provider);
-        notifyProviderUpdated(provider);
-      } else {
-        // server didn't return a provider object but likely saved — keep local headline
-        notifyProviderUpdated();
-      }
-      setEditing(false);
-    } catch (err) {
-      console.error("Save headline error:", err);
-      alert("Failed to save headline.");
-    } finally {
+    if (!res.ok) {
+      const text = await res.text();
       setSavingHeadline(false);
+      throw new Error(text || "Save headline failed");
     }
+
+    const data = await res.json();
+    const provider = extractProviderFromResponse(data);
+    if (provider) {
+      setHeadline(provider.professional_headline ?? headline);
+      if (typeof provider.image !== "undefined") {
+        setImagePath(provider.image ?? null);
+      }
+      notifyProviderUpdated(provider);
+    } else {
+      notifyProviderUpdated();
+    }
+    setEditing(false);
+    setSavingHeadline(false);
   };
 
   return (
@@ -232,7 +196,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
               />
               <button
                 type="button"
-                onClick={handleRemoveImage}
+                onClick={() => handleRemoveImage().catch((err) => { console.error('Remove error:', err); alert('Failed to remove image.'); })}
                 disabled={removing}
                 className="image-remove-btn"
                 style={{
@@ -292,7 +256,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
               style={{ flex: 1 }}
             />
             <button
-              onClick={handleSaveHeadline}
+              onClick={() => handleSaveHeadline().catch((err) => { console.error('Save headline error:', err); alert('Failed to save headline.'); })}
               disabled={savingHeadline}
               style={{
                 border: "none",
