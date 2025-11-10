@@ -60,7 +60,7 @@ const Header = () => {
                   </div>
                 </div>
 
-                {!token && (
+                {(token ==null || auth =='admin')  && (
 
                   <div className="header-col2">
                 
@@ -76,7 +76,7 @@ const Header = () => {
                   
                 )}
 
-                {token && (
+                {token && auth !='admin' &&(
 
                   <div className="logged-outer ">
 

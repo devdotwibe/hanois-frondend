@@ -69,7 +69,7 @@ const UserDropdown = () => {
         <Image src={profile_logo} alt="User" width={40} height={40} />
       </div>
 
-      { (user || auth =='admin') && (
+      { (user && auth !='admin') && (
 
         <div className="user-name">
 
