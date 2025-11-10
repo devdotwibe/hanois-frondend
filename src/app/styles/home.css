@@ -37,8 +37,7 @@ p {
 
 
 strong{
-  font-weight: 700;
-      font-family: 'Avenir-Black';
+  font-family: 'Avenir-medium';
 }
 
 
@@ -1366,9 +1365,21 @@ ul.tab-nav1 {
 .torrance-card-image-wrap img {
     width: 100%;
     display: block;
+  
 }
 .torrance-card-image-wrap {
     position: relative;
+}
+
+.torrance-card-image-wrap::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  pointer-events: none; /* so it doesn't block clicks */
 }
 
 .torrance-card-badge {
@@ -1379,7 +1390,7 @@ ul.tab-nav1 {
     color: #ffffff;
     padding: 10px 20px;
     border-radius: 19px;
-    line-height: 1;
+    line-height: 1; z-index: 9;
 }
 
 .torrance-card-info {
@@ -1396,7 +1407,10 @@ ul.tab-nav1 {
     -webkit-box-orient: vertical;
     font-size: 21px;
     margin: 0 0 10px;
-  font-family: 'Avenir-Black';
+  /* font-family: 'Avenir-Black'; */
+    font-family: 'Avenir-medium';
+    font-weight: 600;
+
 
     line-height: 1;
 }
