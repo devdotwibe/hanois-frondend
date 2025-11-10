@@ -96,15 +96,29 @@ const HouseCard: React.FC<HouseCardProps> = ({
     setUploading(false);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    uploadFile(file).catch((err) => {
+const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  // 👇 Instantly show the selected image before upload finishes
+  const previewUrl = URL.createObjectURL(file);
+  setImagePath(previewUrl);
+
+  uploadFile(file)
+    .then(() => {
+      // Once upload finishes, the real server URL replaces the preview automatically
+      URL.revokeObjectURL(previewUrl); // cleanup the preview
+    })
+    .catch((err) => {
       console.error("Upload error:", err);
       alert("Failed to upload image.");
+      // revert to previous state if upload fails
+      setImagePath(initialImagePath ?? null);
     });
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
+
+  if (fileInputRef.current) fileInputRef.current.value = "";
+};
+
 
   const handleRemoveImage = async () => {
     if (!confirm("Remove image?")) return;
