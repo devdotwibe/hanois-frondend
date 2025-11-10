@@ -66,12 +66,12 @@ export default async function DetailsPage({ searchParams }) {
         </div>
 
         <div className="detcol-2">
-          <StatusCard provider={provider} />
+          <StatusCard />
         </div>
       </div>
 
       <div className="">
-        <TorranceSlider provider={provider} />
+        <TorranceSlider  />
       </div>
     </div>
   );
