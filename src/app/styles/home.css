@@ -2438,9 +2438,14 @@ color: #ffffff;
 
 .remodeling-card {
     border: 1px solid #e0e0e0;
-    width: 30%;
-    padding: 20px;
     border-radius: 10px;
+    width: 32%;
+    padding: 20px;
+    margin-right: 1.5%;
+    margin-bottom: 1.5%;
+}
+.remodeling-card:nth-child(3n){
+margin-right: 0;
 }
 
 .more-option-btn {
@@ -2459,12 +2464,19 @@ color: #ffffff;
      line-height: 1.2;
 }
 
+.featured-card-hilight .remodel-div1 h4{
+color: #2050f5;
+}
+
 .remodel-col1 {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+        margin: 0 0 6px;
 }
-
+.remodel-col1 .re-col1:first-child p {
+  font-family: 'Avenir-medium';
+}
 .re-col1 {
     width: 50%;
 }

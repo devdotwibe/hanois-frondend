@@ -8,6 +8,7 @@ type RemodelingCardProps = {
   date?: string;
   place?: string;
 proposal?: string;
+  className?: string;
 }
 
 const RemodelingCard: React.FC<RemodelingCardProps> = ({
@@ -15,14 +16,15 @@ const RemodelingCard: React.FC<RemodelingCardProps> = ({
   description,
   date,
   place,
-  proposal
+  proposal,
+  className = "",
   
 }) => {
  
 
  
   return (
-    <div className='remodeling-card'>
+    <div className={`remodeling-card ${className}`}>
 
 
 
