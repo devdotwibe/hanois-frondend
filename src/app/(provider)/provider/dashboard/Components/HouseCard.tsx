@@ -329,7 +329,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
   <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: 6, width: "100%" }}>
     <label
       htmlFor="headline-input"
-      style={{ fontWeight: "500", fontSize: "0.9rem", color: "#333" }}
     >
       Professional Headline
     </label>
@@ -341,11 +340,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
         onChange={(e) => setHeadline(e.target.value)}
         placeholder="Professional headline"
         style={{
-          flex: 1,
-          padding: "8px 10px",
-          borderRadius: 6,
-          border: "1px solid #ccc",
-          fontSize: "0.9rem",
+        
         }}
       />
       <button
