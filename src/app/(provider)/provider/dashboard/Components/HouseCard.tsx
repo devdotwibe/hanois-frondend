@@ -23,6 +23,8 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const [imagePath, setImagePath] = useState<string | null>(initialImagePath);
   const [uploading, setUploading] = useState(false);
   const [removing, setRemoving] = useState(false);
+  // NEW: show/hide static delete confirmation modal
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // remember whether there was a headline when component mounted
   const hadHeadlineInitiallyRef = useRef<boolean>(Boolean(initialDescription));
@@ -135,13 +137,20 @@ const HouseCard: React.FC<HouseCardProps> = ({
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // Remove image: send JSON with image: null so backend's updateProfile sees `image` explicitly
-  const handleRemoveImage = async () => {
-    if (!confirm("Remove image?")) return;
+  // OPEN modal instead of native confirm
+  const openDeleteConfirm = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const closeDeleteConfirm = () => {
+    setShowDeleteConfirm(false);
+  };
+
+  // actual deletion (called when user confirms in modal)
+  const performRemoveImage = async () => {
     try {
       setRemoving(true);
 
-      // Send JSON payload { image: null, professional_headline } - backend checks for image !== undefined
       const payload = {
         image: null,
         professional_headline: headline ?? "",
@@ -170,7 +179,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
         cacheProvider(provider);
         notifyProviderUpdated(provider);
       } else {
-        // fallback
         setImagePath(null);
       }
     } catch (err) {
@@ -178,13 +186,13 @@ const HouseCard: React.FC<HouseCardProps> = ({
       alert("Failed to remove image.");
     } finally {
       setRemoving(false);
+      closeDeleteConfirm();
     }
   };
 
   const handleSaveHeadline = async () => {
     try {
       setSavingHeadline(true);
-      // Send JSON when we only update the text — backend will detect professional_headline
       const payload = { professional_headline: headline ?? "" };
 
       const res = await fetch(endpoint, {
@@ -205,9 +213,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
       if (provider) {
         const savedHeadline = provider.professional_headline ?? headline;
         setHeadline(savedHeadline);
-        // update prevHeadlineRef to the saved headline
         prevHeadlineRef.current = savedHeadline;
-        // if we just saved a headline, consider that we now "had" one
         if (savedHeadline) hadHeadlineInitiallyRef.current = true;
 
         if (typeof provider.image !== "undefined") {
@@ -216,13 +222,10 @@ const HouseCard: React.FC<HouseCardProps> = ({
         cacheProvider(provider);
         notifyProviderUpdated(provider);
       } else {
-        // server didn't return a provider object but likely saved — keep local headline
         prevHeadlineRef.current = headline;
         notifyProviderUpdated();
       }
 
-      // Close editor only if we had a headline initially (or after a successful save we now do)
-      // If there was no headline initially and the user cancels, we want to keep the input visible.
       setEditing(false);
     } catch (err) {
       console.error("Save headline error:", err);
@@ -233,13 +236,10 @@ const HouseCard: React.FC<HouseCardProps> = ({
   };
 
   const handleCancelEdit = () => {
-    // revert to previous saved headline
     setHeadline(prevHeadlineRef.current ?? "");
-    // Only hide the editor if there *was* a headline initially (or we've since saved one).
     if (hadHeadlineInitiallyRef.current) {
       setEditing(false);
     } else {
-      // keep editing visible when there was no headline initially
       setEditing(true);
     }
   };
@@ -261,7 +261,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
               />
               <button
                 type="button"
-                onClick={handleRemoveImage}
+                onClick={openDeleteConfirm} /* open static modal */
                 disabled={removing}
                 className="image-remove-btn"
                 style={{
@@ -404,6 +404,73 @@ const HouseCard: React.FC<HouseCardProps> = ({
         style={{ display: "none" }}
         onChange={handleFileChange}
       />
+
+      {/* ===== Static Delete Confirmation Modal ===== */}
+      {showDeleteConfirm && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Confirm delete image"
+          style={{
+            position: "fixed",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            background: "rgba(0,0,0,0.4)",
+          }}
+          onClick={closeDeleteConfirm} // click overlay to close
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: 320,
+              maxWidth: "90%",
+              background: "#fff",
+              borderRadius: 8,
+              padding: 18,
+              boxShadow: "0 6px 18px rgba(0,0,0,0.2)",
+            }}
+          >
+            <h3 style={{ margin: "0 0 8px 0" }}>Remove image</h3>
+            <p style={{ margin: "0 0 16px 0" }}>
+              Are you sure you want to remove the image? This action can be undone by uploading a new image.
+            </p>
+
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+              <button
+                onClick={closeDeleteConfirm}
+                disabled={removing}
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: 6,
+                  border: "1px solid #ddd",
+                  background: "#f8f8f8",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={performRemoveImage}
+                disabled={removing}
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: 6,
+                  border: "none",
+                  background: removing ? "#ccc" : "#e53935",
+                  color: "#fff",
+                  cursor: "pointer",
+                }}
+              >
+                {removing ? "Removing..." : "Remove"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* ===== end modal ===== */}
     </div>
   );
 };
