@@ -19,12 +19,15 @@ const Tabs = () => {
   // ---------- ADD THIS ----------
 const handleTabClick = (tabId) => {
   if (tabId === "project") {
-    // navigate to the external projects page instead of switching tab
-    router.push("https://hanois.dotwibe.com/provider/dashboard/projects");
+    // dynamically build full URL from API_URL
+    const base = (API_URL || "").replace(/\/+$/, "");
+    const target = `${base}/provider/dashboard/projects`;
+    router.push(target);
     return;
   }
   setActiveTab(tabId);
 };
+
 // ---------- END ADD ----------
 
 
