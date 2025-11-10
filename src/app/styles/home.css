@@ -2331,8 +2331,20 @@ button.cance-button {
   background-size: 20px !important;
 }
 
-
-
+button.save-btn{
+   font-size: 0;
+   width: 20px;
+  height: 20px;
+  background: url("../../../public/images/save-btn.svg") no-repeat center !important;
+  background-size: 20px !important;
+}
+.image-remove-btn{
+    font-size: 0;
+   width: 20px;
+  height: 20px;
+  background: url("../../../public/images/close-blue.svg") no-repeat center !important;
+  background-size: 20px !important;
+}
 
 
 .svcrow {

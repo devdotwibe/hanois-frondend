@@ -285,7 +285,11 @@ const HouseCard: React.FC<HouseCardProps> = ({
                   height: 28,
                   cursor: "pointer",
                 }}
+
+                
                 title="Remove image"
+
+                
               >
                 ✕
               </button>
@@ -349,13 +353,14 @@ const HouseCard: React.FC<HouseCardProps> = ({
         disabled={savingHeadline}
         style={{
           border: "none",
-          background: "transparent",
+          
           cursor: "pointer",
           fontSize: "1.2rem",
         }}
         title="Save"
+        className="save-btn"
       >
-        ✅
+   
       </button>
       <button
         onClick={handleCancelEdit}
