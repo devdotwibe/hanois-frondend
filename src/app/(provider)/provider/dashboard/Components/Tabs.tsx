@@ -367,8 +367,9 @@ useEffect(() => {
       </ul>
      
       {/* Tab Content */}
+              <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
+
       <div className="tab-content-wrap">
-        <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
           <form className="settingsform company-profile1" onSubmit={handleSubmit}>
 
             <div className="form-grp">
