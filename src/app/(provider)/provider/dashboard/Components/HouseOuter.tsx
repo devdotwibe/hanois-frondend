@@ -17,44 +17,39 @@ const HouseOuter: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // determine providerId from localStorage / token (same logic you had)
   useEffect(() => {
-    try {
-      let id: number | null = null;
-      const userData = typeof window !== "undefined" ? localStorage.getItem("user") : null;
-      if (userData) {
-        const parsed = JSON.parse(userData);
-        id = Number(parsed?.id ?? parsed?.provider_id ?? parsed?.user_id ?? null) || null;
-      } else {
-        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-        if (token) {
-          try {
+    const getProviderId = () => {
+      try {
+        let id: number | null = null;
+        const userData = typeof window !== "undefined" ? localStorage.getItem("user") : null;
+        if (userData) {
+          const parsed = JSON.parse(userData);
+          id = Number(parsed?.id ?? parsed?.provider_id ?? parsed?.user_id ?? null) || null;
+        } else {
+          const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+          if (token) {
             const base64 = token.split(".")[1];
             const payload = JSON.parse(atob(base64));
             id = Number(payload?.provider_id ?? payload?.id ?? payload?.user_id ?? null) || null;
-          } catch (e) {
-            // malformed token or no numeric id — ignore
           }
         }
+        setProviderId(id);
+      } catch (e) {
+        setProviderId(null);
       }
-      setProviderId(id);
-    } catch (e) {
-      // ignore
-      setProviderId(null);
-    }
+    };
+
+    getProviderId();
   }, []);
 
-  // fetch provider from API (no cache)
   useEffect(() => {
-    if (!providerId) return;
-
     const fetchProvider = async () => {
+      if (!providerId) return;
+
       setLoading(true);
       setError(null);
 
-      // prefer the canonical providers endpoint
       const endpoint = `${API_URL.replace(/\/+$/, "")}/providers/${providerId}`;
-
       const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
       try {
@@ -73,7 +68,6 @@ const HouseOuter: React.FC = () => {
 
         const data = await res.json();
 
-        // normalize response shapes like you did in HouseCard
         let provider: Provider | null = null;
         if (data?.data?.provider) provider = data.data.provider;
         else if (data?.provider) provider = data.provider;
@@ -97,17 +91,9 @@ const HouseOuter: React.FC = () => {
     fetchProvider();
   }, [providerId]);
 
-  // show nothing if we have no provider id
   if (!providerId) return null;
-
-  // optional: show loading or error states (you can change to whatever UI you want)
-  if (loading && !providerData) {
-    return <div>Loading provider...</div>;
-  }
-  if (error && !providerData) {
-    return <div>Error loading provider: {error}</div>;
-  }
-
+  if (loading && !providerData) return <div>Loading provider...</div>;
+  if (error && !providerData) return <div>Error loading provider: {error}</div>;
   if (!providerData) return null;
 
   return (
