@@ -6,7 +6,7 @@ import img1 from "../../../../../../../public/images/property-img.jpg";
 import TorranceCard from "../../Components/TorranceCard";
 import UploadBox from "../../Components/UploadBox";
 import { useRouter } from "next/navigation";
-import { API_URL } from "@/config";
+import { SITE_URL  } from "@/config";
 
 const ProjectComponent = () => {
   const [showProjects, setShowProjects] = useState(true);
@@ -49,7 +49,7 @@ const ProjectComponent = () => {
   ];
 
   const handleAddClick = () => {
-    const base = (API_URL || "").replace(/\/+$/, "");
+    const base = (SITE_URL || "").replace(/\/+$/, "");
     const target = `${base}/provider/dashboard/add-project`;
     router.push(target);
   };

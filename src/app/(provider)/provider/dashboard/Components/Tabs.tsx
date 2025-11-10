@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import ProjectComponent from "./ProjectComponent";
-import { API_URL } from "@/config";
+import { API_URL, SITE_URL } from "@/config";
 import { useRouter } from "next/navigation";
 
 const TABS = [
@@ -20,7 +20,7 @@ const Tabs = () => {
 const handleTabClick = (tabId) => {
   if (tabId === "project") {
     // dynamically build full URL from API_URL
-    const base = (API_URL || "").replace(/\/+$/, "");
+    const base = (SITE_URL || "").replace(/\/+$/, "");
     const target = `${base}/provider/dashboard/projects`;
     router.push(target);
     return;
