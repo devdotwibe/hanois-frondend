@@ -625,7 +625,7 @@ useEffect(() => {
                       <select
                         value={svc.currency}
                         onChange={(e) => handleServiceFieldChange(idx, "currency", e.target.value)}
-                        style={{ padding: "8px" }}
+                        
                       >
                         <option value="KD">KD</option>
                         <option value="USD">USD</option>
@@ -674,24 +674,11 @@ useEffect(() => {
 
 
 
-          <div style={{ textAlign: "right", marginTop: "32px" }}>
+          <div className="save-outer">
             <button
               type="submit"
               disabled={status.loading}
-              style={{
-                backgroundColor: "#007bff",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                padding: "10px 85px",
-                fontSize: "16px",
-                fontWeight: "600",
-                cursor: status.loading ? "not-allowed" : "pointer",
-                transition: "background-color 0.2s ease",
-                opacity: status.loading ? 0.8 : 1,
-              }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = "#0069d9")}
-              onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
+             className="save-btn1"
             >
               {status.loading ? "Saving..." : "Save"}
             </button>

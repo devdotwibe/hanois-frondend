@@ -283,10 +283,21 @@ button.private-btn{
 
 
 
+button.save-btn1 {
+    background: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 20px 0;
+    padding: 12px 85px;
+    display: block;
+}
 
+button.save-btn1:hover{
+        background: #4c72f6;
 
-
-
+}
 
 
 /* ---------------------------------------- */
