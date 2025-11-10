@@ -2318,7 +2318,7 @@ box-shadow: none;
 .house-card-edit-btn{font-size: 0 !important;
   width: 20px;
   height: 20px;
-  background: url("../../../public/images/lead.png") no-repeat center !important;
+  background: url("../../../public/images/edit-btn.svg") no-repeat center !important;
   background-size: 20px !important;
 
 }
