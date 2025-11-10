@@ -98,8 +98,8 @@ const ServiceDiv = async ({ provider }) => {
       <div className="para-serv">
         <p>
           Each project is unique, making budgets and costs vary depending on different factors. Call and speak to a team member for more information at 
-          {provider?.phone ? ` Call: ${provider.phone}.` : ""} or visit our website at
-          {provider?.website ? ` Visit: ${provider.website}.` : ""}
+          {provider?.phone ? ` ${provider.phone}.` : ""} or visit our website at
+          {provider?.website ? ` ${provider.website}.` : ""}
         </p>
       </div>
     </div>
