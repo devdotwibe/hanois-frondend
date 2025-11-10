@@ -2288,6 +2288,8 @@ width: 20px; height: 20px;
 }
 .select-grp .dropdown-option{
   width: 100%; display: block; line-height: 1;
+      display: flex;
+    align-items: center;
 }
 
 button.remove-tag {
@@ -2305,20 +2307,34 @@ button.remove-tag {
     height: 22px; border-radius: 0; line-height: 1;
 
     padding: 0;
-    /* -webkit-appearance: none; */
+    -webkit-appearance: none;
 }
-
+.dropdown-option input:focus{
+box-shadow: none;
+}
 
 .dropdown-option{margin-bottom: 10px;}
 
 .house-card-edit-btn{font-size: 0 !important;
-
   width: 20px;
   height: 20px;
   background: url("../../../public/images/lead.png") no-repeat center !important;
   background-size: 20px !important;
 
 }
+
+button.cance-button {
+  font-size: 0;
+   width: 20px;
+  height: 20px;
+  background: url("../../../public/images/remove-btn.svg") no-repeat center !important;
+  background-size: 20px !important;
+}
+
+
+
+
+
 .svcrow {
     display: flex;
     flex-wrap: wrap;

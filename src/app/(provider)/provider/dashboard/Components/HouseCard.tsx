@@ -363,9 +363,10 @@ const HouseCard: React.FC<HouseCardProps> = ({
           border: "none",
           background: "transparent",
           cursor: "pointer",
-          fontSize: "1.2rem",
+       
         }}
         title="Cancel"
+        className="cance-button"
       >
         ✖
       </button>

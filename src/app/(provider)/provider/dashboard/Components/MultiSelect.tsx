@@ -79,14 +79,40 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         <div className="dropdown">
           {options.length > 0 ? (
             options.map((option) => (
-              <label key={option.id} className="dropdown-option">
-                <input
-                  type="checkbox"
-                  checked={selected.includes(option.id)}
-                  onChange={() => handleSelect(option.id)}
-                />
-                {option.name}
-              </label>
+
+
+
+              // <label key={option.id} className="dropdown-option">
+              //   <input
+              //     type="checkbox"
+              //     checked={selected.includes(option.id)}
+              //     onChange={() => handleSelect(option.id)}
+              //   />
+              //   {option.name}
+              // </label>
+
+
+
+              <label
+  key={option.id}
+  className={`dropdown-option ${
+    selected.includes(option.id) ? "selected" : ""
+  }`}
+>
+  <input
+    type="checkbox"
+    checked={selected.includes(option.id)}
+    onChange={() => handleSelect(option.id)}
+  />
+  {option.name}
+</label>
+
+
+
+
+
+
+
             ))
           ) : (
             <div className="dropdown-option disabled">Loading...</div>

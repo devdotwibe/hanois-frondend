@@ -489,8 +489,8 @@ const handleTabClick = (tabId) => {
 
             <h4 style={{ fontWeight: 600,  marginTop: 24  }} >Services</h4>
 
-            <div className="form-grp">
-              <label>Select Services</label>
+            <div className="">
+              {/* <label>Select Services</label> */}
 
 
               {/* <select
