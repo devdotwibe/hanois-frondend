@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import HouseCard from "./HouseCard";
 import { API_URL } from "@/config";
 
@@ -8,138 +8,97 @@ type Provider = {
   name?: string;
   image?: string | null;
   professional_headline?: string | null;
-  // ...other provider fields if you want
+};
+
+const getProviderId = (): number | null => {
+  let id: number | null = null;
+
+  const userData = typeof window !== "undefined" ? localStorage.getItem("user") : null;
+  if (userData) {
+    const parsed = JSON.parse(userData);
+    id = Number(parsed?.id ?? parsed?.provider_id ?? parsed?.user_id ?? null) || null;
+  } else {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (token) {
+      const base64 = token.split(".")[1];
+      const payload = JSON.parse(atob(base64));
+      id = Number(payload?.provider_id ?? payload?.id ?? payload?.user_id ?? null) || null;
+    }
+  }
+
+  return id;
+};
+
+const fetchProvider = async (providerId: number, token: string | null): Promise<Provider | null> => {
+  const endpoint = `${API_URL.replace(/\/+$/, "")}/providers/${providerId}`;
+
+  const res = await fetch(endpoint, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch provider (${res.status})`);
+  }
+
+  const data = await res.json();
+
+  if (data?.data?.provider) return data.data.provider;
+  if (data?.provider) return data.provider;
+  if (data?.data && typeof data.data === "object" && data.data.id) return data.data;
+  if (data?.id) return data;
+
+  return null;
 };
 
 const HouseOuter: React.FC = () => {
-  const [providerId, setProviderId] = useState<number | null>(null);
+  const [providerId] = useState<number | null>(getProviderId());
   const [providerData, setProviderData] = useState<Provider | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // determine providerId from localStorage / token (same logic you had)
-  useEffect(() => {
-    try {
-      let id: number | null = null;
-      const userData = typeof window !== "undefined" ? localStorage.getItem("user") : null;
-      if (userData) {
-        const parsed = JSON.parse(userData);
-        id = Number(parsed?.id ?? parsed?.provider_id ?? parsed?.user_id ?? null) || null;
-      } else {
-        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-        if (token) {
-          try {
-            const base64 = token.split(".")[1];
-            const payload = JSON.parse(atob(base64));
-            id = Number(payload?.provider_id ?? payload?.id ?? payload?.user_id ?? null) || null;
-          } catch (e) {
-            // malformed token or no numeric id — ignore
-          }
-        }
-      }
-      setProviderId(id);
-    } catch (e) {
-      // ignore
-      setProviderId(null);
-    }
-  }, []);
-
-  // try to load cached provider first (fast)
-  useEffect(() => {
+  const handleLoadProvider = async () => {
     if (!providerId) return;
-    try {
-      const cached = localStorage.getItem(`provider_${providerId}`);
-      if (cached) {
-        setProviderData(JSON.parse(cached));
-      }
-    } catch (e) {
-      // ignore parse errors
+    setLoading(true);
+    setError(null);
+
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const provider = await fetchProvider(providerId, token);
+
+    if (provider) {
+      setProviderData(provider);
+      localStorage.setItem(`provider_${provider.id}`, JSON.stringify(provider));
+    } else {
+      setError("Unexpected provider response shape");
     }
-  }, [providerId]);
 
-  // fetch provider from API and update cache + state
-  useEffect(() => {
-    if (!providerId) return;
+    setLoading(false);
+  };
 
-    const fetchProvider = async () => {
-      setLoading(true);
-      setError(null);
-
-      // prefer the canonical providers endpoint
-      const endpoint = `${API_URL.replace(/\/+$/, "")}/providers/${providerId}`;
-
-      const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
-      try {
-        const res = await fetch(endpoint, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-        });
-
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || `Failed to fetch provider (${res.status})`);
-        }
-
-        const data = await res.json();
-
-        // normalize response shapes like you did in HouseCard
-        let provider: Provider | null = null;
-        if (data?.data?.provider) provider = data.data.provider;
-        else if (data?.provider) provider = data.provider;
-        else if (data?.data && typeof data.data === "object" && data.data.id) provider = data.data;
-        else if (data?.id) provider = data;
-        else provider = null;
-
-        if (provider) {
-          setProviderData(provider);
-          try {
-            localStorage.setItem(`provider_${provider.id}`, JSON.stringify(provider));
-          } catch (e) {
-            // ignore storage errors
-          }
-        } else {
-          // if shape unexpected, store entire body under provider_{id}_raw
-          try {
-            localStorage.setItem(`provider_${providerId}_raw`, JSON.stringify(data));
-          } catch (e) {}
-          setError("Unexpected provider response shape");
-        }
-      } catch (err: any) {
-        console.error("Fetch provider error", err);
-        setError(err?.message ?? "Failed to load provider");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProvider();
-  }, [providerId]);
-
-  // show nothing if we have no provider id
-  if (!providerId) return null;
-
-  // optional: show loading or error states (you can change to whatever UI you want)
-  if (loading && !providerData) {
-    return <div>Loading provider...</div>;
-  }
-  if (error && !providerData) {
-    return <div>Error loading provider: {error}</div>;
-  }
-
-  if (!providerData) return null;
+  if (!providerId) return <div>No provider ID found.</div>;
 
   return (
     <div>
-      <HouseCard
-        providerId={providerId}
-        name={providerData.name ?? ""}
-        initialDescription={providerData.professional_headline ?? ""}
-        initialImagePath={providerData.image ?? null}
-      />
+      {!providerData && !loading && (
+        <button onClick={handleLoadProvider} className="px-4 py-2 bg-blue-500 text-white rounded">
+          Load Provider
+        </button>
+      )}
+
+      {loading && <div>Loading provider...</div>}
+      {error && <div>Error loading provider: {error}</div>}
+
+      {providerData && (
+        <HouseCard
+          providerId={providerId}
+          name={providerData.name ?? ""}
+          initialDescription={providerData.professional_headline ?? ""}
+          initialImagePath={providerData.image ?? null}
+        />
+      )}
     </div>
   );
 };
