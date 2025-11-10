@@ -354,15 +354,19 @@ const HouseCard: React.FC<HouseCardProps> = ({
         )}
 
         {/* Upload Button */}
-        <div style={{ marginTop: 10 }}>
-          <button
-            className="house-card-btn"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
-          >
-            {uploading ? "Uploading..." : "Upload New Image"}
-          </button>
-        </div>
+{/* Upload Button — only show when there is NO image */}
+{!imagePath && (
+  <div style={{ marginTop: 10 }}>
+    <button
+      className="house-card-btn"
+      onClick={() => fileInputRef.current?.click()}
+      disabled={uploading}
+    >
+      {uploading ? "Uploading..." : "Upload New Image"}
+    </button>
+  </div>
+)}
+
       </div>
 
       {/* Hidden File Input */}
