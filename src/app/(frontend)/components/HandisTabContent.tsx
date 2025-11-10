@@ -109,58 +109,66 @@ export default function HandisTabContent() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {cards.map((card, i) => (
-        <div key={i} className="card-section" style={{ marginBottom: "30px" }}>
-        
+  <form onSubmit={handleSubmit}>
+  {/* 🟩 Reorder cards so 4th one appears first */}
+  {[cards[3], ...cards.slice(0, 3)].map((card, i) => (
+    <div key={i} className="card-section" style={{ marginBottom: "30px" }}>
+     
 
-          {/* 🟩 Rich Text Editor for Title */}
-          <label>Title</label>
-          <ReactQuill
-            theme="snow"
-            value={card.handistitle}
-            onChange={(v) => updateCardField(i, "handistitle", v)}
-            modules={quillModules}
+      {/* 🟩 Rich Text Editor for Title */}
+      <label>Title</label>
+      <ReactQuill
+        theme="snow"
+        value={card.handistitle}
+        onChange={(v) => {
+          // If editing the first card (actually 4th in array)
+          const realIndex = i === 0 ? 3 : i - 1;
+          updateCardField(realIndex, "handistitle", v);
+        }}
+        modules={quillModules}
+      />
+
+      {/* 🟩 Show image field for original cards 1–3 only */}
+      {i !== 0 && (
+        <>
+          <label>Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              updateCardImage(i - 1, e.target.files?.[0] ?? null)
+            }
           />
 
-          {/* 🟩 Show image field for cards 1–3 only */}
-          {i !== 3 && (
-            <>
-              <label>Image</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => updateCardImage(i, e.target.files?.[0] ?? null)}
-              />
-
-              {card.imageUrl && (
-                <img
-                  src={`${API_URL.replace("api/", "")}${card.imageUrl}`}
-                  alt={`Handis Card ${i + 1}`}
-                  style={{
-                    width: "150px",
-                    marginTop: "10px",
-                    borderRadius: "8px",
-                    display: "block",
-                  }}
-                />
-              )}
-            </>
+          {card.imageUrl && (
+            <img
+              src={`${API_URL.replace("api/", "")}${card.imageUrl}`}
+              alt={`Handis Card ${i}`}
+              style={{
+                width: "150px",
+                marginTop: "10px",
+                borderRadius: "8px",
+                display: "block",
+              }}
+            />
           )}
-
-          <hr />
-        </div>
-      ))}
-
-      <button type="submit" disabled={loading}>
-        {loading ? "Saving..." : "Save"}
-      </button>
-
-      {message && (
-        <p className={`message ${message.includes("✅") ? "success" : "error"}`}>
-          {message}
-        </p>
+        </>
       )}
-    </form>
+
+      <hr />
+    </div>
+  ))}
+
+  <button type="submit" disabled={loading}>
+    {loading ? "Saving..." : "Save"}
+  </button>
+
+  {message && (
+    <p className={`message ${message.includes("✅") ? "success" : "error"}`}>
+      {message}
+    </p>
+  )}
+</form>
+
   );
 }
