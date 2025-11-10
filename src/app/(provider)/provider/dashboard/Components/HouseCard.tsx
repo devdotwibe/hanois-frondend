@@ -275,15 +275,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
                 disabled={removing}
                 className="image-remove-btn"
                 style={{
-                  position: "absolute",
-                  top: 6,
-                  right: 6,
-                  border: "none",
-                  background: "rgba(255,255,255,0.9)",
-                  borderRadius: "50%",
-                  width: 28,
-                  height: 28,
-                  cursor: "pointer",
+                 
                 }}
 
                 
