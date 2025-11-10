@@ -3,58 +3,45 @@ import React from "react";
 import Image, { StaticImageData } from "next/image";
 
 type DetailCardProps = {
-  logo: string | StaticImageData; 
+  logo: string | StaticImageData;
   name: string;
   description?: string;
 };
 
 const DetailCard: React.FC<DetailCardProps> = ({ logo, name, description }) => {
+  const isString = typeof logo === "string";
+
   return (
     <div className="house-card detail-card">
-
-        
-   
       <div className="house-card-logo">
-
         <div className="h-logodiv">
-             <Image
-          src={logo}
-          alt={`${name} logo`}
-          width={180}
-          height={128}
-          className="house-card-img"
-        />
-
+          {isString ? (
+            // remote/local string path: use plain img to avoid Image config issues
+            // If you prefer next/image, ensure remote domains are whitelisted in next.config.js
+            // and uncomment the Image usage below.
+            // <Image src={logo} alt={`${name} logo`} width={180} height={128} className="house-card-img" />
+            // Using <img> for robustness:
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={logo} alt={`${name} logo`} width={180} height={128} className="house-card-img" />
+          ) : (
+            <Image src={logo as StaticImageData} alt={`${name} logo`} width={180} height={128} className="house-card-img" />
+          )}
         </div>
-       
       </div>
 
-     
       <div className="house-card-info">
-
-
         <div className="outline-row">
-             <div className="outline-items">
-
+          <div className="outline-items">
             <p>Architecture</p>
+          </div>
 
-        </div>
-
-        <div className="outline-items">
-
+          <div className="outline-items">
             <p>Interior</p>
-
+          </div>
         </div>
-
-        </div>
-
-       
-
-
 
         <h2 className="house-card-title">{name}</h2>
         {description && <p className="house-card-desc">{description}</p>}
-
       </div>
     </div>
   );
