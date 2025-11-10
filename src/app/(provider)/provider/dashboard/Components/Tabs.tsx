@@ -75,32 +75,44 @@ const handleTabClick = (tabId) => {
     setFormData((s) => ({ ...s, [name]: value }));
   };
 
-  const handleServicesSelect = (e) => {
-    const values = Array.from(e.target.options)
+const handleServicesSelect = (eOrValues) => {
+  // Accept either an event (from <select>) or an array of values (from MultiSelect)
+  let values = [];
+
+  if (!eOrValues) {
+    values = [];
+  } else if (Array.isArray(eOrValues)) {
+    values = eOrValues;
+  } else if (eOrValues.target && eOrValues.target.options) {
+    values = Array.from(eOrValues.target.options)
       .filter((opt) => opt.selected)
       .map((opt) => opt.value);
+  } else {
+    values = [];
+  }
 
-    setFormData((s) => ({ ...s, services: values }));
+  setFormData((s) => ({ ...s, services: values }));
 
-    setSelectedServices((prev) => {
-      const ids = values.map(String);
-      const kept = prev.filter((p) => ids.includes(String(p.id)));
+  setSelectedServices((prev) => {
+    const ids = values.map(String);
+    const kept = prev.filter((p) => ids.includes(String(p.id)));
 
-      const additions = ids
-        .filter((id) => !kept.some((k) => String(k.id) === id))
-        .map((id) => {
-          const svc = servicesList.find((s) => String(s.id) === String(id));
-          return {
-            id,
-            name: svc ? svc.name : "",
-            cost: "",
-            currency: DEFAULT_CURRENCY,
-          };
-        });
+    const additions = ids
+      .filter((id) => !kept.some((k) => String(k.id) === id))
+      .map((id) => {
+        const svc = servicesList.find((s) => String(s.id) === String(id));
+        return {
+          id,
+          name: svc ? svc.name : "",
+          cost: "",                 // default (may be overwritten by fetched provider_services)
+          currency: DEFAULT_CURRENCY,
+        };
+      });
 
-      return [...kept, ...additions];
-    });
-  };
+    return [...kept, ...additions];
+  });
+};
+
 
   const handleServiceFieldChange = (index, key, value) => {
     setSelectedServices((prev) => {
@@ -136,57 +148,95 @@ const handleTabClick = (tabId) => {
   }, []);
 
 
-  useEffect(() => {
-    const fetchProvider = async () => {
-      try {
-        let providerId = localStorage.getItem("providerId");
-        const token = localStorage.getItem("token");
-        if (!providerId && token) {
-          try {
-            const base64 = token.split(".")[1];
-            const payload = JSON.parse(atob(base64));
-            providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
-          } catch (e) { /* ignore */ }
-        }
-        if (!providerId) return;
-
-        const res = await fetch(`${API_URL}providers/${providerId}`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
-        const provider = data?.provider ?? data ?? {};
-
-        const categories = Array.isArray(provider.categories_id)
-          ? provider.categories_id.map(String)
-          : provider.categories_id ? [String(provider.categories_id)] : [];
-
-        const services = Array.isArray(provider.service_id)
-          ? provider.service_id.map(String)
-          : provider.service_id ? [String(provider.service_id)] : [];
-
-        setFormData({
-          companyName: provider.name ?? "",
-          categories,
-          phoneNumber: provider.phone ?? "",
-          location: provider.location ?? "",
-          teamSize: provider.team_size != null ? String(provider.team_size) : "",
-          notes: provider.notes ?? "",
-          website: provider.website ?? provider.web ?? provider.social_media ?? "",
-          facebook: provider.facebook ?? "",
-          instagram: provider.instagram ?? "",
-          other: provider.other_link ?? provider.other ?? "",
-          services,
-          professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
-          image: provider.image ?? null,
-          service_notes: provider.service_notes ?? "", 
-        });
-      } catch (err) {
-        console.error("Error fetching provider:", err);
+useEffect(() => {
+  const fetchProvider = async () => {
+    try {
+      let providerId = localStorage.getItem("providerId");
+      const token = localStorage.getItem("token");
+      if (!providerId && token) {
+        try {
+          const base64 = token.split(".")[1];
+          const payload = JSON.parse(atob(base64));
+          providerId = String(payload?.provider_id || payload?.id || payload?.user_id);
+        } catch (e) { /* ignore */ }
       }
-    };
-    fetchProvider();
-  }, []);
+      if (!providerId) return;
+
+      const res = await fetch(`${API_URL}providers/${providerId}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || data?.message || "Failed to fetch provider");
+      const provider = data?.provider ?? data ?? {};
+
+      const categories = Array.isArray(provider.categories_id)
+        ? provider.categories_id.map(String)
+        : provider.categories_id ? [String(provider.categories_id)] : [];
+
+      const services = Array.isArray(provider.service_id)
+        ? provider.service_id.map(String)
+        : provider.service_id ? [String(provider.service_id)] : [];
+
+      setFormData({
+        companyName: provider.name ?? "",
+        categories,
+        phoneNumber: provider.phone ?? "",
+        location: provider.location ?? "",
+        teamSize: provider.team_size != null ? String(provider.team_size) : "",
+        notes: provider.notes ?? "",
+        website: provider.website ?? provider.web ?? provider.social_media ?? "",
+        facebook: provider.facebook ?? "",
+        instagram: provider.instagram ?? "",
+        other: provider.other_link ?? provider.other ?? "",
+        services,
+        professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
+        image: provider.image ?? null,
+        service_notes: provider.service_notes ?? "",
+      });
+
+      // Fetch provider_services for this provider and merge average_cost & currency
+      try {
+        const svcRes = await fetch(`${API_URL}providers/all-provider-services?providerId=${providerId}`);
+        const svcJson = await svcRes.json();
+        if (svcRes.ok && svcJson && Array.isArray(svcJson.data)) {
+          // Map service_id -> { average_cost, currency }
+          const svcMap = new Map();
+          svcJson.data.forEach((row) => {
+            // ensure types line up: row.service_id may be number
+            svcMap.set(String(row.service_id), {
+              cost: row.average_cost === null ? "" : String(row.average_cost),
+              currency: row.currency || DEFAULT_CURRENCY,
+            });
+          });
+
+          // Build selectedServices from provider.service_id list (services)
+          const initialSelected = (services || []).map((sid) => {
+            const svcMeta = servicesList.find((s) => String(s.id) === String(sid));
+            const existing = svcMap.get(String(sid)) || {};
+            return {
+              id: String(sid),
+              name: svcMeta ? svcMeta.name : "",
+              cost: existing.cost ?? "",
+              currency: existing.currency ?? DEFAULT_CURRENCY,
+            };
+          });
+
+          // If servicesList isn't loaded yet, we still set selectedServices with names empty;
+          // a later effect that syncs servicesList -> selectedServices will preserve cost/currency.
+          setSelectedServices(initialSelected);
+        }
+      } catch (e) {
+        // non-fatal: still continue, we may not have provider services
+        console.warn("Failed to fetch provider services:", e);
+      }
+
+    } catch (err) {
+      console.error("Error fetching provider:", err);
+    }
+  };
+  fetchProvider();
+}, [servicesList]); // watch servicesList so we can populate names when services are loaded
+
 
 
     useEffect(() => {
