@@ -8,7 +8,7 @@ const CompanyProfile = () => {
   return (
     <div className="company-profile">
 
-      {/* <HouseOuter /> */}
+      <HouseOuter />
       
 
 
