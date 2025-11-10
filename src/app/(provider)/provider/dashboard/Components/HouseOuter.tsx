@@ -40,9 +40,7 @@ const fetchProvider = async (providerId: number, token: string | null): Promise<
     },
   });
 
-  if (!res.ok) {
-    throw new Error(`Failed to fetch provider (${res.status})`);
-  }
+  if (!res.ok) return null;
 
   const data = await res.json();
 
@@ -57,13 +55,10 @@ const fetchProvider = async (providerId: number, token: string | null): Promise<
 const HouseOuter: React.FC = () => {
   const [providerId] = useState<number | null>(getProviderId());
   const [providerData, setProviderData] = useState<Provider | null>(null);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleLoadProvider = async () => {
     if (!providerId) return;
-    setLoading(true);
-    setError(null);
 
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const provider = await fetchProvider(providerId, token);
@@ -71,25 +66,23 @@ const HouseOuter: React.FC = () => {
     if (provider) {
       setProviderData(provider);
       localStorage.setItem(`provider_${provider.id}`, JSON.stringify(provider));
+      setError(null);
     } else {
-      setError("Unexpected provider response shape");
+      setError("Failed to fetch provider");
     }
-
-    setLoading(false);
   };
 
   if (!providerId) return <div>No provider ID found.</div>;
 
   return (
     <div>
-      {!providerData && !loading && (
+      {!providerData && !error && (
         <button onClick={handleLoadProvider} className="px-4 py-2 bg-blue-500 text-white rounded">
           Load Provider
         </button>
       )}
 
-      {loading && <div>Loading provider...</div>}
-      {error && <div>Error loading provider: {error}</div>}
+      {error && <div>Error: {error}</div>}
 
       {providerData && (
         <HouseCard
