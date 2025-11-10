@@ -321,76 +321,92 @@ const HouseCard: React.FC<HouseCardProps> = ({
         <h2 className="house-card-title">{name}</h2>
 
         {/* Headline + Edit Icon */}
-        {editing ? (
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <input
-              className="house-card-desc-input"
-              value={headline}
-              onChange={(e) => setHeadline(e.target.value)}
-              placeholder="Professional headline"
-              style={{ flex: 1 }}
-            />
-            <button
-              onClick={handleSaveHeadline}
-              disabled={savingHeadline}
-              style={{
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                fontSize: "1.1rem",
-              }}
-              title="Save"
-            >
-              ✅
-            </button>
-            <button
-              onClick={handleCancelEdit}
-              style={{
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                fontSize: "1.1rem",
-              }}
-              title="Cancel"
-            >
-              ✖
-            </button>
-          </div>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 8,
-            }}
-          >
-            <p
-              className="house-card-desc"
-              style={{
-                flex: 1,
-                margin: 0,
-                wordBreak: "break-word",
-              }}
-            >
-              {headline || "No headline set"}
-            </p>
-            <button
-              className="house-card-edit-btn"
-              onClick={() => setEditing(true)}
-              title="Edit description"
-              style={{
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                fontSize: "1.1rem",
-                marginLeft: "4px",
-              }}
-            >
-              ✎
-            </button>
-          </div>
-        )}
+     {editing ? (
+  <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: 6, width: "100%" }}>
+    <label
+      htmlFor="headline-input"
+      style={{ fontWeight: "500", fontSize: "0.9rem", color: "#333" }}
+    >
+      Professional Headline
+    </label>
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <input
+        id="headline-input"
+        className="house-card-desc-input"
+        value={headline}
+        onChange={(e) => setHeadline(e.target.value)}
+        placeholder="Enter your professional headline"
+        style={{
+          flex: 1,
+          padding: "8px 10px",
+          borderRadius: 6,
+          border: "1px solid #ccc",
+          fontSize: "0.9rem",
+        }}
+      />
+      <button
+        onClick={handleSaveHeadline}
+        disabled={savingHeadline}
+        style={{
+          border: "none",
+          background: "transparent",
+          cursor: "pointer",
+          fontSize: "1.2rem",
+        }}
+        title="Save"
+      >
+        ✅
+      </button>
+      <button
+        onClick={handleCancelEdit}
+        style={{
+          border: "none",
+          background: "transparent",
+          cursor: "pointer",
+          fontSize: "1.2rem",
+        }}
+        title="Cancel"
+      >
+        ✖
+      </button>
+    </div>
+  </div>
+) : (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: 8,
+    }}
+  >
+    <p
+      className="house-card-desc"
+      style={{
+        flex: 1,
+        margin: 0,
+        wordBreak: "break-word",
+      }}
+    >
+      {headline || "No headline set"}
+    </p>
+    <button
+      className="house-card-edit-btn"
+      onClick={() => setEditing(true)}
+      title="Edit description"
+      style={{
+        border: "none",
+        background: "transparent",
+        cursor: "pointer",
+        fontSize: "1.1rem",
+        marginLeft: "4px",
+      }}
+    >
+      ✎
+    </button>
+  </div>
+)}
+
 
         {/* Inline status / confirm message (your provided div) */}
         <div style={{ marginTop: 8 }}>
