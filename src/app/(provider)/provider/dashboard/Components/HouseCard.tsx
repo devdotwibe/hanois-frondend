@@ -23,8 +23,13 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const [imagePath, setImagePath] = useState<string | null>(initialImagePath);
   const [uploading, setUploading] = useState(false);
   const [removing, setRemoving] = useState(false);
-  // NEW: show/hide static delete confirmation modal
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  // Inline confirmation & status
+  const [showConfirmInline, setShowConfirmInline] = useState(false);
+  const [status, setStatus] = useState<{ success: boolean | null; message: string }>({
+    success: null,
+    message: "",
+  });
 
   // remember whether there was a headline when component mounted
   const hadHeadlineInitiallyRef = useRef<boolean>(Boolean(initialDescription));
@@ -137,19 +142,22 @@ const HouseCard: React.FC<HouseCardProps> = ({
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // OPEN modal instead of native confirm
-  const openDeleteConfirm = () => {
-    setShowDeleteConfirm(true);
+  // show inline confirm (no native confirm or popup)
+  const openInlineConfirm = () => {
+    setStatus({ success: null, message: "Remove image? Click Yes or No." });
+    setShowConfirmInline(true);
   };
 
-  const closeDeleteConfirm = () => {
-    setShowDeleteConfirm(false);
+  const handleInlineCancel = () => {
+    setShowConfirmInline(false);
+    setStatus({ success: false, message: "Image removal cancelled." });
   };
 
-  // actual deletion (called when user confirms in modal)
+  // actual deletion (called when user confirms inline)
   const performRemoveImage = async () => {
     try {
       setRemoving(true);
+      setStatus({ success: null, message: "Removing image..." });
 
       const payload = {
         image: null,
@@ -181,12 +189,14 @@ const HouseCard: React.FC<HouseCardProps> = ({
       } else {
         setImagePath(null);
       }
+
+      setShowConfirmInline(false);
+      setStatus({ success: true, message: "Image removed successfully." });
     } catch (err) {
       console.error("Remove error:", err);
-      alert("Failed to remove image.");
+      setStatus({ success: false, message: "Failed to remove image." });
     } finally {
       setRemoving(false);
-      closeDeleteConfirm();
     }
   };
 
@@ -261,7 +271,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
               />
               <button
                 type="button"
-                onClick={openDeleteConfirm} /* open static modal */
+                onClick={openInlineConfirm}
                 disabled={removing}
                 className="image-remove-btn"
                 style={{
@@ -382,6 +392,61 @@ const HouseCard: React.FC<HouseCardProps> = ({
           </div>
         )}
 
+        {/* Inline status / confirm message (your provided div) */}
+        <div style={{ marginTop: 8 }}>
+          <div
+            className="login-success contact-sucess"
+            style={{ marginBottom: 12 }}
+          >
+            <p
+              style={{
+                color:
+                  status.success === null
+                    ? "#000"
+                    : status.success
+                    ? "green"
+                    : "red",
+                margin: 0,
+              }}
+            >
+              {status.message}
+            </p>
+          </div>
+
+          {/* When confirming, show Yes / No buttons inline */}
+          {showConfirmInline && (
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <button
+                onClick={performRemoveImage}
+                disabled={removing}
+                style={{
+                  padding: "6px 10px",
+                  borderRadius: 6,
+                  border: "1px solid #ddd",
+                  background: removing ? "#eee" : "#e53935",
+                  color: "#fff",
+                  cursor: "pointer",
+                }}
+              >
+                {removing ? "Removing..." : "Yes"}
+              </button>
+              <button
+                onClick={handleInlineCancel}
+                disabled={removing}
+                style={{
+                  padding: "6px 10px",
+                  borderRadius: 6,
+                  border: "1px solid #ddd",
+                  background: "#f8f8f8",
+                  cursor: "pointer",
+                }}
+              >
+                No
+              </button>
+            </div>
+          )}
+        </div>
+
         {/* Upload Button — only show when there is NO image */}
         {!imagePath && (
           <div style={{ marginTop: 10 }}>
@@ -404,73 +469,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
         style={{ display: "none" }}
         onChange={handleFileChange}
       />
-
-      {/* ===== Static Delete Confirmation Modal ===== */}
-      {showDeleteConfirm && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Confirm delete image"
-          style={{
-            position: "fixed",
-            inset: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-            background: "rgba(0,0,0,0.4)",
-          }}
-          onClick={closeDeleteConfirm} // click overlay to close
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: 320,
-              maxWidth: "90%",
-              background: "#fff",
-              borderRadius: 8,
-              padding: 18,
-              boxShadow: "0 6px 18px rgba(0,0,0,0.2)",
-            }}
-          >
-            <h3 style={{ margin: "0 0 8px 0" }}>Remove image</h3>
-            <p style={{ margin: "0 0 16px 0" }}>
-              Are you sure you want to remove the image? This action can be undone by uploading a new image.
-            </p>
-
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
-              <button
-                onClick={closeDeleteConfirm}
-                disabled={removing}
-                style={{
-                  padding: "8px 12px",
-                  borderRadius: 6,
-                  border: "1px solid #ddd",
-                  background: "#f8f8f8",
-                  cursor: "pointer",
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={performRemoveImage}
-                disabled={removing}
-                style={{
-                  padding: "8px 12px",
-                  borderRadius: 6,
-                  border: "none",
-                  background: removing ? "#ccc" : "#e53935",
-                  color: "#fff",
-                  cursor: "pointer",
-                }}
-              >
-                {removing ? "Removing..." : "Remove"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      {/* ===== end modal ===== */}
     </div>
   );
 };
