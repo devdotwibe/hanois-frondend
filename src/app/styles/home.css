@@ -1388,7 +1388,7 @@ ul.tab-nav1 {
     -webkit-line-clamp: 1; 
     line-clamp: 1;
     -webkit-box-orient: vertical;
-    font-size: 23px;
+    font-size: 21px;
     margin: 0 0 10px;
   font-family: 'Avenir-Black';
 
@@ -1885,7 +1885,6 @@ border-right: 1px solid #e0e0e0;
   background: white;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -2282,6 +2281,11 @@ width: 20px; height: 20px;
 .select-grp .dropdown-option{
   width: 100%; display: block;
 }
+
+button.remove-tag {
+    cursor: pointer;
+}
+
 
 /* ------------------------------------responsive */
 
