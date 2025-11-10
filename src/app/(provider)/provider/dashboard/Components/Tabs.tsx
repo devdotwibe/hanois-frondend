@@ -260,7 +260,7 @@ const handleTabClick = (tabId) => {
           currency: s.currency,
         })),
         professional_headline: formData.professionalHeadline,
-        service_notws: formData.service_notws,
+        service_notes: formData.service_notes,
 
       };
 
