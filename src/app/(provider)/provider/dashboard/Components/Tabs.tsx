@@ -580,7 +580,7 @@ useEffect(() => {
 
            
               {selectedServices.length > 0 && (
-                <div style={{ marginTop: 12 }}>
+                <div className="svc-outer">
                   {selectedServices.map((svc, idx) => (
                     <div
                       key={svc.id}
