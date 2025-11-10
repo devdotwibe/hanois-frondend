@@ -25,15 +25,14 @@ const HouseOuter: React.FC = () => {
     if (cached) providerData = JSON.parse(cached);
   }
 
-  if (!providerId || !providerData) return null;
-
+  // 🟢 Always render the card, even with missing data
   return (
     <div>
       <HouseCard
-        providerId={providerId}
-        name={providerData.name || ""}
-        initialDescription={providerData.professional_headline || ""}
-        initialImagePath={providerData.image || null}
+        providerId={providerId || 0}
+        name={providerData?.name || "Unnamed Provider"}
+        initialDescription={providerData?.professional_headline || ""}
+        initialImagePath={providerData?.image || null}
       />
     </div>
   );
