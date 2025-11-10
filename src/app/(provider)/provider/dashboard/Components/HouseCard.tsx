@@ -326,13 +326,13 @@ const HouseCard: React.FC<HouseCardProps> = ({
 
         {/* Headline + Edit Icon */}
      {editing ? (
-  <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: 6, width: "100%" }}>
+  <div className="form-grp form-grp1" style={{ display: "flex", flexDirection: "column", gap: 6, width: "100%" }}>
     <label
       htmlFor="headline-input"
     >
       Professional Headline
     </label>
-    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+    <div className="edt-up">
       <input
         id="headline-input"
         className="house-card-desc-input"
