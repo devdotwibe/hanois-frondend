@@ -1,36 +1,94 @@
-import React from 'react'
+// app/(directory)/service-provider-directory/Components/ServiceDiv.jsx
+import React from 'react';
+import { cookies } from 'next/headers';
+import { API_URL } from '@/config';
 
-const ServiceDiv = ({ provider }) => {
-  // provider.service_details expected as array of { service_id | id, name, average_cost | cost, currency, service_note }
-  const details = provider?.service_details || provider?.services || [];
+/**
+ * Server component: fetches provider services and renders them.
+ * Expects `provider` prop with at least `id`, `phone`, `website`.
+ */
+const ServiceDiv = async ({ provider }) => {
+  const providerId = provider?.id ?? provider?.provider_id ?? null;
 
-  // Normalise array of services to objects
-  const services = Array.isArray(details) ? details.map(s => {
-    // handle different shapes
-    return {
-      id: s.id ?? s.service_id ?? s.serviceId,
-      name: s.name ?? s.service_name ?? "Service",
-      price: s.average_cost ?? s.cost ?? s.price ?? null,
-      currency: s.currency ?? "KD",
-      note: s.service_note ?? s.note ?? null
-    };
-  }) : [];
+  if (!providerId) {
+    return (
+      <div className="serv-div">
+        <h2>Service</h2>
+        <p>No provider selected.</p>
+      </div>
+    );
+  }
+
+  // read token cookie (if you set it on login)
+  const cookieStore = cookies();
+  const token = cookieStore.get('token')?.value || null;
+
+  const headers = { "Content-Type": "application/json" };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  // Build URL — adjust if your API_URL already contains a trailing slash
+  const url = `${API_URL.replace(/\/+$/,"")}/providers/all-provider-services?providerId=${encodeURIComponent(providerId)}`;
+
+  let services = [];
+  let error = null;
+
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers,
+      // adjust caching as needed; here we revalidate every 60s
+      next: { revalidate: 60 },
+    });
+
+    if (!res.ok) {
+      // try to parse error body
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body?.error || body?.message || `Failed to fetch services (${res.status})`);
+    }
+
+    const body = await res.json();
+    // expectation: { success: true, count: N, data: [...] }
+    const rows = Array.isArray(body?.data) ? body.data : (Array.isArray(body) ? body : []);
+    // filter rows that match providerId (endpoint might already filter but double-check)
+    services = rows.filter((r) => String(r.provider_id) === String(providerId));
+  } catch (err) {
+    error = String(err?.message || err);
+  }
 
   return (
     <div className='serv-div'>
       <h2>Service</h2>
 
-      {services.length === 0 ? (
+      {error ? (
+        <div style={{ color: 'red' }}>
+          <p>Failed to load services: {error}</p>
+        </div>
+      ) : services.length === 0 ? (
         <p>No services listed.</p>
       ) : (
         <div className="build-row">
-          {services.map((svc, idx) => (
-            <div className="build-col" key={svc.id ?? idx}>
+          {services.map((svc) => (
+            <div className="build-col" key={svc.id ?? `${svc.service_id}-${svc.provider_id}`}>
               <div className="build-col1">
-                <p>{svc.name}</p>
+                <p>{svc.service_name ?? svc.name ?? "Service"}</p>
               </div>
               <div className="build-col1 build-col2">
-                <p>Average Price: {svc.price != null ? `${svc.price} ${svc.currency || ""}` : "Contact for price"}</p>
+                <p>
+                  Average Price:&nbsp;
+                  {svc.average_cost != null && svc.average_cost !== ""
+                    ? `${svc.average_cost} ${svc.currency ?? ""}`
+                    : "Contact for price"}
+                </p>
+                {svc.created_at && (
+                  <small style={{ display: 'block', marginTop: 6, color: '#666' }}>
+                    Updated: {new Date(svc.updated_at ?? svc.created_at).toLocaleDateString()}
+                  </small>
+                )}
+                {svc.service_note && (
+                  <div style={{ marginTop: 8, color: '#333' }}>
+                    <strong>Note:</strong> {svc.service_note}
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -45,10 +103,10 @@ const ServiceDiv = ({ provider }) => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ServiceDiv
+export default ServiceDiv;
 
 
 
