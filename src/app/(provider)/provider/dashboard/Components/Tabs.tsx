@@ -353,6 +353,7 @@ router.push(`/service-provider-directory/details?providerId=${encodeURIComponent
 
               <select
                 name="categories"
+                multiple
                 value={formData.categories}
                 onChange={handleChange}
                 className="select-wrapp"
