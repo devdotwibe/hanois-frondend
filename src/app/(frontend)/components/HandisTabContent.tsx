@@ -1,16 +1,35 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
 import { API_URL } from "@/config";
+
+// 🟩 Load ReactQuill dynamically (avoids SSR issues)
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export default function HandisTabContent() {
   const [cards, setCards] = useState([
     { handistitle: "", handisbuttonname: "", image: null, imageUrl: "" },
     { handistitle: "", handisbuttonname: "", image: null, imageUrl: "" },
-    { handistitle: "", handisbuttonname: "", image: null, imageUrl: "" }, // 🟩 Added 3rd card
+    { handistitle: "", handisbuttonname: "", image: null, imageUrl: "" },
+    { handistitle: "", handisbuttonname: "", image: null, imageUrl: "" }, // 🟩 4th card
   ]);
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // 🟩 Quill editor configuration
+  const quillModules = useMemo(
+    () => ({
+      toolbar: [
+        [{ header: [1, 2, 3, false] }],
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["link", "clean"],
+      ],
+    }),
+    []
+  );
 
   // 🟩 Fetch existing handis cards
   useEffect(() => {
@@ -18,27 +37,26 @@ export default function HandisTabContent() {
       try {
         const res = await fetch(`${API_URL}page/get?sectionKey=get_listedhandis`);
         const data = await res.json();
-if (data.success && Array.isArray(data.data.cards)) {
-  const fetchedCards = data.data.cards.map((c: any) => ({
-    handistitle: c.handistitle || "",
-    handisbuttonname: c.handisbuttonname || "",
-    image: null,
-    imageUrl: c.image || "",
-  }));
 
-  // 🟩 Ensure there are always 3 cards
-  while (fetchedCards.length < 3) {
-    fetchedCards.push({
-      handistitle: "",
-      handisbuttonname: "",
-      image: null,
-      imageUrl: "",
-    });
-  }
+        if (data.success && Array.isArray(data.data.cards)) {
+          const fetchedCards = data.data.cards.map((c: any) => ({
+            handistitle: c.handistitle || "",
+            handisbuttonname: c.handisbuttonname || "",
+            image: null,
+            imageUrl: c.image || "",
+          }));
 
-  setCards(fetchedCards);
-}
+          while (fetchedCards.length < 4) {
+            fetchedCards.push({
+              handistitle: "",
+              handisbuttonname: "",
+              image: null,
+              imageUrl: "",
+            });
+          }
 
+          setCards(fetchedCards);
+        }
       } catch (err) {
         console.error("❌ Failed to fetch handis cards", err);
       }
@@ -59,7 +77,7 @@ if (data.success && Array.isArray(data.data.cards)) {
         const index = i + 1;
         formData.append(`handis_${index}_title`, card.handistitle);
         formData.append(`handis_${index}_buttonname`, card.handisbuttonname);
-        if (card.image) formData.append(`handis_${index}_image`, card.image);
+        if (i !== 3 && card.image) formData.append(`handis_${index}_image`, card.image);
       });
 
       const res = await fetch(`${API_URL}page/save`, { method: "POST", body: formData });
@@ -74,17 +92,16 @@ if (data.success && Array.isArray(data.data.cards)) {
       console.error(err);
       setMessage("❌ Failed to save handis cards");
     }
+
     setLoading(false);
   };
 
-  // 🟩 Update card field
   const updateCardField = (i: number, field: string, value: string) => {
     const updated = [...cards];
     updated[i][field] = value;
     setCards(updated);
   };
 
-  // 🟩 Update card image
   const updateCardImage = (i: number, file: File | null) => {
     const updated = [...cards];
     updated[i].image = file;
@@ -94,37 +111,43 @@ if (data.success && Array.isArray(data.data.cards)) {
   return (
     <form onSubmit={handleSubmit}>
       {cards.map((card, i) => (
-        <div key={i} className="card-section" style={{ marginBottom: "20px" }}>
+        <div key={i} className="card-section" style={{ marginBottom: "30px" }}>
         
+
+          {/* 🟩 Rich Text Editor for Title */}
           <label>Title</label>
-          <input
-            type="text"
+          <ReactQuill
+            theme="snow"
             value={card.handistitle}
-            onChange={(e) => updateCardField(i, "handistitle", e.target.value)}
-            required
+            onChange={(v) => updateCardField(i, "handistitle", v)}
+            modules={quillModules}
           />
 
+          {/* 🟩 Show image field for cards 1–3 only */}
+          {i !== 3 && (
+            <>
+              <label>Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => updateCardImage(i, e.target.files?.[0] ?? null)}
+              />
 
-          <label>Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => updateCardImage(i, e.target.files?.[0] ?? null)}
-          />
-
-          {/* Display existing image */}
-          {card.imageUrl && (
-            <img
-              src={`${API_URL.replace("api/", "")}${card.imageUrl}`}
-              alt={`Handis Card ${i + 1}`}
-              style={{
-                width: "150px",
-                marginTop: "10px",
-                borderRadius: "8px",
-                display: "block",
-              }}
-            />
+              {card.imageUrl && (
+                <img
+                  src={`${API_URL.replace("api/", "")}${card.imageUrl}`}
+                  alt={`Handis Card ${i + 1}`}
+                  style={{
+                    width: "150px",
+                    marginTop: "10px",
+                    borderRadius: "8px",
+                    display: "block",
+                  }}
+                />
+              )}
+            </>
           )}
+
           <hr />
         </div>
       ))}

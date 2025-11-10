@@ -216,7 +216,7 @@ const fetchData = async (sectionKey: string) => {
       <h1>Get Listed Page</h1>
 
       <div className="tabs">
-        {[{ id: 1, label: "Get Listed Banner" },    { id: 3, label: "Get Listed Handis Cards" }, { id: 4, label: "Get Listed Meaningfull Card" },  { id: 5, label: "Get Listed Help Card" }, ].map(({ id, label }) => (
+        {[{ id: 1, label: "Get Listed Banner" },    { id: 3, label: "Get Listed Handis Cards" }, ].map(({ id, label }) => (
           <button
             key={id}
             type="button"
