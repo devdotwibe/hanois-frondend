@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import img1 from "../../../../../../public/images/property-img.jpg";
+// import img1 from "../../../../../../public/images/property-img.jpg";
+import img1 from "../../../../../../../public/images/property-img.jpg";
+
 import TorranceCard from "../../Components/TorranceCard";
 import UploadBox from "../../Components/UploadBox";
 
