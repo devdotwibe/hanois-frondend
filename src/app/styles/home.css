@@ -2275,7 +2275,8 @@ width: 20px; height: 20px;
 
 
 .company-profile1 {
-    width: 75%;
+    width: 100%;
+    max-width: 800px;
 }
 
 .select-grp .dropdown {
@@ -2303,11 +2304,18 @@ button.remove-tag {
 
 .dropdown-option input {
     margin-right: 4px;
-    width: 22px;
-    height: 22px; border-radius: 0; line-height: 1;
+
+     border-radius: 0; line-height: 1;
 
     padding: 0;
     -webkit-appearance: none;
+
+     font-size: 0;
+   width: 22px;
+  height: 22px;
+  background: url("../../../public/images/check-icon-white.svg") no-repeat center !important;
+  background-size: 20px !important;
+  border: none;
 }
 .dropdown-option input:focus{
 box-shadow: none;
@@ -2325,18 +2333,18 @@ box-shadow: none;
 
 button.cance-button {
   font-size: 0;
-   width: 20px;
-  height: 20px;
+   width: 30px;
+  height: 30px;
   background: url("../../../public/images/remove-btn.svg") no-repeat center !important;
-  background-size: 20px !important;
+  background-size: 30px !important;
 }
 
 button.save-btn{
    font-size: 0;
-   width: 20px;
-  height: 20px;
+   width: 30px;
+  height: 30px;
   background: url("../../../public/images/save-btn.svg") no-repeat center !important;
-  background-size: 20px !important;
+  background-size: 30px !important;
 }
 .image-remove-btn{
     font-size: 0;
@@ -2345,13 +2353,21 @@ button.save-btn{
   background: url("../../../public/images/close-blue.svg") no-repeat center !important;
   background-size: 20px !important;
 }
+.dropdown-option.selected input{
+   font-size: 0;
+   width: 22px;
+  height: 22px;
+  background: url("../../../public/images/tik-blue.svg") no-repeat center !important;
+  background-size: 20px !important;
+  border: none;
 
+}
 
 .svcrow {
     display: flex;
     flex-wrap: wrap;
     border: 2px solid #d7dbec;
-
+margin-top: 25px;
     border-radius: 4px;
 }
 
@@ -2390,6 +2406,103 @@ button.removeservice {
     border: none;
     background: #f1f3fa;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+button.removeservice:hover{
+background: #2050F5;
+color: #ffffff;
+}
+
+.remodeling-card {
+    border: 1px solid #e0e0e0;
+    width: 30%;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.more-option-btn {
+    width: 20px;
+    height: 20px;
+}
+.remodel-div1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  margin: 0 0 10px;
+}
+.remodel-div1 h4 {
+    color: #53D8A7;
+     line-height: 1.2;
+}
+
+.remodel-col1 {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.re-col1 {
+    width: 50%;
+}
+
+.remodeling-card h5{
+    font-family: 'Avenir-medium';
+    font-size: 20px;
+    margin: 0 0 10px; 
+    line-height: 1.2;
+
+}
+.proposals {
+    border: 1px solid #2050F5;
+    padding: 12px 20px;
+    width: fit-content;
+    border-radius: 30px;
+    margin: 15px 0 0;
+}
+
+.proposals p {
+    line-height: 1;
+    color: #2050F5;
+}
+.remodeling-div {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
+
+
+.statusmsg-div1 {
+    position: absolute;
+    top: 40px;
+    right: 100px;
+    color: #00a056;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border: 1px solid #00a056;
+        max-width: 300px;
+    max-height: 50px; background-color: #ffffff;
+    box-shadow: 0 0 8px rgba(46, 204, 113, .3);
+}
+.statusmsg-div1 p{
+   color: #00a056; line-height: 1; position: relative; padding-left: 20px;
+}
+
+.statusmsg-div1 p::before{
+    content: "";
+    position: absolute;
+    background: url(../../../public/images/tik.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    left: 0;
+    top: 2px;
+    width: 15px;
+    height: 15px;
+}
+
+.svc-outer {
+    margin: 0 0 30px;
 }
 
 /* ------------------------------------responsive */
