@@ -2,11 +2,11 @@
 import React from "react";
 import Image from "next/image";
 import uploadIcon from "../../../../../../../public/images/upload.svg"; 
-import HouseOuter from "../../Components/HouseOuter";
+
 const UploadBox = () => {
   return (
+    
     <div className="upload-box">
-         <HouseOuter />
       <div className="upload-content">
         {/* ✅ Replace UploadCloud with your image */}
         <Image 
