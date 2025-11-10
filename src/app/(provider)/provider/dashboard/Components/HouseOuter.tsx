@@ -44,20 +44,7 @@ const HouseOuter: React.FC = () => {
     }
   }, []);
 
-  // try to load cached provider first (fast)
-  useEffect(() => {
-    if (!providerId) return;
-    try {
-      const cached = localStorage.getItem(`provider_${providerId}`);
-      if (cached) {
-        setProviderData(JSON.parse(cached));
-      }
-    } catch (e) {
-      // ignore parse errors
-    }
-  }, [providerId]);
-
-  // fetch provider from API and update cache + state
+  // fetch provider from API (no cache)
   useEffect(() => {
     if (!providerId) return;
 
@@ -96,16 +83,7 @@ const HouseOuter: React.FC = () => {
 
         if (provider) {
           setProviderData(provider);
-          try {
-            localStorage.setItem(`provider_${provider.id}`, JSON.stringify(provider));
-          } catch (e) {
-            // ignore storage errors
-          }
         } else {
-          // if shape unexpected, store entire body under provider_{id}_raw
-          try {
-            localStorage.setItem(`provider_${providerId}_raw`, JSON.stringify(data));
-          } catch (e) {}
           setError("Unexpected provider response shape");
         }
       } catch (err: any) {
