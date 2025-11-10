@@ -5,9 +5,11 @@ import img1 from "../../../../../../../public/images/property-img.jpg";
 
 import TorranceCard from "../../Components/TorranceCard";
 import UploadBox from "../../Components/UploadBox";
+import { useRouter } from "next/navigation";
 
 const ProjectComponent = () => {
   const [showProjects, setShowProjects] = useState(true);
+  const router = useRouter();
 
   const projects = [
     {
@@ -45,9 +47,10 @@ const ProjectComponent = () => {
     },
   ];
 
-  const handleAddClick = () => {
-    setShowProjects(false);
-  };
+const handleAddClick = () => {
+  router.push("https://hanois.dotwibe.com/provider/dashboard/add-project");
+};
+
 
   return (
     <div className="project-component">
