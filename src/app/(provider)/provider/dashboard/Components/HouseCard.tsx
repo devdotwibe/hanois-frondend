@@ -24,8 +24,14 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const [uploading, setUploading] = useState(false);
   const [removing, setRemoving] = useState(false);
 
-  const [editing, setEditing] = useState(false);
-  const [headline, setHeadline] = useState(initialDescription);
+  // remember whether there was a headline when component mounted
+  const hadHeadlineInitiallyRef = useRef<boolean>(Boolean(initialDescription));
+  // keep a ref to the last saved headline so "Cancel" can revert
+  const prevHeadlineRef = useRef<string>(initialDescription ?? "");
+
+  // if there's no initial description, start in editing mode (show input)
+  const [editing, setEditing] = useState<boolean>(!hadHeadlineInitiallyRef.current);
+  const [headline, setHeadline] = useState<string>(initialDescription ?? "");
   const [savingHeadline, setSavingHeadline] = useState(false);
 
   const token =
@@ -59,11 +65,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
 
   // helper to normalize different response shapes
   const extractProviderFromResponse = (data: any) => {
-    // common shapes:
-    // 1) { data: { provider: { ... } } }
-    // 2) { provider: { ... } }
-    // 3) { data: { ...provider... } }
-    // 4) provider object directly
     if (!data) return null;
     if (data.data && data.data.provider) return data.data.provider;
     if (data.provider) return data.provider;
@@ -107,6 +108,11 @@ const HouseCard: React.FC<HouseCardProps> = ({
         const newImage = provider.image ?? null;
         setImagePath(newImage);
         setHeadline(provider.professional_headline ?? headline);
+        // update prevHeadlineRef now that backend returned saved value
+        prevHeadlineRef.current = provider.professional_headline ?? prevHeadlineRef.current;
+        // after successful save, we now have a headline (if provider returned it)
+        if (provider.professional_headline) hadHeadlineInitiallyRef.current = true;
+
         cacheProvider(provider);
         notifyProviderUpdated(provider);
       } else {
@@ -160,6 +166,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
       if (provider) {
         setImagePath(provider.image ?? null);
         setHeadline(provider.professional_headline ?? headline);
+        prevHeadlineRef.current = provider.professional_headline ?? prevHeadlineRef.current;
         cacheProvider(provider);
         notifyProviderUpdated(provider);
       } else {
@@ -196,7 +203,13 @@ const HouseCard: React.FC<HouseCardProps> = ({
       const data = await res.json();
       const provider = extractProviderFromResponse(data);
       if (provider) {
-        setHeadline(provider.professional_headline ?? headline);
+        const savedHeadline = provider.professional_headline ?? headline;
+        setHeadline(savedHeadline);
+        // update prevHeadlineRef to the saved headline
+        prevHeadlineRef.current = savedHeadline;
+        // if we just saved a headline, consider that we now "had" one
+        if (savedHeadline) hadHeadlineInitiallyRef.current = true;
+
         if (typeof provider.image !== "undefined") {
           setImagePath(provider.image ?? null);
         }
@@ -204,14 +217,30 @@ const HouseCard: React.FC<HouseCardProps> = ({
         notifyProviderUpdated(provider);
       } else {
         // server didn't return a provider object but likely saved — keep local headline
+        prevHeadlineRef.current = headline;
         notifyProviderUpdated();
       }
+
+      // Close editor only if we had a headline initially (or after a successful save we now do)
+      // If there was no headline initially and the user cancels, we want to keep the input visible.
       setEditing(false);
     } catch (err) {
       console.error("Save headline error:", err);
       alert("Failed to save headline.");
     } finally {
       setSavingHeadline(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    // revert to previous saved headline
+    setHeadline(prevHeadlineRef.current ?? "");
+    // Only hide the editor if there *was* a headline initially (or we've since saved one).
+    if (hadHeadlineInitiallyRef.current) {
+      setEditing(false);
+    } else {
+      // keep editing visible when there was no headline initially
+      setEditing(true);
     }
   };
 
@@ -298,19 +327,19 @@ const HouseCard: React.FC<HouseCardProps> = ({
                 border: "none",
                 background: "transparent",
                 cursor: "pointer",
+                fontSize: "1.1rem",
               }}
               title="Save"
             >
               ✅
             </button>
             <button
-              onClick={() => {
-                setEditing(false);
-              }}
+              onClick={handleCancelEdit}
               style={{
                 border: "none",
                 background: "transparent",
                 cursor: "pointer",
+                fontSize: "1.1rem",
               }}
               title="Cancel"
             >
@@ -353,20 +382,18 @@ const HouseCard: React.FC<HouseCardProps> = ({
           </div>
         )}
 
-        {/* Upload Button */}
-{/* Upload Button — only show when there is NO image */}
-{!imagePath && (
-  <div style={{ marginTop: 10 }}>
-    <button
-      className="house-card-btn"
-      onClick={() => fileInputRef.current?.click()}
-      disabled={uploading}
-    >
-      {uploading ? "Uploading..." : "Upload New Image"}
-    </button>
-  </div>
-)}
-
+        {/* Upload Button — only show when there is NO image */}
+        {!imagePath && (
+          <div style={{ marginTop: 10 }}>
+            <button
+              className="house-card-btn"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+            >
+              {uploading ? "Uploading..." : "Upload New Image"}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Hidden File Input */}
