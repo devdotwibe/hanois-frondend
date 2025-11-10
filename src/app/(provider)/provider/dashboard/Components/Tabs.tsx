@@ -179,8 +179,7 @@ const handleTabClick = (tabId) => {
           services,
           professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
           image: provider.image ?? null,
-          service_notws: provider.service_notws ?? "",
-
+          service_notes: provider.service_notes ?? "", 
         });
       } catch (err) {
         console.error("Error fetching provider:", err);
@@ -329,8 +328,8 @@ const handleTabClick = (tabId) => {
           <label>Service Note</label>
           <input
             type="text"
-            name="service_notws"
-            value={formData.service_notes}
+ name="service_notes"         
+     value={formData.service_notes}
             onChange={handleChange}
             placeholder="Enter Service Note"
           />
@@ -613,11 +612,14 @@ const handleTabClick = (tabId) => {
 
 
             <div className="form-grp">
-              <label>Service Note</label>
+              <label>Company/Business Name</label>
               <input
                 type="text"
-                name="servicenote"
-                placeholder="Enter Service Note"
+                name="companyName"
+                value={formData.companyName}
+                onChange={handleChange}
+                placeholder="Enter title"
+                required
               />
             </div>
 
