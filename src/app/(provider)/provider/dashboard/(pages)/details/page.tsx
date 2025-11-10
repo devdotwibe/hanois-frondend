@@ -1,4 +1,3 @@
-// app/provider/dashboard/details/page.jsx
 import React from "react";
 import BusinessInfo from '@/app/(directory)/Components/BusinessInfo'
 import DetailIntro from '@/app/(directory)/Components/DetailIntro'
@@ -9,7 +8,7 @@ import TorranceSlider from '@/app/(directory)/service-provider-directory/Compone
 import { cookies } from 'next/headers';
 import { API_URL } from "@/config";
 
-export const dynamic = 'force-dynamic'; // optional: or 'auto' - choose based on how dynamic providers are
+export const dynamic = 'force-dynamic'; 
 
 export default async function DetailsPage({ searchParams }) {
   const providerId = searchParams?.providerId;
@@ -18,26 +17,20 @@ export default async function DetailsPage({ searchParams }) {
     return <div style={{ color: "red" }}>No providerId provided in URL.</div>;
   }
 
-  // Read token cookie (server-side). Name must match how you set it client-side.
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value || null;
 
-  // Build headers
   const headers = {
     "Content-Type": "application/json",
   };
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  // Server fetch with caching. Use `next: { revalidate: 60 }` to cache for 60s.
-  // If you want to cache indefinitely until invalidated, you can use 'force-cache' or omit revalidate.
   let provider = null;
   try {
     const res = await fetch(`${API_URL}providers/${encodeURIComponent(providerId)}`, {
       method: "GET",
       headers,
-      // next caching options:
-      next: { revalidate: 60 }, // 60s cache; change as needed
-      // If you want to bypass cache use: next: { cache: 'no-store' }
+      next: { revalidate: 60 }, 
     });
 
     if (!res.ok) {

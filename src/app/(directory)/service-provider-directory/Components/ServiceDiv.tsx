@@ -19,14 +19,12 @@ const ServiceDiv = async ({ provider }) => {
     );
   }
 
-  // read token cookie (if you set it on login)
   const cookieStore = cookies();
   const token = cookieStore.get('token')?.value || null;
 
   const headers = { "Content-Type": "application/json" };
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  // Build URL — adjust if your API_URL already contains a trailing slash
   const url = `${API_URL.replace(/\/+$/,"")}/providers/all-provider-services?providerId=${encodeURIComponent(providerId)}`;
 
   let services = [];
@@ -36,20 +34,16 @@ const ServiceDiv = async ({ provider }) => {
     const res = await fetch(url, {
       method: 'GET',
       headers,
-      // adjust caching as needed; here we revalidate every 60s
       next: { revalidate: 60 },
     });
 
     if (!res.ok) {
-      // try to parse error body
       const body = await res.json().catch(() => ({}));
       throw new Error(body?.error || body?.message || `Failed to fetch services (${res.status})`);
     }
 
     const body = await res.json();
-    // expectation: { success: true, count: N, data: [...] }
     const rows = Array.isArray(body?.data) ? body.data : (Array.isArray(body) ? body : []);
-    // filter rows that match providerId (endpoint might already filter but double-check)
     services = rows.filter((r) => String(r.provider_id) === String(providerId));
   } catch (err) {
     error = String(err?.message || err);
