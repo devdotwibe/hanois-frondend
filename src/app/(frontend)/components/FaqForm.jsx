@@ -18,12 +18,17 @@ export default function FaqForm() {
     arabtitle: "",
     arabquestion: "",
     arabanswer: "",
+      order: "1",
   });
   const [editingId, setEditingId] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showSourceQuestion, setShowSourceQuestion] = useState(false);
   const [showSourceAnswer, setShowSourceAnswer] = useState(false);
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+const [deleteId, setDeleteId] = useState(null);
+
 
   // 🧠 Quill Toolbar Configuration
   const modules = useMemo(
@@ -101,6 +106,7 @@ const faqData = {
   arabtitle: formData.arabtitle,
   arabquestion: formData.arabquestion,
   arabanswer: formData.arabanswer,
+   order: parseInt(formData.order), 
 };
 
   try {
@@ -110,6 +116,7 @@ if (editingId) {
     title: formData.engtitle,          // ✅ match DB column
     question: formData.engquestion,    // ✅ match DB column
     answer: formData.enganswer,        // ✅ match DB column
+     order: parseInt(formData.order),  
   });
 } else {
   res = await axios.post(`${API_URL}faq`, faqData);
@@ -119,14 +126,17 @@ if (editingId) {
     if (res.status === 200 || res.status === 201) {
       setMessage(editingId ? "✅ FAQ updated successfully!" : "✅ FAQ created successfully!");
       fetchFaqs();
-      setFormData({
-        engtitle: "",
-        engquestion: "",
-        enganswer: "",
-        arabtitle: "",
-        arabquestion: "",
-        arabanswer: "",
-      });
+     setFormData({
+    engtitle: "",
+    engquestion: "",
+    enganswer: "",
+    arabtitle: "",
+    arabquestion: "",
+    arabanswer: "",
+    order: "1",
+  });
+    setShowSourceQuestion(false);
+  setShowSourceAnswer(false);
       setEditingId(null);
     }
   } catch (err) {
@@ -147,21 +157,34 @@ if (editingId) {
       arabtitle: faq.title || "",
       arabquestion: faq.question || "",
       arabanswer: faq.answer || "",
+        order: faq.order ? faq.order.toString() : "1",
     });
   };
 
   // 🟩 Delete FAQ
-  const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this FAQ?")) return;
-    try {
-      await axios.delete(`${API_URL}faq/${id}`);
-      setMessage("✅ FAQ deleted successfully!");
-      fetchFaqs();
-    } catch (err) {
-      console.error("❌ Delete failed:", err);
-      setMessage("❌ Error deleting FAQ.");
-    }
-  };
+const handleDelete = (id) => {
+  setDeleteId(id);
+  setShowDeleteModal(true); // 🟩 Open modal
+};
+
+const confirmDelete = async () => {
+  try {
+    await axios.delete(`${API_URL}faq/${deleteId}`);
+    setMessage("✅ FAQ deleted successfully!");
+    fetchFaqs();
+  } catch (err) {
+    console.error("❌ Delete failed:", err);
+    setMessage("❌ Error deleting FAQ.");
+  } finally {
+    setShowDeleteModal(false);
+    setDeleteId(null);
+  }
+};
+
+const cancelDelete = () => {
+  setShowDeleteModal(false);
+  setDeleteId(null);
+};
 
   return (
     <div className="faq-section">
@@ -176,6 +199,26 @@ if (editingId) {
           onChange={handleChange}
 
         /> */}
+
+
+
+<label>Display Order</label>
+<select
+  name="order"
+  value={formData.order}
+  onChange={handleChange}
+  style={{ width: "100%", padding: "8px", borderRadius: "6px" }}
+>
+  {Array.from({ length: faqs.length + 1 }, (_, i) => (
+    <option key={i + 1} value={i + 1}>
+      {i + 1}
+    </option>
+  ))}
+</select>
+
+
+
+
 
         {/* 🟩 English Question with ReactQuill */}
         <label>Question</label>
@@ -198,6 +241,7 @@ if (editingId) {
           />
         ) : (
           <ReactQuill
+            key={`question-${editingId || "new"}`} 
             theme="snow"
             value={formData.engquestion}
             onChange={(val) => setFormData({ ...formData, engquestion: val })}
@@ -235,6 +279,7 @@ if (editingId) {
           />
         ) : (
           <ReactQuill
+           key={`answer-${editingId || "new"}`}
             theme="snow"
             value={formData.enganswer}
             onChange={(val) => setFormData({ ...formData, enganswer: val })}
@@ -296,28 +341,92 @@ if (editingId) {
           <thead>
             <tr>
               
-            
+              <th>Order</th> 
               <th>Question</th>
               <th>Answer</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {faqs.map((faq) => (
-              <tr key={faq.id}>
-                
-              
-                <td dangerouslySetInnerHTML={{ __html: faq.question }} />
-                <td dangerouslySetInnerHTML={{ __html: faq.answer }} />
-                <td>
-                  <button onClick={() => handleEdit(faq)}>✏️ Edit</button>
-                  <button onClick={() => handleDelete(faq.id)}>🗑️ Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+         <tbody>
+  {faqs.map((faq) => (
+    <tr key={faq.id}>
+      <td>{faq.order}</td>
+      <td dangerouslySetInnerHTML={{ __html: faq.question }} />
+      <td dangerouslySetInnerHTML={{ __html: faq.answer }} />
+      <td>
+        <button onClick={() => handleEdit(faq)}>✏️ Edit</button>
+        <button onClick={() => handleDelete(faq.id)}>🗑️ Delete</button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
         </table>
       )}
+
+      {showDeleteModal && (
+  <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "rgba(0,0,0,0.5)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 1000,
+    }}
+  >
+    <div
+      style={{
+        background: "#fff",
+        padding: "30px",
+        borderRadius: "12px",
+        textAlign: "center",
+        width: "350px",
+        boxShadow: "0 0 15px rgba(0,0,0,0.2)",
+      }}
+    >
+      <h3 style={{ marginBottom: "10px" }}>Confirm Delete</h3>
+      <p style={{ marginBottom: "20px" }}>
+        Are you sure you want to delete this FAQ?
+      </p>
+      <div style={{ display: "flex", justifyContent: "space-around" }}>
+        <button
+          onClick={confirmDelete}
+          style={{
+            background: "#e63946",
+            color: "#fff",
+            border: "none",
+            padding: "8px 16px",
+            borderRadius: "6px",
+            cursor: "pointer",
+          }}
+        >
+          Yes, Delete
+        </button>
+        <button
+          onClick={cancelDelete}
+          style={{
+            background: "#ccc",
+            border: "none",
+            padding: "8px 16px",
+            borderRadius: "6px",
+            cursor: "pointer",
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
+
     </div>
   );
 }

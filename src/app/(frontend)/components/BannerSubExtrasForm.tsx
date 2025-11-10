@@ -142,7 +142,7 @@ if (typeof window !== "undefined" && window.Quill) {
         </div>
 
         {/* 🟩 Sub Button Name (English) */}
-        <div className="form-field">
+        {/* <div className="form-field">
           <label>Button Name</label>
           <input
             type="text"
@@ -152,7 +152,7 @@ if (typeof window !== "undefined" && window.Quill) {
             placeholder="Enter English sub button name"
             required
           />
-        </div>
+        </div> */}
 
         <hr />
 

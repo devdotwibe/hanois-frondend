@@ -17,40 +17,50 @@ export default function BannerExtrasForm() {
     subtitle_ar: "",
     subheading_ar: "",
     buttonname_ar: "",
+    subdescription_en: "",
+    subbuttonname_en: "",
+    subdescription_ar: "",
+    subbuttonname_ar: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-
   const [showSource, setShowSource] = useState(false);
+
   // 🧠 Quill Toolbar Configuration
-const modules = useMemo(
-  () => ({
-    toolbar: {
-      container: [
-        [{ header: [1, 2, 3, false] }],
-        ["bold", "italic", "underline", "strike"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        ["link"],
-        ["clean"],
-        ["showHtml"], // custom button
-      ],
-      handlers: {
-        showHtml: function () {
-          setShowSource((prev) => !prev);
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline", "strike"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["link"],
+          ["clean"],
+          ["showHtml"], // custom button
+        ],
+        handlers: {
+          showHtml: function () {
+            setShowSource((prev) => !prev);
+          },
         },
       },
-    },
-  }),
-  []
-);
-  // 🟩 Fetch banner extras data on mount
+    }),
+    []
+  );
+
+  // 🟩 Fetch banner extras and subextras on mount
   useEffect(() => {
     (async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`${API_URL}banner/extras`);
-        const extras = res.data?.data?.extras || {};
+        const [extrasRes, subRes] = await Promise.all([
+          axios.get(`${API_URL}banner/extras`),
+          axios.get(`${API_URL}banner/subextras`),
+        ]);
+
+        const extras = extrasRes.data?.data?.extras || {};
+        const sub = subRes.data?.data?.subExtras || {};
 
         setData({
           subtitle_en: extras.subtitle || "",
@@ -59,6 +69,10 @@ const modules = useMemo(
           subtitle_ar: extras.arabicsubtitle || "",
           subheading_ar: extras.arabicsubheading || "",
           buttonname_ar: extras.arabicbuttonname || "",
+          subdescription_en: sub.subdescription || "",
+          subbuttonname_en: sub.subbuttonname || "",
+          subdescription_ar: sub.arabicsubdescription || "",
+          subbuttonname_ar: sub.arabicsubbuttonname || "",
         });
       } catch (err) {
         console.error("❌ Failed to fetch banner extras:", err);
@@ -69,32 +83,34 @@ const modules = useMemo(
     })();
   }, []);
 
-  // 🟩 Save or update banner extras
+  // 🟩 Save or update banner extras + subextras
   const handleSave = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
     try {
-      const payload = {
-        subtitle: data.subtitle_en,
-        subheading: data.subheading_en,
-        buttonname: data.buttonname_en,
-        arabicsubtitle: data.subtitle_ar,
-        arabicsubheading: data.subheading_ar,
-        arabicbuttonname: data.buttonname_ar,
-      };
+      await Promise.all([
+        axios.put(`${API_URL}banner/update-extras`, {
+          subtitle: data.subtitle_en,
+          subheading: data.subheading_en,
+          buttonname: data.buttonname_en,
+          arabicsubtitle: data.subtitle_ar,
+          arabicsubheading: data.subheading_ar,
+          arabicbuttonname: data.buttonname_ar,
+        }),
+        axios.put(`${API_URL}banner/update-subextras`, {
+          subdescription: data.subdescription_en,
+          subbuttonname: data.subbuttonname_en,
+          arabicsubdescription: data.subdescription_ar,
+          arabicsubbuttonname: data.subbuttonname_ar,
+        }),
+      ]);
 
-      const res = await axios.put(`${API_URL}banner/update-extras`, payload);
-
-      if (res.status === 200) {
-        setMessage("✅ Extras saved successfully!");
-      } else {
-        setMessage("❌ Failed to save extras.");
-      }
+      setMessage("✅ Banner Extras and Sub Extras saved successfully!");
     } catch (err) {
       console.error("❌ Save failed:", err);
-      setMessage("❌ Error saving extras.");
+      setMessage("❌ Error saving banner extras.");
     } finally {
       setLoading(false);
     }
@@ -102,31 +118,55 @@ const modules = useMemo(
 
   return (
     <form onSubmit={handleSave}>
-    
-
-      {/* 🟩 English Section */}
+      {/* 🟩 ENGLISH SECTION */}
       <div className="form-section">
-       
+      
 
-    <label>Subtitle</label>
-{showSource ? (
-  <textarea
-    value={data.subtitle_en}
-    onChange={(e) => setData({ ...data, subtitle_en: e.target.value })}
-    style={{ width: "100%", height: "200px" }}
-  />
-) : (
-  <ReactQuill
-    theme="snow"
-    value={data.subtitle_en}
-    onChange={(val) => setData({ ...data, subtitle_en: val })}
-    modules={modules}
-  />
-)}
-       
+        {/* Subtitle */}
+        <label>Subtitle</label>
+        {showSource ? (
+          <textarea
+            value={data.subtitle_en}
+            onChange={(e) =>
+              setData({ ...data, subtitle_en: e.target.value })
+            }
+            style={{ width: "100%", height: "200px" }}
+          />
+        ) : (
+          <ReactQuill
+            theme="snow"
+            value={data.subtitle_en}
+            onChange={(val) => setData({ ...data, subtitle_en: val })}
+            modules={modules}
+          />
+        )}
+
+      
+        <hr />
+
+        {/* 🟩 Sub Description (merged from Tab 3) */}
+        <label>Sub Description</label>
+        {showSource ? (
+          <textarea
+            value={data.subdescription_en}
+            onChange={(e) =>
+              setData({ ...data, subdescription_en: e.target.value })
+            }
+            style={{ width: "100%", height: "200px" }}
+          />
+        ) : (
+          <ReactQuill
+            theme="snow"
+            value={data.subdescription_en}
+            onChange={(val) => setData({ ...data, subdescription_en: val })}
+            modules={modules}
+          />
+        )}
+
+    
       </div>
 
-      {/* 🟩 Arabic Section */}
+      {/* 🟨 ARABIC SECTION (hidden) */}
       <div className="form-section" style={{ display: "none" }}>
         <h3>Arabic Content</h3>
 
@@ -138,21 +178,21 @@ const modules = useMemo(
           modules={modules}
         />
 
-        <label>Subheading (Arabic)</label>
+    
+
+     
+
+        <label>Sub Description (Arabic)</label>
         <input
           type="text"
           className="text-right"
-          value={data.subheading_ar}
-          onChange={(e) => setData({ ...data, subheading_ar: e.target.value })}
+          value={data.subdescription_ar}
+          onChange={(e) =>
+            setData({ ...data, subdescription_ar: e.target.value })
+          }
         />
 
-        <label>Button Name (Arabic)</label>
-        <input
-          type="text"
-          className="text-right"
-          value={data.buttonname_ar}
-          onChange={(e) => setData({ ...data, buttonname_ar: e.target.value })}
-        />
+      
       </div>
 
       <button type="submit" disabled={loading}>

@@ -240,7 +240,7 @@ const handleCardsSave = async () => {
 
 
 useEffect(() => {
-  if (activeTab === 4) {
+  if (activeTab === 3) {
     (async () => {
       setLoading(true);
       try {
@@ -304,14 +304,14 @@ useEffect(() => {
           Tab 2
         </button>
 
-      <button className={activeTab === 3 ? "tab active" : "tab"} onClick={() => setActiveTab(3)}>Tab 3</button>
+      {/* <button className={activeTab === 3 ? "tab active" : "tab"} onClick={() => setActiveTab(3)}>Tab 3</button> */}
 
 
       
 
- <button className={activeTab === 4 ? "tab active" : "tab"} onClick={() => setActiveTab(4)}>Tab 4</button>
+ <button className={activeTab === 3 ? "tab active" : "tab"} onClick={() => setActiveTab(3)}>Tab 3</button>
           
-   <button className={activeTab === 5 ? "tab active" : "tab"} onClick={() => setActiveTab(5)}>Tab 5</button>
+   <button className={activeTab === 4 ? "tab active" : "tab"} onClick={() => setActiveTab(4)}>Tab 4</button>
       </div>
 
       {/* 🟩 Tab 1: Banner Form */}
@@ -320,22 +320,21 @@ useEffect(() => {
           {/* 🟩 English Title */}
 <div className="section">
   <label>Header Content</label>
-  <textarea
+  <ReactQuill
+    theme="snow"
     value={titles.en}
-    onChange={(e) => setTitles({ ...titles, en: e.target.value })}
+    onChange={(value) => setTitles({ ...titles, en: value })}
+    modules={modules}
     style={{
-      width: "100%",
-      height: "150px",
-      border: "1px solid #ccc",
+      height: "250px",
+      marginBottom: "20px",
+      backgroundColor: "#fff",
       borderRadius: "8px",
-      padding: "10px",
-      fontSize: "15px",
-      lineHeight: "1.5",
-      fontFamily: "Arial, sans-serif",
-      resize: "vertical",
+      border: "1px solid #ccc",
     }}
   />
 </div>
+
 
 {/* 🟨 Arabic Title (hidden for now) */}
 <div className="section" style={{ display: "none" }}>
@@ -439,18 +438,18 @@ useEffect(() => {
 
 
 
-      {activeTab === 3 && (
+      {/* {activeTab === 3 && (
         <div className="tab-content">
           <BannerSubExtrasForm />
         </div>
-      )}
+      )} */}
 
 
 
 
 
- {/* 🟩 Tab 5: Cards Section */}
-{activeTab === 4 && (
+
+{activeTab === 3 && (
   <div className="tab-content">
     <form
       onSubmit={(e) => {
@@ -565,7 +564,7 @@ useEffect(() => {
 )}
 
 
-{activeTab === 5 && (
+{activeTab === 4 && (
   <div className="tab-content">
     <FaqForm />
   </div>

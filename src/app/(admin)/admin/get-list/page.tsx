@@ -4,6 +4,8 @@ import { useState, useMemo, useEffect } from "react";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
 import { API_URL } from "@/config";
+import Quill from "react-quill-new";
+
 
 import "../home/admin-home.css";
 import CardsTabContent from "@/app/(frontend)/components/CardsTabContent";
@@ -16,7 +18,17 @@ import HelpTabContent from "@/app/(frontend)/components/HelpTabContent";
 
 
 
+
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+
+// 🟢 Register the custom "HTML" toolbar button
+if (typeof window !== "undefined" && window.Quill) {
+  const icons = window.Quill.import("ui/icons");
+  if (!icons.showHtml) {
+    icons["showHtml"] = "<span>HTML</span>"; // button label
+  }
+}
+
 
 type LanguageContent = { en: string; ar: string };
 type Card = {
@@ -75,19 +87,29 @@ export default function SimpleEditorPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(1);
+   const [showSource, setShowSource] = useState(false);
 
-  const modules = useMemo(() => ({
-    toolbar: {
-      container: [
-        [{ header: [1, 2, 3, false] }],
-        ["bold", "italic", "underline", "strike"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        ["link", "image"],
-        ["clean"],
-        ["source"],
-      ],
-    },
-  }), []);
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline", "strike"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["link"],
+          ["clean"],
+          ["showHtml"], // custom button
+        ],
+        handlers: {
+          showHtml: function () {
+            setShowSource((prev) => !prev);
+          },
+        },
+      },
+    }),
+    []
+  );
+
 
 const fetchData = async (sectionKey: string) => {
   try {
@@ -226,14 +248,29 @@ const fetchData = async (sectionKey: string) => {
 
     {/* English Content */}
     <div className="form-field">
-      <label>Content</label>
-      <ReactQuill
-        theme="snow"
-        value={content.en}
-        onChange={(v) => setContent((prev) => ({ ...prev, en: v }))}
-        modules={modules}
-      />
-    </div>
+  <label>Content</label>
+
+  {showSource ? (
+    <textarea
+      value={content.en}
+      onChange={(e) => setContent((prev) => ({ ...prev, en: e.target.value }))}
+      style={{
+        width: "100%",
+        height: "300px",
+        fontFamily: "monospace",
+        whiteSpace: "pre-wrap",
+      }}
+    />
+  ) : (
+    <ReactQuill
+      theme="snow"
+      value={content.en}
+      onChange={(v) => setContent((prev) => ({ ...prev, en: v }))}
+      modules={modules}
+    />
+  )}
+</div>
+
 
     {/* Arabic Content (Hidden) */}
     <div className="form-field" style={{ display: "none" }}>

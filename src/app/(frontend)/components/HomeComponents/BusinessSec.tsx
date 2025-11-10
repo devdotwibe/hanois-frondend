@@ -68,18 +68,17 @@ export default async function BusinessSec({ lang }: { lang: string }) {
               />
             )}
 
-            {subButton && (
-              <Link
-                href={
-                  lang === "ar"
-                    ? "/serviceprovider/signup?lang=ar"
-                    : "/serviceprovider/signup"
-                }
-                className="get-listed"
-              >
-                {subButton}
-              </Link>
-            )}
+           <Link
+  href={
+    lang === "ar"
+      ? "/serviceprovider/signup?lang=ar"
+      : "/serviceprovider/signup"
+  }
+  className="get-listed"
+>
+  Get Listed
+</Link>
+
           </div>
 
           <div className="business-div2">
