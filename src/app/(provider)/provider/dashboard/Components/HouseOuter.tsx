@@ -1,19 +1,37 @@
 "use client";
 import React, { useState } from "react";
 import HouseCard from "./HouseCard";
-import { API_URL } from "@/config";
 
 const HouseOuter: React.FC = () => {
   const [providerData] = useState<any>(() => {
-    // Try to get provider data from localStorage
-    const cachedData = localStorage.getItem("provider");
-    if (cachedData) {
-      try {
-        return JSON.parse(cachedData);
-      } catch {
-        return null;
-      }
+    // 1. Try localStorage user
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const parsed = JSON.parse(userData);
+      return {
+        id: parsed.id || parsed.provider_id || parsed.user_id,
+        name: parsed.name || "",
+        professional_headline: parsed.professional_headline || "",
+        image: parsed.image || null,
+      };
     }
+
+    // 2. Try token
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const base64 = token.split(".")[1];
+        const payload = JSON.parse(atob(base64));
+        return {
+          id: payload.provider_id || payload.id || payload.user_id,
+          name: payload.name || "",
+          professional_headline: payload.professional_headline || "",
+          image: payload.image || null,
+        };
+      } catch {}
+    }
+
+    // fallback
     return null;
   });
 
