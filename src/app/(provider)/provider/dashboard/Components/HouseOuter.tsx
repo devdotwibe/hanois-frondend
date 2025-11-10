@@ -4,7 +4,7 @@ import HouseCard from "./HouseCard";
 
 const HouseOuter: React.FC = () => {
   const [providerData] = useState<any>(() => {
-    // 1. Check if provider data already exists in localStorage
+    // 1. Use existing cached provider first
     const cachedProvider = localStorage.getItem("provider");
     if (cachedProvider) {
       try {
@@ -22,7 +22,7 @@ const HouseOuter: React.FC = () => {
         professional_headline: parsed.professional_headline || "",
         image: parsed.image || null,
       };
-      // Cache it for future renders
+      // Cache it
       localStorage.setItem("provider", JSON.stringify(provider));
       return provider;
     }
@@ -39,13 +39,13 @@ const HouseOuter: React.FC = () => {
           professional_headline: payload.professional_headline || "",
           image: payload.image || null,
         };
-        // Cache it for future renders
+        // Cache it
         localStorage.setItem("provider", JSON.stringify(provider));
         return provider;
       } catch {}
     }
 
-    // 4. If nothing is available
+    // 4. Nothing available
     return null;
   });
 
@@ -64,7 +64,6 @@ const HouseOuter: React.FC = () => {
 };
 
 export default HouseOuter;
-
 
 // "use client";
 // import React, { useEffect, useState } from "react";
