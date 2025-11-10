@@ -321,19 +321,18 @@ const handleTabClick = (tabId) => {
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
           <form className="settingsform company-profile1" onSubmit={handleSubmit}>
 
+            <div className="form-grp">
+              <label>Company/Business Name</label>
+              <input
+                type="text"
+                name="companyName"
+                value={formData.companyName}
+                onChange={handleChange}
+                placeholder="Enter title"
+                required
+              />
+            </div>
 
-
-
-        <div className="form-grp">
-          <label>Service Note</label>
-          <input
-            type="text"
- name="service_notes"         
-     value={formData.service_notes}
-            onChange={handleChange}
-            placeholder="Enter Service Note"
-          />
-        </div>
 
 
             {/* <div className="form-grp select-grp">
@@ -611,17 +610,18 @@ const handleTabClick = (tabId) => {
             </div>
 
 
-            <div className="form-grp">
-              <label>Company/Business Name</label>
-              <input
-                type="text"
-                name="companyName"
-                value={formData.companyName}
-                onChange={handleChange}
-                placeholder="Enter title"
-                required
-              />
-            </div>
+
+        <div className="form-grp">
+          <label>Service Note</label>
+          <input
+            type="text"
+            name="service_notes"         
+          value={formData.service_notes}
+            onChange={handleChange}
+            placeholder="Enter Service Note"
+          />
+        </div>
+
 
 
           <div style={{ textAlign: "right", marginTop: "32px" }}>
