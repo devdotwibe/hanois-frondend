@@ -33,7 +33,7 @@ const BuildSec: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading meaningful section...</p>;
+    return <p></p>;
   }
 
   return (

@@ -104,9 +104,13 @@ const faqData = {
 };
 
   try {
-    let res;
+let res;
 if (editingId) {
-  res = await axios.put(`${API_URL}faq/${editingId}`, faqData);
+  res = await axios.put(`${API_URL}faq/${editingId}`, {
+    title: formData.engtitle,          // ✅ match DB column
+    question: formData.engquestion,    // ✅ match DB column
+    answer: formData.enganswer,        // ✅ match DB column
+  });
 } else {
   res = await axios.post(`${API_URL}faq`, faqData);
 }

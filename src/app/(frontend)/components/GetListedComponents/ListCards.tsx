@@ -44,7 +44,7 @@ const ListCards: React.FC<Props> = ({ lang }) => {
     fetchCards();
   }, []);
 
-  if (loading) return <p>Loading cards...</p>;
+  if (loading) return <p></p>;
 
   // 🗂️ Static image list in same order as cards
   const imageList = [image1, image2, image3];
