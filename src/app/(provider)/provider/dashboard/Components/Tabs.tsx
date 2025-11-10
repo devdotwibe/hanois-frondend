@@ -15,6 +15,21 @@ const DEFAULT_CURRENCY = "KD";
 const Tabs = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("companyinfo");
+
+  // ---------- ADD THIS ----------
+const handleTabClick = (tabId) => {
+  if (tabId === "project") {
+    // navigate to the external projects page instead of switching tab
+    router.push("https://hanois.dotwibe.com/provider/dashboard/projects");
+    return;
+  }
+  setActiveTab(tabId);
+};
+// ---------- END ADD ----------
+
+
+
+
   const [categoriesList, setCategoriesList] = useState([]);
   const [servicesList, setServicesList] = useState([]);
 
@@ -319,10 +334,11 @@ router.push(`/service-provider-directory/details?providerId=${encodeURIComponent
           <li key={tab.id}>
             <button
               className={`tab-btn ${activeTab === tab.id ? "active" : ""}`}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => handleTabClick(tab.id)}
             >
               {tab.label}
             </button>
+
           </li>
         ))}
       </ul>
