@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import HouseCard from "./HouseCard";
 import { API_URL } from "@/config";
 
@@ -13,10 +13,7 @@ type Provider = {
 const HouseOuter: React.FC = () => {
   const [providerId, setProviderId] = useState<number | null>(null);
   const [providerData, setProviderData] = useState<Provider | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  // determine providerId from localStorage / token
   const getProviderId = (): number | null => {
     const userData = typeof window !== "undefined" ? localStorage.getItem("user") : null;
     if (userData) {
@@ -34,11 +31,7 @@ const HouseOuter: React.FC = () => {
     return null;
   };
 
-  // fetch provider from API
   const fetchProvider = async (id: number) => {
-    setLoading(true);
-    setError(null);
-
     const endpoint = `${API_URL.replace(/\/+$/, "")}/providers/${id}`;
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
@@ -50,50 +43,32 @@ const HouseOuter: React.FC = () => {
       },
     });
 
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(text || `Failed to fetch provider (${res.status})`);
-    }
+    if (!res.ok) return;
 
     const data = await res.json();
-
     let provider: Provider | null = null;
     if (data?.data?.provider) provider = data.data.provider;
     else if (data?.provider) provider = data.provider;
-    else if (data?.data && typeof data.data === "object" && data.data.id) provider = data.data;
+    else if (data?.data?.id) provider = data.data;
     else if (data?.id) provider = data;
-    else provider = null;
 
-    if (!provider) throw new Error("Unexpected provider response shape");
-
-    setProviderData(provider);
+    if (provider) setProviderData(provider);
   };
 
-  // main logic (synchronous flow)
-  React.useMemo(() => {
+  useMemo(() => {
     const id = getProviderId();
     setProviderId(id);
-
-    if (!id) return;
-
-    fetchProvider(id).catch((err) => {
-      setError(err.message || "Failed to load provider");
-      setLoading(false);
-    });
+    if (id) fetchProvider(id);
   }, []);
 
-  if (!providerId) return null;
-  if (loading && !providerData) return <div>Loading provider...</div>;
-  if (error && !providerData) return <div>Error loading provider: {error}</div>;
-  if (!providerData) return null;
-
+  // Always render immediately (even if data is not yet fetched)
   return (
     <div>
       <HouseCard
-        providerId={providerId}
-        name={providerData.name ?? ""}
-        initialDescription={providerData.professional_headline ?? ""}
-        initialImagePath={providerData.image ?? null}
+        providerId={providerId ?? 0}
+        name={providerData?.name ?? ""}
+        initialDescription={providerData?.professional_headline ?? ""}
+        initialImagePath={providerData?.image ?? null}
       />
     </div>
   );
