@@ -24,6 +24,13 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const [uploading, setUploading] = useState(false);
   const [removing, setRemoving] = useState(false);
 
+  // Inline confirmation & status
+  const [showConfirmInline, setShowConfirmInline] = useState(false);
+  const [status, setStatus] = useState<{ success: boolean | null; message: string }>({
+    success: null,
+    message: "",
+  });
+
   // remember whether there was a headline when component mounted
   const hadHeadlineInitiallyRef = useRef<boolean>(Boolean(initialDescription));
   // keep a ref to the last saved headline so "Cancel" can revert
@@ -135,13 +142,23 @@ const HouseCard: React.FC<HouseCardProps> = ({
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // Remove image: send JSON with image: null so backend's updateProfile sees `image` explicitly
-  const handleRemoveImage = async () => {
-    if (!confirm("Remove image?")) return;
+  // show inline confirm (no native confirm or popup)
+  const openInlineConfirm = () => {
+    setStatus({ success: null, message: "Remove image? Click Yes or No." });
+    setShowConfirmInline(true);
+  };
+
+  const handleInlineCancel = () => {
+    setShowConfirmInline(false);
+    setStatus({ success: false, message: "Image removal cancelled." });
+  };
+
+  // actual deletion (called when user confirms inline)
+  const performRemoveImage = async () => {
     try {
       setRemoving(true);
+      setStatus({ success: null, message: "Removing image..." });
 
-      // Send JSON payload { image: null, professional_headline } - backend checks for image !== undefined
       const payload = {
         image: null,
         professional_headline: headline ?? "",
@@ -170,12 +187,14 @@ const HouseCard: React.FC<HouseCardProps> = ({
         cacheProvider(provider);
         notifyProviderUpdated(provider);
       } else {
-        // fallback
         setImagePath(null);
       }
+
+      setShowConfirmInline(false);
+      setStatus({ success: true, message: "Image removed successfully." });
     } catch (err) {
       console.error("Remove error:", err);
-      alert("Failed to remove image.");
+      setStatus({ success: false, message: "Failed to remove image." });
     } finally {
       setRemoving(false);
     }
@@ -184,7 +203,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
   const handleSaveHeadline = async () => {
     try {
       setSavingHeadline(true);
-      // Send JSON when we only update the text — backend will detect professional_headline
       const payload = { professional_headline: headline ?? "" };
 
       const res = await fetch(endpoint, {
@@ -205,9 +223,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
       if (provider) {
         const savedHeadline = provider.professional_headline ?? headline;
         setHeadline(savedHeadline);
-        // update prevHeadlineRef to the saved headline
         prevHeadlineRef.current = savedHeadline;
-        // if we just saved a headline, consider that we now "had" one
         if (savedHeadline) hadHeadlineInitiallyRef.current = true;
 
         if (typeof provider.image !== "undefined") {
@@ -216,13 +232,10 @@ const HouseCard: React.FC<HouseCardProps> = ({
         cacheProvider(provider);
         notifyProviderUpdated(provider);
       } else {
-        // server didn't return a provider object but likely saved — keep local headline
         prevHeadlineRef.current = headline;
         notifyProviderUpdated();
       }
 
-      // Close editor only if we had a headline initially (or after a successful save we now do)
-      // If there was no headline initially and the user cancels, we want to keep the input visible.
       setEditing(false);
     } catch (err) {
       console.error("Save headline error:", err);
@@ -233,13 +246,10 @@ const HouseCard: React.FC<HouseCardProps> = ({
   };
 
   const handleCancelEdit = () => {
-    // revert to previous saved headline
     setHeadline(prevHeadlineRef.current ?? "");
-    // Only hide the editor if there *was* a headline initially (or we've since saved one).
     if (hadHeadlineInitiallyRef.current) {
       setEditing(false);
     } else {
-      // keep editing visible when there was no headline initially
       setEditing(true);
     }
   };
@@ -261,7 +271,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
               />
               <button
                 type="button"
-                onClick={handleRemoveImage}
+                onClick={openInlineConfirm}
                 disabled={removing}
                 className="image-remove-btn"
                 style={{
@@ -311,76 +321,147 @@ const HouseCard: React.FC<HouseCardProps> = ({
         <h2 className="house-card-title">{name}</h2>
 
         {/* Headline + Edit Icon */}
-        {editing ? (
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <input
-              className="house-card-desc-input"
-              value={headline}
-              onChange={(e) => setHeadline(e.target.value)}
-              placeholder="Professional headline"
-              style={{ flex: 1 }}
-            />
-            <button
-              onClick={handleSaveHeadline}
-              disabled={savingHeadline}
-              style={{
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                fontSize: "1.1rem",
-              }}
-              title="Save"
-            >
-              ✅
-            </button>
-            <button
-              onClick={handleCancelEdit}
-              style={{
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                fontSize: "1.1rem",
-              }}
-              title="Cancel"
-            >
-              ✖
-            </button>
-          </div>
-        ) : (
+     {editing ? (
+  <div className="form-group" style={{ display: "flex", flexDirection: "column", gap: 6, width: "100%" }}>
+    <label
+      htmlFor="headline-input"
+      style={{ fontWeight: "500", fontSize: "0.9rem", color: "#333" }}
+    >
+      Professional Headline
+    </label>
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <input
+        id="headline-input"
+        className="house-card-desc-input"
+        value={headline}
+        onChange={(e) => setHeadline(e.target.value)}
+        placeholder="Professional headline"
+        style={{
+          flex: 1,
+          padding: "8px 10px",
+          borderRadius: 6,
+          border: "1px solid #ccc",
+          fontSize: "0.9rem",
+        }}
+      />
+      <button
+        onClick={handleSaveHeadline}
+        disabled={savingHeadline}
+        style={{
+          border: "none",
+          background: "transparent",
+          cursor: "pointer",
+          fontSize: "1.2rem",
+        }}
+        title="Save"
+      >
+        ✅
+      </button>
+      <button
+        onClick={handleCancelEdit}
+        style={{
+          border: "none",
+          background: "transparent",
+          cursor: "pointer",
+          fontSize: "1.2rem",
+        }}
+        title="Cancel"
+      >
+        ✖
+      </button>
+    </div>
+  </div>
+) : (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: 8,
+    }}
+  >
+    <p
+      className="house-card-desc"
+      style={{
+        flex: 1,
+        margin: 0,
+        wordBreak: "break-word",
+      }}
+    >
+      {headline || "No headline set"}
+    </p>
+    <button
+      className="house-card-edit-btn"
+      onClick={() => setEditing(true)}
+      title="Edit description"
+      style={{
+        border: "none",
+        background: "transparent",
+        cursor: "pointer",
+        fontSize: "1.1rem",
+        marginLeft: "4px",
+      }}
+    >
+      ✎
+    </button>
+  </div>
+)}
+
+
+        {/* Inline status / confirm message (your provided div) */}
+        <div style={{ marginTop: 8 }}>
           <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 8,
-            }}
+            className="login-success contact-sucess"
+            style={{ marginBottom: 12 }}
           >
             <p
-              className="house-card-desc"
               style={{
-                flex: 1,
+                color:
+                  status.success === null
+                    ? "#000"
+                    : status.success
+                    ? "green"
+                    : "red",
                 margin: 0,
-                wordBreak: "break-word",
               }}
             >
-              {headline || "No headline set"}
+              {status.message}
             </p>
-            <button
-              className="house-card-edit-btn"
-              onClick={() => setEditing(true)}
-              title="Edit description"
-              style={{
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                fontSize: "1.1rem",
-                marginLeft: "4px",
-              }}
-            >
-              ✎
-            </button>
           </div>
-        )}
+
+          {/* When confirming, show Yes / No buttons inline */}
+          {showConfirmInline && (
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <button
+                onClick={performRemoveImage}
+                disabled={removing}
+                style={{
+                  padding: "6px 10px",
+                  borderRadius: 6,
+                  border: "1px solid #ddd",
+                  background: removing ? "#eee" : "#e53935",
+                  color: "#fff",
+                  cursor: "pointer",
+                }}
+              >
+                {removing ? "Removing..." : "Yes"}
+              </button>
+              <button
+                onClick={handleInlineCancel}
+                disabled={removing}
+                style={{
+                  padding: "6px 10px",
+                  borderRadius: 6,
+                  border: "1px solid #ddd",
+                  background: "#f8f8f8",
+                  cursor: "pointer",
+                }}
+              >
+                No
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Upload Button — only show when there is NO image */}
         {!imagePath && (
