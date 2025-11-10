@@ -335,7 +335,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
         className="house-card-desc-input"
         value={headline}
         onChange={(e) => setHeadline(e.target.value)}
-        placeholder="Enter your professional headline"
+        placeholder="Professional headline"
         style={{
           flex: 1,
           padding: "8px 10px",
