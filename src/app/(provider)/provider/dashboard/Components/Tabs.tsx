@@ -485,11 +485,15 @@ const handleTabClick = (tabId) => {
               />
             </div>
 
+            {/* ------------------------------- */}
+
             <h4 style={{ fontWeight: 600,  marginTop: 24  }} >Services</h4>
 
             <div className="form-grp">
               <label>Select Services</label>
-              <select
+
+
+              {/* <select
                 name="services"
                 multiple
                 value={formData.services}
@@ -504,36 +508,59 @@ const handleTabClick = (tabId) => {
                 ) : (
                   <option disabled>Loading services...</option>
                 )}
-              </select>
+              </select> */}
 
-              {/* Selected service cards */}
+
+              <MultiSelect
+    label="Select Services"
+    options={servicesList}
+    selected={formData.services}
+    onChange={(values) => {
+      setFormData((prev) => ({ ...prev, services: values }));
+      handleServicesSelect(values); 
+    }}
+  />
+
+
+
+
+
+           
               {selectedServices.length > 0 && (
                 <div style={{ marginTop: 12 }}>
                   {selectedServices.map((svc, idx) => (
                     <div
                       key={svc.id}
                       style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 160px 90px 36px",
-                        gap: 8,
-                        alignItems: "center",
-                        border: "1px solid #e6e9ee",
-                        padding: 12,
-                        borderRadius: 6,
-                        marginBottom: 10,
+                        // display: "grid",
+                        // gridTemplateColumns: "1fr 160px 90px 36px",
+                        // gap: 8,
+                        // alignItems: "center",
+                        // border: "1px solid #e6e9ee",
+                        // padding: 12,
+                        // borderRadius: 6,
+                        // marginBottom: 10,
                         background: "#fff"
                       }}
+                      className="svcrow"
                     >
-                      {/* service name (pre-filled/readOnly) */}
-                      <input
+
+
+                      <div className="svc1">
+                          <input
                         type="text"
                         value={svc.name}
                         readOnly
                         style={{ padding: "10px", border: "none", background: "transparent" }}
                       />
 
-                      {/* cost input */}
-                      <input
+                        
+                      </div>
+
+
+                      <div className="svc1 svc2">
+
+                        <input
                         type="number"
                         placeholder="Average Cost"
                         value={svc.cost}
@@ -541,7 +568,7 @@ const handleTabClick = (tabId) => {
                         style={{ padding: "10px", border: "none", background: "transparent" }}
                       />
 
-                      {/* currency select */}
+                  
                       <select
                         value={svc.currency}
                         onChange={(e) => handleServiceFieldChange(idx, "currency", e.target.value)}
@@ -552,27 +579,31 @@ const handleTabClick = (tabId) => {
                         <option value="EUR">EUR</option>
                       </select>
 
-                      {/* remove button */}
+                 
                       <button
                         type="button"
                         onClick={() => removeService(svc.id)}
                         aria-label="Remove service"
                         style={{
-                          width: 28,
-                          height: 28,
-                          borderRadius: "50%",
-                          border: "none",
-                          background: "#f0f2f5",
-                          cursor: "pointer",
+                    
                           fontSize: 16,
                         }}
+                        className="removeservice"
                       >
                         ×
                       </button>
+
+                      </div>
+                      
+                    
+                   
+                      
                     </div>
                   ))}
                 </div>
               )}
+
+
             </div>
 
 

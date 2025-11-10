@@ -441,7 +441,10 @@ textarea:focus {
 
 
 
-.quill{margin: 0 0 15px !important;}
+.quill{margin: 0 0 15px !important;
+    border: none !important;
+    height: auto !important;
+}
 
 
 
@@ -829,4 +832,37 @@ button[type="submit"]:disabled {
 /* Tab content spacing */
 .tab-content {
   padding-top: 8px;
+}
+
+/* ----------------------------- */
+
+
+
+.form-field input[type="file"] {
+  padding: 0px;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  font-size: 14px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-field input[type="file"]::-webkit-file-upload-button {
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  -webkit-appearance: none;
+  transition: background-color 0.2s ease;
+  border: 2px solid #000000;
+  font-family: 'Avenir-Black';
+
+}
+
+.form-field input[type="file"]::-webkit-file-upload-button:hover {
+  background-color: #000000; color: #ffffff;
 }

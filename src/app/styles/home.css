@@ -1279,6 +1279,12 @@ font-size: 17px;
         margin-bottom: 4px; 
 }
 
+.multi-select-input{
+  min-height: 68px;
+}
+
+
+
 .multi-select-input,
 .form-grp input,
 .form-grp select,
@@ -1649,7 +1655,7 @@ border-right: 1px solid #e0e0e0;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 24px;
+ 
 }
 
 .tag {
@@ -2277,15 +2283,86 @@ width: 20px; height: 20px;
     width: 100%;
     border: none;
     box-shadow: none;
+     padding-top: 20px;
+
 }
 .select-grp .dropdown-option{
-  width: 100%; display: block;
+  width: 100%; display: block; line-height: 1;
 }
 
 button.remove-tag {
     cursor: pointer;
 }
 
+
+
+
+
+
+.dropdown-option input {
+    margin-right: 4px;
+    width: 22px;
+    height: 22px; border-radius: 0; line-height: 1;
+
+    padding: 0;
+    /* -webkit-appearance: none; */
+}
+
+
+.dropdown-option{margin-bottom: 10px;}
+
+.house-card-edit-btn{font-size: 0 !important;
+
+  width: 20px;
+  height: 20px;
+  background: url("../../../public/images/lead.png") no-repeat center !important;
+  background-size: 20px !important;
+
+}
+.svcrow {
+    display: flex;
+    flex-wrap: wrap;
+    border: 2px solid #d7dbec;
+
+    border-radius: 4px;
+}
+
+.svc1 {
+    width: 50%;
+        border-right: 2px solid #d7dbec;
+
+            padding: 20px 15px 20px 15px;
+}
+
+.svc2 {
+    width: 50%;
+                padding: 20px 15px 20px 15px;
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                border-right: none;
+
+}
+.svc2 select{
+  border: none; 
+}
+
+.svc2 select:focus{
+  border: none;
+  outline: none;
+}
+
+button.removeservice {
+    position: absolute;
+    right: -18px;
+    top: -16px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: #f1f3fa;
+    cursor: pointer;
+}
 
 /* ------------------------------------responsive */
 
