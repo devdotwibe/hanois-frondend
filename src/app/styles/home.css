@@ -1263,7 +1263,7 @@ font-size: 17px;
     pointer-events: none;
     font-size: 12px;
     position: absolute;
-    top: 50%;
+    top: 60px;
     right: 14px;
     transform: translateY(-50%);
 }
@@ -1279,6 +1279,7 @@ font-size: 17px;
         margin-bottom: 4px; 
 }
 
+.multi-select-input,
 .form-grp input,
 .form-grp select,
 .form-grp textarea {
@@ -2272,8 +2273,15 @@ width: 20px; height: 20px;
     width: 75%;
 }
 
-
-
+.select-grp .dropdown {
+    position: static;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+}
+.select-grp .dropdown-option{
+  width: 100%; display: block;
+}
 
 /* ------------------------------------responsive */
 

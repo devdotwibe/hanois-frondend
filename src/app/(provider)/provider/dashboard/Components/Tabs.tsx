@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import ProjectComponent from "./ProjectComponent";
 import { API_URL, SITE_URL } from "@/config";
 import { useRouter } from "next/navigation";
+import MultiSelect from "./MultiSelect";
+
 
 const TABS = [
   { id: "companyinfo", label: "Company Information" },
@@ -330,7 +332,7 @@ const handleTabClick = (tabId) => {
               />
             </div>
 
-            <div className="form-grp select-grp">
+            {/* <div className="form-grp select-grp">
               <label>Company Categories</label>
 
 
@@ -357,14 +359,7 @@ const handleTabClick = (tabId) => {
               </select>
 
 
-                   <div className="select-wrapper">
-        <select id="project" className="project-select">
-          <option>Building a house from the scratch</option>
-          <option>Renovating old property</option>
-          <option>Commercial construction</option>
-        </select>
-        <span className="arrow">▼</span>
-      </div>
+ 
 
 
 
@@ -373,7 +368,16 @@ const handleTabClick = (tabId) => {
 
 
 
-            </div>
+            </div> */}
+
+            <MultiSelect 
+ label="Company Categories"
+  options={categoriesList}
+  selected={formData.categories}
+  onChange={(values) =>
+    setFormData((prev) => ({ ...prev, categories: values }))
+  }/>
+
 
 
 

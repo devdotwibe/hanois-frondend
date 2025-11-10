@@ -1,95 +1,97 @@
 "use client";
+import React, { useState, useEffect, useRef } from "react";
 
-import React, { useState } from "react";
-import "./MultiSelect.css";
-
-interface Category {
-  id: string | number;
+interface Option {
+  id: string;
   name: string;
 }
 
 interface MultiSelectProps {
   label: string;
-  categoriesList: Category[];
-  onChange?: (selected: string[]) => void;
+  options: Option[];
+  selected: string[];
+  onChange: (values: string[]) => void;
 }
 
 const MultiSelect: React.FC<MultiSelectProps> = ({
   label,
-  categoriesList,
+  options,
+  selected,
   onChange,
 }) => {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<string[]>([]);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-  const handleToggle = () => setOpen((prev) => !prev);
+  const toggleDropdown = () => setOpen((prev) => !prev);
 
   const handleSelect = (id: string) => {
-    setSelected((prev) => {
-      const newSelection = prev.includes(id)
-        ? prev.filter((item) => item !== id)
-        : [...prev, id];
-      if (onChange) onChange(newSelection);
-      return newSelection;
-    });
+    if (selected.includes(id)) {
+      onChange(selected.filter((item) => item !== id));
+    } else {
+      onChange([...selected, id]);
+    }
   };
 
-  const handleRemoveTag = (id: string) => {
-    setSelected((prev) => prev.filter((item) => item !== id));
-    if (onChange) onChange(selected.filter((item) => item !== id));
+  const removeTag = (id: string) => {
+    onChange(selected.filter((item) => item !== id));
   };
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <div className="form-grp select-grp">
+    <div className="form-grp select-grp" ref={dropdownRef}>
       <label>{label}</label>
 
-      <div className="multi-select" onClick={handleToggle}>
-        <div className="selected-tags">
-          {selected.length > 0 ? (
-            selected.map((id) => {
-              const cat = categoriesList.find((c) => c.id.toString() === id);
-              return (
-                <span key={id} className="tag">
-                  {cat?.name}
-                  <button
-                    type="button"
-                    className="remove-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRemoveTag(id);
-                    }}
-                  >
-                    ×
-                  </button>
-                </span>
-              );
-            })
-          ) : (
-            <span className="placeholder">Select categories...</span>
-          )}
+      <div className="multi-select-input" onClick={toggleDropdown}>
+        <div className="tags-container">
+          {selected.length === 0 && <span className="placeholder"></span>}
+          {selected.map((id) => {
+            const option = options.find((opt) => opt.id === id);
+            return (
+              <span key={id} className="tag">
+                {option?.name}
+                <button
+                  type="button"
+                  className="remove-tag"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeTag(id);
+                  }}
+                >
+                  ×
+                </button>
+              </span>
+            );
+          })}
         </div>
         <span className="arrow">{open ? "▲" : "▼"}</span>
       </div>
 
       {open && (
-        <ul className="dropdown">
-          {categoriesList.length > 0 ? (
-            categoriesList.map((cat) => (
-              <li key={cat.id} className="dropdown-item">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={selected.includes(cat.id.toString())}
-                    onChange={() => handleSelect(cat.id.toString())}
-                  />
-                  {cat.name}
-                </label>
-              </li>
+        <div className="dropdown">
+          {options.length > 0 ? (
+            options.map((option) => (
+              <label key={option.id} className="dropdown-option">
+                <input
+                  type="checkbox"
+                  checked={selected.includes(option.id)}
+                  onChange={() => handleSelect(option.id)}
+                />
+                {option.name}
+              </label>
             ))
           ) : (
-            <li className="dropdown-item disabled">Loading categories...</li>
+            <div className="dropdown-option disabled">Loading...</div>
           )}
-        </ul>
+        </div>
       )}
     </div>
   );
