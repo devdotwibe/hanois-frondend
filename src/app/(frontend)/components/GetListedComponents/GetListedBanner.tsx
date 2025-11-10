@@ -51,7 +51,7 @@ const GetListedBanner: React.FC<Props> = ({ lang }) => {
             grade links built to acquire and engage cutomers.
             </p> */}
 
-          <h2 dangerouslySetInnerHTML={{ __html: data.title }}></h2>
+          {/* <h2 dangerouslySetInnerHTML={{ __html: data.title }}></h2> */}
           <p dangerouslySetInnerHTML={{ __html: data.content }}></p>
 
         </div>

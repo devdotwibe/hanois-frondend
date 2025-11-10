@@ -4,51 +4,70 @@ import Image from "next/image";
 import { API_URL } from "@/config";
 import build3 from "../../../../../public/images/get-listed-3.png";
 
-interface MeaningfulCard {
-  meaningfull: string;
+// 🟩 Corrected interface to match Handis card fields
+interface HandisCard {
+  handistitle: string;
+  handisbuttonname: string;
   image: string;
 }
 
 const BuildSec: React.FC = () => {
-  const [card, setCard] = useState<MeaningfulCard>({ meaningfull: "", image: "" });
+  const [card, setCard] = useState<HandisCard>({
+    handistitle: "",
+    handisbuttonname: "",
+    image: "",
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchMeaningfulCard = async () => {
+    const fetchLastHandisCard = async () => {
       try {
-        const res = await fetch(`${API_URL}page/get?sectionKey=get_listedmeaningfull`);
+        const res = await fetch(`${API_URL}page/get?sectionKey=get_listedhandis`);
         const json = await res.json();
 
-        if (json.success && json.data?.card) {
-          setCard(json.data.card);
+        if (json.success && Array.isArray(json.data?.cards) && json.data.cards.length > 0) {
+          // 🟩 Get last (3rd) Handis card
+          const lastCard = json.data.cards[json.data.cards.length - 1];
+          setCard(lastCard);
         }
       } catch (err) {
-        console.error("❌ Failed to fetch meaningful card", err);
+        console.error("❌ Failed to fetch Handis card", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMeaningfulCard();
+    fetchLastHandisCard();
   }, []);
 
   if (loading) {
-    return <p></p>;
+    return <p>Loading meaningful section...</p>;
   }
+
+  // 🟩 Build full image URL (in case backend gives relative path)
+  const imageUrl = card.image?.startsWith("http")
+    ? card.image
+    : `https://hanois.dotwibe.com/api/${card.image}`;
 
   return (
     <div className="build-outer">
       <div className="containers">
         <div className="build1">
-          {/* 🧠 Render HTML content from API */}
-          <div dangerouslySetInnerHTML={{ __html: card.meaningfull }} />
+          {/* 🧠 Render HTML content from backend (last Handis card) */}
+          <div dangerouslySetInnerHTML={{ __html: card.handistitle }} />
         </div>
       </div>
 
       <div className="build-grad">
         <div className="buildimg-outer">
-          {/* 🖼️ Static local image (keep this as-is) */}
-          <Image src={build3} alt="Meaningful section" width={900} height={492} />
+          {/* 🖼️ Backend image (if available), otherwise fallback */}
+          <Image
+            src={imageUrl || build3}
+            alt="Meaningful section"
+            width={900}
+            height={492}
+            unoptimized
+          />
         </div>
       </div>
     </div>

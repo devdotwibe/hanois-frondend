@@ -231,21 +231,7 @@ const fetchData = async (sectionKey: string) => {
      {activeTab === 1 && (
   <form onSubmit={(e) => handleSubmit(e, false)}>
     {/* English Title */}
-    <InputField
-      label="Title"
-      value={titles.en}
-      onChange={(v) => setTitles({ ...titles, en: v })}
-    />
-
-    {/* Arabic Title (Hidden) */}
-    <div style={{ display: "none" }}>
-      <InputField
-        label="Title (Arabic)"
-        value={titles.ar}
-        onChange={(v) => setTitles({ ...titles, ar: v })}
-      />
-    </div>
-
+  
     {/* English Content */}
     <div className="form-field">
   <label>Content</label>

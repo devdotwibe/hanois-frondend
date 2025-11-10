@@ -6,32 +6,46 @@ export default function HandisTabContent() {
   const [cards, setCards] = useState([
     { handistitle: "", handisbuttonname: "", image: null, imageUrl: "" },
     { handistitle: "", handisbuttonname: "", image: null, imageUrl: "" },
+    { handistitle: "", handisbuttonname: "", image: null, imageUrl: "" }, // 🟩 Added 3rd card
   ]);
+
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Fetch existing handis cards
+  // 🟩 Fetch existing handis cards
   useEffect(() => {
     (async () => {
       try {
         const res = await fetch(`${API_URL}page/get?sectionKey=get_listedhandis`);
         const data = await res.json();
-        if (data.success && Array.isArray(data.data.cards)) {
-          setCards(
-            data.data.cards.map((c) => ({
-              handistitle: c.handistitle || "",
-              handisbuttonname: c.handisbuttonname || "",
-              image: null,
-              imageUrl: c.image || "",
-            }))
-          );
-        }
+if (data.success && Array.isArray(data.data.cards)) {
+  const fetchedCards = data.data.cards.map((c: any) => ({
+    handistitle: c.handistitle || "",
+    handisbuttonname: c.handisbuttonname || "",
+    image: null,
+    imageUrl: c.image || "",
+  }));
+
+  // 🟩 Ensure there are always 3 cards
+  while (fetchedCards.length < 3) {
+    fetchedCards.push({
+      handistitle: "",
+      handisbuttonname: "",
+      image: null,
+      imageUrl: "",
+    });
+  }
+
+  setCards(fetchedCards);
+}
+
       } catch (err) {
         console.error("❌ Failed to fetch handis cards", err);
       }
     })();
   }, []);
 
+  // 🟩 Handle form submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -40,16 +54,18 @@ export default function HandisTabContent() {
     try {
       const formData = new FormData();
       formData.append("sectionKey", "get_listedhandis");
+
       cards.forEach((card, i) => {
-        formData.append(`handis_${i + 1}_title`, card.handistitle);
-        formData.append(`handis_${i + 1}_buttonname`, card.handisbuttonname);
-        if (card.image) formData.append(`handis_${i + 1}_image`, card.image);
+        const index = i + 1;
+        formData.append(`handis_${index}_title`, card.handistitle);
+        formData.append(`handis_${index}_buttonname`, card.handisbuttonname);
+        if (card.image) formData.append(`handis_${index}_image`, card.image);
       });
 
       const res = await fetch(`${API_URL}page/save`, { method: "POST", body: formData });
       const data = await res.json();
 
-      if (res.ok) {
+      if (res.ok && data.success) {
         setMessage("✅ Handis cards saved successfully!");
       } else {
         setMessage(`❌ ${data.error || "Failed to save"}`);
@@ -61,13 +77,15 @@ export default function HandisTabContent() {
     setLoading(false);
   };
 
-  const updateCardField = (i, field, value) => {
+  // 🟩 Update card field
+  const updateCardField = (i: number, field: string, value: string) => {
     const updated = [...cards];
     updated[i][field] = value;
     setCards(updated);
   };
 
-  const updateCardImage = (i, file) => {
+  // 🟩 Update card image
+  const updateCardImage = (i: number, file: File | null) => {
     const updated = [...cards];
     updated[i].image = file;
     setCards(updated);
@@ -76,8 +94,8 @@ export default function HandisTabContent() {
   return (
     <form onSubmit={handleSubmit}>
       {cards.map((card, i) => (
-        <div key={i} className="card-section">
-       
+        <div key={i} className="card-section" style={{ marginBottom: "20px" }}>
+        
           <label>Title</label>
           <input
             type="text"
@@ -86,13 +104,6 @@ export default function HandisTabContent() {
             required
           />
 
-          <label>Button Name</label>
-          <input
-            type="text"
-            value={card.handisbuttonname}
-            onChange={(e) => updateCardField(i, "handisbuttonname", e.target.value)}
-            required
-          />
 
           <label>Image</label>
           <input
@@ -101,21 +112,31 @@ export default function HandisTabContent() {
             onChange={(e) => updateCardImage(i, e.target.files?.[0] ?? null)}
           />
 
+          {/* Display existing image */}
           {card.imageUrl && (
             <img
               src={`${API_URL.replace("api/", "")}${card.imageUrl}`}
               alt={`Handis Card ${i + 1}`}
-              style={{ width: "150px", marginTop: "10px", borderRadius: "8px" }}
+              style={{
+                width: "150px",
+                marginTop: "10px",
+                borderRadius: "8px",
+                display: "block",
+              }}
             />
           )}
           <hr />
         </div>
       ))}
+
       <button type="submit" disabled={loading}>
         {loading ? "Saving..." : "Save"}
       </button>
+
       {message && (
-        <p className={`message ${message.includes("✅") ? "success" : "error"}`}>{message}</p>
+        <p className={`message ${message.includes("✅") ? "success" : "error"}`}>
+          {message}
+        </p>
       )}
     </form>
   );

@@ -42,11 +42,10 @@ const HelpSec: React.FC = () => {
     fetchHandisCards();
   }, []);
 
-  // 🟩 Base URL builder (ensures image path works)
+  // 🟩 Build full image path
   const getFullImageUrl = (imgPath: string) => {
     if (!imgPath) return "";
     if (imgPath.startsWith("http")) return imgPath;
-    // You can define IMG_URL in your config (example: "https://hanois.dotwibe.com/api/")
     return `${IMG_URL || "https://hanois.dotwibe.com/api/"}${imgPath}`;
   };
 
@@ -56,16 +55,16 @@ const HelpSec: React.FC = () => {
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
+        {/* 🟩 Only show the first 2 cards */}
         {!loading &&
           !error &&
           cards.length > 0 &&
-          cards.map((card, idx) => (
+          cards.slice(0, 2).map((card, idx) => (
             <div className="h-div1" key={idx}>
               <div className="containers">
                 <BuildCard
                   imageSrc={getFullImageUrl(card.image)}
-                  title1={card.handistitle} // 🟩 HTML string from backend
-                  linkText={card.handisbuttonname || "Get Listed"}
+                  title1={card.handistitle} // HTML string from backend
                   linkUrl="/"
                 />
               </div>

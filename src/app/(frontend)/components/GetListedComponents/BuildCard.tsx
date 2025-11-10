@@ -6,14 +6,12 @@ type BuildCardProps = {
   title1?: string; // HTML string (from backend)
   imageSrc?: string | StaticImageData;
   linkUrl?: string;
-  linkText?: string;
 };
 
 const BuildCard: React.FC<BuildCardProps> = ({
   title1 = "",
   imageSrc,
   linkUrl = "#",
-  linkText = "Learn More",
 }) => {
   return (
     <div className="build-card">
@@ -38,9 +36,9 @@ const BuildCard: React.FC<BuildCardProps> = ({
           dangerouslySetInnerHTML={{ __html: title1 }}
         />
 
-        {/* CTA Button */}
+        {/* CTA Button — Static Text */}
         <Link href={linkUrl} className="g-listed">
-          {linkText}
+          Get Listed
         </Link>
       </div>
     </div>
