@@ -49,7 +49,7 @@ const handleTabClick = (tabId) => {
     services: [], 
     professionalHeadline: "",
     image: null,
-    service_notws: "",
+    service_notes: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -330,7 +330,7 @@ const handleTabClick = (tabId) => {
           <input
             type="text"
             name="service_notws"
-            value={formData.service_notws}
+            value={formData.service_notes}
             onChange={handleChange}
             placeholder="Enter Service Note"
           />
