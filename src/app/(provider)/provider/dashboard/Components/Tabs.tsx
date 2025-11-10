@@ -55,6 +55,14 @@ const handleTabClick = (tabId) => {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ loading: false, message: "", success: false });
 
+    const [errors, setErrors] = useState({});
+  const [status, setStatus] = useState({ loading: false, message: "", success: false });
+
+  // clear any leftover status messages when the page loads
+  useEffect(() => {
+    setStatus({ loading: false, message: "", success: false });
+  }, []);
+
   const handleChange = (e) => {
     const { name, value, options } = e.target;
 
