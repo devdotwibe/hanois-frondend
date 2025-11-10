@@ -1264,12 +1264,14 @@ font-size: 17px;
 }
 
 .form-grp input,
+.form-grp select,
 .form-grp textarea {
   background: #ffffff;
     border: 2px solid #d7dbec;
      color: #000000;
     padding: 20px 15px;
-    border-radius: 4px; transition: all 0.5s ease-in-out;
+    border-radius: 4px; 
+    transition: all 0.5s ease-in-out;
 }
 
 .form-grp input:focus,
@@ -1280,6 +1282,11 @@ font-size: 17px;
    border-color: var(--primary-color); 
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
 }
+
+
+
+
+
 
 
 .intro-tab h3 {
@@ -1321,8 +1328,13 @@ ul.tab-nav1 {
 
 .tab-nav1 button{
   cursor: pointer;
+      background: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
 }
-.tab-nav1 button.active {font-weight: bold;}
+.tab-nav1 button.active {font-weight: bold;
+        background: #f0f2fb;
+}
 
 .torrance-card {
     width: 38%;
@@ -2240,7 +2252,9 @@ width: 20px; height: 20px;
 }
 
 
-
+.company-profile1 {
+    width: 75%;
+}
 
 
 

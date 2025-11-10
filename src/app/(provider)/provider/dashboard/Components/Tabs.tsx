@@ -18,6 +18,15 @@ const Tabs = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [servicesList, setServicesList] = useState([]);
 
+
+
+
+
+
+
+
+
+
   // selectedServices: array of { id, name, cost, currency }
   const [selectedServices, setSelectedServices] = useState([]);
 
@@ -321,7 +330,7 @@ router.push(`/service-provider-directory/details?providerId=${encodeURIComponent
       {/* Tab Content */}
       <div className="tab-content-wrap">
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
-          <form className="settingsform" onSubmit={handleSubmit}>
+          <form className="settingsform company-profile1" onSubmit={handleSubmit}>
 
 
 
@@ -340,12 +349,16 @@ router.push(`/service-provider-directory/details?providerId=${encodeURIComponent
 
             <div className="form-grp">
               <label>Company Categories</label>
+
+
               <select
                 name="categories"
                 multiple
                 value={formData.categories}
                 onChange={handleChange}
               >
+
+
                 {categoriesList.length > 0 ? (
                   categoriesList.map((cat) => (
                     <option key={cat.id} value={cat.id}>
@@ -355,8 +368,19 @@ router.push(`/service-provider-directory/details?providerId=${encodeURIComponent
                 ) : (
                   <option disabled>Loading categories...</option>
                 )}
+
+
+
+
               </select>
+
+
             </div>
+
+
+
+
+            
 
             <div className="form-grp">
               <label>Company Phone Number</label>
