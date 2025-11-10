@@ -305,8 +305,8 @@ const handleTabClick = (tabId) => {
       setStatus({ loading: false, message: "Provider updated successfully!", success: true });
 
       // Navigate to detail page after successful update
-// push providerId as a query param so the detail page can fetch it
-router.push(`/service-provider-directory/details?providerId=${encodeURIComponent(providerId)}`);
+      // push providerId as a query param so the detail page can fetch it
+      router.push(`/provider/dashboard/details?providerId=${encodeURIComponent(providerId)}`);
 
       // optional: clear errors
       setErrors({});
