@@ -347,7 +347,7 @@ router.push(`/service-provider-directory/details?providerId=${encodeURIComponent
               />
             </div>
 
-            <div className="form-grp">
+            <div className="form-grp select-grp">
               <label>Company Categories</label>
 
 
@@ -356,6 +356,7 @@ router.push(`/service-provider-directory/details?providerId=${encodeURIComponent
                 multiple
                 value={formData.categories}
                 onChange={handleChange}
+                className="select-wrapp"
               >
 
 
@@ -370,9 +371,23 @@ router.push(`/service-provider-directory/details?providerId=${encodeURIComponent
                 )}
 
 
-
-
               </select>
+
+
+                   <div className="select-wrapper">
+        <select id="project" className="project-select">
+          <option>Building a house from the scratch</option>
+          <option>Renovating old property</option>
+          <option>Commercial construction</option>
+        </select>
+        <span className="arrow">▼</span>
+      </div>
+
+
+
+
+              <span className="arrow">▼</span>
+
 
 
             </div>
