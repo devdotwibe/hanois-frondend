@@ -7,6 +7,7 @@ import TorranceCard from "../../Components/TorranceCard";
 import UploadBox from "../../Components/UploadBox";
 import { useRouter } from "next/navigation";
 import { SITE_URL  } from "@/config";
+import HouseOuter from "../../Components/HouseOuter";
 
 const ProjectComponent = () => {
   const [showProjects, setShowProjects] = useState(true);
@@ -58,6 +59,7 @@ const ProjectComponent = () => {
 
   return (
     <div className="project-component">
+      <HouseOuter /> 
       <button className="add-proj" onClick={handleAddClick}>
         <span className="icon">+</span> Add Project
       </button>
