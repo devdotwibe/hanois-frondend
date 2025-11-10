@@ -1,5 +1,5 @@
 import React from 'react'
-import AddNewForm from '../../../Componrnts/AddNewForm'
+import AddNewForm from '../Componrnts/AddNewForm'
 
 const AddNew = () => {
   return (
