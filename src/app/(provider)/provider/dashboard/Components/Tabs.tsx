@@ -49,6 +49,7 @@ const handleTabClick = (tabId) => {
     services: [], 
     professionalHeadline: "",
     image: null,
+    service_notws: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -178,6 +179,8 @@ const handleTabClick = (tabId) => {
           services,
           professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
           image: provider.image ?? null,
+          service_notws: provider.service_notws ?? "",
+
         });
       } catch (err) {
         console.error("Error fetching provider:", err);
@@ -258,6 +261,8 @@ const handleTabClick = (tabId) => {
           currency: s.currency,
         })),
         professional_headline: formData.professionalHeadline,
+        service_notws: formData.service_notws,
+
       };
 
       const res = await fetch(`${API_URL}providers/${providerId}`, {
@@ -320,17 +325,17 @@ const handleTabClick = (tabId) => {
 
 
 
-            <div className="form-grp">
-              <label>Company/Business Name</label>
-              <input
-                type="text"
-                name="companyName"
-                value={formData.companyName}
-                onChange={handleChange}
-                placeholder="Enter title"
-                required
-              />
-            </div>
+        <div className="form-grp">
+          <label>Service Note</label>
+          <input
+            type="text"
+            name="service_notws"
+            value={formData.service_notws}
+            onChange={handleChange}
+            placeholder="Enter Service Note"
+          />
+        </div>
+
 
             {/* <div className="form-grp select-grp">
               <label>Company Categories</label>
