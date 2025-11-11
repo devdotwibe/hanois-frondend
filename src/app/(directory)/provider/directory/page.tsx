@@ -14,36 +14,35 @@ const ServiceProviderDirectory = () => {
   const [selectedCategory, setSelectedCategory] = useState('All')
 
   useEffect(() => {
-    let cancelled = false
+    const controller = new AbortController()
     const fetchProviders = async () => {
       setLoading(true)
+      setError(null)
       try {
-        const res = await fetch(API_URL)
+        const res = await fetch(API_URL, { signal: controller.signal, cache: "no-store" })
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         const json = await res.json()
-        if (!cancelled) {
-          setProviders(json?.data?.providers || [])
-          setError(null)
-        }
+        setProviders(json?.data?.providers || [])
       } catch (err) {
-        if (!cancelled) setError(err.message || 'Fetch error')
+        if (err.name !== 'AbortError') {
+          setError(err.message || 'Fetch error')
+          setProviders([])
+        }
       } finally {
-        if (!cancelled) setLoading(false)
+        setLoading(false)
       }
     }
+
     fetchProviders()
-    return () => { cancelled = true }
+    return () => controller.abort()
   }, [])
 
-  // simple derived list based on search + category (category is placeholder because API provides category IDs only)
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return providers.filter(p => {
-      // search by name, service, location
+    return (providers || []).filter(p => {
       const hay = `${p.name || ''} ${p.service || ''} ${p.location || ''}`.toLowerCase()
       if (q && !hay.includes(q)) return false
       if (selectedCategory !== 'All') {
-        // crude check: see if category name appears in service text
         return (p.service || '').toLowerCase().includes(selectedCategory.toLowerCase())
       }
       return true
@@ -62,11 +61,12 @@ const ServiceProviderDirectory = () => {
           <Intro
             query={query}
             onQueryChange={setQuery}
-            total={providers.length}
+            total={(providers || []).length}
           />
 
           {loading && <p style={{padding: '1rem'}}>Loading providers...</p>}
           {error && <p style={{color:'red', padding: '1rem'}}>Error: {error}</p>}
+
           {!loading && !error && filtered.length === 0 && (
             <p style={{padding: '1rem'}}>No providers match your search.</p>
           )}
