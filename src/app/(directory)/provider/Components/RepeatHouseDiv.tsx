@@ -6,7 +6,7 @@ import ImageSlider from './ImageSlider';
 import { IMG_URL } from "@/config";
 
 const RepeatHouseDiv = ({ provider }) => {
-  const [serviceCosts, setServiceCosts] = useState([]);
+  const [serviceCosts, setServiceCosts] = useState(null);
   const [loadingCosts, setLoadingCosts] = useState(true);
   const [error, setError] = useState(null);
 
@@ -55,8 +55,10 @@ const RepeatHouseDiv = ({ provider }) => {
     fetchServiceCosts();
   }, [provider]);
 
-  // Format the starting budget and currency
-  const startingBudget = serviceCosts ? `${serviceCosts.currency} ${serviceCosts.cost.toFixed(2)}` : '$10,000';
+  // Format the starting budget and currency safely
+  const startingBudget = serviceCosts?.cost
+    ? `${serviceCosts.currency} ${serviceCosts.cost.toFixed(2)}`
+    : '$0'; // Fallback to default if no cost is found
 
   return (
     <div className="repeat-house-div">
@@ -117,6 +119,7 @@ const RepeatHouseDiv = ({ provider }) => {
 };
 
 export default RepeatHouseDiv;
+
 
 
 
