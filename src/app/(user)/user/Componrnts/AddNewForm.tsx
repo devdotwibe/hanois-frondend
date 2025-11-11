@@ -26,27 +26,44 @@ const AddNewForm = () => {
   };
 
   const handleSubmit = async (e:any) => {
-        setSubmitted(true);
-        setEditMode(false);
+  e.preventDefault();
 
-    try {
-        const res = await fetch(`${API_URL}/users/add_project`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+  try {
+    const res = await fetch(`${API_URL}/users/add_project`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : ""
+      },
+      body: JSON.stringify({
+        title: formData.title,
+        notes: formData.notes,
+        projectType: formData.projectType,
+        location: formData.location,
+        landSize: formData.landSize,
+        luxuryLevel: formData.luxuryLevel,
+        services: formData.services,
+        constructionBudget: formData.constructionBudget,
+        basement: formData.basement,
+        listingStyle: formData.listingStyle
+        })
     });
 
-      const data = await res.json();
-      console.log("Sent:", formData);
+    const data = await res.json();
+    console.log("API response:", data);
 
-      if (!res.ok) throw new Error("Error submitting form");
+    if (!res.ok) throw new Error(data.error || "Error submitting form");
+    setSubmitted(true);
+    setEditMode(false);
+    alert("Form submitted successfully");
+  } catch (error) {
+    alert("Failed to submit");
+    console.error(error);
+  }
+};
 
-      alert("Form submitted successfully");
-    } catch (error) {
-      alert("Failed to submit");
-      console.error(error);
-    }
-  };
 
 return (
   <div className='add-newformouter'>
@@ -54,7 +71,7 @@ return (
       <>
         <h2>Add New Project</h2>
 
-                <form className='addproject-form'>
+                <form className='addproject-form' onSubmit={handleSubmit}>
 
                     <div className="form-grp">
                         <label>Title</label>
@@ -238,7 +255,7 @@ return (
                     </div>
 
                     <div className="create-btn-container">
-                        <button className='create-btn' type="button"  onClick={handleSubmit} >Create</button>
+                        <button className='create-btn' type="submit">Create</button>
                     </div>
 
                 </form>
