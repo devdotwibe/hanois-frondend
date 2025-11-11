@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DirectorySidebar = () => {
+const DirectorySidebar = ({ onCategoryChange = () => {}, selectedCategory = 'All' }) => {
   return (
     <div className='filter-container'>
       <h2 className='filter-title'>FILTER BY</h2>
@@ -9,16 +9,23 @@ const DirectorySidebar = () => {
       <div className='filter-section'>
         <p className='section-label'>Service category</p>
         <div className='select-wrapper'>
-          <select className='category-select' defaultValue="Categories">
-            <option value="Categories">Categories</option>
+          <select
+            className='category-select'
+            value={selectedCategory}
+            onChange={(e) => onCategoryChange(e.target.value)}
+          >
+            <option value="All">Categories</option>
             <option value="Design">Design</option>
             <option value="Construction">Construction</option>
             <option value="Renovation">Renovation</option>
+            <option value="Artificial Intelligence">Artificial Intelligence</option>
+            <option value="Web Development">Web Development</option>
+            {/* add more static options or build dynamically if you have category names */}
           </select>
         </div>
       </div>
 
-      {/* Selected Tags */}
+      {/* Selected Tags (static placeholders) */}
       <div className='tags-container'>
         <div className='tag'>
           <span className='tag-text'>Design</span>
@@ -30,10 +37,10 @@ const DirectorySidebar = () => {
         </div>
       </div>
 
-      {/* Style Section */}
+      {/* Style Section (unchanged) */}
       <div className='filter-section'>
         <p className='section-label'>Style</p>
-        
+
         <label className='checkbox-label'>
           <input type="checkbox" className='hidden-checkbox' />
           <span className='custom-checkbox checked'>
@@ -71,3 +78,78 @@ const DirectorySidebar = () => {
 };
 
 export default DirectorySidebar;
+
+
+// import React from 'react';
+
+// const DirectorySidebar = () => {
+//   return (
+//     <div className='filter-container'>
+//       <h2 className='filter-title'>FILTER BY</h2>
+
+//       {/* Service Category Section */}
+//       <div className='filter-section'>
+//         <p className='section-label'>Service category</p>
+//         <div className='select-wrapper'>
+//           <select className='category-select' defaultValue="Categories">
+//             <option value="Categories">Categories</option>
+//             <option value="Design">Design</option>
+//             <option value="Construction">Construction</option>
+//             <option value="Renovation">Renovation</option>
+//           </select>
+//         </div>
+//       </div>
+
+//       {/* Selected Tags */}
+//       <div className='tags-container'>
+//         <div className='tag'>
+//           <span className='tag-text'>Design</span>
+//           <button className='tag-close'>✕</button>
+//         </div>
+//         <div className='tag'>
+//           <span className='tag-text'>Design</span>
+//           <button className='tag-close'>✕</button>
+//         </div>
+//       </div>
+
+//       {/* Style Section */}
+//       <div className='filter-section'>
+//         <p className='section-label'>Style</p>
+        
+//         <label className='checkbox-label'>
+//           <input type="checkbox" className='hidden-checkbox' />
+//           <span className='custom-checkbox checked'>
+//             <span className='checkmark'>✓</span>
+//           </span>
+//           <span>Modern</span>
+//         </label>
+
+//         <label className='checkbox-label'>
+//           <input type="checkbox" className='hidden-checkbox' />
+//           <span className='custom-checkbox checked'>
+//             <span className='checkmark'>✓</span>
+//           </span>
+//           <span>Classic</span>
+//         </label>
+
+//         <label className='checkbox-label'>
+//           <input type="checkbox" className='hidden-checkbox' />
+//           <span className='custom-checkbox'>
+//             <span className='checkmark'>✓</span>
+//           </span>
+//           <span>Urbanistic</span>
+//         </label>
+
+//         <label className='checkbox-label'>
+//           <input type="checkbox" className='hidden-checkbox' />
+//           <span className='custom-checkbox'>
+//             <span className='checkmark'>✓</span>
+//           </span>
+//           <span>Futurism</span>
+//         </label>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default DirectorySidebar;
