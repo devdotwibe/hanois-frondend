@@ -3,16 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import HouseCard1 from '@/app/(provider)/provider/dashboard/Components/HouseCard1';
 import ImageSlider from './ImageSlider';
-
-// base for images in your API
-import { IMG_URL } from "@/config";
+import { IMG_URL } from "@/config"; // Import IMG_URL from config
 
 const RepeatHouseDiv = ({ provider }) => {
   const [serviceCosts, setServiceCosts] = useState(null);
   const [loadingCosts, setLoadingCosts] = useState(true);
   const [error, setError] = useState(null);
-  const [projects, setProjects] = useState([]);
-  const [loadingProjects, setLoadingProjects] = useState(true);
+  const [projects, setProjects] = useState([]); // State to store projects
+
+  // Debugging the provider data
+  console.log("Provider data:", provider);
 
   const logoSrc = provider?.image ? `${IMG_URL}${provider.image}` : '/images/ahi-logo.jpg';
   const name = provider?.name || 'Unknown Provider';
@@ -56,10 +56,9 @@ const RepeatHouseDiv = ({ provider }) => {
     fetchServiceCosts();
   }, [provider]);
 
-  // Fetch projects data
+  // Fetch projects for the current provider
   useEffect(() => {
     const fetchProjects = async () => {
-      setLoadingProjects(true);
       try {
         const response = await fetch('https://hanois.dotwibe.com/api/api/projects');
         const data = await response.json();
@@ -68,24 +67,25 @@ const RepeatHouseDiv = ({ provider }) => {
           // Filter projects that belong to the current provider
           const providerProjects = data.data.projects.filter(project => project.provider_id === provider.id);
           setProjects(providerProjects);
+        } else {
+          setError('Failed to fetch projects');
         }
       } catch (err) {
-        setError('Error fetching project data');
-      } finally {
-        setLoadingProjects(false);
+        setError('Error fetching projects');
       }
     };
 
     fetchProjects();
-  }, [provider]);
+  }, [provider.id]);
+
+  // Get unique design names for the current provider
+  const designNames = Array.from(new Set(projects.map(project => project.design_name)))
+    .join(', ');
 
   // Format the starting budget and currency safely
   const startingBudget = serviceCosts?.cost
     ? `${serviceCosts.currency} ${serviceCosts.cost.toFixed(2)}`
     : '$0'; // Fallback to default if no cost is found
-
-  // Get the luxury type (design_name) from the projects
-  const luxuryType = projects.length > 0 ? projects[0]?.design_name : 'Not specified';
 
   return (
     <div className="repeat-house-div">
@@ -111,10 +111,10 @@ const RepeatHouseDiv = ({ provider }) => {
 
           <div className="d-row">
             <div className="d-col">
-              <p><strong>Luxury Type</strong></p>
+              <p><strong>Luxury type</strong></p>
             </div>
             <div className="d-col">
-              <p>{luxuryType}</p>
+              <p>{designNames || 'Not specified'}</p> {/* Display design names */}
             </div>
           </div>
         </div>

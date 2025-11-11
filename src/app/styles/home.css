@@ -2763,6 +2763,96 @@ border-bottom: 1px solid #e0e0e0;
     font-size: 18px;
 }
 
+.det-intro1 h2 {
+    margin: 0 0 12px;
+  font-family: 'Avenir-Black';
+    font-size: 25px;
+    line-height: 1;
+    margin-top: 12px;
+    padding: 0 0 0 20px;
+}
+
+.det-intro1 {
+    display: flex;
+    align-items: center;
+        margin: 0 0 30px;
+}
+
+.details-card {
+    margin: 40px 0 0px;
+}
+
+.details-card {
+    margin: 40px 0 0px;
+}
+
+.details-card h3 {
+    margin: 0 0 12px;
+    font-family: Avenir-Black;
+    font-size: 30px;
+    line-height: 1;
+    margin-top: 12px;
+}
+
+
+.details-card h4 {
+  font-family: 'Avenir-Black';
+    font-size: 24px;
+        margin-top: 24px;
+
+}
+
+
+.proj-meta1 {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 10px;
+}
+
+.project-meta {
+    max-width: 400px;
+    margin: 20px 0 0;
+}
+
+.proj-metacol {
+    width: 50%;
+}
+
+p.project-status {
+    color: #40D29A;
+}
+
+.project-details {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.proj-det1 {
+    width: 70%;
+}
+
+.proj-det2 {
+    width: 30%;
+}
+
+
+.budget-calc{background-color: #ffffff;
+padding-left: 0;}
+
+.editbtn-div {
+    display: flex;
+    justify-content: flex-end;
+}
+
+a.edit-details {
+    color: #2563eb;
+    background: none;
+    border-radius: 10px;
+    border: 2px solid #2563eb;
+    padding: 10px 50px;
+      font-family: 'Avenir-medium';
+
+}
 
 
 /* ------------------------------------responsive */
