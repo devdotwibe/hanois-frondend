@@ -4,7 +4,7 @@ import defaultLogo from "../../../../public/images/ahi-logo.jpg";
 import { IMG_URL } from "@/config";
 
 const DetailIntro = ({ provider }) => {
-  const name = provider?.name || "Unknown Provider";
+  const name = provider?.name || "Unknown Provider"; 
   const description =
     provider?.notes ||
     provider?.service_notes ||

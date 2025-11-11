@@ -16,12 +16,7 @@ const DetailCard: React.FC<DetailCardProps> = ({ logo, name, description }) => {
       <div className="house-card-logo">
         <div className="h-logodiv">
           {isString ? (
-            // remote/local string path: use plain img to avoid Image config issues
-            // If you prefer next/image, ensure remote domains are whitelisted in next.config.js
-            // and uncomment the Image usage below.
-            // <Image src={logo} alt={`${name} logo`} width={180} height={128} className="house-card-img" />
-            // Using <img> for robustness:
-            // eslint-disable-next-line @next/next/no-img-element
+
             <img src={logo} alt={`${name} logo`} width={180} height={128} className="house-card-img" />
           ) : (
             <Image src={logo as StaticImageData} alt={`${name} logo`} width={180} height={128} className="house-card-img" />
