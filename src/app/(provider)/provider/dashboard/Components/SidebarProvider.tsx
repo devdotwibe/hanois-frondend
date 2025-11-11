@@ -14,7 +14,7 @@ const SidebarProvider = () => {
     // company-profile will be handled specially on click
     { href: "/provider/dashboard/company-profile", label: "Company Profile" },
     { href: "/provider/dashboard/paymentandbilling", label: "Payment And Billing" },
-    { href: "/provider/dashboard/public-ptojects", label: "Public Projects" },
+    { href: "/provider/dashboard/public-projects", label: "Public Projects" },
   ];
 
   const activePath =
