@@ -37,10 +37,10 @@ export default function BodyClassManager() {
 
 
     // service provider signup
-    if (pathname.startsWith("/provider/dashboard/public-ptojects")) {
+    if (pathname.startsWith("/provider/dashboard/public-projects")) {
       document.body.classList.add("public-proj");
     } else {
-      document.body.classList.remove("public-ptojects");
+      document.body.classList.remove("public-proj");
     }
 
 
