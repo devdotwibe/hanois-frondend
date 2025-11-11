@@ -60,7 +60,8 @@ const ServiceProviderDirectory = () => {
   // Reset page to 1 when query changes (client-side search) or providers length changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [query, providers.length]);
+  // }, [query, providers.length]);
+  }, [query, selectedCategory]);
 
   // Filter data: if serverFiltered is true, don't apply category-based filtering again.
   const filtered = useMemo(() => {
