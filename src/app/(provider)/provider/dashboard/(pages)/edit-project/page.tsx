@@ -454,6 +454,7 @@ const handleSubmit = async (e) => {
   {/* 🗑 Delete Button */}
 <button
   type="button"
+   className="save-btn1"
   onClick={() => setDeleteModalVisible(true)}
   style={{
     background: "#0070f3", // Same blue as Update button
