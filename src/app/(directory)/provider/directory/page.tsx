@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState, useMemo } from 'react'
 import Intro from '../Components/Intro'
 import RepeatHouseDiv from '../Components/RepeatHouseDiv'
