@@ -32,7 +32,7 @@ const PrevArrow = (props: any) => {
   );
 };
 
-const ImageSlider: React.FC = () => {
+const ImageSlider: React.FC<{ projects: any[] }> = ({ projects }) => {
   const settings: Settings = {
     dots: false,
     infinite: true,
@@ -49,14 +49,11 @@ const ImageSlider: React.FC = () => {
     ],
   };
 
-  const images: string[] = [
-    "/images/property-img.jpg",
-    "/images/property-img.jpg",
-    "/images/property-img.jpg",
-    "/images/property-img.jpg",
-    "/images/property-img.jpg",
-    "/images/property-img.jpg",
-  ];
+  // Get images from the projects
+  const images = projects
+    .map(project => project.images)
+    .flat()
+    .map(image => image.image_path);
 
   return (
     <div className="relative max-w-6xl mx-auto py-10 px-4">
