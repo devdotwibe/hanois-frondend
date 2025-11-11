@@ -1,6 +1,6 @@
 import React from 'react';
-import DetailCard from '@/app/(directory)/Components/DetailCard';
-import defaultLogo from "../../../../public/images/ahi-logo.jpg"; 
+import DetailCard from '@/app/(directory)/provider/Components/DetailCard';
+import defaultLogo from "../../../../../public/images/ahi-logo.jpg"; 
 import { IMG_URL } from "@/config";
 
 const DetailIntro = ({ provider }) => {

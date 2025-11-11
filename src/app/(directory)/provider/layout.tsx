@@ -21,7 +21,7 @@ import "../../../app/styles/sidebar.css"
 import Header from "@/app/(frontend)/components/Header/Header";
 import Footer from "@/app/(frontend)/components/Footer/Footer";
 import BodyClassManager from "@/app/(frontend)/components/BodyClassManager";
-import DirectorySidebar from "../Components/DirectorySidebar";
+import DirectorySidebar from "./Components/DirectorySidebar";
 
 export const metadata: Metadata = {
   title: "hanois",

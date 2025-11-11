@@ -1,10 +1,10 @@
 import React from "react";
-import BusinessInfo from '@/app/(directory)/Components/BusinessInfo'
-import DetailIntro from '@/app/(directory)/Components/DetailIntro'
-import StatusCard from '@/app/(directory)/Components/StatusCard'
-import AboutContainer from '@/app/(directory)/service-provider-directory/Components/AboutContainer'
-import ServiceDiv from '@/app/(directory)/service-provider-directory/Components/ServiceDiv'
-import TorranceSlider from '@/app/(directory)/service-provider-directory/Components/TorranceSlider'
+import BusinessInfo from '@/app/(directory)/provider/Components/BusinessInfo'
+import DetailIntro from '@/app/(directory)/provider/Components/DetailIntro'
+import StatusCard from '@/app/(directory)/provider/Components/StatusCard'
+import AboutContainer from '@/app/(directory)/provider/directory/Components/AboutContainer'
+import ServiceDiv from '@/app/(directory)/provider/directory/Components/ServiceDiv'
+import TorranceSlider from '@/app/(directory)/provider/directory/Components/TorranceSlider'
 import { cookies } from 'next/headers';
 import { API_URL } from "@/config";
 

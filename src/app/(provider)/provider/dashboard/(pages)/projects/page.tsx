@@ -3,18 +3,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { API_URL, IMG_URL, SITE_URL } from "@/config";
-// import HouseOuter from "../../Components/HouseOuter";
+import HouseOuter from "../../Components/HouseOuter";
 import TabBtns from "../../Components/TabBtns";
 import TorranceCard from "../../Components/TorranceCard";
 import UploadBox from "../../Components/UploadBox";
-import DetailCard from "@/app/(directory)/Components/DetailCard";
 
 const ProjectComponent = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showProjects, setShowProjects] = useState(true);
   const [error, setError] = useState(null);
-  const [provider, setProvider] = useState(null); // <-- provider state
   const router = useRouter();
 
   // 🟩 Fetch projects from API
@@ -32,50 +30,9 @@ const ProjectComponent = () => {
     }
   };
 
-  // 🟩 Fetch provider info (dynamic DetailCard)
-  const fetchProvider = async (providerId, token) => {
-    if (!providerId) return;
-    try {
-      const headers = { "Content-Type": "application/json" };
-      if (token) headers["Authorization"] = `Bearer ${token}`;
-
-      // Use the same endpoint style you provided
-      const res = await fetch(`${API_URL}providers/${encodeURIComponent(providerId)}`, {
-        method: "GET",
-        headers, // client fetch - next.revalidate not included (client-side)
-      });
-
-      if (!res.ok) {
-        console.warn("Provider fetch failed:", res.status);
-        return;
-      }
-
-      const data = await res.json().catch(() => null);
-      // API shape in your example returns { provider: {...} } or provider directly
-      const fetchedProvider = data?.provider ?? data ?? null;
-      if (fetchedProvider) {
-        setProvider(fetchedProvider);
-      }
-    } catch (err) {
-      console.error("Error fetching provider:", err);
-    }
-  };
-
-  // 🟩 Load projects and provider on mount
+  // 🟩 Load projects on mount
   useEffect(() => {
     fetchProjects();
-
-    // read provider id and token from localStorage (same pattern you used elsewhere)
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const token = localStorage.getItem("token");
-      const providerId = user?.id || null;
-      if (providerId) {
-        fetchProvider(providerId, token);
-      }
-    } catch (err) {
-      console.error("Error reading localStorage for provider info:", err);
-    }
   }, []);
 
   // 🟩 Handle Add Project button
@@ -85,36 +42,9 @@ const ProjectComponent = () => {
     router.push(target);
   };
 
-  // helper to build provider logo like DetailIntro
-  const buildProviderLogo = (prov) => {
-    const fallback = "/images/ahi-logo.jpg";
-    if (!prov) return fallback;
-    if (prov.image) {
-      if (/^https?:\/\//i.test(prov.image)) {
-        return prov.image;
-      } else {
-        const cleanBase = (IMG_URL || "").replace(/\/+$/, "");
-        const cleanPath = prov.image.replace(/^\/+/, "");
-        return cleanBase ? `${cleanBase}/${cleanPath}` : `/${cleanPath}`;
-      }
-    }
-    return fallback;
-  };
-
-  // if provider exists use provider data; otherwise fall back to generic text
-  const detailLogo = buildProviderLogo(provider);
-  const detailName = provider?.name || "Projects";
-  const detailDesc =
-    provider?.notes ||
-    provider?.service_notes ||
-    provider?.professional_headline ||
-    "Your uploaded projects are listed below.";
-
   return (
     <div className="project-component">
-      {/* Dynamic DetailCard using provider when available */}
-      <DetailCard logo={detailLogo} name={detailName} description={detailDesc} />
-
+      <HouseOuter />
       <TabBtns />
 
       {/* 🟩 Add Button */}
@@ -145,6 +75,7 @@ const ProjectComponent = () => {
               return (
                 <TorranceCard
                   key={proj.id}
+                   id={proj.id}
                   image={imageUrl}
                   category={proj.project_type_name || "Unknown"}
                   title={proj.title}

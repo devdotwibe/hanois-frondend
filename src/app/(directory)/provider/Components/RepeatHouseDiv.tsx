@@ -1,7 +1,7 @@
 import HouseCard from '@/app/(provider)/provider/dashboard/Components/HouseCard'
 import React from 'react'
 
-import logo1 from "../../../../public/images/ahi-logo.jpg"; 
+import logo1 from "../../../../../public/images/ahi-logo.jpg"
 import ImageSlider from './ImageSlider';
 
 
