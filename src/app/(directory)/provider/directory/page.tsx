@@ -26,25 +26,12 @@ const ServiceProviderDirectory = () => {
       setLoading(true);
       setError(null);
       try {
-        // build url with optional params: category, name, service
-        let url = `${API_URL}?`;
+        let url = API_URL;
         let usedServerFilter = false;
-
         if (selectedCategory && selectedCategory !== 'All') {
-          url += `category=${encodeURIComponent(selectedCategory)}&`;
+          url = `${API_URL}?category=${encodeURIComponent(selectedCategory)}`;
           usedServerFilter = true;
         }
-
-        if (query && query.trim() !== '') {
-          // backend expects `name` and `service` params (you added both on backend)
-          const q = encodeURIComponent(query.trim());
-          url += `name=${q}&service=${q}&`;
-          usedServerFilter = true;
-        }
-
-        // remove trailing & or ? if present
-        url = url.replace(/[&?]$/, '');
-
         const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
@@ -64,8 +51,7 @@ const ServiceProviderDirectory = () => {
     };
 
     fetchProviders();
-  }, [selectedCategory, query]); // fetch when category OR query changes
-
+  }, [selectedCategory]);
 
   // Reset page to 1 when query changes (client-side search) or providers length changes
   useEffect(() => {
