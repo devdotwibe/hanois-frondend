@@ -1,109 +1,97 @@
 "use client";
-import React, { useState } from "react";
-// import img1 from "../../../../../../public/images/property-img.jpg";
-import img1 from "../../../../../../../public/images/property-img.jpg";
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { API_URL, IMG_URL, SITE_URL } from "@/config";
+import HouseOuter from "../../Components/HouseOuter";
+import TabBtns from "../../Components/TabBtns";
 import TorranceCard from "../../Components/TorranceCard";
 import UploadBox from "../../Components/UploadBox";
-import { useRouter } from "next/navigation";
-import { SITE_URL  } from "@/config";
-import HouseOuter from "../../Components/HouseOuter";
-import DetailCard from '@/app/(directory)/Components/DetailCard';
-import TabBtns from "../../Components/TabBtns";
 
 const ProjectComponent = () => {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showProjects, setShowProjects] = useState(true);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
-  const projects = [
-    {
-      id: 1,
-      image: img1,
-      category: "Housing",
-      title: "Torrance 2 modern bathroom remodel",
-      description:
-        "Beautiful gold accents to compliment all the white tile, and a master terrace",
-      styleType: "Modern",
-      spaceSize: "56 m²",
-      location: "New York",
-    },
-    {
-      id: 2,
-      image: img1,
-      category: "Commercial",
-      title: "Complete home remodeling",
-      description:
-        "3/4 bath with beautiful gold accents to compliment all the white tile, and a master bath terrace",
-      styleType: "Modern",
-      spaceSize: "56 m²",
-      location: "New York",
-    },
-    {
-      id: 3,
-      image: img1,
-      category: "Housing",
-      title: "Torrance 2 modern bathroom remodel",
-      description:
-        "Beautiful gold accents to compliment all the white tile, and a master terrace",
-      styleType: "Modern",
-      spaceSize: "56 m²",
-      location: "New York",
-    },
-  ];
+  // 🟩 Fetch projects from API
+  const fetchProjects = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/projects`);
+      if (res.data && res.data.success) {
+        setProjects(res.data.data.projects || []);
+      }
+    } catch (err) {
+      console.error("Error fetching projects:", err);
+      setError("Failed to load projects.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  // 🟩 Load projects on mount
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  // 🟩 Handle Add Project button
   const handleAddClick = () => {
     const base = (SITE_URL || "").replace(/\/+$/, "");
     const target = `${base}/provider/dashboard/add-project`;
     router.push(target);
   };
 
-
-
   return (
     <div className="project-component">
-      <DetailCard
-        logo={img1}
-        name="Torrance Architecture Studio"
-        description="Award-winning architecture and interior design firm specializing in modern and sustainable projects."
-      />
-
-
+      <HouseOuter />
       <TabBtns />
 
-
-
-
-
-
-
+      {/* 🟩 Add Button */}
       <button className="add-proj" onClick={handleAddClick}>
         <span className="icon">+</span> Add Project
       </button>
 
+      {/* 🟩 Projects Section */}
       <div className={`all-proj ${!showProjects ? "hide" : ""}`}>
-        <div className="torrance-div">
-          {projects.map((proj) => (
-            <TorranceCard
-              key={proj.id}
-              image={proj.image}
-              category={proj.category}
-              title={proj.title}
-              description={proj.description}
-              styleType={proj.styleType}
-              spaceSize={proj.spaceSize}
-              location={proj.location}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <p style={{ textAlign: "center", marginTop: "20px" }}>Loading projects...</p>
+        ) : error ? (
+          <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+        ) : projects.length === 0 ? (
+          <p style={{ textAlign: "center", marginTop: "20px" }}>
+            No projects found. Please add one.
+          </p>
+        ) : (
+          <div className="torrance-div">
+            {projects.map((proj) => {
+              // 🟩 Find cover image dynamically
+              const coverImgObj =
+                proj.images?.find((img) => img.is_cover) || proj.images?.[0];
+              const imageUrl = coverImgObj
+                ? `${IMG_URL}${coverImgObj.image_path}`
+                : "/images/property-img.jpg";
 
+              return (
+                <TorranceCard
+                  key={proj.id}
+                  image={imageUrl}
+                  category={proj.project_type_name || "Unknown"}
+                  title={proj.title}
+                  description={proj.notes}
+                  styleType={proj.design_name || "—"}
+                  spaceSize={proj.land_size || "—"}
+                  location={proj.location || "—"}
+                />
+              );
+            })}
+          </div>
+        )}
+
+        {/* 🟩 Add Project Form */}
         <div className="add-projects">
-            <UploadBox />
-
+          <UploadBox />
         </div>
-
-
-
-
       </div>
     </div>
   );

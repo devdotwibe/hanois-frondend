@@ -4,11 +4,12 @@ import Image from "next/image";
 import axios from "axios";
 import uploadIcon from "../../../../../../../public/images/upload.svg";
 import { API_URL } from "@/config";
+import HouseOuter from "../../Components/HouseOuter";
 import TabBtns from "../../Components/TabBtns";
-import DetailCard from '@/app/(directory)/Components/DetailCard';
-
+import { useRouter } from "next/navigation"; 
 
 const UploadBox = () => {
+   const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     notes: "",
@@ -79,10 +80,11 @@ const UploadBox = () => {
 
   // 🟩 Handle file change
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImageFile(files);
-    setErrors((prev) => ({ ...prev, images: "" }));
-  };
+  const newFiles = Array.from(e.target.files);
+  setImageFile((prev) => (prev ? [...prev, ...newFiles] : newFiles));
+  setErrors((prev) => ({ ...prev, images: "" }));
+};
+
 
   // 🟩 Validate all fields
   const validateForm = () => {
@@ -166,11 +168,8 @@ setTimeout(() => {
 
   return (
     <>
-      <DetailCard
-        logo={uploadIcon}
-        name="Torrance Architecture Studio"
-        description="Upload area — add images and project details below."
-      />
+      <HouseOuter />
+
       <TabBtns />
 
 
@@ -471,8 +470,11 @@ setTimeout(() => {
     >
       <h3 style={{ color: "green", marginBottom: "10px" }}>✅ Project Saved!</h3>
       <p>Your project has been successfully saved.</p>
-      <button
-        onClick={() => setModalVisible(false)}
+       <button
+        onClick={() => {
+          setModalVisible(false);
+          router.push("/provider/dashboard/projects"); // 👈 redirect on close
+        }}
         style={{
           marginTop: "15px",
           background: "#0070f3",
