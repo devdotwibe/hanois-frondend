@@ -31,6 +31,8 @@ const EditProject = () => {
   const [existingImages, setExistingImages] = useState([]);
   const [message, setMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+
 
   // 🟩 Load provider + token
   useEffect(() => {
@@ -174,25 +176,25 @@ const handleSubmit = async (e) => {
 };
 
 
-// 🟩 Handle project delete
-const handleDelete = async () => {
-  if (!id) return alert("Invalid project ID.");
+// // 🟩 Handle project delete
+// const handleDelete = async () => {
+//   if (!id) return alert("Invalid project ID.");
 
-  const confirmDelete = window.confirm("Are you sure you want to delete this project?");
-  if (!confirmDelete) return;
+//   const confirmDelete = window.confirm("Are you sure you want to delete this project?");
+//   if (!confirmDelete) return;
 
-  try {
-    await axios.delete(`${API_URL}/projects/${id}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
+//   try {
+//     await axios.delete(`${API_URL}/projects/${id}`, {
+//       headers: token ? { Authorization: `Bearer ${token}` } : {},
+//     });
 
-    alert("✅ Project deleted successfully!");
-    router.push("/provider/dashboard/projects");
-  } catch (err) {
-    console.error("❌ Error deleting project:", err);
-    alert("❌ Failed to delete project.");
-  }
-};
+//     alert("✅ Project deleted successfully!");
+//     router.push("/provider/dashboard/projects");
+//   } catch (err) {
+//     console.error("❌ Error deleting project:", err);
+//     alert("❌ Failed to delete project.");
+//   }
+// };
 
 
 
@@ -440,7 +442,7 @@ const handleDelete = async () => {
             </div>
 
             {/* Update Button */}
-           <div
+          <div
   className="btn-cvr"
   style={{
     display: "flex",
@@ -449,10 +451,10 @@ const handleDelete = async () => {
     marginTop: "20px",
   }}
 >
+  {/* 🗑 Delete Button */}
   <button
     type="button"
-    onClick={handleDelete}
-    className="delete-btn1"
+    onClick={() => setDeleteModalVisible(true)} // 👈 open modal
     style={{
       background: "#dc3545",
       color: "#fff",
@@ -465,6 +467,7 @@ const handleDelete = async () => {
     Delete
   </button>
 
+  {/* 💾 Update Button */}
   <button
     type="submit"
     className="save-btn1"
@@ -480,6 +483,7 @@ const handleDelete = async () => {
     Update
   </button>
 </div>
+
 
 
 
@@ -533,6 +537,94 @@ const handleDelete = async () => {
               </div>
             </div>
           )}
+
+          {/* 🟥 Delete Confirmation Modal */}
+{deleteModalVisible && (
+  <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      backgroundColor: "rgba(0,0,0,0.4)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 1000,
+    }}
+  >
+    <div
+      style={{
+        background: "white",
+        padding: "30px 40px",
+        borderRadius: "12px",
+        textAlign: "center",
+        boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+        width: "90%",
+        maxWidth: "400px",
+      }}
+    >
+      <h3 style={{ color: "#333" }}>Are you sure?</h3>
+      <p style={{ marginTop: "10px", color: "#555" }}>
+        Are you sure you want to delete this project? <br />
+        This action cannot be undone.
+      </p>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "15px",
+          marginTop: "25px",
+        }}
+      >
+        <button
+          onClick={() => setDeleteModalVisible(false)}
+          style={{
+            background: "#ccc",
+            color: "#333",
+            border: "none",
+            borderRadius: "6px",
+            padding: "8px 16px",
+            cursor: "pointer",
+          }}
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={async () => {
+            try {
+              await axios.delete(`${API_URL}/projects/${id}`, {
+                headers: token ? { Authorization: `Bearer ${token}` } : {},
+              });
+              setDeleteModalVisible(false);
+              alert("✅ Project deleted successfully!");
+              router.push("/provider/dashboard/projects");
+            } catch (err) {
+              console.error("❌ Error deleting project:", err);
+              alert("❌ Failed to delete project.");
+            }
+          }}
+          style={{
+            background: "#dc3545",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
+            padding: "8px 16px",
+            cursor: "pointer",
+          }}
+        >
+          Yes, Delete
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
         </div>
       </div>
     </>
