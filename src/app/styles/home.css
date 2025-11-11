@@ -1821,32 +1821,25 @@ border-right: 1px solid #e0e0e0;
     font-size: 23px;
 }
 
-.info-label {
-    font-size: 20px;
-    font-family: 'Avenir-medium';
-        margin: 0 0 10px;
+.info-label {font-size: 20px;
+  margin-bottom: 10px;
+  font-family: 'Avenir-medium';margin: 0 0 10px;}
 
+.info-label span {font-size: 18px;
 }
 
+.info1 {width: 50%;}
 
-.info1 {
-    width: 50%;
-}
+.info-grid {display: flex;}
 
-.info-grid {
-    display: flex;
-}
-
-.info2 {
-    padding-left: 50px;
-}
+.info2 {padding-left: 50px;}
 
 .info-item {
     margin: 0 0 20px;
 }
 
 .serv-div h2 {
-    margin: 0 0 8px;
+    margin: 0 0 30px;
     font-family: Avenir-Black;
     font-size: 23px;
 }
@@ -1985,7 +1978,15 @@ border-right: 1px solid #e0e0e0;
 .info-value a {
     color: #2050f5;
     text-decoration: underline;
+      font-family: 'Avenir-medium';
+
 }
+
+
+.info-value a:hover{
+  text-decoration: none;
+}
+
 
 .business-div1 h3 span{display: block;}
 
