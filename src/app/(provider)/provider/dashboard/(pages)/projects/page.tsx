@@ -8,6 +8,7 @@ import UploadBox from "../../Components/UploadBox";
 import { useRouter } from "next/navigation";
 import { SITE_URL  } from "@/config";
 import HouseOuter from "../../Components/HouseOuter";
+import DetailCard from '@/app/(directory)/Components/DetailCard';
 import TabBtns from "../../Components/TabBtns";
 
 const ProjectComponent = () => {
@@ -60,7 +61,12 @@ const ProjectComponent = () => {
 
   return (
     <div className="project-component">
-      <HouseOuter /> 
+      <DetailCard
+        logo={img1}
+        name="Torrance Architecture Studio"
+        description="Award-winning architecture and interior design firm specializing in modern and sustainable projects."
+      />
+
 
       <TabBtns />
 
