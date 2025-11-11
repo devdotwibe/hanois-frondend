@@ -32,9 +32,9 @@ const TorranceCard: React.FC<TorranceCardProps> = ({
 }) => {
   return (
     <div className="torrance-card">
-      <div className="torrance-card-img">
+      <div className="torrance-card-image-wrap">
         <Image src={image} alt={title} width={400} height={260} />
-        <span className="category-badge">{category}</span>
+        <span className="torrance-card-badge">{category}</span>
       </div>
 
       <div className="torrance-card-info">

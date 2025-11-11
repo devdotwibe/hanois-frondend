@@ -1393,6 +1393,7 @@ ul.tab-nav1 {
 .torrance-div .torrance-card {
     width: 32.6%;
     margin-right: 1%;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 }
 
 .torrance-div .torrance-card:nth-child(3n){
@@ -1941,7 +1942,6 @@ border-right: 1px solid #e0e0e0;
 /* Card Styles */
 .torrance-card {
   background: white;
-  border-radius: 16px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -1966,7 +1966,7 @@ border-right: 1px solid #e0e0e0;
   bottom: 12px;
   left: 12px;
   border: 1px solid white;
-  background: rgba(0,0,0,0.4);
+
   backdrop-filter: blur(3px);
   color: white;
   font-size: 13px;
