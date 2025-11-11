@@ -173,6 +173,30 @@ const handleSubmit = async (e) => {
   }
 };
 
+
+// 🟩 Handle project delete
+const handleDelete = async () => {
+  if (!id) return alert("Invalid project ID.");
+
+  const confirmDelete = window.confirm("Are you sure you want to delete this project?");
+  if (!confirmDelete) return;
+
+  try {
+    await axios.delete(`${API_URL}/projects/${id}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+
+    alert("✅ Project deleted successfully!");
+    router.push("/provider/dashboard/projects");
+  } catch (err) {
+    console.error("❌ Error deleting project:", err);
+    alert("❌ Failed to delete project.");
+  }
+};
+
+
+
+
   return (
     <>
       <HouseOuter />
@@ -416,11 +440,50 @@ const handleSubmit = async (e) => {
             </div>
 
             {/* Update Button */}
-            <div className="btn-cvr" style={{ textAlign: "right", marginTop: "20px" }}>
-              <button type="submit" className="save-btn1">
-                Update
-              </button>
-            </div>
+           <div
+  className="btn-cvr"
+  style={{
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "10px",
+    marginTop: "20px",
+  }}
+>
+  <button
+    type="button"
+    onClick={handleDelete}
+    className="delete-btn1"
+    style={{
+      background: "#dc3545",
+      color: "#fff",
+      border: "none",
+      borderRadius: "6px",
+      padding: "10px 16px",
+      cursor: "pointer",
+    }}
+  >
+    Delete
+  </button>
+
+  <button
+    type="submit"
+    className="save-btn1"
+    style={{
+      background: "#0070f3",
+      color: "#fff",
+      border: "none",
+      borderRadius: "6px",
+      padding: "10px 16px",
+      cursor: "pointer",
+    }}
+  >
+    Update
+  </button>
+</div>
+
+
+
+
           </form>
 
           {/* 🟩 Success Modal */}
