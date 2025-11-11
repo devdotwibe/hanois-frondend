@@ -452,20 +452,21 @@ const handleSubmit = async (e) => {
   }}
 >
   {/* 🗑 Delete Button */}
-  <button
-    type="button"
-    onClick={() => setDeleteModalVisible(true)} // 👈 open modal
-    style={{
-      background: "#dc3545",
-      color: "#fff",
-      border: "none",
-      borderRadius: "6px",
-      padding: "10px 16px",
-      cursor: "pointer",
-    }}
-  >
-    Delete
-  </button>
+<button
+  type="button"
+  onClick={() => setDeleteModalVisible(true)}
+  style={{
+    background: "#0070f3", // Same blue as Update button
+    color: "#fff",
+    border: "none",
+    borderRadius: "6px",
+    padding: "10px 16px",
+    cursor: "pointer",
+  }}
+>
+  Delete
+</button>
+
 
   {/* 💾 Update Button */}
   <button
