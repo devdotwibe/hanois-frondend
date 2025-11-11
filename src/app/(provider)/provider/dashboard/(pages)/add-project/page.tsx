@@ -4,8 +4,9 @@ import Image from "next/image";
 import axios from "axios";
 import uploadIcon from "../../../../../../../public/images/upload.svg";
 import { API_URL } from "@/config";
-import HouseOuter from "../../Components/HouseOuter";
 import TabBtns from "../../Components/TabBtns";
+import DetailCard from '@/app/(directory)/Components/DetailCard';
+
 
 const UploadBox = () => {
   const [formData, setFormData] = useState({
@@ -165,8 +166,11 @@ setTimeout(() => {
 
   return (
     <>
-      <HouseOuter />
-
+      <DetailCard
+        logo={uploadIcon}
+        name="Torrance Architecture Studio"
+        description="Upload area — add images and project details below."
+      />
       <TabBtns />
 
 
