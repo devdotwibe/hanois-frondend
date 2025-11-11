@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import HouseCard1 from '@/app/(provider)/provider/dashboard/Components/HouseCard1';
-import ImageSlider from './ImageSlider';
+import HouseCard1 from '@/app/(provider)/provider/dashboard/Components/HouseCard1'
+import React from 'react'
+import ImageSlider from './ImageSlider'
 
 // base for images in your API
 import { IMG_URL } from "@/config";
 
 const RepeatHouseDiv = ({ provider }) => {
-  const [serviceCosts, setServiceCosts] = useState([]);
-  const [loadingCosts, setLoadingCosts] = useState(true);
-  const [error, setError] = useState(null);
-
   // Debugging the provider data
   console.log("Provider data:", provider);
 
@@ -18,41 +14,7 @@ const RepeatHouseDiv = ({ provider }) => {
   const description = provider?.professional_headline || provider?.service || '';
   const services = provider?.service || 'Not specified';
   const location = provider?.location || 'Not specified';
-
-  // Fetch service costs
-  useEffect(() => {
-    const fetchServiceCosts = async () => {
-      setLoadingCosts(true);
-      setError(null);
-      try {
-        const response = await fetch('https://hanois.dotwibe.com/api/api/providers/all-provider-services');
-        const data = await response.json();
-
-        if (data.success) {
-          const providerServices = data.data.filter(service => service.provider_name === provider.name);
-
-          // Get the lowest cost for the provider's services
-          const minCost = providerServices
-            .map(service => parseFloat(service.average_cost))
-            .filter(cost => !isNaN(cost)) // Ensure cost is a valid number
-            .reduce((min, cost) => (cost < min ? cost : min), Infinity);
-
-          // Set the service costs and update loading state
-          setServiceCosts(minCost === Infinity ? null : minCost);
-        } else {
-          setError('Failed to fetch service costs');
-        }
-      } catch (err) {
-        setError('Error fetching service costs');
-      } finally {
-        setLoadingCosts(false);
-      }
-    };
-
-    fetchServiceCosts();
-  }, [provider]);
-
-  const startingBudget = serviceCosts ? `$${serviceCosts}` : '$10,000';
+  const startingBudget = provider?.starting_budget ?? null;
 
   return (
     <div className="repeat-house-div">
@@ -62,7 +24,7 @@ const RepeatHouseDiv = ({ provider }) => {
           name={name}
           description={description}
         />
-        <button className="detail-btn">Details</button>
+        <button className='detail-btn'>Details</button>
       </div>
 
       <div className="details">
@@ -92,7 +54,7 @@ const RepeatHouseDiv = ({ provider }) => {
               <p><strong>Starting Budget</strong></p>
             </div>
             <div className="d-col">
-              <p>{startingBudget}</p>
+              <p>{startingBudget ? `$${startingBudget}` : '$10,000'}</p>
             </div>
           </div>
 
@@ -112,8 +74,8 @@ const RepeatHouseDiv = ({ provider }) => {
   );
 };
 
-export default RepeatHouseDiv;
 
+export default RepeatHouseDiv
 
 // import HouseCard from '@/app/(provider)/provider/dashboard/Components/HouseCard'
 // import React from 'react'
