@@ -96,40 +96,49 @@ const DirectorySidebar = ({
       </div>
 
       {/* Dynamic Style / Design Section */}
-      <div className="filter-section">
-        <p className="section-label">Style</p>
+   {/* Dynamic Style / Design Section */}
+<div className="filter-section">
+  <p className="section-label">Style</p>
 
-        {designs.length === 0 ? (
-          <p className="muted">No styles available</p>
-        ) : (
-          designs.map((design) => {
-            // Choose a logical identifier for the checkbox value.
-            // Using design.name as the user-facing identifier (from your sample JSON).
-            // If you'd rather use ids for communication with the API, switch to design.id.
-            const checkboxId = `design-${design.id}`;
-            const value = design.name;
-            const checked = stylesSelected.has(value) || stylesSelected.has(design.id);
+  {designs.length === 0 ? (
+    <p className="muted">No styles available</p>
+  ) : (
+    designs.map((design) => {
+      const checkboxId = `design-${design.id}`;
+      const value = design.name;
+      const checked = stylesSelected.has(value) || stylesSelected.has(design.id);
 
-            return (
-              <label key={design.id} className="checkbox-label" htmlFor={checkboxId} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                <input
-                  id={checkboxId}
-                  type="checkbox"
-                  className="hidden-checkbox"
-                  checked={checked}
-                  onChange={() => toggleStyle(value)}
-                  aria-checked={checked}
-                />
-                {/* Keep your custom-checkbox markup if you have custom CSS */}
-                <span className={`custom-checkbox ${checked ? 'checked' : ''}`} aria-hidden="true">
-                  <span className="checkmark">✓</span>
-                </span>
-                <span>{design.name}</span>
-              </label>
-            );
-          })
-        )}
-      </div>
+      return (
+        <label
+          key={design.id}
+          htmlFor={checkboxId}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            marginBottom: 8,
+            cursor: 'pointer',
+          }}
+        >
+          {/* Keep the real input visible enough to catch clicks */}
+          <input
+            id={checkboxId}
+            type="checkbox"
+            checked={checked}
+            onChange={() => toggleStyle(value)}
+            style={{ cursor: 'pointer', marginRight: 8 }}
+          />
+
+          {/* The custom checkbox icon + label text */}
+          <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            {checked ? '✅' : '⬜'} <span>{design.name}</span>
+          </span>
+        </label>
+      );
+    })
+  )}
+</div>
+
     </div>
   );
 };
