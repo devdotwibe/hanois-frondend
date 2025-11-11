@@ -8,6 +8,7 @@ import UploadBox from "../../Components/UploadBox";
 import { useRouter } from "next/navigation";
 import { SITE_URL  } from "@/config";
 import HouseOuter from "../../Components/HouseOuter";
+import TabBtns from "../../Components/TabBtns";
 
 const ProjectComponent = () => {
   const [showProjects, setShowProjects] = useState(true);
@@ -60,6 +61,15 @@ const ProjectComponent = () => {
   return (
     <div className="project-component">
       <HouseOuter /> 
+
+      <TabBtns />
+
+
+
+
+
+
+
       <button className="add-proj" onClick={handleAddClick}>
         <span className="icon">+</span> Add Project
       </button>
