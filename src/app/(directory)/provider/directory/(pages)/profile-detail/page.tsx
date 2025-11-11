@@ -235,7 +235,7 @@ const fetchProviderDetails = async (providerId) => {
 
         {/* 🧩 Service Section (Dynamic) */}
         <div className="scope-card">
-          <h3 className="scope-title">Service</h3>
+          <h3 className="scope-title">Scope</h3>
           <div className="scope-items">
             {serviceError ? (
               <p style={{ color: "red" }}>{serviceError}</p>
