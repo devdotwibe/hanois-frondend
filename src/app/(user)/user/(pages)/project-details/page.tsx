@@ -1,10 +1,36 @@
 import React from 'react'
+import BudjectCalculator from '../../Componrnts/BudjectCalculator'
+import DetailsIntro from '../../Componrnts/DetailsIntro'
 
 const page = () => {
   return (
     <div>
 
-        <h2>hjshds</h2>
+
+      <DetailsIntro />
+
+
+
+        <BudjectCalculator />
+
+
+
+
+                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       
     </div>
   )
