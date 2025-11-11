@@ -5,6 +5,7 @@ import RepeatHouseDiv from '../Components/RepeatHouseDiv';
 import DirectorySidebar from '../Components/DirectorySidebar';
 
 const API_URL = 'https://hanois.dotwibe.com/api/api/providers';
+const ITEMS_PER_PAGE = 10;
 
 const ServiceProviderDirectory = () => {
   const [providers, setProviders] = useState(() => {
@@ -14,6 +15,7 @@ const ServiceProviderDirectory = () => {
   const [error, setError] = useState(null);
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
   // Flag to indicate if the providers were fetched from the server or from cache
@@ -41,6 +43,9 @@ const ServiceProviderDirectory = () => {
         setProviders(newProviders);
         localStorage.setItem('providers', JSON.stringify(newProviders));
         setServerFiltered(Boolean(usedServerFilter));
+
+        // Reset page to 1 whenever the provider list is refreshed
+        setCurrentPage(1);
       } catch (err) {
         setError(err.message || 'Fetch error');
       } finally {
@@ -48,11 +53,15 @@ const ServiceProviderDirectory = () => {
       }
     };
 
-    // Fetch providers if no cached data exists
+    // If localStorage has cached data, use it.
     if (!providers.length) {
       fetchProviders();
     }
   }, [selectedCategory]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query, selectedCategory]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -65,10 +74,21 @@ const ServiceProviderDirectory = () => {
       if (selectedCategory !== 'All' && !serverFiltered) {
         return (p.service || '').toLowerCase().includes(selectedCategory.toLowerCase());
       }
-
       return true;
     });
   }, [providers, query, selectedCategory, serverFiltered]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(totalPages);
+  }, [currentPage, totalPages]);
+
+  const paginatedProviders = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    return filtered.slice(startIndex, endIndex);
+  }, [filtered, currentPage]);
 
   return (
     <div className='spd-outer'>
@@ -85,12 +105,28 @@ const ServiceProviderDirectory = () => {
           />
           {loading && <p style={{ padding: '1rem' }}>Loading providers…</p>}
           {error && <p style={{ color: 'red', padding: '1rem' }}>Error: {error}</p>}
-          {!loading && !error && filtered.length === 0 && (
+          {!loading && !error && paginatedProviders.length === 0 && (
             <p style={{ padding: '1rem' }}>No providers match your search.</p>
           )}
-          {filtered.map(provider => (
+          {paginatedProviders.map(provider => (
             <RepeatHouseDiv key={provider.id} provider={provider} />
           ))}
+
+          <div className="pagination">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+            >
+              Previous
+            </button>
+            <span>Page {currentPage} of {totalPages}</span>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>
