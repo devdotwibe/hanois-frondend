@@ -21,12 +21,20 @@ const BusinessInfo = ({ provider }) => {
           <div className="info-grid">
             <div className="info1">
               <div className="info-item">
-                <span className="info-label">Business Name</span>
+
+                <div className='info-label'>
+                   <span className="">Business Name</span>
+                </div>
+               
                 <div className="info-value">{provider?.name || "Unknown Provider"}</div>
               </div>
 
               <div className="info-item">
-                <span className="info-label">Location</span>
+                 <div className='info-label'>
+                <span className="">Location</span>
+                </div>
+
+
                 <div className="info-value">
                   {location}
                   {country ? <span>{country}</span> : null}
@@ -34,14 +42,26 @@ const BusinessInfo = ({ provider }) => {
               </div>
 
               <div className="info-item">
-                <span className="info-label">Team Size</span>
+                 <div className='info-label'>
+                <span className="">Team Size</span>
+                </div>
+
+
+
+
                 <div className="info-value">{teamSize}</div>
               </div>
             </div>
 
             <div className="info1 info2">
               <div className="info-item">
-                <span className="info-label">Website</span>
+
+                 <div className='info-label'>
+                <span className="">Website</span>
+                </div>
+
+
+
                 <div className="info-value">
                   {website ? (
                     <a href={website.startsWith("http") ? website : `http://${website}`} className="contact-button" target="_blank" rel="noreferrer">
@@ -54,7 +74,12 @@ const BusinessInfo = ({ provider }) => {
               </div>
 
               <div className="info-item">
-                <span className="info-label">Social Medias</span>
+
+                 <div className='info-label'>
+                <span className="">Social Medias</span>
+                </div>
+
+
                 <div className="info-value">
                   {socialLinks.length > 0 ? socialLinks.map((s, i) => (
                     <a key={i} href={s.url.startsWith("http") ? s.url : `http://${s.url}`} target="_blank" rel="noreferrer" style={{ marginRight: 8 }}>
@@ -65,7 +90,11 @@ const BusinessInfo = ({ provider }) => {
               </div>
 
               <div className="info-item">
-                <span className="info-label">Company Phone number</span>
+                   <div className='info-label'>
+                <span className="">Company Phone number</span>
+                </div>
+
+
                 <div className="info-value">
                   {phone ? <a href={`tel:${phone}`}>{phone}</a> : <span>N/A</span>}
                 </div>
