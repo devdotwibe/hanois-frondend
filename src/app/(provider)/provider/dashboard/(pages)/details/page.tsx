@@ -58,7 +58,7 @@ export default async function DetailsPage({ searchParams }) {
           <ServiceDiv provider={provider} />
         </div>
 
-        <div className="detcol-2">
+        <div className="detcol-2 after-edit">
           <StatusCard />
         </div>
       </div>

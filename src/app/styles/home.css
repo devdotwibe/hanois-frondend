@@ -1824,6 +1824,7 @@ border-right: 1px solid #e0e0e0;
 .info-label {
     font-size: 20px;
     font-family: 'Avenir-medium';
+        margin: 0 0 10px;
 
 }
 
@@ -1983,6 +1984,7 @@ border-right: 1px solid #e0e0e0;
 
 .info-value a {
     color: #2050f5;
+    text-decoration: underline;
 }
 
 .business-div1 h3 span{display: block;}
@@ -2620,7 +2622,7 @@ button.show-more::after{
   position: absolute;
   content: "";
   right: 0;
-      background: url("../../../public/images/bg1.jpg") no-repeat center / cover;
+  background: url("../../../public/images/bluearrow-down.svg") no-repeat center / contain;
 
   background-size: 20px !important;
 }
