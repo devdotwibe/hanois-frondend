@@ -132,6 +132,11 @@ const TorranceSlider: React.FC = () => {
 
   return (
     <div className="torrance-slider-wrapper">
+
+      <h2>Projects</h2>
+
+
+
       <Slider {...settings}>
         {cards.map((card, index) => (
           <div key={index} className="torrance-slide">
