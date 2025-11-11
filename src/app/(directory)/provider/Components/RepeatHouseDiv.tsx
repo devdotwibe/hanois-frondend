@@ -3,12 +3,11 @@ import React from 'react'
 import ImageSlider from './ImageSlider'
 
 // base for images in your API
-const BASE_URL = 'https://hanois.dotwibe.com'
+import { IMG_URL } from "@/config";
 
 const RepeatHouseDiv = ({ provider }) => {
   // build image url or fallback
-  const logoSrc = provider?.image ? `${BASE_URL}${provider.image}` : '/images/ahi-logo.jpg'
-
+  const logoSrc = provider?.image ? `${IMG_URL}${provider.image}` : '/images/ahi-logo.jpg';
   const name = provider?.name || 'Unknown Provider'
   const description = provider?.professional_headline || provider?.service || ''
   const services = provider?.service || 'Not specified'
