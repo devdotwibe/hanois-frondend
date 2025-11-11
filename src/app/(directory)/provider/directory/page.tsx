@@ -19,28 +19,30 @@ const ServiceProviderDirectory = () => {
   const [loading, setLoading] = useState(false);
 
   // Fetch data when no cached data exists or category changes
-  useEffect(() => {
-    const fetchProviders = async () => {
-      setLoading(true);
-      try {
-        let url = API_URL;
-        if (selectedCategory !== 'All') {
-          url = `${API_URL}?category=${selectedCategory}`; // pass selected category to API
-        }
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-        setProviders(json?.data?.providers || []);
-        localStorage.setItem('providers', JSON.stringify(json?.data?.providers || []));
-      } catch (err) {
-        setError(err.message || 'Fetch error');
-      } finally {
-        setLoading(false);
+useEffect(() => {
+  const fetchProviders = async () => {
+    setLoading(true);
+    try {
+      let url = API_URL;
+      if (selectedCategory !== 'All') {
+        url = `${API_URL}?category=${selectedCategory}`; // pass selected category to API
       }
-    };
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      console.log("API response:", json); // Log the response to inspect it
+      setProviders(json?.data?.providers || []);
+      localStorage.setItem('providers', JSON.stringify(json?.data?.providers || []));
+    } catch (err) {
+      setError(err.message || 'Fetch error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchProviders();
-  }, [selectedCategory]);  // Trigger fetch when category changes
+  fetchProviders();
+}, [selectedCategory]);  // Trigger fetch when category changes
+
 
   // Filter data based on search and selected category
   const filtered = useMemo(() => {
@@ -74,8 +76,7 @@ const ServiceProviderDirectory = () => {
           <Intro
             query={query}
             onQueryChange={setQuery}
-            total={filtered.length}
-          />
+ total={filtered.length}          />
           {loading && <p>Loading providers...</p>}
           {error && <p style={{ color: 'red', padding: '1rem' }}>Error: {error}</p>}
           {paginatedProviders.length === 0 && (

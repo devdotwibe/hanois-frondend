@@ -6,14 +6,15 @@ import ImageSlider from './ImageSlider'
 import { IMG_URL } from "@/config";
 
 const RepeatHouseDiv = ({ provider }) => {
-  // build image url or fallback
+  // Debugging the provider data
+  console.log("Provider data:", provider);
+
   const logoSrc = provider?.image ? `${IMG_URL}${provider.image}` : '/images/ahi-logo.jpg';
-  const name = provider?.name || 'Unknown Provider'
-  const description = provider?.professional_headline || provider?.service || ''
-  const services = provider?.service || 'Not specified'
-  const location = provider?.location || 'Not specified'
-  // starting budget not provided in API; show placeholder or hide
-  const startingBudget = provider?.starting_budget ?? null
+  const name = provider?.name || 'Unknown Provider';
+  const description = provider?.professional_headline || provider?.service || '';
+  const services = provider?.service || 'Not specified';
+  const location = provider?.location || 'Not specified';
+  const startingBudget = provider?.starting_budget ?? null;
 
   return (
     <div className="repeat-house-div">
@@ -23,7 +24,6 @@ const RepeatHouseDiv = ({ provider }) => {
           name={name}
           description={description}
         />
-
         <button className='detail-btn'>Details</button>
       </div>
 
@@ -43,8 +43,7 @@ const RepeatHouseDiv = ({ provider }) => {
               <p><strong>Luxury type</strong></p>
             </div>
             <div className="d-col">
-              {/* you asked to keep this static */}
-              <p>Modern, Futurism, Classic</p>
+              <p>Modern, Futurism, Classic</p> {/* Static placeholder */}
             </div>
           </div>
         </div>
@@ -72,8 +71,9 @@ const RepeatHouseDiv = ({ provider }) => {
 
       <ImageSlider />
     </div>
-  )
-}
+  );
+};
+
 
 export default RepeatHouseDiv
 
