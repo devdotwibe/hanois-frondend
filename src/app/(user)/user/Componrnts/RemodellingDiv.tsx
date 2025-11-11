@@ -1,5 +1,7 @@
 import React from "react";
 import RemodelingCard from "./RemodelingCard";
+import Link from "next/link";
+
 
 const RemodellingDiv = () => {
   const remodelingData = [
@@ -54,8 +56,12 @@ const RemodellingDiv = () => {
 
   return (
     <div className="remodeling-div">
-      {remodelingData.map((item) => (
-        <RemodelingCard
+
+    
+        {remodelingData.map((item) => (
+
+          <Link href="">
+              <RemodelingCard
           key={item.id}
           title={item.title}
           description={item.description}
@@ -64,7 +70,21 @@ const RemodellingDiv = () => {
           proposal={item.proposal}
           className={item.className}
         />
+          </Link>
+
+
+
+      
+
+
+
+
       ))}
+    
+
+    
+     
+      
     </div>
   );
 };

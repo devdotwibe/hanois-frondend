@@ -2466,12 +2466,19 @@ color: #ffffff;
 .remodeling-card {
     border: 1px solid #eee;
     border-radius: 10px;
-    width: 32%;
     padding: 20px;
-    margin-right: 1.5%;
-    margin-bottom: 1.5%;
+   
 }
-.remodeling-card:nth-child(3n){
+
+.remodeling-div a{
+ margin-right: 1.5%;
+  margin-bottom: 1.5%;
+  width: 32%;
+
+}
+
+
+.remodeling-div a:nth-child(3n){
 margin-right: 0;
 }
 
@@ -2667,20 +2674,7 @@ button.show-more::after{
 
 
 
-.details-btn {
-  background-color: #2050f5;
-  color: #fff;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
 
-.details-btn:hover {
-  background-color: #2050f5;
-}
 
 .project-info {
   display: flex;
