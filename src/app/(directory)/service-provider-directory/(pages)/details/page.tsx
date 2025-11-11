@@ -30,7 +30,7 @@ const page = () => {
 
         </div>
 
-        <div className="detcol-2">
+        <div className="detcol-2 after-edit">
           <StatusCard />
         </div>
 

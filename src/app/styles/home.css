@@ -1800,7 +1800,7 @@ border-right: 1px solid #e0e0e0;
 
 .outline-items {
     border: 1px solid #000000;
-    padding: 10px 20px;
+    padding: 6px 20px;
     border-radius: 24px;
      font-family: 'Avenir-medium';
 
@@ -1982,6 +1982,7 @@ border-right: 1px solid #e0e0e0;
 
 .torrance-slider-wrapper .torrance-card {
     width: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
 }
 
 
@@ -2606,6 +2607,20 @@ color: #2050f5;
 
 }
 
+.torrance-slider-wrapper h2 {
+    margin: 0 0 8px;
+  font-family: 'Avenir-Black';
+    font-size: 23px;
+}
+.after-edit .status-card {
+    max-width: 300px;
+}
+
+.after-edit {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
 
 
 /* ------------------------------------responsive */
