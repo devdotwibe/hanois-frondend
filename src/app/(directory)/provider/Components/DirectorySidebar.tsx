@@ -45,9 +45,41 @@ const DirectorySidebar = ({ onCategoryChange = () => {}, selectedCategory = 'All
         </div>
       </div>
 
+     {/* Style Section */}
       <div className='filter-section'>
         <p className='section-label'>Style</p>
-        {/* ... */}
+        
+        <label className='checkbox-label'>
+          <input type="checkbox" className='hidden-checkbox' />
+          <span className='custom-checkbox checked'>
+            <span className='checkmark'>✓</span>
+          </span>
+          <span>Modern</span>
+        </label>
+
+        <label className='checkbox-label'>
+          <input type="checkbox" className='hidden-checkbox' />
+          <span className='custom-checkbox checked'>
+            <span className='checkmark'>✓</span>
+          </span>
+          <span>Classic</span>
+        </label>
+
+        <label className='checkbox-label'>
+          <input type="checkbox" className='hidden-checkbox' />
+          <span className='custom-checkbox'>
+            <span className='checkmark'>✓</span>
+          </span>
+          <span>Urbanistic</span>
+        </label>
+
+        <label className='checkbox-label'>
+          <input type="checkbox" className='hidden-checkbox' />
+          <span className='custom-checkbox'>
+            <span className='checkmark'>✓</span>
+          </span>
+          <span>Futurism</span>
+        </label>
       </div>
     </div>
   );
