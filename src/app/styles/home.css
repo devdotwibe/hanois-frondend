@@ -1304,6 +1304,9 @@ font-size: 17px;
     transition: all 0.5s ease-in-out;
 }
 
+
+
+.form-grp select:focus,
 .form-grp input:focus,
 .form-grp textarea:focus
 {
@@ -1313,9 +1316,20 @@ font-size: 17px;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
 }
 
+.form-grp select:hover,
+.form-grp input:hover,
+ .form-grp textarea:hover
+
+{
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, .2);
+}
 
 
 .company-profile1 .select-grp.form-grp input:focus {
+    border: none;
+    box-shadow: none;
+}
+.company-profile1 .select-grp.form-grp input:hover {
     border: none;
     box-shadow: none;
 }
@@ -2392,8 +2406,8 @@ button.save-btn{
   background-size: 20px !important;
  position: absolute;
  cursor: pointer;
- top: -10px;
- right: -10px;
+ top: -16px;
+ right: -16px;
 }
 .dropdown-option.selected input{
    font-size: 0;
