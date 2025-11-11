@@ -600,7 +600,7 @@ const handleSubmit = async (e) => {
                 headers: token ? { Authorization: `Bearer ${token}` } : {},
               });
               setDeleteModalVisible(false);
-              alert("✅ Project deleted successfully!");
+           
               router.push("/provider/dashboard/projects");
             } catch (err) {
               console.error("❌ Error deleting project:", err);
