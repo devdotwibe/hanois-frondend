@@ -76,8 +76,7 @@ useEffect(() => {
           <Intro
             query={query}
             onQueryChange={setQuery}
- total={filtered.length}          />
-          {loading && <p></p>}
+            total={filtered.length}          />
           {error && <p style={{ color: 'red', padding: '1rem' }}>Error: {error}</p>}
           {paginatedProviders.length === 0 && (
             <p style={{ padding: '1rem' }}>No providers match your search.</p>
