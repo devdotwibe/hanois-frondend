@@ -41,17 +41,28 @@ const Page = () => {
   };
 
   // 🟩 Fetch provider details (name, logo, etc.)
-  const fetchProviderDetails = async (providerId) => {
-    try {
-      if (!providerId) return;
-      const res = await axios.get(`${API_URL}/providers/${providerId}`);
-      if (res.data?.success && res.data?.data) {
-        setProvider(res.data.data.provider || res.data.data);
-      }
-    } catch (err) {
-      console.error("Error fetching provider details:", err);
+const fetchProviderDetails = async (providerId) => {
+  try {
+    if (!providerId) return;
+    const res = await axios.get(`${API_URL}/providers/${providerId}`);
+
+    let providerData = null;
+    // 🧩 handle different API formats safely
+    if (res.data?.provider) providerData = res.data.provider;
+    else if (res.data?.data?.provider) providerData = res.data.data.provider;
+    else if (res.data?.data) providerData = res.data.data;
+    else providerData = res.data;
+
+    if (providerData) {
+      setProvider(providerData);
+    } else {
+      console.warn("⚠️ Provider data not found in response:", res.data);
     }
-  };
+  } catch (err) {
+    console.error("Error fetching provider details:", err);
+  }
+};
+
 
   // 🟩 Fetch provider services (dynamic from backend)
   const fetchProviderServices = async (providerId) => {
