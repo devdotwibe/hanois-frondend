@@ -1,5 +1,11 @@
 "use client";
 
+type OptionItem = {
+  id: number;
+  name: string;
+};
+
+
 import React, { useState } from 'react'
 import { API_URL } from "@/config";
 
@@ -21,9 +27,20 @@ const AddNewForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
-  const handleChange = (e:any) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const [categories, setCategories] = useState<OptionItem[]>([]);
+  const [designLevels, setDesignLevels] = useState<OptionItem[]>([]);
+  const [servicesList, setServicesList] = useState<OptionItem[]>([]);
+
+  const NOTES_LIMIT = 1024;
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    if (name === "notes") {
+      if (value.length > NOTES_LIMIT) return; 
+    }
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
+
 
   const handleSubmit = async (e:any) => {
   e.preventDefault();
@@ -64,6 +81,45 @@ const AddNewForm = () => {
   }
 };
 
+React.useEffect(() => {
+  const loadData = async () => {
+    try {
+      const [catRes, designRes, serviceRes] = await Promise.all([
+        fetch(`${API_URL}/categories`),
+        fetch(`${API_URL}/design`),
+        fetch(`${API_URL}/services`)
+      ]);
+
+      const catData: OptionItem[] = await catRes.json();
+      const designData: OptionItem[] = await designRes.json();
+      const serviceData: OptionItem[] = await serviceRes.json();
+
+      setCategories(catData);
+      setDesignLevels(designData);
+      setServicesList(serviceData);
+    } catch (err) {
+      console.error("Dropdown load error:", err);
+    }
+  };
+
+  loadData();
+}, []);
+
+const getCategoryName = (id: string | number) => {
+  const item = categories.find(c => c.id == id);
+  return item ? item.name : id;
+};
+
+const getDesignName = (id: string | number) => {
+  const item = designLevels.find(d => d.id == id);
+  return item ? item.name : id;
+};
+
+const getServiceName = (id: string | number) => {
+  const item = servicesList.find(s => s.id == id);
+  return item ? item.name : id;
+};
+
 
 return (
   <div className='add-newformouter'>
@@ -93,17 +149,27 @@ return (
                         value={formData.notes}
                         onChange={handleChange}
                         ></textarea>
-                    <small>Brief description for your profile. URLs are hyperlinked.</small>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <small>Brief description for your profile. URLs are hyperlinked.</small>
+
+                        <small style={{ fontSize: "12px", color: "#666" }}>
+                            {NOTES_LIMIT - formData.notes.length} characters left
+                        </small>
+                    </div>
                     </div>
 
                     <div className="form-grp">
                         <label>Project Type</label>
-                        <input
-                        name="projectType"
-                        placeholder="Title"
-                        value={formData.projectType}
-                        onChange={handleChange}
-                        />
+                        <select
+                            name="projectType"
+                            value={formData.projectType}
+                            onChange={handleChange}
+                            >
+                            <option value="">Select Project Type</option>
+                            {categories.map(cat => (
+                                <option key={cat.id} value={cat.id}>{cat.name}</option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="form-grp">
@@ -128,22 +194,30 @@ return (
 
                     <div className="form-grp">
                         <label>Luxury level</label>
-                        <input
-                        name="luxuryLevel"
-                        placeholder="Luxury level"
-                        value={formData.luxuryLevel}
-                        onChange={handleChange}
-                        />
+                        <select
+                            name="luxuryLevel"
+                            value={formData.luxuryLevel}
+                            onChange={handleChange}
+                            >
+                            <option value="">Select Luxury Level</option>
+                            {designLevels.map(des => (
+                                <option key={des.id} value={des.id}>{des.name}</option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="form-grp">
                         <label>Select Services</label>
-                        <input
-                        name="services"
-                        placeholder="Select Services"
-                        value={formData.services}
-                        onChange={handleChange}
-                        />
+                        <select
+                            name="services"
+                            value={formData.services}
+                            onChange={handleChange}
+                            >
+                            <option value="">Select Service</option>
+                            {servicesList.map(ser => (
+                                <option key={ser.id} value={ser.id}>{ser.name}</option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="form-grp">
@@ -292,11 +366,11 @@ return (
 
             <table className="details-table">
             <tbody>
-                <tr><td>Type</td><td>{formData.projectType}</td></tr>
+                <tr><td>Type</td><td>{getCategoryName(formData.projectType)}</td></tr>
                 <tr><td>Location</td><td>{formData.location}</td></tr>
                 <tr><td>Land size</td><td>{formData.landSize}</td></tr>
-                <tr><td>Luxury level</td><td>{formData.luxuryLevel}</td></tr>
-                <tr><td>Services</td><td>{formData.services}</td></tr>
+                <tr><td>Luxury level</td><td>{getDesignName(formData.luxuryLevel)}</td></tr>
+                <tr><td>Services</td><td>{getServiceName(formData.services)}</td></tr>
                 <tr><td>Basement</td><td>{formData.basement === "yes" ? "Yes" : "No"}</td></tr>
             </tbody>
             </table>
