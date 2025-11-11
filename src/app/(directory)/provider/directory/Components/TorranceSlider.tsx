@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import axios from "axios";
 import { API_URL, IMG_URL } from "@/config";
+import { useRouter } from "next/navigation";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -25,6 +26,7 @@ type TorranceCardProps = {
 };
 
 const TorranceCard: React.FC<TorranceCardProps> = ({
+  id,
   image,
   category,
   title,
@@ -33,8 +35,16 @@ const TorranceCard: React.FC<TorranceCardProps> = ({
   spaceSize,
   location,
 }) => {
+  const router = useRouter();
+
+  // 🟩 Navigate to detail page on click
+  const handleClick = () => {
+    router.push(`/service-provider-directory/service-provider-profile?id=${id}`);
+  };
+
   return (
-    <div className="torrance-card">
+    <div className="torrance-card" onClick={handleClick} style={{ cursor: "pointer" }}>
+      {/* Image */}
       <div className="torrance-card-image-wrap">
         <Image
           src={image || "/images/property-img.jpg"}
@@ -46,6 +56,7 @@ const TorranceCard: React.FC<TorranceCardProps> = ({
         <span className="torrance-card-badge">{category}</span>
       </div>
 
+      {/* Info */}
       <div className="torrance-card-info">
         <h3>{title}</h3>
         {description && <p className="desc">{description}</p>}
@@ -124,7 +135,6 @@ const TorranceSlider: React.FC = () => {
     ],
   };
 
-  // 🟩 Handle loading state
   if (loading)
     return <p style={{ textAlign: "center", marginTop: "20px" }}>Loading projects...</p>;
 
@@ -139,7 +149,7 @@ const TorranceSlider: React.FC = () => {
       ) : (
         <Slider {...settings}>
           {projects.map((proj) => {
-            // ✅ Get cover image or fallback
+            // ✅ Find the project’s cover image (or fallback)
             const coverImgObj =
               proj.images?.find((img: any) => img.is_cover) || proj.images?.[0];
             const imageUrl = coverImgObj
