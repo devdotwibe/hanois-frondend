@@ -4,10 +4,12 @@ import React from "react";
 import Slider, { Settings } from "react-slick";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react"; 
+import { IMG_URL } from "@/config"; // Import IMG_URL from config
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+// Arrow buttons for the slider
 const NextArrow = (props: any) => {
   const { onClick } = props;
   return (
@@ -32,6 +34,7 @@ const PrevArrow = (props: any) => {
   );
 };
 
+// ImageSlider component that receives project data
 const ImageSlider: React.FC<{ projects: any[] }> = ({ projects }) => {
   const settings: Settings = {
     dots: false,
@@ -49,11 +52,11 @@ const ImageSlider: React.FC<{ projects: any[] }> = ({ projects }) => {
     ],
   };
 
-  // Get images from the projects
+  // Flatten the image paths from the projects and prepend the IMG_URL
   const images = projects
     .map(project => project.images)
     .flat()
-    .map(image => image.image_path);
+    .map(image => IMG_URL + image.image_path); // Concatenate IMG_URL with the image path
 
   return (
     <div className="relative max-w-6xl mx-auto py-10 px-4">
@@ -67,6 +70,7 @@ const ImageSlider: React.FC<{ projects: any[] }> = ({ projects }) => {
                 width={400}
                 height={300}
                 className="w-full h-[180px] object-cover"
+                loading="lazy" // Optional: Lazy load images for better performance
               />
             </div>
           </div>
