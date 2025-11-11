@@ -1,18 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Slider, { Settings } from "react-slick";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import axios from "axios";
+import { API_URL, IMG_URL } from "@/config";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 // -----------------------------
-// Card Component
+// 🟩 Card Component
 // -----------------------------
 type TorranceCardProps = {
-  image: string | StaticImageData;
+  id: number;
+  image: string;
   category: string;
   title: string;
   description?: string;
@@ -33,23 +36,35 @@ const TorranceCard: React.FC<TorranceCardProps> = ({
   return (
     <div className="torrance-card">
       <div className="torrance-card-image-wrap">
-        <Image src={image} alt={title} width={400} height={260} />
+        <Image
+          src={image || "/images/property-img.jpg"}
+          alt={title}
+          width={400}
+          height={260}
+          className="rounded-md object-cover"
+        />
         <span className="torrance-card-badge">{category}</span>
       </div>
 
       <div className="torrance-card-info">
         <h3>{title}</h3>
         {description && <p className="desc">{description}</p>}
-        <p><strong>Style:</strong> {styleType}</p>
-        <p><strong>Space size:</strong> {spaceSize}</p>
-        <p><strong>Location:</strong> {location}</p>
+        <p>
+          <strong>Style:</strong> {styleType || "—"}
+        </p>
+        <p>
+          <strong>Space size:</strong> {spaceSize || "—"}
+        </p>
+        <p>
+          <strong>Location:</strong> {location || "—"}
+        </p>
       </div>
     </div>
   );
 };
 
 // -----------------------------
-// Arrows
+// 🟩 Custom Slider Arrows
 // -----------------------------
 const NextArrow = (props: any) => {
   const { onClick } = props;
@@ -70,52 +85,31 @@ const PrevArrow = (props: any) => {
 };
 
 // -----------------------------
-// Slider
+// 🟩 Dynamic Slider Component
 // -----------------------------
 const TorranceSlider: React.FC = () => {
-  const cards = [
-    {
-      image: "/images/property-img.jpg",
-      category: "Commercial",
-      title: "Complete home remodeling",
-      description:
-        "3/4 bath with beautiful gold accents to compliment all the white tile, and a master bathroom layout.",
-      styleType: "Modern",
-      spaceSize: "56 m²",
-      location: "New York",
-    },
-    {
-      image: "/images/property-img.jpg",
-      category: "Housing",
-      title: "Torrance 2 modern bathroom remodel",
-      description:
-        "Beautiful gold accents to compliment all the white tile, and a master terrace view.",
-      styleType: "Modern",
-      spaceSize: "56 m²",
-      location: "New York",
-    },
-    {
-      image: "/images/property-img.jpg",
-      category: "Housing",
-      title: "Torrance 3 luxury villa",
-      description:
-        "Spacious modern villa with garden view and rooftop terrace.",
-      styleType: "Modern",
-      spaceSize: "120 m²",
-      location: "New York",
-    },
-    {
-      image: "/images/property-img.jpg",
-      category: "Housing",
-      title: "Stylish apartment upgrade",
-      description:
-        "Redesigned with a minimal and bright theme to complement urban living.",
-      styleType: "Minimal",
-      spaceSize: "80 m²",
-      location: "Los Angeles",
-    },
-  ];
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  // 🟩 Fetch projects dynamically
+  const fetchProjects = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/projects`);
+      if (res.data && res.data.success) {
+        setProjects(res.data.data.projects || []);
+      }
+    } catch (err) {
+      console.error("Error fetching projects:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  // 🟩 Slider Settings
   const settings: Settings = {
     dots: false,
     infinite: true,
@@ -130,20 +124,45 @@ const TorranceSlider: React.FC = () => {
     ],
   };
 
+  // 🟩 Handle loading state
+  if (loading)
+    return <p style={{ textAlign: "center", marginTop: "20px" }}>Loading projects...</p>;
+
   return (
     <div className="torrance-slider-wrapper">
-
       <h2>Projects</h2>
 
+      {projects.length === 0 ? (
+        <p style={{ textAlign: "center", marginTop: "20px" }}>
+          No projects available
+        </p>
+      ) : (
+        <Slider {...settings}>
+          {projects.map((proj) => {
+            // ✅ Get cover image or fallback
+            const coverImgObj =
+              proj.images?.find((img: any) => img.is_cover) || proj.images?.[0];
+            const imageUrl = coverImgObj
+              ? `${IMG_URL}${coverImgObj.image_path}`
+              : "/images/property-img.jpg";
 
-
-      <Slider {...settings}>
-        {cards.map((card, index) => (
-          <div key={index} className="torrance-slide">
-            <TorranceCard {...card} />
-          </div>
-        ))}
-      </Slider>
+            return (
+              <div key={proj.id} className="torrance-slide">
+                <TorranceCard
+                  id={proj.id}
+                  image={imageUrl}
+                  category={proj.project_type_name || "Unknown"}
+                  title={proj.title}
+                  description={proj.notes}
+                  styleType={proj.design_name || "—"}
+                  spaceSize={proj.land_size || "—"}
+                  location={proj.location || "—"}
+                />
+              </div>
+            );
+          })}
+        </Slider>
+      )}
     </div>
   );
 };

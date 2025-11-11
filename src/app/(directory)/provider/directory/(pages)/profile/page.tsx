@@ -85,7 +85,13 @@ const Page = () => {
         <div className="detcol-2">
           <div className="status-card">
             <div className="project-card">
-              <button className="send-btn">Edit</button>
+            <button
+  className="send-btn"
+  onClick={() => router.push(`/provider/dashboard/edit-project?id=${project?.id}`)}
+>
+  Edit
+</button>
+
             </div>
           </div>
 

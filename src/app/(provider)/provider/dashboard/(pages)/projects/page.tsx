@@ -38,7 +38,7 @@ const ProjectComponent = () => {
   // 🟩 Handle Add Project button
   const handleAddClick = () => {
     const base = (SITE_URL || "").replace(/\/+$/, "");
-    const target = `${base}/provider/dashboard/add-project`;
+    const target = `/provider/dashboard/add-project`;
     router.push(target);
   };
 

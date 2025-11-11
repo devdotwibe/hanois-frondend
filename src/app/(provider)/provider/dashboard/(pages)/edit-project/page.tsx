@@ -1,0 +1,479 @@
+"use client";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import axios from "axios";
+import uploadIcon from "../../../../../../../public/images/upload.svg";
+import { API_URL, IMG_URL } from "@/config";
+import HouseOuter from "../../Components/HouseOuter";
+import TabBtns from "../../Components/TabBtns";
+import { useRouter, useSearchParams } from "next/navigation";
+
+const EditProject = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id"); // 👈 Get project ID from URL
+
+  const [formData, setFormData] = useState({
+    title: "",
+    notes: "",
+    projectType: "",
+    location: "",
+    landSize: "",
+    designStyle: "",
+  });
+
+  const [errors, setErrors] = useState({});
+  const [providerId, setProviderId] = useState(null);
+  const [token, setToken] = useState(null);
+  const [designList, setDesignList] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
+  const [imageFile, setImageFile] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
+  const [message, setMessage] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // 🟩 Load provider + token
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const storedToken = localStorage.getItem("token");
+    if (user && user.id) setProviderId(user.id);
+    if (storedToken) setToken(storedToken);
+  }, []);
+
+  // 🟩 Fetch dropdown data
+  const fetchDesigns = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/design`);
+      setDesignList(res.data);
+    } catch (err) {
+      console.error("Error fetching design list:", err);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(`https://hanois.dotwibe.com/api/api/categories`);
+      setCategoryList(res.data);
+    } catch (err) {
+      console.error("Error fetching categories:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchDesigns();
+    fetchCategories();
+  }, []);
+
+  // 🟩 Fetch existing project data
+  const fetchProject = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/projects/${id}`);
+      if (res.data.success) {
+        const project = res.data.data.project;
+        setFormData({
+          title: project.title || "",
+          notes: project.notes || "",
+          projectType: project.project_type_id || "",
+          location: project.location || "",
+          landSize: project.land_size || "",
+          designStyle: project.design_id || "",
+        });
+        setExistingImages(project.images || []);
+      }
+    } catch (err) {
+      console.error("Error fetching project:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (id) fetchProject();
+  }, [id]);
+
+  // 🟩 Handle input changes
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+    setErrors((prev) => ({ ...prev, [id]: "" }));
+  };
+
+  // 🟩 Handle file uploads
+  const handleFileChange = (e) => {
+    const newFiles = Array.from(e.target.files);
+    setImageFile((prev) => (prev ? [...prev, ...newFiles] : newFiles));
+    setErrors((prev) => ({ ...prev, images: "" }));
+  };
+
+  // 🟩 Delete existing image (from DB)
+  const handleDeleteImage = async (imgId) => {
+    try {
+      await axios.delete(`${API_URL}/project-images/${imgId}`);
+      setExistingImages((prev) => prev.filter((img) => img.id !== imgId));
+    } catch (err) {
+      console.error("Error deleting image:", err);
+    }
+  };
+
+  // 🟩 Validate form
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.title.trim()) newErrors.title = "Title is required.";
+    if (!formData.notes.trim()) newErrors.notes = "Notes are required.";
+    if (!formData.projectType) newErrors.projectType = "Project Type is required.";
+    if (!formData.location.trim()) newErrors.location = "Location is required.";
+    if (!formData.landSize.trim()) newErrors.landSize = "Land Size is required.";
+    if (!formData.designStyle) newErrors.designStyle = "Design Style is required.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // 🟩 Handle submit (update project)
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!validateForm()) return;
+
+  try {
+    const formDataObj = new FormData();
+
+    // 🟩 Basic project fields
+    formDataObj.append("title", formData.title);
+    formDataObj.append("notes", formData.notes);
+    formDataObj.append("location", formData.location);
+    formDataObj.append("land_size", formData.landSize);
+    formDataObj.append("project_type_id", formData.projectType);
+    formDataObj.append("design_id", formData.designStyle);
+
+    // 🟩 Include which existing image is cover (if any)
+    if (existingImages.length > 0) {
+      const coverImage = existingImages.find((img) => img.is_cover);
+      if (coverImage) {
+        formDataObj.append("existing_cover_id", coverImage.id);
+      }
+    }
+
+    // 🟩 Add newly uploaded images (if any)
+    if (imageFile.length > 0) {
+      imageFile.forEach((file) => {
+        formDataObj.append("images", file);
+        formDataObj.append("is_cover_flags[]", file.isCover ? "true" : "false");
+      });
+    }
+
+    // 🟩 Send PUT-equivalent request (multipart/form-data safe)
+    await axios.post(`${API_URL}/projects/${id}`, formDataObj, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    });
+
+    setModalVisible(true);
+  } catch (err) {
+    console.error("❌ Error updating project:", err);
+    setMessage("❌ Failed to update project.");
+  }
+};
+
+  return (
+    <>
+      <HouseOuter />
+      <TabBtns />
+
+      <div className="">
+        <div className="proj-form1 company-profile1">
+          <h3>Edit Project</h3>
+          <p>Update your project images and details below</p>
+
+{existingImages.length > 0 && (
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+      gap: "10px",
+      marginBottom: "20px",
+    }}
+  >
+    {existingImages.map((img, index) => (
+      <div key={img.id} style={{ position: "relative" }}>
+        <img
+          src={`${IMG_URL}${img.image_path}`}
+          alt="Project"
+          style={{
+            width: "100%",
+            height: "120px",
+            borderRadius: "10px",
+            border: img.is_cover ? "3px solid #0070f3" : "none",
+          }}
+        />
+
+        {/* 🗑 Delete Button */}
+        <button
+          type="button"
+          onClick={() => handleDeleteImage(img.id)}
+          style={{
+            position: "absolute",
+            top: "5px",
+            right: "5px",
+            background: "rgba(0,0,0,0.5)",
+            color: "white",
+            border: "none",
+            borderRadius: "50%",
+            width: "24px",
+            height: "24px",
+            cursor: "pointer",
+          }}
+        >
+          ✕
+        </button>
+
+        {/* 🌟 Set Cover Button */}
+        <button
+          type="button"
+          onClick={() => {
+            const updated = existingImages.map((image, i) => ({
+              ...image,
+              is_cover: i === index,
+            }));
+            setExistingImages(updated);
+          }}
+          style={{
+            position: "absolute",
+            bottom: "5px",
+            left: "5px",
+            background: img.is_cover ? "#0070f3" : "#ccc",
+            color: "white",
+            fontSize: "12px",
+            padding: "2px 6px",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          {img.is_cover ? "Cover Image" : "Set Cover"}
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
+
+          {/* 🟩 Upload New Images */}
+          <div className="form-grp upload-area">
+            <div
+              className="upload-box"
+              style={{
+                border: "2px dashed #d1d5db",
+                borderRadius: "10px",
+                padding: "30px",
+                background: "#fafafa",
+                cursor: "pointer",
+                textAlign: "center",
+              }}
+              onClick={() => document.querySelector(".upload-input")?.click()}
+            >
+              <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
+              <h3 style={{ fontSize: "16px", fontWeight: "600" }}>Upload New Images</h3>
+            </div>
+
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              className="upload-input hidden"
+              onChange={handleFileChange}
+            />
+
+    {imageFile.length > 0 && (
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+      gap: "10px",
+      marginTop: "20px",
+    }}
+  >
+    {imageFile.map((file, index) => {
+      const previewUrl = URL.createObjectURL(file);
+      return (
+        <div key={index} style={{ position: "relative" }}>
+          <img
+            src={previewUrl}
+            alt="preview"
+            style={{
+              width: "100%",
+              height: "120px",
+              objectFit: "cover",
+              borderRadius: "10px",
+              border: file.isCover ? "3px solid #0070f3" : "none",
+            }}
+          />
+
+          {/* 🗑 Remove Button */}
+          <button
+            type="button"
+            onClick={() => setImageFile((prev) => prev.filter((_, i) => i !== index))}
+            style={{
+              position: "absolute",
+              top: "5px",
+              right: "5px",
+              background: "rgba(0,0,0,0.5)",
+              color: "white",
+              border: "none",
+              borderRadius: "50%",
+              width: "24px",
+              height: "24px",
+              cursor: "pointer",
+            }}
+          >
+            ✕
+          </button>
+
+          {/* 🌟 Set Cover Button */}
+          <button
+            type="button"
+            onClick={() => {
+              const updatedFiles = imageFile.map((f, i) =>
+                Object.assign(f, { isCover: i === index })
+              );
+              setImageFile([...updatedFiles]);
+            }}
+            style={{
+              position: "absolute",
+              bottom: "5px",
+              left: "5px",
+              background: file.isCover ? "#0070f3" : "#ccc",
+              color: "white",
+              fontSize: "12px",
+              padding: "2px 6px",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            {file.isCover ? "Cover Image" : "Set Cover"}
+          </button>
+        </div>
+      );
+    })}
+  </div>
+)}
+
+          </div>
+
+          {/* 🟩 Form Section */}
+          <form onSubmit={handleSubmit}>
+            {/* Title */}
+            <div className="form-grp">
+              <label htmlFor="title">Title</label>
+              <input type="text" id="title" value={formData.title} onChange={handleChange} />
+              {errors.title && <p style={{ color: "red" }}>{errors.title}</p>}
+            </div>
+
+            {/* Notes */}
+            <div className="form-grp">
+              <label htmlFor="notes">Notes</label>
+              <textarea id="notes" value={formData.notes} onChange={handleChange} rows={4}></textarea>
+              {errors.notes && <p style={{ color: "red" }}>{errors.notes}</p>}
+            </div>
+
+            {/* Project Type */}
+            <div className="form-grp">
+              <label htmlFor="projectType">Project Type</label>
+              <select id="projectType" value={formData.projectType} onChange={handleChange}>
+                <option value="">Select Project Type</option>
+                {categoryList.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+              {errors.projectType && <p style={{ color: "red" }}>{errors.projectType}</p>}
+            </div>
+
+            {/* Location */}
+            <div className="form-grp">
+              <label htmlFor="location">Location</label>
+              <input type="text" id="location" value={formData.location} onChange={handleChange} />
+              {errors.location && <p style={{ color: "red" }}>{errors.location}</p>}
+            </div>
+
+            {/* Land Size */}
+            <div className="form-grp">
+              <label htmlFor="landSize">Land Size</label>
+              <input type="text" id="landSize" value={formData.landSize} onChange={handleChange} />
+              {errors.landSize && <p style={{ color: "red" }}>{errors.landSize}</p>}
+            </div>
+
+            {/* Design Style */}
+            <div className="form-grp">
+              <label htmlFor="designStyle">Design Style</label>
+              <select id="designStyle" value={formData.designStyle} onChange={handleChange}>
+                <option value="">Select Design Style</option>
+                {designList.map((design) => (
+                  <option key={design.id} value={design.id}>
+                    {design.name}
+                  </option>
+                ))}
+              </select>
+              {errors.designStyle && <p style={{ color: "red" }}>{errors.designStyle}</p>}
+            </div>
+
+            {/* Update Button */}
+            <div className="btn-cvr" style={{ textAlign: "right", marginTop: "20px" }}>
+              <button type="submit" className="save-btn1">
+                Update
+              </button>
+            </div>
+          </form>
+
+          {/* 🟩 Success Modal */}
+          {modalVisible && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                backgroundColor: "rgba(0,0,0,0.4)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1000,
+              }}
+            >
+              <div
+                style={{
+                  background: "white",
+                  padding: "30px 40px",
+                  borderRadius: "12px",
+                  textAlign: "center",
+                  boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+                }}
+              >
+                <h3 style={{ color: "green" }}>✅ Project Updated!</h3>
+                <p>Your project has been successfully updated.</p>
+                <button
+                  onClick={() => {
+                    setModalVisible(false);
+                    router.push("/provider/dashboard/projects");
+                  }}
+                  style={{
+                    marginTop: "15px",
+                    background: "#0070f3",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "6px",
+                    padding: "8px 16px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default EditProject;
