@@ -44,7 +44,7 @@ const Page = () => {
 const fetchProviderDetails = async (providerId) => {
   try {
     if (!providerId) return;
-    const res = await axios.get(`${API_URL}/providers/${providerId}`);
+    const res = await axios.get(`${API_URL}providers/${providerId}`);
 
     let providerData = null;
     // 🧩 handle different API formats safely
