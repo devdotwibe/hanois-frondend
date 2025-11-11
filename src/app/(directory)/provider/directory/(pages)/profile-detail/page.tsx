@@ -109,7 +109,7 @@ const fetchProviderDetails = async (providerId) => {
   const handleProjectSelect = (e) => {
     const selectedId = e.target.value;
     if (selectedId) {
-      router.push(`/provider/directory/profile-detail?id=${selectedId}`);
+      router.push(`/provider/directory/profile?id=${selectedId}`);
     }
   };
 

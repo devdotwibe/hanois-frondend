@@ -24,7 +24,7 @@ const TorranceCard = ({
   return (
     <div
       className="torrance-card"
-      onClick={() => router.push(`/provider/directory/profile-detail?id=${id}`)}
+      onClick={() => router.push(`/provider/directory/profile?id=${id}`)}
       style={{ cursor: "pointer" }}
     >
       <div className="torrance-card-image-wrap">
