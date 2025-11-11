@@ -46,7 +46,8 @@ const RemodellingDiv = () => {
 
   return (
     <div className="remodeling-div">
-      {projects.map((item: any) => (
+
+      {projects && projects.length > 0  && projects?.map((item: any) => (
         <RemodelingCard
           key={item.id}
           title={item.listing_style === "public" ? "Public" : "Private"} 

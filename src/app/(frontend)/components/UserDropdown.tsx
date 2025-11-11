@@ -89,7 +89,7 @@ const UserDropdown = () => {
           
           <div className="user-dropdown">
 
-            <Link href={`${auth}/dashboard`}>Profile</Link>
+            <Link href={`/${auth}/dashboard`}>Profile</Link>
             
             <button onClick={handleLogout} >Logout</button>
 
