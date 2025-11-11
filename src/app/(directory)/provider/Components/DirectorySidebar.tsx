@@ -1,43 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const DirectorySidebar = ({ onCategoryChange = () => {}, selectedCategory = 'All' }) => {
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(null);
 
-  // Fetch categories directly when the component mounts (without useEffect)
-  const fetchCategories = async () => {
-    try {
-      const res = await fetch('https://hanois.dotwibe.com/api/api/categories');
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      setCategories(json || []);
-    } catch (err) {
-      setError(err.message || 'Failed to fetch categories');
-    }
-  };
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('https://hanois.dotwibe.com/api/api/categories');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        // API may return { success: true, data: { categories: [...] } } or simple array; handle both
+        const cats = json?.data?.categories ?? json?.data ?? json;
+        setCategories(Array.isArray(cats) ? cats : []);
+      } catch (err) {
+        setError(err.message || 'Failed to fetch categories');
+      }
+    };
 
-  // Trigger the category fetch as soon as the component is rendered
-  if (categories.length === 0) {
     fetchCategories();
-  }
+  }, []); // run once on mount
 
   if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
 
   return (
     <div className='filter-container'>
       <h2 className='filter-title'>FILTER BY</h2>
-      {/* Service Category Section */}
+
       <div className='filter-section'>
         <p className='section-label'>Service category</p>
         <div className='select-wrapper'>
           <select
             className='category-select'
             value={selectedCategory}
-            onChange={(e) => onCategoryChange(e.target.value)} // Trigger the callback to change selected category
+            onChange={(e) => onCategoryChange(e.target.value)}
           >
             <option value="All">All Categories</option>
             {categories.map((category) => (
-              <option key={category.id} value={category.name}>
+              <option key={category.id ?? category.name} value={category.name}>
                 {category.name}
               </option>
             ))}
@@ -45,31 +45,16 @@ const DirectorySidebar = ({ onCategoryChange = () => {}, selectedCategory = 'All
         </div>
       </div>
 
-      {/* Style Section (optional section for additional filters) */}
       <div className='filter-section'>
         <p className='section-label'>Style</p>
-        {/* Example checkbox filters */}
-        <label className='checkbox-label'>
-          <input type="checkbox" className='hidden-checkbox' />
-          <span className='custom-checkbox checked'>
-            <span className='checkmark'>✓</span>
-          </span>
-          <span>Modern</span>
-        </label>
-        <label className='checkbox-label'>
-          <input type="checkbox" className='hidden-checkbox' />
-          <span className='custom-checkbox checked'>
-            <span className='checkmark'>✓</span>
-          </span>
-          <span>Classic</span>
-        </label>
-        {/* More styles can be added here */}
+        {/* ... */}
       </div>
     </div>
   );
 };
 
 export default DirectorySidebar;
+
 
 
 // import React from 'react';
