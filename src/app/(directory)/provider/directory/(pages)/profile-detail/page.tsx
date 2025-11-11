@@ -40,95 +40,168 @@ const Page = () => {
   const otherImages = project.images?.filter((img) => !img.is_cover) || [];
 
   return (
-    <div>
-      <div className="containers-limit detcol profile-page">
-        <div className="detcol-1">
-          <button className="back-bth" onClick={() => router.back()}>
-            <Image src={img2} alt="Back" width={40} height={40} />
-          </button>
+    <div className="containers-limit detcol profile-page">
+      <div className="detcol-1">
+        {/* 🔙 Back Button */}
+        <button className="back-bth" onClick={() => router.back()}>
+          <Image src={img2} alt="Back" width={40} height={40} />
+        </button>
 
-          {/* 🟩 Cover Image */}
-          {coverImage && (
-            <div className="prov-pro-img">
-              <Image
-                src={`${IMG_URL}${coverImage}`}
-                alt="Project Cover"
-                width={600}
-                height={400}
-                className="project-img"
-              />
-            </div>
-          )}
-
-          <div className="project-details">
-            <h2 className="project-title">{project.title}</h2>
-            <p className="project-type">{project.project_type_name}</p>
-
-            <h3 className="about-title">About</h3>
-            <p className="about-text">{project.notes}</p>
+        {/* 🖼️ Cover Image */}
+        {coverImage && (
+          <div className="prov-pro-img">
+            <Image
+              src={`${IMG_URL}${coverImage}`}
+              alt="Project Cover"
+              width={600}
+              height={400}
+              className="project-img"
+            />
           </div>
+        )}
 
-          {/* 🟩 Other Images */}
-          {otherImages.map((img) => (
-            <div key={img.id} className="prov-pro-img">
-              <Image
-                src={`${IMG_URL}${img.image_path}`}
-                alt="Project Image"
-                width={700}
-                height={500}
-                className="project-img"
-              />
-            </div>
-          ))}
+        {/* 🧾 Project Info */}
+        <div className="project-details">
+          <h2 className="project-title">{project.title}</h2>
+          <p className="project-type">{project.project_type_name}</p>
+
+          <h3 className="about-title">About</h3>
+          <p className="about-text">{project.notes}</p>
         </div>
 
-        <div className="detcol-2">
-          <div className="status-card">
-            <div className="project-card">
-            <button
-  className="send-btn"
-  onClick={() => router.push(`/provider/dashboard/edit-project?id=${project?.id}`)}
->
-  Edit
-</button>
-
-            </div>
+        {/* 🖼️ Additional Images */}
+        {otherImages.map((img) => (
+          <div key={img.id} className="prov-pro-img">
+            <Image
+              src={`${IMG_URL}${img.image_path}`}
+              alt="Project Image"
+              width={700}
+              height={500}
+              className="project-img"
+            />
           </div>
+        ))}
+      </div>
 
-          <div className="proj-details">
-            <h3 className="scope-title">Project Details</h3>
+      {/* 🟩 Right Sidebar */}
+      <div className="detcol-2">
+        {/* 🧩 Status Section */}
+        <div className="status-card">
+          <h3 className="scope-title">Status</h3>
+          <p style={{ color: "#555", fontWeight: "500", marginBottom: "10px" }}>
+            American House Improvements Inc.
+          </p>
 
-            <div className="proj-grid">
-              <div className="proj-grid2">
-                <div className="proj-col1">
-                  <p>
-                    <strong>Location</strong>
-                  </p>
-                  <p>{project.location}</p>
-                </div>
+          <label
+            htmlFor="projectSelect"
+            style={{ display: "block", fontWeight: "500", marginBottom: "5px" }}
+          >
+            Select Project
+          </label>
+          <select
+            id="projectSelect"
+            style={{
+              width: "100%",
+              padding: "10px",
+              borderRadius: "6px",
+              border: "1px solid #ddd",
+              marginBottom: "15px",
+            }}
+          >
+            <option>Building a house from the scratch</option>
+            <option>Commercial Complex</option>
+            <option>Kitchen Redesign</option>
+          </select>
 
-                <div className="proj-col1">
-                  <p>
-                    <strong>Style</strong>
-                  </p>
-                  <p>{project.design_name}</p>
-                </div>
+          <button
+            className="send-btn"
+            style={{
+              background: "#2b52ff",
+              color: "#fff",
+              border: "none",
+              borderRadius: "6px",
+              padding: "10px 15px",
+              width: "100%",
+              fontWeight: "500",
+              cursor: "pointer",
+            }}
+          >
+            Send
+          </button>
+
+          <p
+            style={{
+              marginTop: "10px",
+              textAlign: "center",
+              color: "#2b52ff",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            Add New Project
+          </p>
+        </div>
+
+        {/* 🧩 Scope Section */}
+        <div className="scope-card">
+          <h3 className="scope-title">Scope</h3>
+          <div className="scope-items">
+            {[
+              "Architecture and Interior Design",
+              "Landscape Design",
+              "Building Engineering",
+            ].map((scope, i) => (
+              <div
+                key={i}
+                style={{
+                  background: "#f8f9fb",
+                  padding: "12px 15px",
+                  borderRadius: "10px",
+                  marginBottom: "10px",
+                  fontWeight: "500",
+                  color: "#333",
+                }}
+              >
+                {scope}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 🧩 Project Details Section */}
+        <div className="proj-details">
+          <h3 className="scope-title">Project Details</h3>
+
+          <div className="proj-grid">
+            <div className="proj-grid2">
+              <div className="proj-col1">
+                <p>
+                  <strong>Location</strong>
+                </p>
+                <p>{project.location}</p>
               </div>
 
-              <div className="proj-grid2">
-                <div className="proj-col1">
-                  <p>
-                    <strong>Type</strong>
-                  </p>
-                  <p>{project.project_type_name}</p>
-                </div>
+              <div className="proj-col1">
+                <p>
+                  <strong>Style</strong>
+                </p>
+                <p>{project.design_name}</p>
+              </div>
+            </div>
 
-                <div className="proj-col1">
-                  <p>
-                    <strong>Space Size</strong>
-                  </p>
-                  <p>{project.land_size}</p>
-                </div>
+            <div className="proj-grid2">
+              <div className="proj-col1">
+                <p>
+                  <strong>Type</strong>
+                </p>
+                <p>{project.project_type_name}</p>
+              </div>
+
+              <div className="proj-col1">
+                <p>
+                  <strong>Space Size</strong>
+                </p>
+                <p>{project.land_size}</p>
               </div>
             </div>
           </div>
