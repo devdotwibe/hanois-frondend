@@ -32,7 +32,6 @@ const EditProject = () => {
   const [message, setMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [deleteSuccessModal, setDeleteSuccessModal] = useState(false);
 
 
   // 🟩 Load provider + token
@@ -442,7 +441,8 @@ const handleSubmit = async (e) => {
               {errors.designStyle && <p style={{ color: "red" }}>{errors.designStyle}</p>}
             </div>
 
-<div
+            {/* Update Button */}
+          <div
   className="btn-cvr"
   style={{
     display: "flex",
@@ -454,7 +454,7 @@ const handleSubmit = async (e) => {
   {/* 🗑 Delete Button */}
   <button
     type="button"
-    onClick={() => setDeleteModalVisible(true)} // 👈 opens confirmation modal
+    onClick={() => setDeleteModalVisible(true)} // 👈 open modal
     style={{
       background: "#dc3545",
       color: "#fff",
@@ -600,7 +600,7 @@ const handleSubmit = async (e) => {
                 headers: token ? { Authorization: `Bearer ${token}` } : {},
               });
               setDeleteModalVisible(false);
-           
+             
               router.push("/provider/dashboard/projects");
             } catch (err) {
               console.error("❌ Error deleting project:", err);
@@ -619,58 +619,6 @@ const handleSubmit = async (e) => {
           Yes, Delete
         </button>
       </div>
-    </div>
-  </div>
-)}
-{/* ✅ Delete Success Modal */}
-{deleteSuccessModal && (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100vw",
-      height: "100vh",
-      backgroundColor: "rgba(0,0,0,0.4)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 1000,
-    }}
-  >
-    <div
-      style={{
-        background: "white",
-        padding: "30px 40px",
-        borderRadius: "12px",
-        textAlign: "center",
-        boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-        width: "90%",
-        maxWidth: "400px",
-      }}
-    >
-      <h3 style={{ color: "green" }}>✅ Project Deleted!</h3>
-      <p style={{ marginTop: "10px" }}>
-        Your project has been successfully deleted.
-      </p>
-
-      <button
-        onClick={() => {
-          setDeleteSuccessModal(false);
-          router.push("/provider/dashboard/projects");
-        }}
-        style={{
-          marginTop: "15px",
-          background: "#0070f3",
-          color: "#fff",
-          border: "none",
-          borderRadius: "6px",
-          padding: "8px 16px",
-          cursor: "pointer",
-        }}
-      >
-        Close
-      </button>
     </div>
   </div>
 )}
