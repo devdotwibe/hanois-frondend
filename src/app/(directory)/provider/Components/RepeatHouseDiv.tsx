@@ -31,14 +31,17 @@ const RepeatHouseDiv = ({ provider }) => {
         if (data.success) {
           const providerServices = data.data.filter(service => service.provider_name === provider.name);
 
-          // Get the lowest cost for the provider's services
-          const minCost = providerServices
-            .map(service => parseFloat(service.average_cost))
-            .filter(cost => !isNaN(cost)) // Ensure cost is a valid number
-            .reduce((min, cost) => (cost < min ? cost : min), Infinity);
+          // Get the lowest cost and associated currency for the provider's services
+          const minCostData = providerServices
+            .map(service => ({
+              cost: parseFloat(service.average_cost),
+              currency: service.currency
+            }))
+            .filter(({ cost }) => !isNaN(cost)) // Ensure cost is a valid number
+            .reduce((min, service) => (service.cost < min.cost ? service : min), { cost: Infinity, currency: 'USD' });
 
           // Set the service costs and update loading state
-          setServiceCosts(minCost === Infinity ? null : minCost);
+          setServiceCosts(minCostData.cost === Infinity ? null : minCostData);
         } else {
           setError('Failed to fetch service costs');
         }
@@ -52,7 +55,8 @@ const RepeatHouseDiv = ({ provider }) => {
     fetchServiceCosts();
   }, [provider]);
 
-  const startingBudget = serviceCosts ? `$${serviceCosts}` : '$10,000';
+  // Format the starting budget and currency
+  const startingBudget = serviceCosts ? `${serviceCosts.currency} ${serviceCosts.cost.toFixed(2)}` : '$10,000';
 
   return (
     <div className="repeat-house-div">
@@ -113,6 +117,7 @@ const RepeatHouseDiv = ({ provider }) => {
 };
 
 export default RepeatHouseDiv;
+
 
 
 // import HouseCard from '@/app/(provider)/provider/dashboard/Components/HouseCard'
