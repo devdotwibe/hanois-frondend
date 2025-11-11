@@ -737,11 +737,7 @@ hr {
 }
 .ch-col{
         background: #f1f3fa;
-         /* background: linear-gradient(
-    to top,
-    #f1f3fa 0%,               
-    rgba(241, 243, 250, 0) 100% 
-  ); */
+   
   padding-top: 160px;
   width: 100%;
     float: left;
@@ -762,7 +758,6 @@ hr {
 }
 .buildimg-outer img {
     width: 100%;
-        /* box-shadow: 0 0 200px 200px rgba(255 255 255 / 0.95); */
 }
 .buildimg-outer {
     max-width: 900px;
@@ -824,17 +819,10 @@ padding-block: 60px;
   position: absolute;
   top: 0%;
   right: 0%;
-  /* transform: translate(-50%, -50%); */
   width: 63%;
   height: 100%;
  
-   /* background: linear-gradient(
-    90deg,
-    #ffffff 0%,       
-    #ffffff 60%,     
-    #8c9fdd 85%,      
-    #2050f5 100%     
-  ); */
+  
 
     background: url("../../../public/images/bg1.jpg") no-repeat center / cover;
   z-index: -1;
@@ -856,7 +844,6 @@ padding-block: 60px;
   left: 0;
   width: 39%; 
   height: 100%;
-  /* background: linear-gradient(90deg, rgba(255,255,255,0) 0%, #2050f5 100%); */
     background: url("../../../public/images/bg2.jpg") no-repeat center / cover;
   border-radius: 0 30px 30px 0;
   z-index: 9;
@@ -871,16 +858,7 @@ padding-block: 60px;
   transform: translate(-50%, -50%);
   width: 120%;
   height: 55%;
-  /* background: linear-gradient(
-    90deg,
-    rgba(99, 119, 255, 0) 0%,
-    rgba(99, 119, 255, 0.25) 20%,
-    rgba(99, 119, 255, 0.25) 80%,
-    rgba(99, 119, 255, 0) 100%
-  );
-
-  border-radius: 200px;
-  filter: blur(0px); */
+  
   z-index: -1;
     background: url("../../../public/images/bg3.jpg") no-repeat center / cover;
 
@@ -1805,6 +1783,13 @@ border-right: 1px solid #e0e0e0;
      font-family: 'Avenir-medium';
 
 }
+
+
+.outline-items p{font-size: 14px;}
+
+
+
+
 .detail-card .house-card-info {
     padding-block: 20px;
 }
@@ -2621,7 +2606,24 @@ color: #2050f5;
     justify-content: flex-end;
     flex-wrap: wrap;
 }
+button.show-more {
+    color: var(--primary-color);
+      font-family: 'Avenir-medium';
+      position: relative;
+      padding-right: 20px;
 
+}
+
+
+
+button.show-more::after{
+  position: absolute;
+  content: "";
+  right: 0;
+      background: url("../../../public/images/bg1.jpg") no-repeat center / cover;
+
+  background-size: 20px !important;
+}
 
 /* ------------------------------------responsive */
 
