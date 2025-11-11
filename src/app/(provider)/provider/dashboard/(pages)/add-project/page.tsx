@@ -5,6 +5,7 @@ import axios from "axios";
 import uploadIcon from "../../../../../../../public/images/upload.svg";
 import { API_URL } from "@/config";
 import HouseOuter from "../../Components/HouseOuter";
+import TabBtns from "../../Components/TabBtns";
 
 const UploadBox = () => {
   const [formData, setFormData] = useState({
@@ -165,8 +166,13 @@ setTimeout(() => {
   return (
     <>
       <HouseOuter />
-      <div className="containers">
-        <div className="form-c">
+
+      <TabBtns />
+
+
+
+      <div className="">
+        <div className="proj-form1 company-profile1">
           <h3>Upload Project</h3>
           <p>Upload your project images and details below</p>
 
@@ -411,14 +417,8 @@ setTimeout(() => {
             >
               <button
                 type="submit"
-                className="login-btn contact"
-                style={{
-                  background: "#0070f3",
-                  color: "white",
-                  padding: "10px 20px",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                }}
+                className="save-btn1"
+                
               >
                 Save
               </button>
