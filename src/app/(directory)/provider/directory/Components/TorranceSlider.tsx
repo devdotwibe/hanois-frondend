@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import Slider, { Settings } from "react-slick";
 import Image from "next/image";
@@ -7,25 +6,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import axios from "axios";
 import { API_URL, IMG_URL } from "@/config";
 import { useRouter } from "next/navigation";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// -----------------------------
-// 🟩 Card Component
-// -----------------------------
-type TorranceCardProps = {
-  id: number;
-  image: string;
-  category: string;
-  title: string;
-  description?: string;
-  styleType?: string;
-  spaceSize?: string;
-  location?: string;
-};
-
-const TorranceCard: React.FC<TorranceCardProps> = ({
+const TorranceCard = ({
   id,
   image,
   category,
@@ -37,14 +21,12 @@ const TorranceCard: React.FC<TorranceCardProps> = ({
 }) => {
   const router = useRouter();
 
-  // 🟩 Navigate to detail page on click
-  const handleClick = () => {
-      router.push(`/provider/directory/profile-detail?id=${id}`);
-  };
-
   return (
-    <div className="torrance-card" onClick={handleClick} style={{ cursor: "pointer" }}>
-      {/* Image */}
+    <div
+      className="torrance-card"
+      onClick={() => router.push(`/provider/directory/profile-detail?id=${id}`)}
+      style={{ cursor: "pointer" }}
+    >
       <div className="torrance-card-image-wrap">
         <Image
           src={image || "/images/property-img.jpg"}
@@ -56,61 +38,56 @@ const TorranceCard: React.FC<TorranceCardProps> = ({
         <span className="torrance-card-badge">{category}</span>
       </div>
 
-      {/* Info */}
       <div className="torrance-card-info">
         <h3>{title}</h3>
         {description && <p className="desc">{description}</p>}
-        <p>
-          <strong>Style:</strong> {styleType || "—"}
-        </p>
-        <p>
-          <strong>Space size:</strong> {spaceSize || "—"}
-        </p>
-        <p>
-          <strong>Location:</strong> {location || "—"}
-        </p>
+        <p><strong>Style:</strong> {styleType || "—"}</p>
+        <p><strong>Space size:</strong> {spaceSize || "—"}</p>
+        <p><strong>Location:</strong> {location || "—"}</p>
       </div>
     </div>
   );
 };
 
-// -----------------------------
-// 🟩 Custom Slider Arrows
-// -----------------------------
-const NextArrow = (props: any) => {
-  const { onClick } = props;
-  return (
-    <button className="arrow-btn next" onClick={onClick}>
-      <ChevronRight size={22} />
-    </button>
-  );
-};
+const NextArrow = ({ onClick }) => (
+  <button className="arrow-btn next" onClick={onClick}>
+    <ChevronRight size={22} />
+  </button>
+);
 
-const PrevArrow = (props: any) => {
-  const { onClick } = props;
-  return (
-    <button className="arrow-btn prev" onClick={onClick}>
-      <ChevronLeft size={22} />
-    </button>
-  );
-};
+const PrevArrow = ({ onClick }) => (
+  <button className="arrow-btn prev" onClick={onClick}>
+    <ChevronLeft size={22} />
+  </button>
+);
 
-// -----------------------------
-// 🟩 Dynamic Slider Component
-// -----------------------------
-const TorranceSlider: React.FC = () => {
-  const [projects, setProjects] = useState<any[]>([]);
+const TorranceSlider = () => {
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [providerId, setProviderId] = useState(null);
 
-  // 🟩 Fetch projects dynamically
+  // 🟩 Get logged-in user from localStorage
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user?.id) setProviderId(user.id);
+  }, []);
+
+  // 🟩 Fetch only this provider’s projects
   const fetchProjects = async () => {
+    if (!providerId) return;
     try {
-      const res = await axios.get(`${API_URL}/projects`);
-      if (res.data && res.data.success) {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`${API_URL}/projects?provider_id=${providerId}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+
+      if (res.data?.success) {
         setProjects(res.data.data.projects || []);
+      } else {
+        console.warn("⚠️ Unexpected response:", res.data);
       }
     } catch (err) {
-      console.error("Error fetching projects:", err);
+      console.error("Error fetching provider projects:", err);
     } finally {
       setLoading(false);
     }
@@ -118,10 +95,9 @@ const TorranceSlider: React.FC = () => {
 
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [providerId]);
 
-  // 🟩 Slider Settings
-  const settings: Settings = {
+  const settings = {
     dots: false,
     infinite: true,
     speed: 500,
@@ -135,23 +111,18 @@ const TorranceSlider: React.FC = () => {
     ],
   };
 
-  if (loading)
-    return <p style={{ textAlign: "center", marginTop: "20px" }}>Loading projects...</p>;
+  if (loading) return <p style={{ textAlign: "center" }}>Loading projects...</p>;
 
   return (
     <div className="torrance-slider-wrapper">
-      <h2>Projects</h2>
-
+      <h2>My Projects</h2>
       {projects.length === 0 ? (
-        <p style={{ textAlign: "center", marginTop: "20px" }}>
-          No projects available
-        </p>
+        <p style={{ textAlign: "center" }}>No projects found.</p>
       ) : (
         <Slider {...settings}>
           {projects.map((proj) => {
-            // ✅ Find the project’s cover image (or fallback)
             const coverImgObj =
-              proj.images?.find((img: any) => img.is_cover) || proj.images?.[0];
+              proj.images?.find((img) => img.is_cover) || proj.images?.[0];
             const imageUrl = coverImgObj
               ? `${IMG_URL}${coverImgObj.image_path}`
               : "/images/property-img.jpg";
