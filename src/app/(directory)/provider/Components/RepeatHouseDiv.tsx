@@ -1,4 +1,4 @@
-import HouseCard from '@/app/(provider)/provider/dashboard/Components/HouseCard'
+import HouseCard1 from '@/app/(provider)/provider/dashboard/Components/HouseCard1'
 import React from 'react'
 import ImageSlider from './ImageSlider'
 
@@ -19,7 +19,7 @@ const RepeatHouseDiv = ({ provider }) => {
   return (
     <div className="repeat-house-div">
       <div className="house-div">
-        <HouseCard
+        <HouseCard1
           logo={logoSrc}
           name={name}
           description={description}
