@@ -41,13 +41,28 @@ const Page = () => {
   };
 
   // 🟩 Fetch provider details (name, logo, etc.)
+// 🟩 Fetch provider details (name, logo, etc.)
 const fetchProviderDetails = async (providerId) => {
   try {
     if (!providerId) return;
-    const res = await axios.get(`${API_URL}providers/${providerId}`);
+
+    // ✅ Get token from localStorage
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.warn("⚠️ No access token found in localStorage.");
+      return;
+    }
+
+    const res = await axios.get(`${API_URL}/providers/${providerId}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,  // ✅ required for API
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("📦 Provider API response:", res.data);
 
     let providerData = null;
-    // 🧩 handle different API formats safely
     if (res.data?.provider) providerData = res.data.provider;
     else if (res.data?.data?.provider) providerData = res.data.data.provider;
     else if (res.data?.data) providerData = res.data.data;
