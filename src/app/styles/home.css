@@ -2464,7 +2464,7 @@ color: #ffffff;
 }
 
 .remodeling-card {
-    border: 1px solid #e0e0e0;
+    border: 1px solid #eee;
     border-radius: 10px;
     width: 32%;
     padding: 20px;
@@ -2614,6 +2614,8 @@ button.show-more {
       font-family: 'Avenir-medium';
       position: relative;
       padding-right: 20px;
+      cursor: pointer;
+      display: inline-block;
 
 }
 
@@ -2624,9 +2626,130 @@ button.show-more::after{
   content: "";
   right: 0;
   background: url("../../../public/images/bluearrow-down.svg") no-repeat center / contain;
-
-  background-size: 20px !important;
+  background-size: 17px !important;
+    z-index: 99;
+    width: 23px;
+    height: 23px;
 }
+
+
+
+
+
+
+
+
+
+.project-card1 {
+  padding: 40px 40px;
+  background-color: #fff;
+  transition: box-shadow 0.2s ease;
+}
+
+.public-project-page .intro-tab{
+    padding: 0px 40px 0;
+
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.project-header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+
+
+.details-btn {
+  background-color: #2050f5;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.details-btn:hover {
+  background-color: #2050f5;
+}
+
+.project-info {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  width: 70%;
+}
+
+.project-desc{
+    width: 70%;
+
+}
+
+.project-info strong {
+  color: #000000;
+  margin-right: 4px;
+}
+
+
+
+
+
+
+.public-project-page{
+  position: relative;
+    border-right: 1px solid #e0e0e0;
+
+}
+
+
+.public-project-page .filter-container {
+    border: none;
+    position: absolute;
+    right: -300px;
+    top: 0;
+    width: 300px;
+        padding: 0 40px 0 40px;
+}
+
+.wrap-select input {
+    padding-left: 60px;
+  background: url("../../../public/images/search-icon.svg") no-repeat center !important;
+  background-size: 30px !important;
+  background-position-x: 18px !important;
+}
+.wrap-select {
+    margin: 0 0 40px;
+        padding: 0px 40px;
+
+}
+
+
+.public-proj .sidebar-pages {
+    padding-left: 0;
+}
+
+.listing-div .project-card1 {
+border-bottom: 1px solid #e0e0e0;
+
+}
+.listing-div{
+  border-top: 1px solid #e0e0e0;
+
+}
+
+
+
+
 
 /* ------------------------------------responsive */
 
