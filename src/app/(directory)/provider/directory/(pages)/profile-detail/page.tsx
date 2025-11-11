@@ -13,15 +13,13 @@ const Page = () => {
 
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [allProjects, setAllProjects] = useState([]); // 🟩 stores all projects for dropdown
+  const [allProjects, setAllProjects] = useState([]); // 🟩 all projects for dropdown
 
-  // 🟩 Fetch project details
+  // 🟩 Fetch single project
   const fetchProjectDetails = async () => {
     try {
       const res = await axios.get(`${API_URL}/projects/${id}`);
-      if (res.data.success) {
-        setProject(res.data.data.project);
-      }
+      if (res.data.success) setProject(res.data.data.project);
     } catch (err) {
       console.error("Error fetching project details:", err);
     } finally {
@@ -33,19 +31,27 @@ const Page = () => {
   const fetchAllProjects = async () => {
     try {
       const res = await axios.get(`${API_URL}/projects`);
-      if (res.data.success) {
-        setAllProjects(res.data.data.projects || []);
-      }
+      if (res.data.success) setAllProjects(res.data.data.projects || []);
     } catch (err) {
       console.error("Error fetching all projects:", err);
     }
   };
 
+  // 🟩 Fetch data on load
   useEffect(() => {
     if (id) fetchProjectDetails();
     fetchAllProjects();
   }, [id]);
 
+  // 🟩 Handle project selection → redirect
+  const handleProjectSelect = (e) => {
+    const selectedId = e.target.value;
+    if (selectedId) {
+      router.push(`/provider/directory/profile-detail?id=${selectedId}`);
+    }
+  };
+
+  // 🟩 Loading or error states
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
   if (!project) return <p style={{ textAlign: "center" }}>Project not found.</p>;
 
@@ -55,6 +61,7 @@ const Page = () => {
 
   return (
     <div className="containers-limit detcol profile-page">
+      {/* ====================== LEFT SECTION ====================== */}
       <div className="detcol-1">
         {/* 🔙 Back Button */}
         <button className="back-bth" onClick={() => router.back()}>
@@ -97,7 +104,7 @@ const Page = () => {
         ))}
       </div>
 
-      {/* 🟩 Right Sidebar */}
+      {/* ====================== RIGHT SIDEBAR ====================== */}
       <div className="detcol-2">
         {/* 🧩 Status Section */}
         <div className="status-card">
@@ -113,9 +120,10 @@ const Page = () => {
             Select Project
           </label>
 
-          {/* 🟩 Dynamic Dropdown */}
+          {/* 🟩 Dynamic Dropdown with Auto Redirect */}
           <select
             id="projectSelect"
+            onChange={handleProjectSelect}
             style={{
               width: "100%",
               padding: "10px",
@@ -123,6 +131,7 @@ const Page = () => {
               border: "1px solid #ddd",
               marginBottom: "15px",
             }}
+            value={id || ""}
           >
             <option value="">-- Select a Project --</option>
             {allProjects.map((proj) => (
@@ -132,22 +141,6 @@ const Page = () => {
             ))}
           </select>
 
-          <button
-            className="send-btn"
-            style={{
-              background: "#2b52ff",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              padding: "10px 15px",
-              width: "100%",
-              fontWeight: "500",
-              cursor: "pointer",
-            }}
-          >
-            Send
-          </button>
-
           <p
             style={{
               marginTop: "10px",
@@ -156,6 +149,7 @@ const Page = () => {
               cursor: "pointer",
               fontSize: "14px",
             }}
+            onClick={() => router.push("/provider/dashboard/add-project")}
           >
             Add New Project
           </p>
@@ -194,32 +188,24 @@ const Page = () => {
           <div className="proj-grid">
             <div className="proj-grid2">
               <div className="proj-col1">
-                <p>
-                  <strong>Location</strong>
-                </p>
+                <p><strong>Location</strong></p>
                 <p>{project.location}</p>
               </div>
 
               <div className="proj-col1">
-                <p>
-                  <strong>Style</strong>
-                </p>
+                <p><strong>Style</strong></p>
                 <p>{project.design_name}</p>
               </div>
             </div>
 
             <div className="proj-grid2">
               <div className="proj-col1">
-                <p>
-                  <strong>Type</strong>
-                </p>
+                <p><strong>Type</strong></p>
                 <p>{project.project_type_name}</p>
               </div>
 
               <div className="proj-col1">
-                <p>
-                  <strong>Space Size</strong>
-                </p>
+                <p><strong>Space Size</strong></p>
                 <p>{project.land_size}</p>
               </div>
             </div>
