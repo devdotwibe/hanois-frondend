@@ -11,19 +11,33 @@ import UploadBox from "../../Components/UploadBox";
 const ProjectComponent = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showProjects, setShowProjects] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  // 🟩 Fetch projects from API
+  // 🟩 Fetch only this provider’s projects
   const fetchProjects = async () => {
     try {
-      const res = await axios.get(`${API_URL}/projects`);
+      const user = JSON.parse(localStorage.getItem("user"));
+      const token = localStorage.getItem("token");
+      const providerId = user?.id || user?.provider_id;
+
+      if (!providerId) {
+        setError("No provider ID found. Please log in again.");
+        setLoading(false);
+        return;
+      }
+
+      const res = await axios.get(`${API_URL}/projects?provider_id=${providerId}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+
       if (res.data && res.data.success) {
         setProjects(res.data.data.projects || []);
+      } else {
+        setError("Failed to fetch your projects.");
       }
     } catch (err) {
-      console.error("Error fetching projects:", err);
+      console.error("Error fetching provider projects:", err);
       setError("Failed to load projects.");
     } finally {
       setLoading(false);
@@ -53,7 +67,7 @@ const ProjectComponent = () => {
       </button>
 
       {/* 🟩 Projects Section */}
-      <div className={`all-proj ${!showProjects ? "hide" : ""}`}>
+      <div className="all-proj">
         {loading ? (
           <p style={{ textAlign: "center", marginTop: "20px" }}>Loading projects...</p>
         ) : error ? (
@@ -65,7 +79,6 @@ const ProjectComponent = () => {
         ) : (
           <div className="torrance-div">
             {projects.map((proj) => {
-              // 🟩 Find cover image dynamically
               const coverImgObj =
                 proj.images?.find((img) => img.is_cover) || proj.images?.[0];
               const imageUrl = coverImgObj
@@ -75,7 +88,7 @@ const ProjectComponent = () => {
               return (
                 <TorranceCard
                   key={proj.id}
-                   id={proj.id}
+                  id={proj.id}
                   image={imageUrl}
                   category={proj.project_type_name || "Unknown"}
                   title={proj.title}
