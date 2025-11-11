@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react'
 import Intro from '../Components/Intro'
 import RepeatHouseDiv from '../Components/RepeatHouseDiv'
 import DirectorySidebar from '../Components/DirectorySidebar'
-import { API_URL } from '../path/to/urls'
+import { API_URL } from "@/config";
 
 const ServiceProviderDirectory = () => {
   const [providers, setProviders] = useState([])
