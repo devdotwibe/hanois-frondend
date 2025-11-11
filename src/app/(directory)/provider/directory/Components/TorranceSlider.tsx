@@ -39,7 +39,7 @@ const TorranceCard: React.FC<TorranceCardProps> = ({
 
   // 🟩 Navigate to detail page on click
   const handleClick = () => {
-    router.push(`provider/directory/profile?id=${id}`);
+      router.push(`/provider/directory/profile?id=${id}`);
   };
 
   return (
