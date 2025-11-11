@@ -8,13 +8,14 @@ const API_URL = 'https://hanois.dotwibe.com/api/api/providers'
 
 const ServiceProviderDirectory = () => {
   const [providers, setProviders] = useState(() => {
-    // Try to get cached data from localStorage
     const cachedProviders = localStorage.getItem('providers')
     return cachedProviders ? JSON.parse(cachedProviders) : []
   })
   const [error, setError] = useState(null)
   const [query, setQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10 // number of items per page
 
   // Fetch data if no cached data exists
   useEffect(() => {
@@ -25,7 +26,6 @@ const ServiceProviderDirectory = () => {
           if (!res.ok) throw new Error(`HTTP ${res.status}`)
           const json = await res.json()
           setProviders(json?.data?.providers || [])
-          // Cache the data in localStorage
           localStorage.setItem('providers', JSON.stringify(json?.data?.providers || []))
         } catch (err) {
           setError(err.message || 'Fetch error')
@@ -36,11 +36,10 @@ const ServiceProviderDirectory = () => {
     }
   }, [providers])
 
-  // simple derived list based on search + category
+  // Filtered data based on search and category
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
     return providers.filter(p => {
-      // search by name, service, location
       const hay = `${p.name || ''} ${p.service || ''} ${p.location || ''}`.toLowerCase()
       if (q && !hay.includes(q)) return false
       if (selectedCategory !== 'All') {
@@ -49,6 +48,14 @@ const ServiceProviderDirectory = () => {
       return true
     })
   }, [providers, query, selectedCategory])
+
+  // Pagination: slice the filtered data based on current page
+  const totalPages = Math.ceil(filtered.length / itemsPerPage)
+  const paginatedProviders = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const endIndex = startIndex + itemsPerPage
+    return filtered.slice(startIndex, endIndex)
+  }, [filtered, currentPage])
 
   return (
     <div className='spd-outer'>
@@ -62,17 +69,34 @@ const ServiceProviderDirectory = () => {
           <Intro
             query={query}
             onQueryChange={setQuery}
-            total={providers.length}
+            total={filtered.length}
           />
 
           {error && <p style={{color:'red', padding: '1rem'}}>Error: {error}</p>}
-          {filtered.length === 0 && (
+          {paginatedProviders.length === 0 && (
             <p style={{padding: '1rem'}}>No providers match your search.</p>
           )}
 
-          {filtered.map(provider => (
+          {paginatedProviders.map(provider => (
             <RepeatHouseDiv key={provider.id} provider={provider} />
           ))}
+
+          {/* Pagination Controls */}
+          <div className="pagination">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(prev => prev - 1)}
+            >
+              Previous
+            </button>
+            <span>Page {currentPage} of {totalPages}</span>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(prev => prev + 1)}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -80,6 +104,7 @@ const ServiceProviderDirectory = () => {
 }
 
 export default ServiceProviderDirectory
+
 
 
 // import React from 'react'
