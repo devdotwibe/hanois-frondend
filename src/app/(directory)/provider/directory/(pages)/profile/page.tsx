@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { API_URL, IMG_URL } from "@/config";
-import img2 from "../../../../../../public/images/left-arrow.svg";
+import img2 from "../../../../../../../public/images/left-arrow.svg";
 
 const Page = () => {
   const router = useRouter();

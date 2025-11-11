@@ -28,7 +28,7 @@ const TorranceCard: React.FC<TorranceCardProps> = ({
 
   // 🟩 Handle image click
   const handleClick = () => {
-    router.push(`/service-provider-directory/service-provider-profile?id=${id}`);
+    router.push(`/provider/directory/profile?id=${id}`);
   };
 
   return (
