@@ -83,6 +83,7 @@ const ServiceProviderDirectory = () => {
   // Calculate total pages for pagination
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
 
+  // Ensure currentPage never exceeds totalPages
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);
   }, [currentPage, totalPages]);
@@ -138,7 +139,6 @@ const ServiceProviderDirectory = () => {
 };
 
 export default ServiceProviderDirectory;
-
 
 
 // import React from 'react'
