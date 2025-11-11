@@ -18,7 +18,7 @@ const ServiceProviderDirectory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  // Flag to indicate server-side filtering was used
+  // Flag to indicate if the providers were fetched from the server or from cache
   const [serverFiltered, setServerFiltered] = useState(false);
 
   useEffect(() => {
@@ -28,20 +28,23 @@ const ServiceProviderDirectory = () => {
       try {
         let url = API_URL;
         let usedServerFilter = false;
+
         if (selectedCategory && selectedCategory !== 'All') {
           url = `${API_URL}?category=${encodeURIComponent(selectedCategory)}`;
           usedServerFilter = true;
         }
+
         const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
-        // safe access, fallback to []
+
         const newProviders = json?.data?.providers || [];
         console.log('Fetched providers', newProviders);
         setProviders(newProviders);
         localStorage.setItem('providers', JSON.stringify(newProviders));
         setServerFiltered(Boolean(usedServerFilter));
-        // whenever we get a fresh provider list, reset page to 1
+
+        // Reset page to 1 whenever the provider list is refreshed
         setCurrentPage(1);
       } catch (err) {
         setError(err.message || 'Fetch error');
@@ -50,24 +53,25 @@ const ServiceProviderDirectory = () => {
       }
     };
 
-    fetchProviders();
+    // If localStorage has cached data, use it.
+    if (!providers.length) {
+      fetchProviders();
+    }
   }, [selectedCategory]);
 
-  // Reset page to 1 when query changes (client-side search) or providers length changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [query, providers.length]);
+  }, [query, selectedCategory]);
 
-  // Filter data: if serverFiltered is true, don't apply category-based filtering again.
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return providers.filter(p => {
       const hay = `${p.name || ''} ${p.service || ''} ${p.location || ''}`.toLowerCase();
+
       if (q && !hay.includes(q)) return false;
 
       // If server already filtered by category, skip client-side category check
       if (selectedCategory !== 'All' && !serverFiltered) {
-        // only apply client-side service-match if server didn't filter
         return (p.service || '').toLowerCase().includes(selectedCategory.toLowerCase());
       }
       return true;
@@ -75,7 +79,7 @@ const ServiceProviderDirectory = () => {
   }, [providers, query, selectedCategory, serverFiltered]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
-  // ensure currentPage never exceeds totalPages
+
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);
   }, [currentPage, totalPages]);
