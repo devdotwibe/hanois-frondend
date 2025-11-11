@@ -50,7 +50,11 @@ const ServiceProviderDirectory = () => {
       }
     };
 
-    fetchProviders();
+    // fetchProviders();
+        if (!providers.length) {
+      fetchProviders();
+    }
+    
   }, [selectedCategory]);
 
   // Reset page to 1 when query changes (client-side search) or providers length changes
