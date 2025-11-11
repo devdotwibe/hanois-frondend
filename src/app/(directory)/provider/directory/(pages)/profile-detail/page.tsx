@@ -14,7 +14,8 @@ const Page = () => {
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [allProjects, setAllProjects] = useState([]);
-  const [services, setServices] = useState([]); // 🟩 New: services list
+  const [services, setServices] = useState([]);
+  const [provider, setProvider] = useState(null); // 🟩 New: Provider info
   const [serviceError, setServiceError] = useState(null);
 
   // 🟩 Fetch single project details
@@ -36,6 +37,19 @@ const Page = () => {
       if (res.data.success) setAllProjects(res.data.data.projects || []);
     } catch (err) {
       console.error("Error fetching all projects:", err);
+    }
+  };
+
+  // 🟩 Fetch provider details (name, logo, etc.)
+  const fetchProviderDetails = async (providerId) => {
+    try {
+      if (!providerId) return;
+      const res = await axios.get(`${API_URL}/providers/${providerId}`);
+      if (res.data?.success && res.data?.data) {
+        setProvider(res.data.data.provider || res.data.data);
+      }
+    } catch (err) {
+      console.error("Error fetching provider details:", err);
     }
   };
 
@@ -79,9 +93,10 @@ const Page = () => {
     fetchAllProjects();
   }, [id]);
 
-  // 🟩 Fetch provider’s services after project is loaded
+  // 🟩 Once project loads → fetch provider info + services
   useEffect(() => {
     if (project?.provider_id) {
+      fetchProviderDetails(project.provider_id);
       fetchProviderServices(project.provider_id);
     }
   }, [project]);
@@ -145,8 +160,9 @@ const Page = () => {
         {/* 🧩 Status Section */}
         <div className="status-card">
           <h3 className="scope-title">Status</h3>
+          {/* ✅ Provider Name instead of hardcoded text */}
           <p style={{ color: "#555", fontWeight: "500", marginBottom: "10px" }}>
-            American House Improvements Inc.
+            {provider?.name || "Provider Name Not Found"}
           </p>
 
           <label
