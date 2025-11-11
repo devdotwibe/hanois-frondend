@@ -1,8 +1,23 @@
 import React from 'react'
+import ProjectList from '../../Components/ProjectList'
+import PublicIntro from '../../Components/PublicIntro'
+import FilterBy from '../../Components/FilterBy'
 
 const page = () => {
   return (
-    <div>
+    <div className='public-project-page'>
+
+        <PublicIntro />
+
+    
+
+
+        <ProjectList />
+
+
+        <FilterBy />
+
+      
       
     </div>
   )
