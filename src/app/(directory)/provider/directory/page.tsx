@@ -1,9 +1,10 @@
 "use client";
-import React, { useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import Intro from '../Components/Intro'
 import RepeatHouseDiv from '../Components/RepeatHouseDiv'
 import DirectorySidebar from '../Components/DirectorySidebar'
-import { API_URL } from "@/config";
+
+const API_URL = 'https://hanois.dotwibe.com/api/api/providers'
 
 const ServiceProviderDirectory = () => {
   const [providers, setProviders] = useState([])
@@ -12,37 +13,27 @@ const ServiceProviderDirectory = () => {
   const [query, setQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
 
-  // Check if data is already cached in localStorage
-  const cachedData = localStorage.getItem('providers')
-  const lastFetch = localStorage.getItem('lastFetch')
-
-  // If data exists in localStorage and is not too old, use it
-  if (cachedData && lastFetch && Date.now() - lastFetch < 3600000) { // 1 hour cache
-    setProviders(JSON.parse(cachedData))
-    setLoading(false)
-  } else {
-    // If no cache or cache is too old, fetch from API
+  useEffect(() => {
+    let cancelled = false
     const fetchProviders = async () => {
       setLoading(true)
       try {
         const res = await fetch(API_URL)
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         const json = await res.json()
-        setProviders(json?.data?.providers || [])
-        setError(null)
-
-        // Cache the providers data in localStorage for 1 hour
-        localStorage.setItem('providers', JSON.stringify(json?.data?.providers || []))
-        localStorage.setItem('lastFetch', Date.now().toString())
+        if (!cancelled) {
+          setProviders(json?.data?.providers || [])
+          setError(null)
+        }
       } catch (err) {
-        setError(err.message || 'Fetch error')
+        if (!cancelled) setError(err.message || 'Fetch error')
       } finally {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
       }
     }
-
     fetchProviders()
-  }
+    return () => { cancelled = true }
+  }, [])
 
   // simple derived list based on search + category (category is placeholder because API provides category IDs only)
   const filtered = useMemo(() => {
