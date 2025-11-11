@@ -32,18 +32,16 @@ const ServiceProviderDirectory = () => {
           url = `${API_URL}?category=${encodeURIComponent(selectedCategory)}`;
           usedServerFilter = true;
         }
-
         const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
-
+        // safe access, fallback to []
         const newProviders = json?.data?.providers || [];
         console.log('Fetched providers', newProviders);
         setProviders(newProviders);
         localStorage.setItem('providers', JSON.stringify(newProviders));
         setServerFiltered(Boolean(usedServerFilter));
-
-        // Reset page to 1 whenever the provider list is refreshed
+        // whenever we get a fresh provider list, reset page to 1
         setCurrentPage(1);
       } catch (err) {
         setError(err.message || 'Fetch error');
@@ -52,43 +50,36 @@ const ServiceProviderDirectory = () => {
       }
     };
 
-    // Fetch providers from server if no cached data exists
-    if (!providers.length) {
-      fetchProviders();
-    }
-  }, [selectedCategory]); // Re-fetch when selectedCategory changes
+    fetchProviders();
+  }, [selectedCategory]);
 
-  // Reset page to 1 when query or selectedCategory changes
+  // Reset page to 1 when query changes (client-side search) or providers length changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [query, selectedCategory]);
+  }, [query, providers.length]);
 
-  // Filter providers based on search query
+  // Filter data: if serverFiltered is true, don't apply category-based filtering again.
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-
     return providers.filter(p => {
       const hay = `${p.name || ''} ${p.service || ''} ${p.location || ''}`.toLowerCase();
       if (q && !hay.includes(q)) return false;
 
-      // Only apply client-side category check if server hasn't already filtered by category
+      // If server already filtered by category, skip client-side category check
       if (selectedCategory !== 'All' && !serverFiltered) {
+        // only apply client-side service-match if server didn't filter
         return (p.service || '').toLowerCase().includes(selectedCategory.toLowerCase());
       }
-
       return true;
     });
   }, [providers, query, selectedCategory, serverFiltered]);
 
-  // Calculate total pages for pagination
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
-
-  // Ensure currentPage never exceeds totalPages
+  // ensure currentPage never exceeds totalPages
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);
   }, [currentPage, totalPages]);
 
-  // Paginate filtered providers
   const paginatedProviders = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
