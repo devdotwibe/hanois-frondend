@@ -1,4 +1,4 @@
-import Housecard from '@/app/(provider)/provider/dashboard/Components/Housecard'
+import HouseCard from '@/app/(provider)/provider/dashboard/Components/HouseCard'
 import React from 'react'
 import ImageSlider from './ImageSlider'
 
@@ -19,7 +19,7 @@ const RepeatHouseDiv = ({ provider }) => {
   return (
     <div className="repeat-house-div">
       <div className="house-div">
-        <Housecard
+        <HouseCard
           logo={logoSrc}
           name={name}
           description={description}
@@ -77,7 +77,7 @@ const RepeatHouseDiv = ({ provider }) => {
 
 export default RepeatHouseDiv
 
-// import Housecard from '@/app/(provider)/provider/dashboard/Components/Housecard'
+// import HouseCard from '@/app/(provider)/provider/dashboard/Components/HouseCard'
 // import React from 'react'
 
 // import logo1 from "../../../../../public/images/ahi-logo.jpg"
@@ -93,7 +93,7 @@ export default RepeatHouseDiv
 
 //           <div className="house-div">
 
-//         <Housecard 
+//         <HouseCard 
 //         logo={logo1}   
 //         name="American House Improvements Inc."
 //         description="LA’s Highly Rated, Award-Winning Construction & Renovation Firm"
