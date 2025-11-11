@@ -18,7 +18,7 @@ const ServiceProviderDirectory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  // Flag to indicate if the providers were fetched from the server or from cache
+  // Flag to indicate server-side filtering was used
   const [serverFiltered, setServerFiltered] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,6 @@ const ServiceProviderDirectory = () => {
       try {
         let url = API_URL;
         let usedServerFilter = false;
-
         if (selectedCategory && selectedCategory !== 'All') {
           url = `${API_URL}?category=${encodeURIComponent(selectedCategory)}`;
           usedServerFilter = true;
@@ -53,37 +52,42 @@ const ServiceProviderDirectory = () => {
       }
     };
 
-    // If localStorage has cached data, use it.
+    // Fetch providers from server if no cached data exists
     if (!providers.length) {
       fetchProviders();
     }
-  }, [selectedCategory]);
+  }, [selectedCategory]); // Re-fetch when selectedCategory changes
 
+  // Reset page to 1 when query or selectedCategory changes
   useEffect(() => {
     setCurrentPage(1);
   }, [query, selectedCategory]);
 
+  // Filter providers based on search query
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
+
     return providers.filter(p => {
       const hay = `${p.name || ''} ${p.service || ''} ${p.location || ''}`.toLowerCase();
-
       if (q && !hay.includes(q)) return false;
 
-      // If server already filtered by category, skip client-side category check
+      // Only apply client-side category check if server hasn't already filtered by category
       if (selectedCategory !== 'All' && !serverFiltered) {
         return (p.service || '').toLowerCase().includes(selectedCategory.toLowerCase());
       }
+
       return true;
     });
   }, [providers, query, selectedCategory, serverFiltered]);
 
+  // Calculate total pages for pagination
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
 
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);
   }, [currentPage, totalPages]);
 
+  // Paginate filtered providers
   const paginatedProviders = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -134,7 +138,6 @@ const ServiceProviderDirectory = () => {
 };
 
 export default ServiceProviderDirectory;
-
 
 
 
