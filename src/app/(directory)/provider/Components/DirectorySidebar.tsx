@@ -1,6 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const DirectorySidebar = ({ onCategoryChange = () => {}, selectedCategory = 'All' }) => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('https://hanois.dotwibe.com/api/api/categories');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        setCategories(json || []);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message || 'Failed to fetch categories');
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (loading) return <p>Loading categories...</p>;
+  if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
+
   return (
     <div className='filter-container'>
       <h2 className='filter-title'>FILTER BY</h2>
@@ -14,13 +39,12 @@ const DirectorySidebar = ({ onCategoryChange = () => {}, selectedCategory = 'All
             value={selectedCategory}
             onChange={(e) => onCategoryChange(e.target.value)}
           >
-            <option value="All">Categories</option>
-            <option value="Design">Design</option>
-            <option value="Construction">Construction</option>
-            <option value="Renovation">Renovation</option>
-            <option value="Artificial Intelligence">Artificial Intelligence</option>
-            <option value="Web Development">Web Development</option>
-            {/* add more static options or build dynamically if you have category names */}
+            <option value="All">All Categories</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -37,7 +61,7 @@ const DirectorySidebar = ({ onCategoryChange = () => {}, selectedCategory = 'All
         </div>
       </div>
 
-      {/* Style Section (unchanged) */}
+      {/* Style Section */}
       <div className='filter-section'>
         <p className='section-label'>Style</p>
 
