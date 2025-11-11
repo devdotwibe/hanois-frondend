@@ -21,7 +21,7 @@ const Tabs = () => {
 const handleTabClick = (tabId) => {
   if (tabId === "project") {
     const base = (SITE_URL || "").replace(/\/+$/, "");
-    const target = `${base}/provider/dashboard/projects`;
+    const target = `/provider/dashboard/projects`;
     router.push(target);
     return;
   }
