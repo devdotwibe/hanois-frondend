@@ -13,6 +13,7 @@ const Page = () => {
 
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [allProjects, setAllProjects] = useState([]); // 🟩 stores all projects for dropdown
 
   // 🟩 Fetch project details
   const fetchProjectDetails = async () => {
@@ -28,8 +29,21 @@ const Page = () => {
     }
   };
 
+  // 🟩 Fetch all projects for dropdown
+  const fetchAllProjects = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/projects`);
+      if (res.data.success) {
+        setAllProjects(res.data.data.projects || []);
+      }
+    } catch (err) {
+      console.error("Error fetching all projects:", err);
+    }
+  };
+
   useEffect(() => {
     if (id) fetchProjectDetails();
+    fetchAllProjects();
   }, [id]);
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
@@ -98,6 +112,8 @@ const Page = () => {
           >
             Select Project
           </label>
+
+          {/* 🟩 Dynamic Dropdown */}
           <select
             id="projectSelect"
             style={{
@@ -108,9 +124,12 @@ const Page = () => {
               marginBottom: "15px",
             }}
           >
-            <option>Building a house from the scratch</option>
-            <option>Commercial Complex</option>
-            <option>Kitchen Redesign</option>
+            <option value="">-- Select a Project --</option>
+            {allProjects.map((proj) => (
+              <option key={proj.id} value={proj.id}>
+                {proj.title}
+              </option>
+            ))}
           </select>
 
           <button
