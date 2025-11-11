@@ -1,29 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 const DirectorySidebar = ({ onCategoryChange = () => {}, selectedCategory = 'All' }) => {
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch categories from API
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch('https://hanois.dotwibe.com/api/api/categories');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-        setCategories(json || []);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message || 'Failed to fetch categories');
-        setLoading(false);
-      }
-    };
+  // Fetch categories directly when the component mounts (without useEffect)
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch('https://hanois.dotwibe.com/api/api/categories');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      setCategories(json || []);
+    } catch (err) {
+      setError(err.message || 'Failed to fetch categories');
+    }
+  };
 
+  // Trigger the category fetch as soon as the component is rendered
+  if (categories.length === 0) {
     fetchCategories();
-  }, []);
+  }
 
-  if (loading) return <p>Loading categories...</p>;
   if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
 
   return (
@@ -73,6 +70,7 @@ const DirectorySidebar = ({ onCategoryChange = () => {}, selectedCategory = 'All
 };
 
 export default DirectorySidebar;
+
 
 // import React from 'react';
 
