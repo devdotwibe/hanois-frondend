@@ -9,13 +9,15 @@ import img2 from "../../../../../../../public/images/left-arrow.svg";
 const Page = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const id = searchParams.get("id"); // 👈 get id from URL
+  const id = searchParams.get("id");
 
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [allProjects, setAllProjects] = useState([]); // 🟩 all projects for dropdown
+  const [allProjects, setAllProjects] = useState([]);
+  const [services, setServices] = useState([]); // 🟩 New: services list
+  const [serviceError, setServiceError] = useState(null);
 
-  // 🟩 Fetch single project
+  // 🟩 Fetch single project details
   const fetchProjectDetails = async () => {
     try {
       const res = await axios.get(`${API_URL}/projects/${id}`);
@@ -37,11 +39,31 @@ const Page = () => {
     }
   };
 
-  // 🟩 Fetch data on load
-  useEffect(() => {
-    if (id) fetchProjectDetails();
-    fetchAllProjects();
-  }, [id]);
+  // 🟩 Fetch provider services (dynamic from backend)
+  const fetchProviderServices = async (providerId) => {
+    try {
+      if (!providerId) return;
+      const res = await axios.get(
+        `${API_URL}/providers/all-provider-services?providerId=${providerId}`
+      );
+
+      const rows = Array.isArray(res.data?.data)
+        ? res.data.data
+        : Array.isArray(res.data)
+        ? res.data
+        : [];
+
+      const filtered = rows.filter(
+        (r) => String(r.provider_id) === String(providerId)
+      );
+
+      setServices(filtered);
+      setServiceError(null);
+    } catch (err) {
+      console.error("Error fetching services:", err);
+      setServiceError("Failed to load services.");
+    }
+  };
 
   // 🟩 Handle project selection → redirect
   const handleProjectSelect = (e) => {
@@ -51,10 +73,24 @@ const Page = () => {
     }
   };
 
-  // 🟩 Loading or error states
+  // 🟩 Fetch data on load
+  useEffect(() => {
+    if (id) fetchProjectDetails();
+    fetchAllProjects();
+  }, [id]);
+
+  // 🟩 Fetch provider’s services after project is loaded
+  useEffect(() => {
+    if (project?.provider_id) {
+      fetchProviderServices(project.provider_id);
+    }
+  }, [project]);
+
+  // 🟩 Loading / not found states
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
   if (!project) return <p style={{ textAlign: "center" }}>Project not found.</p>;
 
+  // 🟩 Images setup
   const coverImage =
     project.images?.find((img) => img.is_cover)?.image_path || "";
   const otherImages = project.images?.filter((img) => !img.is_cover) || [];
@@ -120,7 +156,7 @@ const Page = () => {
             Select Project
           </label>
 
-          {/* 🟩 Dynamic Dropdown with Auto Redirect */}
+          {/* 🟩 Dynamic Dropdown */}
           <select
             id="projectSelect"
             onChange={handleProjectSelect}
@@ -155,29 +191,31 @@ const Page = () => {
           </p>
         </div>
 
-        {/* 🧩 Scope Section */}
+        {/* 🧩 Service Section (Dynamic) */}
         <div className="scope-card">
-          <h3 className="scope-title">Scope</h3>
+          <h3 className="scope-title">Service</h3>
           <div className="scope-items">
-            {[
-              "Architecture and Interior Design",
-              "Landscape Design",
-              "Building Engineering",
-            ].map((scope, i) => (
-              <div
-                key={i}
-                style={{
-                  background: "#f8f9fb",
-                  padding: "12px 15px",
-                  borderRadius: "10px",
-                  marginBottom: "10px",
-                  fontWeight: "500",
-                  color: "#333",
-                }}
-              >
-                {scope}
-              </div>
-            ))}
+            {serviceError ? (
+              <p style={{ color: "red" }}>{serviceError}</p>
+            ) : services.length === 0 ? (
+              <p>No services listed.</p>
+            ) : (
+              services.map((svc, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: "#f8f9fb",
+                    padding: "12px 15px",
+                    borderRadius: "10px",
+                    marginBottom: "10px",
+                    fontWeight: "500",
+                    color: "#333",
+                  }}
+                >
+                  {svc.service_name ?? svc.name ?? "Service"}
+                </div>
+              ))
+            )}
           </div>
         </div>
 
@@ -188,24 +226,32 @@ const Page = () => {
           <div className="proj-grid">
             <div className="proj-grid2">
               <div className="proj-col1">
-                <p><strong>Location</strong></p>
+                <p>
+                  <strong>Location</strong>
+                </p>
                 <p>{project.location}</p>
               </div>
 
               <div className="proj-col1">
-                <p><strong>Style</strong></p>
+                <p>
+                  <strong>Style</strong>
+                </p>
                 <p>{project.design_name}</p>
               </div>
             </div>
 
             <div className="proj-grid2">
               <div className="proj-col1">
-                <p><strong>Type</strong></p>
+                <p>
+                  <strong>Type</strong>
+                </p>
                 <p>{project.project_type_name}</p>
               </div>
 
               <div className="proj-col1">
-                <p><strong>Space Size</strong></p>
+                <p>
+                  <strong>Space Size</strong>
+                </p>
                 <p>{project.land_size}</p>
               </div>
             </div>
