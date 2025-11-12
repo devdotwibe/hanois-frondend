@@ -276,36 +276,25 @@ const UploadBox = () => {
           <p>Upload your project images and details below</p>
 
 {/* 🟩 Upload + Preview Section */}
-<div className="form-grp upload-area" style={{ marginBottom: "30px" }}>
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
-      gap: "15px",
-      marginTop: "20px",
-    }}
-  >
+<div className="form-grp upload-area">
+  <div>
     {/* Upload Box inside grid */}
     <div
       className="upload-box"
       onClick={() => document.querySelector(".upload-input")?.click()}
-      style={{
-        border: "2px dashed #ccc",
-        borderRadius: "10px",
-        textAlign: "center",
-        padding: "25px 10px",
-        cursor: "pointer",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "150px",
-        transition: "border-color 0.3s ease",
-      }}
+      
       onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0070f3")}
       onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#ccc")}
     >
-      <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
+
+      <div className="cover-upload">
+        <div className="img-cover-up">
+                              <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
+
+
+        </div>
+
+        
       <h3 style={{ fontSize: "14px", marginTop: "10px" }}>Upload an image</h3>
       <p style={{ fontSize: "12px", color: "#666", margin: "5px 0" }}>
         Browse your files to upload document
@@ -313,16 +302,27 @@ const UploadBox = () => {
       <span style={{ fontSize: "11px", color: "#999" }}>
         Supported Formats: JPEG, PNG
       </span>
-    </div>
 
-    {/* Hidden File Input */}
-    <input
+
+      </div>
+
+
+
+
+
+
+
+      <input
       type="file"
       accept="image/*"
       multiple
       className="upload-input hidden"
       onChange={handleFileChange}
     />
+    </div>
+
+    {/* Hidden File Input */}
+    
 
     {/* Preview Grid */}
     {imageFile &&
@@ -332,12 +332,7 @@ const UploadBox = () => {
         return (
           <div
             key={index}
-            style={{
-              position: "relative",
-              borderRadius: "10px",
-              overflow: "hidden",
-              minHeight: "150px",
-            }}
+            
           >
             <img
               src={previewUrl}
