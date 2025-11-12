@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { API_URL, IMG_URL, SITE_URL } from "@/config";
 import DetailCard from "@/app/(directory)/provider/Components/DetailCard";
@@ -9,54 +10,19 @@ import UploadBox from "../../Components/UploadBox";
 
 const ProjectComponent = () => {
   const [projects, setProjects] = useState([]);
-  const [provider, setProvider] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  // 🟩 Fetch provider details based on the providerId from the URL
-  const fetchProviderData = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const token = localStorage.getItem("token");
-      const providerId = user?.id || user?.provider_id;
+  // Provider state for dynamic DetailCard
+  const [provider, setProvider] = useState(null);
+  const [loadingProvider, setLoadingProvider] = useState(true);
+  const [providerError, setProviderError] = useState(null);
 
-      if (!providerId) {
-        setError("No provider ID found. Please log in again.");
-        setLoading(false);
-        return;
-      }
-
-      const res = await fetch(`${API_URL}providers/${encodeURIComponent(providerId)}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-        next: { revalidate: 60 },
-      });
-
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        setError(body?.error || `Failed to fetch provider (${res.status})`);
-        setLoading(false);
-        return;
-      }
-
-      const data = await res.json();
-      setProvider(data?.provider || null);
-
-    } catch (err) {
-      console.error("Error fetching provider data:", err);
-      setError("Failed to load provider data.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 🟩 Fetch provider projects (same as before)
+  // 🟩 Fetch only this provider’s projects
   const fetchProjects = async () => {
     try {
+      setLoading(true);
       const user = JSON.parse(localStorage.getItem("user"));
       const token = localStorage.getItem("token");
       const providerId = user?.id || user?.provider_id;
@@ -67,16 +33,14 @@ const ProjectComponent = () => {
         return;
       }
 
-      const res = await fetch(`${API_URL}/projects?provider_id=${providerId}`, {
-        method: "GET",
+      const res = await axios.get(`${API_URL}/projects?provider_id=${providerId}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        setProjects(data?.data?.projects || []);
+      if (res.data && res.data.success) {
+        setProjects(res.data.data.projects || []);
       } else {
-        setError("Failed to fetch projects.");
+        setError("Failed to fetch your projects.");
       }
     } catch (err) {
       console.error("Error fetching provider projects:", err);
@@ -86,10 +50,74 @@ const ProjectComponent = () => {
     }
   };
 
-  // 🟩 Load data when the component mounts
+  // 🟩 Fetch provider details (with simple caching) — same approach as UploadBox
+  const fetchProviderData = async (forceRefresh = false) => {
+    try {
+      setLoadingProvider(true);
+      setProviderError(null);
+
+      const user = JSON.parse(localStorage.getItem("user"));
+      const tokenLocal = localStorage.getItem("token");
+      const id = user?.id || user?.provider_id;
+
+      if (!id) {
+        setProviderError("No provider ID found. Please log in again.");
+        setLoadingProvider(false);
+        return;
+      }
+
+      const cacheKey = `provider_${id}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached && !forceRefresh) {
+        try {
+          const cachedData = JSON.parse(cached);
+          setProvider(cachedData);
+          setLoadingProvider(false);
+          return;
+        } catch (e) {
+          console.warn("Failed to parse cached provider, fetching fresh.", e);
+        }
+      }
+
+      const res = await fetch(`${API_URL}providers/${encodeURIComponent(id)}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          ...(tokenLocal && { Authorization: `Bearer ${tokenLocal}` }),
+        },
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setProviderError(body?.error || `Failed to fetch provider (${res.status})`);
+        setLoadingProvider(false);
+        return;
+      }
+
+      const data = await res.json();
+      const providerData = data?.provider || null;
+      setProvider(providerData);
+
+      if (providerData) {
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(providerData));
+        } catch (e) {
+          console.warn("Failed to cache provider data:", e);
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching provider data:", err);
+      setProviderError("Failed to load provider data.");
+    } finally {
+      setLoadingProvider(false);
+    }
+  };
+
+  // 🟩 Load provider and projects on mount
   useEffect(() => {
     fetchProviderData();
     fetchProjects();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 🟩 Handle Add Project button
@@ -101,24 +129,29 @@ const ProjectComponent = () => {
 
   return (
     <div className="project-component">
-      {/* 🟩 Dynamic DetailCard */}
-      {loading ? (
-        <p>Loading provider and projects...</p>
-      ) : error ? (
-        <p style={{ color: "red" }}>{error}</p>
+      {/* Dynamic DetailCard */}
+      {loadingProvider ? (
+        <p>Loading provider...</p>
+      ) : providerError ? (
+        <p style={{ color: "red" }}>{providerError}</p>
+      ) : provider ? (
+        <DetailCard
+          logo={provider?.image ? `${IMG_URL}${provider.image}` : "/path/to/logo.png"}
+          name={provider?.name || "Unknown Provider"}
+          description={
+            provider?.notes ||
+            provider?.service_notes ||
+            provider?.professional_headline ||
+            "No description available"
+          }
+        />
       ) : (
-        provider && (
-          <DetailCard
-            logo={provider?.image || "/path/to/logo.png"} // Use provider's logo or a placeholder
-            name={provider?.name || "Unknown Provider"} // Use provider's name
-            description={provider?.notes || provider?.service_notes || provider?.professional_headline || "No description available"} // Description from provider
-          />
-        )
+        <DetailCard />
       )}
 
       <TabBtns />
 
-      {/* 🟩 Add Project Button */}
+      {/* 🟩 Add Button */}
       <button className="add-proj" onClick={handleAddClick}>
         <span className="icon">+</span> Add Project
       </button>
