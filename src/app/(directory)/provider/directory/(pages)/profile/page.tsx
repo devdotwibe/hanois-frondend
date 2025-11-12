@@ -82,8 +82,10 @@ const Page = () => {
           ))}
         </div>
 
-        <div className="detcol-2">
-          <div className="status-card">
+        <div className="detcol-2 after-update">
+
+          <div className="after-update-1">
+             <div className="status-card">
             <div className="project-card">
             <button
   className="send-btn"
@@ -132,6 +134,15 @@ const Page = () => {
               </div>
             </div>
           </div>
+
+
+          </div>
+
+
+         
+
+
+
         </div>
       </div>
     </div>

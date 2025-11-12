@@ -16,6 +16,8 @@
 }
 
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 
 
 :root {
@@ -40,7 +42,10 @@ strong{
   font-family: 'Avenir-medium';
 }
 
-
+.torrance-card-info strong{
+  color: #1b1b25;
+  font-family: "Poppins", sans-serif;
+}
 
 .banner-div p {font-size: 18px;}
 button{transition: all 0.5s ease-in-out;}
@@ -1351,6 +1356,7 @@ background-position-y: 50% !important;
   font-size: 30px;
   font-family: 'Avenir-Black';
   margin: 0 0 15px;
+  color: #171725;
 }
 
 
@@ -1444,6 +1450,8 @@ ul.tab-nav1 {
   /* font-family: 'Avenir-Black'; */
     font-family: 'Avenir-medium';
     font-weight: 600;
+        color: #171725;
+
 
 
     line-height: 1;
@@ -1451,6 +1459,9 @@ ul.tab-nav1 {
 
 .torrance-card-info p{
     margin: 0 0 10px;
+      font-family: "Poppins", sans-serif;
+      font-size: 14px;
+    
 }
 .torrance-card-desc {
   overflow: hidden;
@@ -1857,6 +1868,8 @@ border-right: 1px solid #e0e0e0;
     margin: 0 0 8px;
   font-family: 'Avenir-Black';
     font-size: 23px;
+    color: #171725;
+    line-height: 1.03;
 }
 
 .about-content {
@@ -1868,6 +1881,8 @@ border-right: 1px solid #e0e0e0;
     margin: 0 0 8px;
   font-family: 'Avenir-Black';
     font-size: 23px;
+        color: #171725;
+
 }
 
 .info-label {font-size: 20px;
@@ -1891,6 +1906,8 @@ border-right: 1px solid #e0e0e0;
     margin: 0 0 30px;
     font-family: Avenir-Black;
     font-size: 23px;
+        color: #171725;
+
 }
 .serv-div{
   margin: 20px 0;
@@ -2158,12 +2175,15 @@ border-right: 1px solid #e0e0e0;
 .project-details h2{
     font-family: 'Avenir-Black';
     margin: 0 0 20px;
-    font-size: 40px; line-height: 1.2;
+    font-size: 32px; line-height: 1.2;
+    color: #171725;
 
 }
 .project-details h3{
    font-family: 'Avenir-Black';
-    margin: 20px 0 20px; font-size: 24px;
+    margin: 20px 0 20px; 
+    font-size: 20px;
+     color: #171725;
 }
 .project-details {
     margin: 0 0 60px;
@@ -2183,9 +2203,9 @@ border-right: 1px solid #e0e0e0;
 }
 
 .scope-title {
-  font-size: 21px;
+  font-size: 20px;
   font-family: 'Avenir-Black';
-  color: #111;
+  color: #171725;
   margin-bottom: 16px;
 }
 
@@ -2230,7 +2250,15 @@ border-right: 1px solid #e0e0e0;
 }
 
 .proj-col1 p strong {
-    margin: 0 0 12px;
+    margin: 0 0 10px;
+    color: #171725;
+    font-size: 20px;
+    letter-spacing: 0.07px;
+
+
+}
+.proj-col1 p:first-child{
+      margin: 0 0 10px;
 
 }
 
@@ -2664,9 +2692,12 @@ color: #2050f5;
     margin: 0 0 8px;
   font-family: 'Avenir-Black';
     font-size: 23px;
+        color: #171725;
+
 }
 .after-edit .status-card {
-    max-width: 300px;
+  width: 100%;
+    max-width: 250px;
 }
 
 .after-edit {
@@ -3285,9 +3316,26 @@ line-height: 1;
 }
 
 
+.after-update-1 {
+    max-width: 250px;
+    width: 100%;
+}
+
+.after-update {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    display: flex;
+}
+.profile-page p,
+.prov-dashboard p{
+  color: #404040;
+}
 
 
 
+.project-type {
+    font-size: 18px;
+}
 /* ------------------------------------responsive */
 
 
