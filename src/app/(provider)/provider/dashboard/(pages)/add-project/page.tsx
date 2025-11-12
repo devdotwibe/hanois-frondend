@@ -275,22 +275,6 @@ const UploadBox = () => {
           <h3>Upload Project</h3>
           <p>Upload your project images and details below</p>
 
-<<<<<<< HEAD
-          {/* 🟩 Upload Section */}
-          <div className="form-grp upload-area" style={{ marginBottom: "30px" }}>
-            <div
-              className="upload-box"
-              onClick={() => document.querySelector(".upload-input")?.click()}
-            >
-              <div className="up-img-outer">
-                <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
-              </div>
-
-              <h3>Upload an image</h3>
-              <p>Browse your files to upload document</p>
-              <span>Supported Formats: JPEG, PNG</span>
-            </div>
-=======
 {/* 🟩 Upload + Preview Section */}
 <div className="form-grp upload-area" style={{ marginBottom: "30px" }}>
   <div
@@ -330,7 +314,6 @@ const UploadBox = () => {
         Supported Formats: JPEG, PNG
       </span>
     </div>
->>>>>>> 520a062b3e94fd3ad54c8165ec357f63afb9d55f
 
     {/* Hidden File Input */}
     <input
