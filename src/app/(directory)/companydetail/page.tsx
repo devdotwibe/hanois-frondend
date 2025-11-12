@@ -24,9 +24,6 @@ const page = () => {
          <ServiceDiv />
 
 
-         
-      
-
         </div>
 
         <div className="detcol-2 after-edit">
@@ -39,18 +36,11 @@ const page = () => {
 
 
 
-
-
         <div className="containers-limit">
             <TorranceSlider />
 
         </div>
 
-
-        
-
-
-       
 
     
     </div>

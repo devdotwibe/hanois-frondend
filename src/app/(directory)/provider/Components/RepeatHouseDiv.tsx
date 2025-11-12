@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import HouseCard1 from '@/app/(provider)/provider/dashboard/Components/HouseCard1';
 import ImageSlider from './ImageSlider';
+import { useRouter } from 'next/navigation';
 import { IMG_URL } from "@/config"; // Import IMG_URL from config
 
 const RepeatHouseDiv = ({ provider }) => {
@@ -10,6 +11,12 @@ const RepeatHouseDiv = ({ provider }) => {
   const [loadingCosts, setLoadingCosts] = useState(true);
   const [error, setError] = useState(null);
   const [projects, setProjects] = useState([]); // State to store projects
+
+   const router = useRouter(); // <- router
+  const handleDetailsClick = () => {
+    // navigate to provider detail page
+    router.push(`/provider/${provider.id}`);
+  };
 
   // Debugging the provider data
   console.log("Provider data:", provider);
@@ -95,7 +102,7 @@ const RepeatHouseDiv = ({ provider }) => {
           name={name}
           description={description}
         />
-        <button className="detail-btn">Details</button>
+      <button className="detail-btn" onClick={handleDetailsClick}>Details</button>
       </div>
 
       <div className="details">
