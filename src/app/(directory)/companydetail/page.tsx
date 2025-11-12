@@ -1,12 +1,11 @@
 import React from 'react'
-import AboutContainer from '../../Components/AboutContainer'
+import AboutContainer from '../../(directory)/provider/directory/Components/AboutContainer'
 import DetailIntro from '@/app/(directory)/provider/Components/DetailIntro'
 import ItemSlider from '@/app/(provider)/provider/dashboard/Components/ItemSlider'
 import BusinessInfo from '@/app/(directory)/provider/Components/BusinessInfo'
-import ServiceDiv from '../../Components/ServiceDiv'
-import TorranceSlider from '../../Components/TorranceSlider'
+import ServiceDiv from '../../(directory)/provider/directory/Components/ServiceDiv'
+import TorranceSlider from '../../(directory)/provider/directory/Components/TorranceSlider'
 import StatusCard from '@/app/(directory)/provider/Components/StatusCard'
-
 
 const page = () => {
   return (
