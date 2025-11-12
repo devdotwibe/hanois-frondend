@@ -3275,25 +3275,15 @@ line-height: 1;
 .profile-page .back-bth {
     margin-bottom: 30px;
 }
+
 .sucess-img-text {
-    position: relative;
-      
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; line-height: 1;
+    color: #00C363;
 }
 
-
-.sucess-img-text::before {
-      content: "";
-    z-index: 9999;
-    background: url("../../../public/images/tik.svg");
-    background-repeat: no-repeat;
-    background-size: 12px;
-    width: 18px;
-    height: 18px;
-    position: absolute;
-  
-    
-}
 
 
 

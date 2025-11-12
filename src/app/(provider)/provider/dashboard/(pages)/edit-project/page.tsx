@@ -7,7 +7,7 @@ import { API_URL, IMG_URL } from "@/config";
 import HouseOuter from "../../Components/HouseOuter";
 import TabBtns from "../../Components/TabBtns";
 import { useRouter, useSearchParams } from "next/navigation";
-import ssimg from "../../../../../../../public/images/tik.svg"
+import ssimg from "../../../../../../../public/images/sucess-msg.svg"
 
 
 
@@ -511,8 +511,8 @@ const handleSubmit = async (e) => {
                     <Image 
                     src={ssimg}
                     alt="img"
-                    width={18}
-                    height={18}
+                    width={40}
+                    height={40}
                     
                     />
                   </span>
