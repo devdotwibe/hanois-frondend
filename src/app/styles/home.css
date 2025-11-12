@@ -1474,13 +1474,17 @@ ul.tab-nav1 {
 
 
 .upload-box {
-  border: 2px dashed #5c3bff;
+  border: 2px dashed #2050f5;
      padding: 20px;
-    width: 350px;
-    height: 250px; border-radius: 8px; text-align: center;
-    display: flex; 
-    flex-wrap: wrap; justify-content: center;
+     flex-direction: column;
+    
+
+     border-radius: 8px; text-align: center;
+    display: flex;
+    justify-content: center;
     align-items: center;
+    width: 30%;
+
 }
 
 
@@ -3210,6 +3214,29 @@ line-height: 1;
     margin: 0 0 40px;
 }
 
+.company-profile1.upload-page {
+    max-width: 900px;
+}
+.upload-area{
+      max-width: 800px;
+
+}
+
+.grid-upload {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.grid-upload > div {
+    background: yellow;
+    width: 32%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+}
+
+.grid-upload > div:nth-child(3n) {
+    margin-right: 0;
+}
 
 
 /* ------------------------------------responsive */
