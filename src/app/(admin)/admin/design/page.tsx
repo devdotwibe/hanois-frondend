@@ -24,6 +24,9 @@ export default function DesignPage() {
 
   const [constructionRateError, setconstructionRateError] = useState("");
 
+  const [selectedId, setselectedId] = useState<number | null>(null);
+  const [showConfirm, setShowConfirm] = useState(false);
+
 
   const [errors, setErrors] = useState({
     newDesign: "",
@@ -184,15 +187,25 @@ export default function DesignPage() {
     }
   };
 
-  // Delete Design
-  const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this Design?")) return;
-    try {
-      await axios.delete(`${API_URL}/design/${id}`);
-      setDesigns(designs.filter((d) => d.id !== id));
-      setMessage("✅ Design deleted successfully");
+  const handleDeleteClick = (id: number) => {
 
-       setTimeout(() => setMessage(""), 3000); 
+    setselectedId(id);
+    setShowConfirm(true);
+
+  };
+
+  const handleDelete = async () => {
+
+    if (!selectedId) return;
+
+    try {
+      await axios.delete(`${API_URL}/design/${selectedId}`);
+        setDesigns(designs.filter((d) => d.id !== selectedId));
+        setMessage("✅ Design deleted successfully");
+
+        setShowConfirm(false);
+        
+        setTimeout(() => setMessage(""), 3000); 
 
     } catch (error) {
       console.error(error);
@@ -300,6 +313,9 @@ export default function DesignPage() {
 
 
   return (
+
+    <>
+
     <div className="mx-auto p-6 max-w-lg bg-white shadow-lg rounded-lg">
       <h1 className="text-2xl font-semibold mb-6 text-center">Designs</h1>
 
@@ -487,13 +503,13 @@ export default function DesignPage() {
                   <td className="py-3 px-4 text-center space-x-2">
                     <button
                       onClick={() => handleEdit(d)}
-                      className="inline-block bg-yellow-500 text-white px-4 py-1.5 rounded-md text-sm font-medium hover:bg-yellow-600 transition"
+                      className="btn-edit"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(d.id)}
-                      className="inline-block bg-red-500 text-white px-4 py-1.5 rounded-md text-sm font-medium hover:bg-red-600 transition"
+                      onClick={() => handleDeleteClick(d.id)}
+                      className="btn-delete"
                     >
                       Delete
                     </button>
@@ -506,8 +522,29 @@ export default function DesignPage() {
 
     </div>
 
-
-     
     </div>
+
+          
+     {showConfirm && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <h3>Confirm Delete</h3>
+              <p>Are you sure you want to delete this Design?</p>
+              <div className="modal-actions">
+                <button
+                  className="btn-cancel"
+                  onClick={() => setShowConfirm(false)}
+                >
+                  Cancel
+                </button>
+                <button className="btn-confirm" onClick={handleDelete}>
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+      )}
+
+      </>
   );
 }
