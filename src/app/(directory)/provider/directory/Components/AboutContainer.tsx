@@ -10,7 +10,7 @@ const AboutContainer = ({ provider }) => {
 
         {provider?.extra_about && <p>{provider.extra_about}</p>}
 
-        <button className='show-more'>Show More</button>
+        {/* <button className='show-more'>Show More</button> */}
       </div>
     </div>
   )
