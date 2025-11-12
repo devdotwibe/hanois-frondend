@@ -46,7 +46,12 @@
   min-width: 600px;
 }
 
+.modal-content{
+  width: 100%;
+    max-width: 800px;
+    padding: 70px 50px 70px 50px;
 
+}
 .modal-content.providesucess{
   padding: 97px;
 }
@@ -88,4 +93,15 @@
   font-size: 16px;
   margin-bottom: 20px;
   line-height: 1.4;
+}
+
+
+.proposal-popup .modal-content p {
+
+  margin-bottom: 0px;
+}
+
+
+.proposal-popup  .modal-content{
+  position: relative;
 }

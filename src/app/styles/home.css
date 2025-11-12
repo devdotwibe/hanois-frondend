@@ -2853,6 +2853,325 @@ a.edit-details {
       font-family: 'Avenir-medium';
 
 }
+.line-divide {
+    background: #e0e0e0;
+    width: 100%;
+    height: 1px;
+}
+
+
+
+
+
+
+
+
+
+
+
+.proposal-div {
+    max-width: 1000px;
+}
+
+
+
+.company-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid #e0e0e0;
+}
+
+
+
+.company-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.company-logo {
+
+  border-radius: 8px;
+  object-fit: cover;
+  width: 70px;
+  height: 70px;
+}
+
+.company-info h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.company-info p {
+  color: #666;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.company-right {
+  text-align: right;
+}
+
+.company-date {
+  font-size: 14px;
+  color: #666;
+}
+
+.company-duration {
+  font-weight: 600;
+  font-size: 14px;
+  color: #222;
+}
+
+.view-btn {
+  display: none;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.company-card:hover .view-btn {
+  display: inline-block;
+}
+
+.view-btn:hover {
+  background: #2563eb;
+}
+
+/* Popup */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.popup-box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 320px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+
+
+.company-card:hover .company-right .right-text {
+    display: none;
+}
+.company-card:hover .company-right .with-btn {
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+.proposal-box {
+  background: #fff;
+  border-radius: 12px;
+  max-width: 100%;
+  margin: 0px auto;
+  text-align: left;
+  position: relative;
+}
+
+.proposal-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  width: 80px;
+  height: 80px;
+}
+.proposal-header img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+.proposal-logo {
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.proposal-info h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e1e1e;
+}
+
+.proposal-info p {
+  margin: 2px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.proposal-details {
+  background: #f8f8ff;
+  padding: 20px 30px 0;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.proposal-details h4 {
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  max-width: 240px;
+}
+
+.detail-row span {
+  font-weight: 600;
+  color: #333;
+}
+
+.detail-row p {
+  color: #444;
+  margin: 0;
+}
+
+.proposal-letter h5 {
+  font-weight: 600;
+  margin-top: 15px;
+  margin-bottom: 8px;
+}
+
+.proposal-letter p {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.proposal-attachment {
+  margin-top: 15px;
+}
+
+.proposal-attachment .attachment-link {
+  display: inline-block;
+  margin-top: 5px;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.proposal-attachment .attachment-link:hover {
+  text-decoration: underline;
+}
+
+.proposal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.reject-btn,
+.accept-btn {
+line-height: 1;
+  border: none;
+  padding: 14px 60px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.reject-btn {
+  background: #ff3b3b;
+}
+
+.reject-btn:hover {
+  background: #d32f2f;
+}
+
+.accept-btn {
+  background: #2563eb;
+}
+
+.accept-btn:hover {
+  background: #4c72f6;
+}
+
+.proposal-attachment a{
+    color: #4c72f6;
+    text-decoration: underline;
+}
+
+.proposal-attachment a:hover{
+    color: #4c72f6;
+    text-decoration: none;
+}
+
+
+.proposal-attachment h5{
+  margin-bottom: 10px;
+}
+
+.detail-col11 {
+    width: 50%;
+}
+
+.proposal-popup .close-btn {
+ 
+ background: #f1f3fa url(../../../public/images/close-x.svg);
+ background-repeat: no-repeat;
+ background-size: 20px;
+     background-position-x: 50%;
+     background-position-y: 50%;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+     margin: 0; display: flex; justify-content: center; align-items: center;
+}
+
+
+
+.proposal-info {
+    padding-left: 40px;
+}
+
+
+
+
+
+
+
 
 
 /* ------------------------------------responsive */
