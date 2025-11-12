@@ -6,7 +6,7 @@ type OptionItem = {
 };
 
 
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { API_URL } from "@/config";
 
 const AddNewForm = () => {
@@ -33,15 +33,51 @@ const AddNewForm = () => {
 
   const [ShowCalculator,setShowCalculator] = useState(false);
 
+  const [quality, setQuality] = useState("");
+  const [buildCost, setBuildCost] = useState("");
+  const [feeRate, setFeeRate] = useState("");
+  
+  const [BuildArea, setBuildArea] = useState("");
+  const [CostFinish, setCostFinish] = useState("");
+  const [SuggestCost, setSuggestCost] = useState("");
+  const [TotalCost, setTotalCost] = useState("");
+
+  const [constructionRate, setConstructionRate] = useState("");
+
+  
+
   const NOTES_LIMIT = 1024;
 
   const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    if (name === "notes") {
-      if (value.length > NOTES_LIMIT) return; 
-    }
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+        const { name, value } = e.target;
+        if (name === "notes") {
+        if (value.length > NOTES_LIMIT) return; 
+        }
+        setFormData(prev => ({ ...prev, [name]: value }));
+
+        if (name === "luxuryLevel") {
+            const selectedLevel = designLevels.find((item) => item.id === parseInt(value));
+            if (selectedLevel) {
+                setQuality(selectedLevel?.quality || "");
+                setBuildCost(selectedLevel?.cost || "");
+                setFeeRate(selectedLevel?.rate || "");
+            } else {
+         
+                setQuality("");
+                setBuildCost("");
+                setFeeRate("");
+            }
+        }
+
   };
+
+    useEffect(() => {
+        fetch(`${API_URL}settings/construction_rate`)
+        .then((res) => res.json())
+        .then((data) => setConstructionRate(data?.construction_rate || ""))
+        .catch(() => console.error("Failed to fetch construction rate"));
+    }, []);
 
 
   const handleSubmit = async (e:any) => {
@@ -122,6 +158,46 @@ const getServiceName = (id: string | number) => {
   return item ? item.name : id;
 };
 
+//   useEffect(() => {
+
+//     console.log(formData?.luxuryLevel,feeRate,buildCost,quality);
+    
+//   }, [formData?.luxuryLevel]);
+
+
+    useEffect(() => {
+
+    console.log("landSize:", formData?.landSize);
+    console.log("basement:", formData?.basement);
+    console.log("luxuryLevel:", formData?.luxuryLevel);
+    console.log("constructionRate:", constructionRate);
+    console.log("buildCost:", buildCost);
+
+    if (
+        formData?.landSize !== "" &&
+        formData?.basement !== "" &&
+        formData?.luxuryLevel !== ""
+    ) {
+        const calcBuildArea = formData.landSize * (constructionRate / 100);
+        const calcCostFinish = calcBuildArea * buildCost;
+        const calcSuggestCost = calcCostFinish * (feeRate / 100);
+        const calcTotalCost = calcCostFinish + calcSuggestCost;
+
+        console.log("BuildArea:", calcBuildArea);
+        console.log("CostFinish:", calcCostFinish);
+        console.log("SuggestCost:", calcSuggestCost);
+        console.log("TotalCost:", calcTotalCost);
+
+        setBuildArea(calcBuildArea);
+        setCostFinish(calcCostFinish);
+        setSuggestCost(calcSuggestCost);
+        setTotalCost(calcTotalCost);
+
+        setShowCalculator(true);
+    } else {
+        console.log("⛔ Missing one or more required fields");
+    }
+    }, [formData?.landSize, formData?.basement, formData?.luxuryLevel, constructionRate, buildCost]);
 
 return (
   <div className='add-newformouter'>
@@ -299,36 +375,40 @@ return (
                         </ul>
                     </div>
 
-                    <div className="budget-calc">
-                        <h2>Budget Calculator</h2>
-                        <div className="budget-calculator">
+                    {ShowCalculator && (
 
-                            <div className="bud-col1">
-                                <div className="bud-row">
-                                    <p><strong>Total max buildable area</strong></p>
-                                    <p><span className="">870</span></p>
+                        <div className="budget-calc">
+                            <h2>Budget Calculator 1</h2>
+                            <div className="budget-calculator">
+
+                                <div className="bud-col1">
+                                    <div className="bud-row">
+                                        <p><strong>Total max buildable area</strong></p>
+                                        <p><span className="">{BuildArea}</span></p>
+                                    </div>
+                                
+                                    <div className="bud-row">
+                                        <p><strong>Cost with finish</strong></p>
+                                        <p><span className="">{CostFinish}</span></p>
+                                    </div>
                                 </div>
-                            
-                                <div className="bud-row">
-                                    <p><strong>Cost with finish</strong></p>
-                                    <p><span className="">117 700</span></p>
+
+                                <div className="bud-col1 bud-col2">
+                                    <div className="bud-row">
+                                        <p><strong>Design Fee Cost</strong></p>
+                                        <p><span className="cost-value">{SuggestCost}</span> (5%)</p>
+                                    </div>
+
+                                    <div className="bud-row">
+                                        <p><strong>Total Project Cost</strong></p>
+                                        <p><span className="">{TotalCost}</span></p>
+                                    </div>
                                 </div>
+
                             </div>
-
-                            <div className="bud-col1 bud-col2">
-                                <div className="bud-row">
-                                    <p><strong>Design Fee Cost</strong></p>
-                                    <p><span className="cost-value">1,177</span> (5%)</p>
-                                </div>
-
-                                <div className="bud-row">
-                                    <p><strong>Total Project Cost</strong></p>
-                                    <p><span className="">118,877</span></p>
-                                </div>
-                            </div>
-
                         </div>
-                    </div>
+                    )}
+
 
                     <div className="create-btn-container">
                         <button className='create-btn' type="submit">Create</button>
@@ -377,35 +457,52 @@ return (
             </tbody>
             </table>
 
-            <h3>Budget Calculator</h3>
 
-            <div className="budget-calculator">
-            <div className="bud-col1">
-                <div className="bud-row">
-                <p><strong>Total max buildable area</strong></p>
-                <p>870</p>
-                </div>
+                {ShowCalculator && (
+                        <>
+                        <h3>Budget Calculator 1</h3>
 
-                <div className="bud-row">
-                <p><strong>Cost with finish</strong></p>
-                <p>117 700</p>
-                </div>
+                        <div className="budget-calculator">
+
+                            <div className="bud-col1">
+
+                                <div className="bud-row">
+
+                                <p><strong>Total max buildable area</strong></p>
+
+                                <p>870</p>
+
+                                </div>
+
+                                <div className="bud-row">
+                                <p><strong>Cost with finish</strong></p>
+                                <p>117 700</p>
+                                </div>
+                            </div>
+
+                            <div className="bud-col1 bud-col2">
+                                <div className="bud-row">
+                                <p><strong>Design Fee Cost</strong></p>
+
+                                <p>1 177 (5%)</p>
+
+                                </div>
+
+                                <div className="bud-row">
+
+                                <p><strong>Total Project Cost</strong></p>
+
+                                <p>118 877</p>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </>
+                )}
+
+             
             </div>
-
-            <div className="bud-col1 bud-col2">
-                <div className="bud-row">
-                <p><strong>Design Fee Cost</strong></p>
-                <p>1 177 (5%)</p>
-                </div>
-
-                <div className="bud-row">
-                <p><strong>Total Project Cost</strong></p>
-                <p>118 877</p>
-                </div>
-            </div>
-            </div>
-
-        </div>
         )}
         </div>
     );
