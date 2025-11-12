@@ -1,13 +1,19 @@
 import React from 'react'
+import MyAccountForm from '../Componrnts/MyAccountForm'
+import ChangePass from '../Componrnts/ChangePass'
 
 const MyAccount = () => {
   return (
     <div>
         <div className="seeker-div">
         <div className="seeker-col1">
-          <div className="proj-text">
-            <h2>My Account</h2>
-          </div>
+
+          <MyAccountForm />
+
+          {/* <ChangePass /> */}
+
+
+
 
 
         </div>

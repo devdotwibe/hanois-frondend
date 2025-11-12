@@ -3173,11 +3173,37 @@ line-height: 1;
     padding-left: 40px;
 }
 
+.my-account-form {
+    max-width: 500px;
+    width: 100%;
+}
+
+
+.profile-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+
+.profile-up {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.seeker-col1 h2 span {
+    color: #77767D;
+}
 
 
 
+.profile-container small span {
+    display: block;
+}
 
-
+.seeker-col1 .my-account-form h2 {
+    margin: 0 0 40px;
+}
 
 
 

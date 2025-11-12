@@ -292,12 +292,49 @@ button.save-btn1 {
     margin: 20px 0;
     padding: 12px 85px;
     display: block;
+          font-family: 'Avenir-medium';
+
 }
 
+button.save-btn1.save-account{
+  padding-inline: 60px;
+  border: 2px solid var(--primary-color);
+
+}
+button.save-btn1.save-account:hover{
+  border: 2px solid #4c72f6;
+}
 button.save-btn1:hover{
         background: #4c72f6;
+}
+
+.change-btn{
+ background: none;
+ border: 2px solid #000000;
+    color: #000000;
+    cursor: pointer;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 20px 0;
+    padding: 12px 40px;
+    display: block;
+      font-family: 'Avenir-medium';
 
 }
+
+.upload-btn{
+  background: none;
+ border: 2px solid #000000;
+    color: #000000;
+    cursor: pointer;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 20px 0;
+    padding: 12px 40px;
+    display: block;
+      font-family: 'Avenir-medium';
+}
+
 .details-btn {
   background-color: #2050f5;
   color: #fff;
