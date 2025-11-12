@@ -265,7 +265,6 @@ const UploadBox = () => {
         />
       ) : (
         // fallback (should rarely render)
-        <DetailCard />
       )}
 
       <TabBtns />
