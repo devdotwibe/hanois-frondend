@@ -20,6 +20,10 @@ export default function DesignPage() {
   const [editingCost, setEditingCost] = useState("");
   const [editingRate, setEditingRate] = useState("");
 
+  const [constructionRate, setConstructionRate] = useState("");
+
+  const [constructionRateError, setconstructionRateError] = useState("");
+
 
   const [errors, setErrors] = useState({
     newDesign: "",
@@ -40,6 +44,57 @@ export default function DesignPage() {
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+
+    useEffect(() => {
+      fetch(`${API_URL}settings/construction_rate`)
+        .then((res) => res.json())
+        .then((data) => setConstructionRate(data?.construction_rate || ""))
+        .catch(() => console.error("Failed to fetch construction rate"));
+    }, []);
+
+      const handleSubmit = async (e) => {
+          e.preventDefault();
+          setLoading(true);
+
+          setconstructionRateError("");
+
+        if (constructionRate === "" || isNaN(constructionRate) || Number(constructionRate) < 0) {
+
+            setconstructionRateError("Enter a valid Contruction Rate");
+
+            setLoading(false);
+
+            return false;
+        }
+
+          setMessage("");
+
+          try {
+
+            const res = await fetch(`${API_URL}settings/construction_rate`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ value: constructionRate }),
+            });
+
+            if (res.ok) {
+
+              setMessage("✅ Construction rate saved successfully");
+
+            } else {
+
+              setMessage("❌ Failed to save construction rate");
+            }
+
+          } catch (err) {
+            console.error(err);
+            setMessage("❌ Error saving construction rate");
+          } finally {
+            setLoading(false);
+            setTimeout(() => setMessage(""), 3000);
+          }
+        };
 
   const fetchDesigns = async () => {
     try {
@@ -220,7 +275,23 @@ export default function DesignPage() {
         setEditingId(null);
       } catch (error) {
         console.error(error);
-        setMessage("❌ Failed to update Design");
+
+         const fieldError = error?.response?.data;
+
+        if (fieldError?.field) {
+
+          const newErrors = { ...errors };
+
+          newErrors[fieldError?.field] = fieldError?.message;
+
+          setErrors(newErrors);
+
+          setMessage("");
+        } else {
+
+          setMessage("❌ Failed to update Design");
+        }
+
       } finally {
         setLoading(false);
       }
@@ -231,6 +302,44 @@ export default function DesignPage() {
   return (
     <div className="mx-auto p-6 max-w-lg bg-white shadow-lg rounded-lg">
       <h1 className="text-2xl font-semibold mb-6 text-center">Designs</h1>
+
+      <form onSubmit={handleSubmit} className="mb-6">
+          <div className="form-grp mb-4">
+            <label className="block font-medium mb-2 text-gray-700">
+              Construction Rate
+            </label>
+            <input
+              type="text"
+              className="w-full border rounded px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter Construction Rate"
+              value={constructionRate}
+              onChange={(e) => setConstructionRate(e.target.value)}
+            />
+              {constructionRateError && <p style={{ color: 'red', fontSize: '0.875rem', marginTop: '0.25rem' }} >{constructionRateError}</p>}
+
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className={`px-4 py-2 rounded text-white ${
+              loading ? "bg-gray-400" : "bg-green-600 hover:bg-green-700"
+            }`}
+          >
+            {loading ? "Saving..." : "Save Construction Rate"}
+          </button>
+
+          {message && (
+            <p
+              className={`mt-4 text-center text-sm ${
+                message.includes("✅") ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {message}
+            </p>
+          )}
+      </form>
+
 
       <form onSubmit={editingId ? handleUpdate : handleCreate} className="mb-6">
 
@@ -251,13 +360,12 @@ export default function DesignPage() {
         <div className="form-grp mb-4">
           <label className="block font-medium mb-2 text-gray-700">Quality</label>
           <input
-            type="number"
+            type="text"
             className="w-full border rounded px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter Quality"
             value={quality}
             onChange={(e) => setQuality(e.target.value)}
-            min="0"
-            step="0.01"
+     
           />
           {errors.quality && <p style={{ color: 'red', fontSize: '0.875rem', marginTop: '0.25rem' }} >{errors.quality}</p>}
 
@@ -266,13 +374,12 @@ export default function DesignPage() {
         <div className="form-grp mb-4">
           <label className="block font-medium mb-2 text-gray-700">Build Cost</label>
           <input
-            type="number"
+            type="text"
             className="w-full border rounded px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter Build Cost"
             value={buildCost}
             onChange={(e) => setBuildCost(e.target.value)}
-            min="0"
-            step="0.01"
+      
           />
           {errors.buildCost && <p style={{ color: 'red', fontSize: '0.875rem', marginTop: '0.25rem' }}>{errors.buildCost}</p>}
 
@@ -281,13 +388,12 @@ export default function DesignPage() {
         <div className="form-grp mb-4">
           <label className="block font-medium mb-2 text-gray-700">Fee Rate</label>
           <input
-            type="number"
+            type="text"
             className="w-full border rounded px-4 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter Fee Rate"
             value={feeRate}
             onChange={(e) => setFeeRate(e.target.value)}
-            min="0"
-            step="0.01"
+ 
           />
 
              {errors.feeRate && <p style={{ color: 'red', fontSize: '0.875rem', marginTop: '0.25rem' }} >{errors.feeRate}</p>}
@@ -376,7 +482,7 @@ export default function DesignPage() {
 
                   <td >{d.cost ?? d.build_cost ?? "-"}</td>
 
-                  <td >{d.rate ?? d.fee_rate ?? "-"}</td>
+                  <td >{`${d.rate} %` ?? `${d.fee_rate} %` ?? "-"}</td>
 
                   <td className="py-3 px-4 text-center space-x-2">
                     <button

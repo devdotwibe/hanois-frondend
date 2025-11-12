@@ -31,6 +31,8 @@ const AddNewForm = () => {
   const [designLevels, setDesignLevels] = useState<OptionItem[]>([]);
   const [servicesList, setServicesList] = useState<OptionItem[]>([]);
 
+  const [ShowCalculator,setShowCalculator] = useState(false);
+
   const NOTES_LIMIT = 1024;
 
   const handleChange = (e: any) => {
