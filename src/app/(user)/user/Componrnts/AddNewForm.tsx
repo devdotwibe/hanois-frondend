@@ -8,6 +8,8 @@ type OptionItem = {
 
 import React, { useState,useEffect } from 'react'
 import { API_URL } from "@/config";
+import ProviderCard from "./ProviderCard";
+import proposalimg from "../../../../../public/images/get-listed-1.jpg";
 
 const AddNewForm = () => {
 
@@ -23,6 +25,20 @@ const AddNewForm = () => {
     basement: "",
     listingStyle: "",
   });
+
+  const [errors, setErrors] = useState({
+    title: "",
+    notes: "",
+    projectType: "",
+    location: "",
+    landSize: "",
+    luxuryLevel: "",
+    services: "",
+    constructionBudget: "",
+    basement: "",
+    listingStyle: "",
+  });
+
 
   const [submitted, setSubmitted] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -44,11 +60,30 @@ const AddNewForm = () => {
 
   const [constructionRate, setConstructionRate] = useState("");
 
-  
+  const [Providers, setProviders] = useState([]);
+
+ const [ListPrivate, setListPrivate] = useState(false);
+
+ const [selectedProviders, setSelectedProviders] = useState<number[]>([]);
+
+  const handleSelect = (company: any, checked: boolean) => {
+
+    if (checked) {
+
+      setSelectedProviders((prev) => [...prev, company]);
+      setProviders((prev) => prev.filter((p) => p.id !== company.id));
+    } else {
+    
+      setProviders((prev) => [...prev, company]);
+      setSelectedProviders((prev) => prev.filter((p) => p.id !== company.id));
+    }
+  };
+
+   console.log(selectedProviders,'selectedProviders');
 
   const NOTES_LIMIT = 1024;
 
-  const handleChange = (e: any) => {
+  const handleChange = async (e: any) => {
 
         const { name, value } = e.target;
         if (name === "notes") {
@@ -69,8 +104,37 @@ const AddNewForm = () => {
                 setFeeRate("");
             }
         }
+        if (name === "projectType") {
 
+           try {
+
+                if (!value) {
+                    setProviders([]);
+                    return;
+                }
+                const res = await fetch(`${API_URL}providers/by-category/${value}`);
+
+                const data = await res.json();
+
+                if (res.ok) {
+
+                    setProviders(data);
+
+                    setSelectedProviders([]);
+
+                } else {
+
+                    console.error("Failed to fetch providers:", data.message);
+                    setProviders([]);
+                }
+            } catch (err) {
+
+                console.error("Error fetching providers:", err);
+                setProviders([]);
+            }
+        }
   };
+
 
     useEffect(() => {
         fetch(`${API_URL}settings/construction_rate`)
@@ -209,6 +273,38 @@ const getServiceName = (id: string | number) => {
     }
     }, [formData?.landSize, formData?.basement, formData?.luxuryLevel, constructionRate, buildCost]);
 
+
+     useEffect(() => {
+
+        setErrors(prev => ({ ...prev, projectType: "" }));
+
+        if(formData?.listingStyle == 'private')
+        {
+            if (formData?.projectType == "") {
+
+               const newErrors = {};
+
+               newErrors.projectType = "Project Type is Required";
+
+               window.scrollTo({ top: 0, behavior: "smooth" });
+
+               setErrors(newErrors);
+
+               setFormData(prev => ({ ...prev, listingStyle: "" }));
+
+                return;
+            }
+
+            setListPrivate(true);
+        }
+        else
+        {
+             setListPrivate(false);
+        }
+
+     },[formData?.listingStyle,formData?.projectType])
+
+
 return (
   <div className='add-newformouter'>
     {(!submitted || editMode) && (
@@ -258,6 +354,8 @@ return (
                                 <option key={cat.id} value={cat.id}>{cat.name}</option>
                             ))}
                         </select>
+
+                         {errors.projectType && <p style={{ color: 'red', fontSize: '0.875rem', marginTop: '0.25rem' }} >{errors.projectType}</p>}
                     </div>
 
                     <div className="form-grp">
@@ -358,21 +456,21 @@ return (
                         <div className="listing-style">
 
                             <button
-                            className='private-btn'
-                            type="button"
-                            onClick={() =>
-                                setFormData(prev => ({ ...prev, listingStyle: "private" }))
-                            }
+                                className={`private-btn ${formData.listingStyle === 'private' ? 'active' : ''}`}
+                                type="button"
+                                onClick={() =>
+                                    setFormData(prev => ({ ...prev, listingStyle: "private" }))
+                                }
                             >
                             Private
                             </button>
 
                             <button
-                            className='public-btn'
-                            type="button"
-                            onClick={() =>
-                                setFormData(prev => ({ ...prev, listingStyle: "public" }))
-                            }
+                                className={`public-btn ${formData.listingStyle === 'public' ? 'active' : ''}`}
+                                type="button"
+                                onClick={() =>
+                                    setFormData(prev => ({ ...prev, listingStyle: "public" }))
+                                }
                             >
                             Public
                             </button>
@@ -383,12 +481,52 @@ return (
                             <li>Public projects will be pushed to all the service providers in the director</li>
                             <li>Private projects will be invite only</li>
                         </ul>
+
+                        {ListPrivate && (
+
+                            <>
+                            <div className="proposal-div">
+
+                                {Providers.map((company) => (
+
+                                    <ProviderCard 
+                                    key={company.id} 
+                                    company={company}
+                                    isSelected={false}
+                                    onSelect={handleSelect}
+
+                                    />
+                                ))}
+
+                            </div>
+                         
+                                {selectedProviders.length > 0 && (
+
+                                    <div className="selected-section">
+                                        <h3>Selected Providers</h3>
+                                        <div className="proposal-div">
+                                            {selectedProviders.map((company) => (
+                                            <ProviderCard
+                                                key={company.id}
+                                                company={company}
+                                                isSelected={true}
+                                                onSelect={handleSelect}
+                                                isRemovable
+                                            />
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                )}
+                            </>  
+                        )}
+
                     </div>
 
                     {ShowCalculator && (
 
                         <div className="budget-calc">
-                            <h2>Budget Calculator 1</h2>
+                            <h2>Budget Calculator</h2>
                             <div className="budget-calculator">
 
                                 <div className="bud-col1">
@@ -421,7 +559,7 @@ return (
 
 
                     <div className="create-btn-container">
-                        <button className='create-btn' type="submit">Create And Invite</button>
+                        <button className='create-btn' type="submit">Create And Send Invite</button>
                     </div>
 
                 </form>
