@@ -15,44 +15,67 @@ const ProjectComponent = () => {
   const router = useRouter();
 
   // 🟩 Fetch provider details based on the providerId from the URL
-  const fetchProviderData = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const token = localStorage.getItem("token");
-      const providerId = user?.id || user?.provider_id;
+const fetchProviderData = async (forceRefresh = false) => {
+  try {
+    setLoading(true);
+    setError(null);
 
-      if (!providerId) {
-        setError("No provider ID found. Please log in again.");
-        setLoading(false);
-        return;
-      }
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+    const providerId = user?.id || user?.provider_id;
 
-      const res = await fetch(`${API_URL}providers/${encodeURIComponent(providerId)}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-        next: { revalidate: 60 },
-      });
-
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        setError(body?.error || `Failed to fetch provider (${res.status})`);
-        setLoading(false);
-        return;
-      }
-
-      const data = await res.json();
-      setProvider(data?.provider || null);
-
-    } catch (err) {
-      console.error("Error fetching provider data:", err);
-      setError("Failed to load provider data.");
-    } finally {
+    if (!providerId) {
+      setError("No provider ID found. Please log in again.");
       setLoading(false);
+      return;
     }
-  };
+
+    // Try cached data first
+    const cacheKey = `provider_${providerId}`;
+    const cached = localStorage.getItem(cacheKey);
+
+    if (cached && !forceRefresh) {
+      const cachedData = JSON.parse(cached);
+      setProvider(cachedData);
+      setLoading(false);
+      return; // Stop here, use cached version
+    }
+
+    // Otherwise, fetch fresh data
+    const res = await fetch(`${API_URL}providers/${encodeURIComponent(providerId)}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      next: { revalidate: 60 }, // You can remove this if not using Next.js caching
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      setError(body?.error || `Failed to fetch provider (${res.status})`);
+      setLoading(false);
+      return;
+    }
+
+    const data = await res.json();
+    const providerData = data?.provider || null;
+
+    setProvider(providerData);
+
+    // Save to cache
+    if (providerData) {
+      localStorage.setItem(cacheKey, JSON.stringify(providerData));
+    }
+
+  } catch (err) {
+    console.error("Error fetching provider data:", err);
+    setError("Failed to load provider data.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   // 🟩 Fetch provider projects (same as before)
   const fetchProjects = async () => {
