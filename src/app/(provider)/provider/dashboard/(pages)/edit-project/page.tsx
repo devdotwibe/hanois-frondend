@@ -4,7 +4,8 @@ import Image from "next/image";
 import axios from "axios";
 import uploadIcon from "../../../../../../../public/images/upload.svg";
 import { API_URL, IMG_URL } from "@/config";
-import HouseOuter from "../../Components/HouseOuter";
+import DetailCard from "@/app/(directory)/provider/Components/DetailCard";
+
 import TabBtns from "../../Components/TabBtns";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -33,7 +34,9 @@ const EditProject = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-
+  const [provider, setProvider] = useState(null);
+  const [loadingProvider, setLoadingProvider] = useState(true);
+  const [providerError, setProviderError] = useState(null);
   // 🟩 Load provider + token
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -41,6 +44,77 @@ const EditProject = () => {
     if (user && user.id) setProviderId(user.id);
     if (storedToken) setToken(storedToken);
   }, []);
+
+
+  const fetchProviderData = async (forceRefresh = false) => {
+      try {
+      setLoadingProvider(true);
+      setProviderError(null);
+
+
+      const user = JSON.parse(localStorage.getItem("user"));
+      const tokenLocal = localStorage.getItem("token");
+      const idLocal = user?.id || user?.provider_id;
+
+
+      if (!idLocal) {
+      setProviderError("No provider ID found. Please log in again.");
+      setLoadingProvider(false);
+      return;
+      }
+
+
+      const cacheKey = `provider_${idLocal}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached && !forceRefresh) {
+      try {
+      const cachedData = JSON.parse(cached);
+      setProvider(cachedData);
+      setLoadingProvider(false);
+      return;
+      } catch (e) {
+      console.warn("Failed to parse cached provider, fetching fresh.", e);
+      }
+      }
+
+
+      const res = await fetch(`${API_URL}providers/${encodeURIComponent(idLocal)}`, {
+      method: "GET",
+      headers: {
+      "Content-Type": "application/json",
+      ...(tokenLocal && { Authorization: `Bearer ${tokenLocal}` }),
+      },
+      });
+
+
+      if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      setProviderError(body?.error || `Failed to fetch provider (${res.status})`);
+      setLoadingProvider(false);
+      return;
+      }
+
+
+      const data = await res.json();
+      const providerData = data?.provider || null;
+      setProvider(providerData);
+
+
+      if (providerData) {
+      try {
+      localStorage.setItem(cacheKey, JSON.stringify(providerData));
+      } catch (e) {
+      console.warn("Failed to cache provider data:", e);
+      }
+      }
+      } catch (err) {
+      console.error("Error fetching provider data:", err);
+      setProviderError("Failed to load provider data.");
+      } finally {
+      setLoadingProvider(false);
+      }
+  };
+
 
   // 🟩 Fetch dropdown data
   const fetchDesigns = async () => {
@@ -87,6 +161,7 @@ const EditProject = () => {
     }
   };
 
+  
   useEffect(() => {
     if (id) fetchProject();
   }, [id]);
@@ -201,7 +276,25 @@ const handleSubmit = async (e) => {
 
   return (
     <>
-      <HouseOuter />
+    {/* Dynamic DetailCard */}
+    {loadingProvider ? (
+    <p>Loading provider...</p>
+    ) : providerError ? (
+    <p style={{ color: "red" }}>{providerError}</p>
+    ) : provider ? (
+    <DetailCard
+    logo={provider?.image ? `${IMG_URL}${provider.image}` : "/path/to/logo.png"}
+    name={provider?.name || "Unknown Provider"}
+    description={
+    provider?.notes ||
+    provider?.service_notes ||
+    provider?.professional_headline ||
+    "No description available"
+    }
+    />
+    ) : (
+    <DetailCard />
+    )}      
       <TabBtns />
 
       <div className="">
