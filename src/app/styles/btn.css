@@ -367,10 +367,22 @@ button.save-btn1:hover{
 
 
 
+button.close-poup {
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    width: fit-content;
+    display: block;
+    background: var(--primary-color);
+    border-radius: 5px;
+    margin: 20px auto 0px;
+    padding: 12px 40px;
+}
 
 
+button.close-poup:hover{
+          background: #4c72f6;
 
-
+}
 
 
 

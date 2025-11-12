@@ -506,19 +506,12 @@ const handleSubmit = async (e) => {
                 <h3 style={{ color: "green" }}>✅ Project Updated!</h3>
                 <p>Your project has been successfully updated.</p>
                 <button
+                className="close-poup"
                   onClick={() => {
                     setModalVisible(false);
                     router.push("/provider/dashboard/projects");
                   }}
-                  style={{
-                    marginTop: "15px",
-                    background: "#0070f3",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "6px",
-                    padding: "8px 16px",
-                    cursor: "pointer",
-                  }}
+                 
                 >
                   Close
                 </button>
