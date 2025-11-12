@@ -456,14 +456,7 @@ const handleSubmit = async (e) => {
   type="button"
    className="save-btn1"
   onClick={() => setDeleteModalVisible(true)}
-  style={{
-    background: "#0070f3", // Same blue as Update button
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    padding: "10px 16px",
-    cursor: "pointer",
-  }}
+  
 >
   Delete
 </button>
@@ -473,14 +466,7 @@ const handleSubmit = async (e) => {
   <button
     type="submit"
     className="save-btn1"
-    style={{
-      background: "#0070f3",
-      color: "#fff",
-      border: "none",
-      borderRadius: "6px",
-      padding: "10px 16px",
-      cursor: "pointer",
-    }}
+    
   >
     Update
   </button>

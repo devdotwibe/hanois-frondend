@@ -1851,7 +1851,7 @@ border-right: 1px solid #e0e0e0;
 }
 
 .detcol-2 {
-    width: 40%; padding-left: 40px;
+    width: 30%; padding-left: 40px;
 }
 .about-content h3 {
     margin: 0 0 8px;
@@ -3268,6 +3268,15 @@ line-height: 1;
 .grid-upload > div:nth-child(3n) {
     margin-right: 0;
 }
+.project-details.detailed {
+    display: block;
+}
+
+.profile-page .back-bth {
+    margin-bottom: 30px;
+}
+
+
 
 
 /* ------------------------------------responsive */
