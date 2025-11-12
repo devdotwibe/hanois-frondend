@@ -7,9 +7,6 @@ import { API_URL, IMG_URL } from "@/config";
 import HouseOuter from "../../Components/HouseOuter";
 import TabBtns from "../../Components/TabBtns";
 import { useRouter, useSearchParams } from "next/navigation";
-import ssimg from "../../../../../../../public/images/sucess-msg.svg"
-
-
 
 const EditProject = () => {
   const router = useRouter();
@@ -212,32 +209,143 @@ const handleSubmit = async (e) => {
           <h3>Edit Project</h3>
           <p>Update your project images and details below</p>
 
-{existingImages.length > 0 && (
+{/* 🟩 Combined Upload & Preview Grid */}
+<div
+  className="form-grp upload-area"
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
+    gap: "15px",
+    marginBottom: "30px",
+  }}
+>
+  {/* 🟦 Upload Box (first grid item) */}
   <div
+    className="upload-box"
     style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-      gap: "10px",
-      marginBottom: "20px",
+      border: "2px dashed #d1d5db",
+      borderRadius: "10px",
+      background: "#fafafa",
+      cursor: "pointer",
+      textAlign: "center",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "25px 15px",
+      minHeight: "150px",
+      transition: "all 0.2s ease-in-out",
     }}
+    onClick={() => document.querySelector(".upload-input")?.click()}
+    onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0070f3")}
+    onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#d1d5db")}
   >
-    {existingImages.map((img, index) => (
-      <div key={img.id} style={{ position: "relative" }}>
+    <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
+    <h3 style={{ fontSize: "14px", fontWeight: "600", marginTop: "10px" }}>
+      Upload an image
+    </h3>
+    <p style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
+      Browse your files to upload document
+    </p>
+    <span style={{ fontSize: "11px", color: "#999" }}>
+      Supported: JPEG, PNG
+    </span>
+  </div>
+
+  {/* Hidden Input for Upload */}
+  <input
+    type="file"
+    accept="image/*"
+    multiple
+    className="upload-input hidden"
+    onChange={handleFileChange}
+  />
+
+  {/* 🖼 Existing Images */}
+  {existingImages.map((img, index) => (
+    <div key={img.id} style={{ position: "relative" }}>
+      <img
+        src={`${IMG_URL}${img.image_path}`}
+        alt="Project"
+        style={{
+          width: "100%",
+          height: "150px",
+          objectFit: "cover",
+          borderRadius: "10px",
+          border: img.is_cover ? "3px solid #0070f3" : "none",
+        }}
+      />
+
+      {/* 🗑 Delete Existing Image */}
+      <button
+        type="button"
+        onClick={() => handleDeleteImage(img.id)}
+        style={{
+          position: "absolute",
+          top: "5px",
+          right: "5px",
+          background: "rgba(0,0,0,0.5)",
+          color: "white",
+          border: "none",
+          borderRadius: "50%",
+          width: "24px",
+          height: "24px",
+          cursor: "pointer",
+        }}
+      >
+        ✕
+      </button>
+
+      {/* 🌟 Set Cover */}
+      <button
+        type="button"
+        onClick={() => {
+          const updated = existingImages.map((image, i) => ({
+            ...image,
+            is_cover: i === index,
+          }));
+          setExistingImages(updated);
+        }}
+        style={{
+          position: "absolute",
+          bottom: "5px",
+          left: "5px",
+          background: img.is_cover ? "#0070f3" : "#ccc",
+          color: "white",
+          fontSize: "12px",
+          padding: "2px 6px",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        {img.is_cover ? "Cover Image" : "Set Cover"}
+      </button>
+    </div>
+  ))}
+
+  {/* 🆕 New Uploaded Image Previews */}
+  {imageFile.map((file, index) => {
+    const previewUrl = URL.createObjectURL(file);
+    return (
+      <div key={index} style={{ position: "relative" }}>
         <img
-          src={`${IMG_URL}${img.image_path}`}
-          alt="Project"
+          src={previewUrl}
+          alt="preview"
           style={{
             width: "100%",
-            height: "120px",
+            height: "150px",
+            objectFit: "cover",
             borderRadius: "10px",
-            border: img.is_cover ? "3px solid #0070f3" : "none",
+            border: file.isCover ? "3px solid #0070f3" : "none",
           }}
         />
 
-        {/* 🗑 Delete Button */}
+        {/* 🗑 Remove New Image */}
         <button
           type="button"
-          onClick={() => handleDeleteImage(img.id)}
+          onClick={() =>
+            setImageFile((prev) => prev.filter((_, i) => i !== index))
+          }
           style={{
             position: "absolute",
             top: "5px",
@@ -254,21 +362,20 @@ const handleSubmit = async (e) => {
           ✕
         </button>
 
-        {/* 🌟 Set Cover Button */}
+        {/* 🌟 Set Cover */}
         <button
           type="button"
           onClick={() => {
-            const updated = existingImages.map((image, i) => ({
-              ...image,
-              is_cover: i === index,
-            }));
-            setExistingImages(updated);
+            const updatedFiles = imageFile.map((f, i) =>
+              Object.assign(f, { isCover: i === index })
+            );
+            setImageFile([...updatedFiles]);
           }}
           style={{
             position: "absolute",
             bottom: "5px",
             left: "5px",
-            background: img.is_cover ? "#0070f3" : "#ccc",
+            background: file.isCover ? "#0070f3" : "#ccc",
             color: "white",
             fontSize: "12px",
             padding: "2px 6px",
@@ -276,115 +383,13 @@ const handleSubmit = async (e) => {
             cursor: "pointer",
           }}
         >
-          {img.is_cover ? "Cover Image" : "Set Cover"}
+          {file.isCover ? "Cover Image" : "Set Cover"}
         </button>
       </div>
-    ))}
-  </div>
-)}
+    );
+  })}
+</div>
 
-
-          {/* 🟩 Upload New Images */}
-          <div className="form-grp upload-area">
-            <div
-              className="upload-box"
-              style={{
-                border: "2px dashed #d1d5db",
-                borderRadius: "10px",
-                padding: "30px",
-                background: "#fafafa",
-                cursor: "pointer",
-                textAlign: "center",
-              }}
-              onClick={() => document.querySelector(".upload-input")?.click()}
-            >
-              <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
-              <h3 style={{ fontSize: "16px", fontWeight: "600" }}>Upload New Images</h3>
-            </div>
-
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              className="upload-input hidden"
-              onChange={handleFileChange}
-            />
-
-    {imageFile.length > 0 && (
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-      gap: "10px",
-      marginTop: "20px",
-    }}
-  >
-    {imageFile.map((file, index) => {
-      const previewUrl = URL.createObjectURL(file);
-      return (
-        <div key={index} style={{ position: "relative" }}>
-          <img
-            src={previewUrl}
-            alt="preview"
-            style={{
-              width: "100%",
-              height: "120px",
-              objectFit: "cover",
-              borderRadius: "10px",
-              border: file.isCover ? "3px solid #0070f3" : "none",
-            }}
-          />
-
-          {/* 🗑 Remove Button */}
-          <button
-            type="button"
-            onClick={() => setImageFile((prev) => prev.filter((_, i) => i !== index))}
-            style={{
-              position: "absolute",
-              top: "5px",
-              right: "5px",
-              background: "rgba(0,0,0,0.5)",
-              color: "white",
-              border: "none",
-              borderRadius: "50%",
-              width: "24px",
-              height: "24px",
-              cursor: "pointer",
-            }}
-          >
-            ✕
-          </button>
-
-          {/* 🌟 Set Cover Button */}
-          <button
-            type="button"
-            onClick={() => {
-              const updatedFiles = imageFile.map((f, i) =>
-                Object.assign(f, { isCover: i === index })
-              );
-              setImageFile([...updatedFiles]);
-            }}
-            style={{
-              position: "absolute",
-              bottom: "5px",
-              left: "5px",
-              background: file.isCover ? "#0070f3" : "#ccc",
-              color: "white",
-              fontSize: "12px",
-              padding: "2px 6px",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            {file.isCover ? "Cover Image" : "Set Cover"}
-          </button>
-        </div>
-      );
-    })}
-  </div>
-)}
-
-          </div>
 
           {/* 🟩 Form Section */}
           <form onSubmit={handleSubmit}>
@@ -459,7 +464,14 @@ const handleSubmit = async (e) => {
   type="button"
    className="save-btn1"
   onClick={() => setDeleteModalVisible(true)}
-  
+  style={{
+    background: "#0070f3", // Same blue as Update button
+    color: "#fff",
+    border: "none",
+    borderRadius: "6px",
+    padding: "10px 16px",
+    cursor: "pointer",
+  }}
 >
   Delete
 </button>
@@ -469,7 +481,14 @@ const handleSubmit = async (e) => {
   <button
     type="submit"
     className="save-btn1"
-    
+    style={{
+      background: "#0070f3",
+      color: "#fff",
+      border: "none",
+      borderRadius: "6px",
+      padding: "10px 16px",
+      cursor: "pointer",
+    }}
   >
     Update
   </button>
@@ -506,27 +525,22 @@ const handleSubmit = async (e) => {
                   boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
                 }}
               >
-                <h3 className="sucess-img-text"> 
-                   <span className="ss-img">
-                    <Image 
-                    src={ssimg}
-                    alt="img"
-                    width={40}
-                    height={40}
-                    
-                    />
-                  </span>
-                  Project Updated!</h3>
-                <p>
-                 
-                  Your project has been successfully updated.</p>
+                <h3 style={{ color: "green" }}>✅ Project Updated!</h3>
+                <p>Your project has been successfully updated.</p>
                 <button
-                className="close-poup"
                   onClick={() => {
                     setModalVisible(false);
                     router.push("/provider/dashboard/projects");
                   }}
-                 
+                  style={{
+                    marginTop: "15px",
+                    background: "#0070f3",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "6px",
+                    padding: "8px 16px",
+                    cursor: "pointer",
+                  }}
                 >
                   Close
                 </button>
