@@ -3,13 +3,13 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
 import uploadIcon from "../../../../../../../public/images/upload.svg";
-import { API_URL } from "@/config";
-import HouseOuter from "../../Components/HouseOuter";
+import { API_URL, IMG_URL } from "@/config";
+import DetailCard from "@/app/(directory)/provider/Components/DetailCard";
 import TabBtns from "../../Components/TabBtns";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
 const UploadBox = () => {
-   const router = useRouter();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     notes: "",
@@ -26,7 +26,12 @@ const UploadBox = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [message, setMessage] = useState("");
-  const [modalVisible, setModalVisible] = useState(false); 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Provider state for dynamic DetailCard
+  const [provider, setProvider] = useState(null);
+  const [loadingProvider, setLoadingProvider] = useState(true);
+  const [providerError, setProviderError] = useState(null);
 
   // 🟩 Load provider data and token from localStorage
   useEffect(() => {
@@ -44,6 +49,70 @@ const UploadBox = () => {
       console.error("Error reading localStorage:", err);
     }
   }, []);
+
+  // 🟩 Fetch provider details (with simple caching)
+  const fetchProviderData = async (forceRefresh = false) => {
+    try {
+      setLoadingProvider(true);
+      setProviderError(null);
+
+      const user = JSON.parse(localStorage.getItem("user"));
+      const tokenLocal = localStorage.getItem("token");
+      const id = user?.id || user?.provider_id;
+
+      if (!id) {
+        setProviderError("No provider ID found. Please log in again.");
+        setLoadingProvider(false);
+        return;
+      }
+
+      const cacheKey = `provider_${id}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached && !forceRefresh) {
+        try {
+          const cachedData = JSON.parse(cached);
+          setProvider(cachedData);
+          setLoadingProvider(false);
+          return;
+        } catch (e) {
+          // fallthrough to fetch fresh if cache is corrupt
+          console.warn("Failed to parse cached provider, fetching fresh.", e);
+        }
+      }
+
+      const res = await fetch(`${API_URL}providers/${encodeURIComponent(id)}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          ...(tokenLocal && { Authorization: `Bearer ${tokenLocal}` }),
+        },
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setProviderError(body?.error || `Failed to fetch provider (${res.status})`);
+        setLoadingProvider(false);
+        return;
+      }
+
+      const data = await res.json();
+      const providerData = data?.provider || null;
+      setProvider(providerData);
+
+      if (providerData) {
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(providerData));
+        } catch (e) {
+          console.warn("Failed to cache provider data:", e);
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching provider data:", err);
+      setProviderError("Failed to load provider data.");
+    } finally {
+      setLoadingProvider(false);
+    }
+  };
 
   // 🟩 Fetch design styles (from local backend)
   const fetchDesigns = async () => {
@@ -65,11 +134,18 @@ const UploadBox = () => {
     }
   };
 
-  // 🟩 Load both on component mount
+  // 🟩 Load provider, designs and categories on mount
   useEffect(() => {
+    if (providerId !== null) {
+      fetchProviderData();
+    } else {
+      // Try fetching anyway; fetchProviderData reads localStorage internally
+      fetchProviderData();
+    }
     fetchDesigns();
     fetchCategories();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [providerId]);
 
   // 🟩 Handle input change
   const handleChange = (e) => {
@@ -80,11 +156,10 @@ const UploadBox = () => {
 
   // 🟩 Handle file change
   const handleFileChange = (e) => {
-  const newFiles = Array.from(e.target.files);
-  setImageFile((prev) => (prev ? [...prev, ...newFiles] : newFiles));
-  setErrors((prev) => ({ ...prev, images: "" }));
-};
-
+    const newFiles = Array.from(e.target.files);
+    setImageFile((prev) => (prev ? [...prev, ...newFiles] : newFiles));
+    setErrors((prev) => ({ ...prev, images: "" }));
+  };
 
   // 🟩 Validate all fields
   const validateForm = () => {
@@ -96,8 +171,7 @@ const UploadBox = () => {
     if (!formData.location.trim()) newErrors.location = "Location is required.";
     if (!formData.landSize.trim()) newErrors.landSize = "Land Size is required.";
     if (!formData.designStyle) newErrors.designStyle = "Design Style is required.";
-    if (!imageFile || imageFile.length === 0)
-      newErrors.images = "Please upload at least one image.";
+    if (!imageFile || imageFile.length === 0) newErrors.images = "Please upload at least one image.";
 
     setErrors(newErrors);
 
@@ -109,19 +183,21 @@ const UploadBox = () => {
     e.preventDefault();
     setMessage("");
 
-    if (!providerId) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const providerIdLocal = user?.id || user?.provider_id;
+
+    if (!providerIdLocal) {
       setMessage("❌ You must be logged in as a provider.");
       return;
     }
 
     if (!validateForm()) {
-   
       return;
     }
 
     try {
       const formDataObj = new FormData();
-      formDataObj.append("provider_id", providerId);
+      formDataObj.append("provider_id", providerIdLocal);
       formDataObj.append("title", formData.title);
       formDataObj.append("notes", formData.notes);
       formDataObj.append("location", formData.location);
@@ -143,13 +219,16 @@ const UploadBox = () => {
         },
       });
 
-     // 🟩 Show success modal
-setModalVisible(true);
+      // 🟩 Show success modal
+      setModalVisible(true);
 
-// Auto close after 3 seconds
-setTimeout(() => {
-  setModalVisible(false);
-}, 3000);
+      // Auto close after 3 seconds
+      setTimeout(() => {
+        setModalVisible(false);
+        // optional: redirect after success
+        // router.push("/provider/dashboard/projects");
+      }, 3000);
+
       setFormData({
         title: "",
         notes: "",
@@ -168,11 +247,28 @@ setTimeout(() => {
 
   return (
     <>
-      <HouseOuter />
+      {/* Dynamic DetailCard */}
+      {loadingProvider ? (
+        <p>Loading provider...</p>
+      ) : providerError ? (
+        <p style={{ color: "red" }}>{providerError}</p>
+      ) : provider ? (
+        <DetailCard
+          logo={provider?.image ? `${IMG_URL}${provider.image}` : "/path/to/logo.png"}
+          name={provider?.name || "Unknown Provider"}
+          description={
+            provider?.notes ||
+            provider?.service_notes ||
+            provider?.professional_headline ||
+            "No description available"
+          }
+        />
+      ) : (
+        // fallback (should rarely render)
+        <DetailCard />
+      )}
 
       <TabBtns />
-
-
 
       <div className="">
         <div className="proj-form1 company-profile1">
@@ -183,34 +279,15 @@ setTimeout(() => {
           <div className="form-grp upload-area" style={{ marginBottom: "30px" }}>
             <div
               className="upload-box"
-              
               onClick={() => document.querySelector(".upload-input")?.click()}
             >
-
               <div className="up-img-outer">
-                 <Image
-                src={uploadIcon}
-                alt="Upload Icon"
-                width={40}
-                height={40}
-              
-              />
-
+                <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
               </div>
 
-             
-
-
-
-              <h3>
-                Upload an image
-              </h3>
-              <p>
-                Browse your files to upload document
-              </p>
-              <span>
-                Supported Formats: JPEG, PNG
-              </span>
+              <h3>Upload an image</h3>
+              <p>Browse your files to upload document</p>
+              <span>Supported Formats: JPEG, PNG</span>
             </div>
 
             <input
@@ -343,11 +420,7 @@ setTimeout(() => {
             {/* Project Type */}
             <div className="form-grp">
               <label htmlFor="projectType">Project Type</label>
-              <select
-                id="projectType"
-                value={formData.projectType}
-                onChange={handleChange}
-              >
+              <select id="projectType" value={formData.projectType} onChange={handleChange}>
                 <option value="">Select Project Type</option>
                 {categoryList.map((cat) => (
                   <option key={cat.id} value={cat.id}>
@@ -370,9 +443,7 @@ setTimeout(() => {
                 onChange={handleChange}
                 placeholder="Kuwait City"
               />
-              {errors.location && (
-                <p style={{ color: "red", fontSize: "13px" }}>{errors.location}</p>
-              )}
+              {errors.location && <p style={{ color: "red", fontSize: "13px" }}>{errors.location}</p>}
             </div>
 
             {/* Land Size */}
@@ -385,19 +456,13 @@ setTimeout(() => {
                 onChange={handleChange}
                 placeholder="115 m2"
               />
-              {errors.landSize && (
-                <p style={{ color: "red", fontSize: "13px" }}>{errors.landSize}</p>
-              )}
+              {errors.landSize && <p style={{ color: "red", fontSize: "13px" }}>{errors.landSize}</p>}
             </div>
 
             {/* Design Style */}
             <div className="form-grp">
               <label htmlFor="designStyle">Design Style</label>
-              <select
-                id="designStyle"
-                value={formData.designStyle}
-                onChange={handleChange}
-              >
+              <select id="designStyle" value={formData.designStyle} onChange={handleChange}>
                 <option value="">Select Design Style</option>
                 {designList.map((design) => (
                   <option key={design.id} value={design.id}>
@@ -420,11 +485,7 @@ setTimeout(() => {
                 marginTop: "20px",
               }}
             >
-              <button
-                type="submit"
-                className="save-btn1"
-                
-              >
+              <button type="submit" className="save-btn1">
                 Save
               </button>
             </div>
@@ -444,58 +505,54 @@ setTimeout(() => {
           )}
 
           {/* 🟩 Success Modal */}
-{modalVisible && (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100vw",
-      height: "100vh",
-      backgroundColor: "rgba(0,0,0,0.4)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 1000,
-      animation: "fadeIn 0.3s ease-in-out",
-    }}
-  >
-    <div
-      style={{
-        background: "white",
-        padding: "30px 40px",
-        borderRadius: "12px",
-        textAlign: "center",
-        boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-        minWidth: "300px",
-      }}
-    >
-      <h3 style={{ color: "green", marginBottom: "10px" }}>✅ Project Saved!</h3>
-      <p>Your project has been successfully saved.</p>
-       <button
-        onClick={() => {
-          setModalVisible(false);
-          router.push("/provider/dashboard/projects"); // 👈 redirect on close
-        }}
-        style={{
-          marginTop: "15px",
-          background: "#0070f3",
-          color: "#fff",
-          border: "none",
-          borderRadius: "6px",
-          padding: "8px 16px",
-          cursor: "pointer",
-        }}
-      >
-        Close
-      </button>
-    </div>
-  </div>
-)}
-
-
-
-
+          {modalVisible && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                backgroundColor: "rgba(0,0,0,0.4)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1000,
+                animation: "fadeIn 0.3s ease-in-out",
+              }}
+            >
+              <div
+                style={{
+                  background: "white",
+                  padding: "30px 40px",
+                  borderRadius: "12px",
+                  textAlign: "center",
+                  boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+                  minWidth: "300px",
+                }}
+              >
+                <h3 style={{ color: "green", marginBottom: "10px" }}>✅ Project Saved!</h3>
+                <p>Your project has been successfully saved.</p>
+                <button
+                  onClick={() => {
+                    setModalVisible(false);
+                    router.push("/provider/dashboard/projects"); // 👈 redirect on close
+                  }}
+                  style={{
+                    marginTop: "15px",
+                    background: "#0070f3",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "6px",
+                    padding: "8px 16px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
