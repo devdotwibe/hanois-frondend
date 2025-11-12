@@ -1034,15 +1034,6 @@ padding-block: 60px;
 
 }
 
-.prov-dashboard .header {
-    padding-top: 0;
-    background: #ffffff;
-}
-.prov-dashboard .header-div{
-
-    background: #ffffff;
-}
-
 
 
 
@@ -1288,9 +1279,10 @@ font-size: 17px;
 .form-grp select:focus,
 .form-grp select:hover
  {
-  background: url("../../../public/images/arrow1.svg") no-repeat center;
+  background: url("../../../public/images/arrow1.svg") no-repeat;
   background-size: 10px;
-  background-position-x: 99%;
+  background-position-x: 99% !important;
+background-position-y: 50% !important;
 }
 
 
@@ -1525,9 +1517,30 @@ ul.tab-nav1 {
 
 /* ----------------------custom------------------------------------- */
 
+.seeker-dashboard1 .header-div,
+.directory .header-div,
+.prov-dashboard .header-div,
+.public .header-div
+
+ {
+    background: #ffffff;
+}
+
+.prov-dashboard .header ,
+.public .header 
+{
+    padding-top: 0;
+    background: #ffffff;
+}
+
+
+
+
 .seeker-dashboard1 .header .containers ,
 .prov-dashboard .header .containers,
-.directory .header .containers{
+.directory .header .containers,
+.public .header .containers
+{
     width: 100%;
     max-width: 100%;
     padding-inline: 300px;
@@ -1535,12 +1548,16 @@ ul.tab-nav1 {
 
 .seeker-dashboard1 .header .header-div,
 .prov-dashboard .header .header-div,
-.directory .header .header-div
+.directory .header .header-div,
+.public .header .header-div
 {padding-inline: 0;}
+
+
 
 .seeker-dashboard1 .loged-inn-div > .loged-inn-div,
 .prov-dashboard .loged-inn-div > .loged-inn-div,
-.directory .loged-inn-div > .loged-inn-div
+.directory .loged-inn-div > .loged-inn-div,
+.public .loged-inn-div > .loged-inn-div
  {
     background: #ffffff; 
 }
@@ -1548,7 +1565,8 @@ ul.tab-nav1 {
 
 .seeker-dashboard1 .loged-inn-div > .loged-inn-div:hover,
 .prov-dashboard .loged-inn-div > .loged-inn-div:hover,
-.directory .loged-inn-div > .loged-inn-div:hover
+.directory .loged-inn-div > .loged-inn-div:hover,
+.public .loged-inn-div > .loged-inn-div:hover
  {
   background: #f1f3fa;
 }
@@ -1575,11 +1593,7 @@ ul.tab-nav1 {
     padding-top: 0;
 }
 
-.seeker-dashboard1 .header-div,
-.directory .header-div
- {
-    background: #ffffff;
-}
+
 .sidebar-div1{margin-top: 70px;}
 
 .containers-limit{padding-inline: 300px;}

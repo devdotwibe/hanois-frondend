@@ -16,7 +16,7 @@ export default function BodyClassManager() {
     }
 
 
-      // service provider signup
+
     if (pathname.startsWith("/serviceprovider/signup")) {
       document.body.classList.add("serv-signup");
     } else {
@@ -27,7 +27,7 @@ export default function BodyClassManager() {
 
 
 
-    // service provider signup
+
     if (pathname.startsWith("/provider/dashboard")) {
       document.body.classList.add("prov-dashboard");
     } else {
@@ -36,7 +36,7 @@ export default function BodyClassManager() {
 
 
 
-    // service provider signup
+ 
     if (pathname.startsWith("/provider/dashboard/public-projects")) {
       document.body.classList.add("public-proj");
     } else {
@@ -46,9 +46,22 @@ export default function BodyClassManager() {
 
 
 
+ 
+    if (pathname.startsWith("/provider/directory")) {
+      document.body.classList.add("public");
+    } else {
+      document.body.classList.remove("public");
+    }
 
 
-     // service provider signup
+
+
+
+
+
+
+
+ 
 
     if (pathname.startsWith("/service-provider-directory")) {
       document.body.classList.add("directory");
@@ -88,11 +101,7 @@ export default function BodyClassManager() {
   
 
 
-    if (pathname === "/about") {
-      document.body.classList.add("about-body");
-    } else {
-      document.body.classList.remove("about-body");
-    }
+  
   }, [pathname]);
 
   return null;
