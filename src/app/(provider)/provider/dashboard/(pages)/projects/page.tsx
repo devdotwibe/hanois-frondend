@@ -58,6 +58,11 @@ const ProjectComponent = () => {
 
   return (
     <div className="project-component">
+      <DetailCard
+        logo="/path/to/logo.png" // Placeholder logo, replace with actual project logo if available
+        name="Project Name" // Placeholder project name, replace with actual project name
+        description="This is a detailed description of the project." // Optional project description
+      />
       <TabBtns />
 
       {/* 🟩 Add Button */}
@@ -77,7 +82,6 @@ const ProjectComponent = () => {
           </p>
         ) : (
           <div className="torrance-div">
-            {/* 🟩 Map through projects to dynamically render DetailCard */}
             {projects.map((proj) => {
               const coverImgObj =
                 proj.images?.find((img) => img.is_cover) || proj.images?.[0];
@@ -86,26 +90,17 @@ const ProjectComponent = () => {
                 : "/images/property-img.jpg";
 
               return (
-                <div key={proj.id} className="project-detail-card">
-                  {/* Render the DetailCard dynamically with project data */}
-                  <DetailCard
-                    logo={imageUrl}  // Assuming logo or cover image is used as the "logo"
-                    name={proj.title}  // Assuming the project title is used as the "name"
-                    description={proj.notes}  // Assuming the project notes are the description
-                  />
-
-                  {/* Optionally, render additional project-specific details */}
-                  <TorranceCard
-                    id={proj.id}
-                    image={imageUrl}
-                    category={proj.project_type_name || "Unknown"}
-                    title={proj.title}
-                    description={proj.notes}
-                    styleType={proj.design_name || "—"}
-                    spaceSize={proj.land_size || "—"}
-                    location={proj.location || "—"}
-                  />
-                </div>
+                <TorranceCard
+                  key={proj.id}
+                  id={proj.id}
+                  image={imageUrl}
+                  category={proj.project_type_name || "Unknown"}
+                  title={proj.title}
+                  description={proj.notes}
+                  styleType={proj.design_name || "—"}
+                  spaceSize={proj.land_size || "—"}
+                  location={proj.location || "—"}
+                />
               );
             })}
           </div>
