@@ -15,67 +15,65 @@ const ProjectComponent = () => {
   const router = useRouter();
 
   // 🟩 Fetch provider details based on the providerId from the URL
-const fetchProviderData = async (forceRefresh = false) => {
-  try {
-    setLoading(true);
-    setError(null);
+  const fetchProviderData = async (forceRefresh = false) => {
+    try {
+      setLoading(true);
+      setError(null);
 
-    const user = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
-    const providerId = user?.id || user?.provider_id;
+      const user = JSON.parse(localStorage.getItem("user"));
+      const token = localStorage.getItem("token");
+      const providerId = user?.id || user?.provider_id;
 
-    if (!providerId) {
-      setError("No provider ID found. Please log in again.");
+      if (!providerId) {
+        setError("No provider ID found. Please log in again.");
+        setLoading(false);
+        return;
+      }
+
+      // Try cached data first
+      const cacheKey = `provider_${providerId}`;
+      const cached = localStorage.getItem(cacheKey);
+
+      if (cached && !forceRefresh) {
+        const cachedData = JSON.parse(cached);
+        setProvider(cachedData);
+        setLoading(false);
+        return; // Stop here, use cached version
+      }
+
+      // Otherwise, fetch fresh data
+      const res = await fetch(`${API_URL}providers/${encodeURIComponent(providerId)}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setError(body?.error || `Failed to fetch provider (${res.status})`);
+        setLoading(false);
+        return;
+      }
+
+      const data = await res.json();
+      const providerData = data?.provider || null;
+
+      setProvider(providerData);
+
+      // Save to cache
+      if (providerData) {
+        localStorage.setItem(cacheKey, JSON.stringify(providerData));
+      }
+
+    } catch (err) {
+      console.error("Error fetching provider data:", err);
+      setError("Failed to load provider data.");
+    } finally {
       setLoading(false);
-      return;
     }
-
-    // Try cached data first
-    const cacheKey = `provider_${providerId}`;
-    const cached = localStorage.getItem(cacheKey);
-
-    if (cached && !forceRefresh) {
-      const cachedData = JSON.parse(cached);
-      setProvider(cachedData);
-      setLoading(false);
-      return; // Stop here, use cached version
-    }
-
-    // Otherwise, fetch fresh data
-    const res = await fetch(`${API_URL}providers/${encodeURIComponent(providerId)}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        ...(token && { Authorization: `Bearer ${token}` }),
-      },
-      next: { revalidate: 60 }, // You can remove this if not using Next.js caching
-    });
-
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      setError(body?.error || `Failed to fetch provider (${res.status})`);
-      setLoading(false);
-      return;
-    }
-
-    const data = await res.json();
-    const providerData = data?.provider || null;
-
-    setProvider(providerData);
-
-    // Save to cache
-    if (providerData) {
-      localStorage.setItem(cacheKey, JSON.stringify(providerData));
-    }
-
-  } catch (err) {
-    console.error("Error fetching provider data:", err);
-    setError("Failed to load provider data.");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   // 🟩 Fetch provider projects (same as before)
   const fetchProjects = async () => {
@@ -132,7 +130,7 @@ const fetchProviderData = async (forceRefresh = false) => {
       ) : (
         provider && (
           <DetailCard
-            logo={provider?.image || "/path/to/logo.png"} // Use provider's logo or a placeholder
+            logo={provider?.image ? `${IMG_URL}${provider.image}` : "/path/to/logo.png"} // Use provider's image with IMG_URL
             name={provider?.name || "Unknown Provider"} // Use provider's name
             description={provider?.notes || provider?.service_notes || provider?.professional_headline || "No description available"} // Description from provider
           />
@@ -163,7 +161,7 @@ const fetchProviderData = async (forceRefresh = false) => {
                 proj.images?.find((img) => img.is_cover) || proj.images?.[0];
               const imageUrl = coverImgObj
                 ? `${IMG_URL}${coverImgObj.image_path}`
-                : "/images/property-img.jpg";
+                : "/images/property-img.jpg"; // Default placeholder image
 
               return (
                 <TorranceCard
