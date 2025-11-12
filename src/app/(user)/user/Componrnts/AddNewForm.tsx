@@ -178,7 +178,16 @@ const getServiceName = (id: string | number) => {
         formData?.basement !== "" &&
         formData?.luxuryLevel !== ""
     ) {
-        const calcBuildArea = formData.landSize * (constructionRate / 100);
+
+        if(formData?.landSize =='yes')
+        {
+            const calcBuildArea = formData.landSize * (constructionRate / 100) + formData.landSize;
+        }
+        else
+        {
+            const calcBuildArea = formData.landSize * (constructionRate / 100);
+        }
+
         const calcCostFinish = calcBuildArea * buildCost;
         const calcSuggestCost = calcCostFinish * (feeRate / 100);
         const calcTotalCost = calcCostFinish + calcSuggestCost;
@@ -189,6 +198,7 @@ const getServiceName = (id: string | number) => {
         console.log("TotalCost:", calcTotalCost);
 
         setBuildArea(calcBuildArea);
+
         setCostFinish(calcCostFinish);
         setSuggestCost(calcSuggestCost);
         setTotalCost(calcTotalCost);
@@ -396,7 +406,7 @@ return (
                                 <div className="bud-col1 bud-col2">
                                     <div className="bud-row">
                                         <p><strong>Design Fee Cost</strong></p>
-                                        <p><span className="cost-value">{SuggestCost}</span> (5%)</p>
+                                        <p><span className="cost-value">{SuggestCost}</span> ( {feeRate} %)</p>
                                     </div>
 
                                     <div className="bud-row">
@@ -411,7 +421,7 @@ return (
 
 
                     <div className="create-btn-container">
-                        <button className='create-btn' type="submit">Create</button>
+                        <button className='create-btn' type="submit">Create And Invite</button>
                     </div>
 
                 </form>
