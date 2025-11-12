@@ -186,20 +186,29 @@ setTimeout(() => {
               
               onClick={() => document.querySelector(".upload-input")?.click()}
             >
-              <Image
+
+              <div className="up-img-outer">
+                 <Image
                 src={uploadIcon}
                 alt="Upload Icon"
                 width={40}
                 height={40}
-                style={{ margin: "0 auto 10px" }}
+              
               />
+
+              </div>
+
+             
+
+
+
               <h3>
                 Upload an image
               </h3>
               <p>
                 Browse your files to upload document
               </p>
-              <span style={{ color: "#999", fontSize: "13px" }}>
+              <span>
                 Supported Formats: JPEG, PNG
               </span>
             </div>

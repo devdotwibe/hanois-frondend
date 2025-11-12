@@ -1487,7 +1487,7 @@ ul.tab-nav1 {
 .upload-box p{font-size: 13px; color: gray;}
 .upload-box span{font-size: 12px; color: gray;}
 
-.upload-box h3{
+.proj-form1 .upload-box h3{
     font-family: 'Avenir-Book';  
     font-size: 24px;
 
@@ -1495,7 +1495,12 @@ ul.tab-nav1 {
 .upload-icon {
     margin: 0 auto 20px;
 }
-
+.up-img-outer {
+    width: 100%;
+}
+.up-img-outer img {
+    margin: 0 auto 0;
+}
 
 /* ----------------------custom------------------------------------- */
 
