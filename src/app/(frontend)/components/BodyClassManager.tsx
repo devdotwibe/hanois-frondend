@@ -67,11 +67,16 @@ export default function BodyClassManager() {
 
 
     
-    if (pathname.startsWith("/user/dashboard")) {
+    if (pathname.startsWith("/user")) {
       document.body.classList.add("seeker-dashboard1");
     } else {
       document.body.classList.remove("seeker-dashboard1");
     }
+
+
+
+    
+   
 
 
 
