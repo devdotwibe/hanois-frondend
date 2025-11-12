@@ -138,6 +138,7 @@ const EditProject = () => {
   useEffect(() => {
     fetchDesigns();
     fetchCategories();
+     fetchProviderData();
   }, []);
 
   // 🟩 Fetch existing project data
