@@ -105,12 +105,8 @@ const BusinessInfo = ({ provider }) => {
                  <div className='info-label'>
                 <span className="">Company Phone number</span>
                 </div>
+                <div className="info-value">{provider?.phone || "Unknown Provider"}</div>
 
-
-                <div className="info-value">
-                  {phone}
-                  {phone ? <span>{phone}</span> : null}
-                </div>
               </div>
 
 
