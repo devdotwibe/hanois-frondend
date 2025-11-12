@@ -1,4 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-<path d="m3.75 2.75h9m-8.5 6.5 4-3.5 4 3.5m-4 5v-8.5"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="25.063px" height="26.875px" viewBox="2.25 1.813 25.063 26.875" enable-background="new 2.25 1.813 25.063 26.875"
+	 xml:space="preserve">
+<polyline fill="none" stroke="#2050F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="19.016,16.363 
+	14.903,12.251 10.792,16.363 "/>
+<line fill="none" stroke="#2050F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x1="14.903" y1="12.251" x2="14.903" y2="27.375"/>
+<path fill="none" stroke="#2050F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M23.528,18.82
+	c2.491-1.359,3.411-4.481,2.052-6.974c-0.899-1.65-2.629-2.678-4.509-2.679h-1.295c-1.137-4.397-5.624-7.04-10.021-5.903
+	c-4.397,1.137-7.04,5.623-5.903,10.02c0.325,1.256,0.941,2.416,1.799,3.388"/>
+<polyline fill="none" stroke="#2050F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="19.016,16.363 
+	14.903,12.251 10.792,16.363 "/>
 </svg>
