@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { API_URL, IMG_URL, SITE_URL } from "@/config";
-import HouseOuter from "../../Components/HouseOuter";
+\import DetailCard from "@/app/(directory)/provider/Components/DetailCard";
 import TabBtns from "../../Components/TabBtns";
 import TorranceCard from "../../Components/TorranceCard";
 import UploadBox from "../../Components/UploadBox";
@@ -58,8 +58,13 @@ const ProjectComponent = () => {
 
   return (
     <div className="project-component">
-      <HouseOuter />
-      <TabBtns />
+      <DetailCard
+        logo="/path/to/logo.png" // Placeholder logo, replace with actual project logo if available
+        name="Project Name" // Placeholder project name, replace with actual project name
+        description="This is a detailed description of the project." // Optional project description
+      />
+      
+            <TabBtns />
 
       {/* 🟩 Add Button */}
       <button className="add-proj" onClick={handleAddClick}>
