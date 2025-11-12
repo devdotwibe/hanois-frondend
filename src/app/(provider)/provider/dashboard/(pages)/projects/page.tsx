@@ -1,78 +1,91 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import React from "react";
 import { API_URL, IMG_URL, SITE_URL } from "@/config";
-import HouseOuter from "../../Components/HouseOuter";
+import DetailCard from "@/app/(directory)/provider/Components/DetailCard";
 import TabBtns from "../../Components/TabBtns";
 import TorranceCard from "../../Components/TorranceCard";
 import UploadBox from "../../Components/UploadBox";
 
-const ProjectComponent = () => {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const router = useRouter();
+// This function fetches data at the time of page load, on the server side
+export async function getServerSideProps(context) {
+  const { providerId } = context.query;
 
-  // 🟩 Fetch only this provider’s projects
-  const fetchProjects = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const token = localStorage.getItem("token");
-      const providerId = user?.id || user?.provider_id;
+  // Handle case if providerId is not provided
+  if (!providerId) {
+    return {
+      notFound: true,
+    };
+  }
 
-      if (!providerId) {
-        setError("No provider ID found. Please log in again.");
-        setLoading(false);
-        return;
-      }
+  try {
+    // Fetch provider data
+    const providerRes = await fetch(`${API_URL}providers/${encodeURIComponent(providerId)}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      const res = await axios.get(`${API_URL}/projects?provider_id=${providerId}`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      });
-
-      if (res.data && res.data.success) {
-        setProjects(res.data.data.projects || []);
-      } else {
-        setError("Failed to fetch your projects.");
-      }
-    } catch (err) {
-      console.error("Error fetching provider projects:", err);
-      setError("Failed to load projects.");
-    } finally {
-      setLoading(false);
+    if (!providerRes.ok) {
+      const body = await providerRes.json();
+      throw new Error(body?.error || `Failed to fetch provider (${providerRes.status})`);
     }
-  };
 
-  // 🟩 Load projects on mount
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+    const providerData = await providerRes.json();
+    const provider = providerData?.provider ?? null;
 
-  // 🟩 Handle Add Project button
-  const handleAddClick = () => {
-    const base = (SITE_URL || "").replace(/\/+$/, "");
-    const target = `/provider/dashboard/add-project`;
-    router.push(target);
-  };
+    if (!provider) {
+      throw new Error("No provider data found.");
+    }
 
+    // Fetch provider's projects data
+    const projectsRes = await fetch(`${API_URL}/projects?provider_id=${providerId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!projectsRes.ok) {
+      const body = await projectsRes.json();
+      throw new Error(body?.error || `Failed to fetch projects (${projectsRes.status})`);
+    }
+
+    const projectsData = await projectsRes.json();
+    const projects = projectsData?.data?.projects ?? [];
+
+    return {
+      props: {
+        provider,
+        projects,
+      },
+    };
+  } catch (error) {
+    return {
+      notFound: true,  // Return 404 if there's an error fetching data
+    };
+  }
+}
+
+const ProjectComponent = ({ provider, projects }) => {
   return (
     <div className="project-component">
-      <HouseOuter />
+      {/* 🟩 Dynamic DetailCard */}
+      <DetailCard
+        logo={provider?.image || "/path/to/logo.png"} // Use provider's logo or a placeholder
+        name={provider?.name || "Unknown Provider"} // Use provider's name
+        description={provider?.notes || provider?.service_notes || provider?.professional_headline || "No description available"} // Description from provider
+      />
+
       <TabBtns />
 
-      {/* 🟩 Add Button */}
-      <button className="add-proj" onClick={handleAddClick}>
+      {/* 🟩 Add Project Button */}
+      <button className="add-proj" onClick={() => {}}>
         <span className="icon">+</span> Add Project
       </button>
 
       {/* 🟩 Projects Section */}
       <div className="all-proj">
-        {loading ? (
-          <p style={{ textAlign: "center", marginTop: "20px" }}>Loading projects...</p>
-        ) : error ? (
-          <p style={{ color: "red", textAlign: "center" }}>{error}</p>
-        ) : projects.length === 0 ? (
+        {projects.length === 0 ? (
           <p style={{ textAlign: "center", marginTop: "20px" }}>
             No projects found. Please add one.
           </p>
