@@ -183,14 +183,7 @@ setTimeout(() => {
           <div className="form-grp upload-area" style={{ marginBottom: "30px" }}>
             <div
               className="upload-box"
-              style={{
-                border: "2px dashed #d1d5db",
-                borderRadius: "10px",
-                padding: "30px",
-                background: "#fafafa",
-                cursor: "pointer",
-                textAlign: "center",
-              }}
+              
               onClick={() => document.querySelector(".upload-input")?.click()}
             >
               <Image
@@ -200,10 +193,10 @@ setTimeout(() => {
                 height={40}
                 style={{ margin: "0 auto 10px" }}
               />
-              <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "4px" }}>
+              <h3>
                 Upload an image
               </h3>
-              <p style={{ color: "#666", fontSize: "14px", marginBottom: "4px" }}>
+              <p>
                 Browse your files to upload document
               </p>
               <span style={{ color: "#999", fontSize: "13px" }}>
