@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { API_URL, IMG_URL, SITE_URL } from "@/config";
-import HouseOuter from "../../Components/HouseOuter";
+import DetailCard from "@/app/(directory)/provider/Components/DetailCard";
 import TabBtns from "../../Components/TabBtns";
 import TorranceCard from "../../Components/TorranceCard";
 import UploadBox from "../../Components/UploadBox";
@@ -58,7 +58,6 @@ const ProjectComponent = () => {
 
   return (
     <div className="project-component">
-      <HouseOuter />
       <TabBtns />
 
       {/* 🟩 Add Button */}
@@ -78,6 +77,7 @@ const ProjectComponent = () => {
           </p>
         ) : (
           <div className="torrance-div">
+            {/* 🟩 Map through projects to dynamically render DetailCard */}
             {projects.map((proj) => {
               const coverImgObj =
                 proj.images?.find((img) => img.is_cover) || proj.images?.[0];
@@ -86,17 +86,26 @@ const ProjectComponent = () => {
                 : "/images/property-img.jpg";
 
               return (
-                <TorranceCard
-                  key={proj.id}
-                  id={proj.id}
-                  image={imageUrl}
-                  category={proj.project_type_name || "Unknown"}
-                  title={proj.title}
-                  description={proj.notes}
-                  styleType={proj.design_name || "—"}
-                  spaceSize={proj.land_size || "—"}
-                  location={proj.location || "—"}
-                />
+                <div key={proj.id} className="project-detail-card">
+                  {/* Render the DetailCard dynamically with project data */}
+                  <DetailCard
+                    logo={imageUrl}  // Assuming logo or cover image is used as the "logo"
+                    name={proj.title}  // Assuming the project title is used as the "name"
+                    description={proj.notes}  // Assuming the project notes are the description
+                  />
+
+                  {/* Optionally, render additional project-specific details */}
+                  <TorranceCard
+                    id={proj.id}
+                    image={imageUrl}
+                    category={proj.project_type_name || "Unknown"}
+                    title={proj.title}
+                    description={proj.notes}
+                    styleType={proj.design_name || "—"}
+                    spaceSize={proj.land_size || "—"}
+                    location={proj.location || "—"}
+                  />
+                </div>
               );
             })}
           </div>
