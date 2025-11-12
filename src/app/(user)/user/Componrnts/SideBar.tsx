@@ -9,7 +9,7 @@ const SideBar = () => {
   // Define your links
   const links = [
     { href: "/user/dashboard", label: "My Project" },
-    { href: "/user/dashboard/my-account", label: "My Account" },
+    { href: "/user/my-account", label: "My Account" },
   ];
 
   // Determine which one is active (default to first if none matches)
