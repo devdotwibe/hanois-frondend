@@ -60,7 +60,7 @@ const Page = () => {
             </div>
           )}
 
-          <div className="project-details">
+          <div className="project-details detailed">
             <h2 className="project-title">{project.title}</h2>
             <p className="project-type">{project.project_type_name}</p>
 
