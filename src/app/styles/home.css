@@ -3306,7 +3306,7 @@ margin-right: 0;
 }
 
 .grid-upload > div {
-    background: yellow;
+ 
     width: 32%;
     margin-right: 2%;
     margin-bottom: 2%;
@@ -3359,10 +3359,27 @@ margin-right: 0;
 
 
 
+button.img-onclose {
+    background: #f1f3fa;
+    color: #000000;
+}
+button.img-onclose:hover {
+    background: #2050F5;
+    color: #ffffff;
+}
 
 
+.setas-cover{padding: 8px 28px; line-height: 1;
+color: #ffffff;
+
+font-size: 11px;
+position: absolute;
+top: 5px;
+left: 10px;
+border-radius: 6px;
 
 
+}
 
 /* ------------------------------------responsive */
 

@@ -271,7 +271,7 @@ const UploadBox = () => {
       <TabBtns />
 
       <div className="">
-        <div className="proj-form1 company-profile1">
+        <div className="proj-form1 company-profile1 upload-page">
           <h3>Upload Project</h3>
           <p>Upload your project images and details below</p>
 
@@ -352,12 +352,12 @@ const UploadBox = () => {
                 e.stopPropagation();
                 setImageFile((prev) => prev.filter((_, i) => i !== index));
               }}
+              className="img-onclose"
               style={{
                 position: "absolute",
                 top: "5px",
                 right: "5px",
-                background: "rgba(0,0,0,0.5)",
-                color: "white",
+            
                 border: "none",
                 borderRadius: "50%",
                 width: "22px",
@@ -372,6 +372,7 @@ const UploadBox = () => {
             {/* Cover Image Button */}
             <button
               type="button"
+              className="setas-cover"
               onClick={(e) => {
                 e.stopPropagation();
                 const updatedFiles = imageFile.map((f, i) =>
@@ -380,14 +381,12 @@ const UploadBox = () => {
                 setImageFile([...updatedFiles]);
               }}
               style={{
-                position: "absolute",
-                bottom: "5px",
-                left: "5px",
-                background: file.isCover ? "#0070f3" : "#ccc",
-                color: "white",
-                fontSize: "11px",
-                padding: "2px 6px",
-                borderRadius: "5px",
+                
+              
+                background: file.isCover ? "#CFCFD1" : "#ccc",
+               
+              
+               
                 cursor: "pointer",
               }}
             >
