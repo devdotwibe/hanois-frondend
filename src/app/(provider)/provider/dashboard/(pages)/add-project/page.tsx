@@ -275,6 +275,7 @@ const UploadBox = () => {
           <h3>Upload Project</h3>
           <p>Upload your project images and details below</p>
 
+<<<<<<< HEAD
           {/* 🟩 Upload Section */}
           <div className="form-grp upload-area" style={{ marginBottom: "30px" }}>
             <div
@@ -289,105 +290,143 @@ const UploadBox = () => {
               <p>Browse your files to upload document</p>
               <span>Supported Formats: JPEG, PNG</span>
             </div>
+=======
+{/* 🟩 Upload + Preview Section */}
+<div className="form-grp upload-area" style={{ marginBottom: "30px" }}>
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
+      gap: "15px",
+      marginTop: "20px",
+    }}
+  >
+    {/* Upload Box inside grid */}
+    <div
+      className="upload-box"
+      onClick={() => document.querySelector(".upload-input")?.click()}
+      style={{
+        border: "2px dashed #ccc",
+        borderRadius: "10px",
+        textAlign: "center",
+        padding: "25px 10px",
+        cursor: "pointer",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "150px",
+        transition: "border-color 0.3s ease",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0070f3")}
+      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#ccc")}
+    >
+      <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
+      <h3 style={{ fontSize: "14px", marginTop: "10px" }}>Upload an image</h3>
+      <p style={{ fontSize: "12px", color: "#666", margin: "5px 0" }}>
+        Browse your files to upload document
+      </p>
+      <span style={{ fontSize: "11px", color: "#999" }}>
+        Supported Formats: JPEG, PNG
+      </span>
+    </div>
+>>>>>>> 520a062b3e94fd3ad54c8165ec357f63afb9d55f
 
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              className="upload-input hidden"
-              onChange={handleFileChange}
+    {/* Hidden File Input */}
+    <input
+      type="file"
+      accept="image/*"
+      multiple
+      className="upload-input hidden"
+      onChange={handleFileChange}
+    />
+
+    {/* Preview Grid */}
+    {imageFile &&
+      imageFile.length > 0 &&
+      imageFile.map((file, index) => {
+        const previewUrl = URL.createObjectURL(file);
+        return (
+          <div
+            key={index}
+            style={{
+              position: "relative",
+              borderRadius: "10px",
+              overflow: "hidden",
+              minHeight: "150px",
+            }}
+          >
+            <img
+              src={previewUrl}
+              alt="preview"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "10px",
+              }}
             />
 
-            {errors.images && (
-              <p style={{ color: "red", fontSize: "13px", marginTop: "8px" }}>
-                {errors.images}
-              </p>
-            )}
+            {/* Remove Button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setImageFile((prev) => prev.filter((_, i) => i !== index));
+              }}
+              style={{
+                position: "absolute",
+                top: "5px",
+                right: "5px",
+                background: "rgba(0,0,0,0.5)",
+                color: "white",
+                border: "none",
+                borderRadius: "50%",
+                width: "22px",
+                height: "22px",
+                cursor: "pointer",
+                fontSize: "14px",
+              }}
+            >
+              ✕
+            </button>
 
-            {/* 🟩 Preview Section */}
-            {imageFile && imageFile.length > 0 && (
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-                  gap: "10px",
-                  marginTop: "20px",
-                }}
-              >
-                {imageFile.map((file, index) => {
-                  const previewUrl = URL.createObjectURL(file);
-                  return (
-                    <div
-                      key={index}
-                      style={{
-                        position: "relative",
-                        borderRadius: "10px",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <img
-                        src={previewUrl}
-                        alt="preview"
-                        style={{
-                          width: "100%",
-                          height: "120px",
-                          objectFit: "cover",
-                          borderRadius: "10px",
-                        }}
-                      />
-                      {/* Remove Button */}
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setImageFile((prev) => prev.filter((_, i) => i !== index));
-                        }}
-                        style={{
-                          position: "absolute",
-                          top: "5px",
-                          right: "5px",
-                          background: "rgba(0,0,0,0.5)",
-                          color: "white",
-                          border: "none",
-                          borderRadius: "50%",
-                          width: "24px",
-                          height: "24px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        ✕
-                      </button>
-
-                      {/* Cover Image Button */}
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          const updatedFiles = imageFile.map((f, i) =>
-                            Object.assign(f, { isCover: i === index })
-                          );
-                          setImageFile([...updatedFiles]);
-                        }}
-                        style={{
-                          position: "absolute",
-                          bottom: "5px",
-                          left: "5px",
-                          background: file.isCover ? "#0070f3" : "#ccc",
-                          color: "white",
-                          fontSize: "12px",
-                          padding: "2px 6px",
-                          borderRadius: "5px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {file.isCover ? "Cover Image" : "Set Cover"}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+            {/* Cover Image Button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                const updatedFiles = imageFile.map((f, i) =>
+                  Object.assign(f, { isCover: i === index })
+                );
+                setImageFile([...updatedFiles]);
+              }}
+              style={{
+                position: "absolute",
+                bottom: "5px",
+                left: "5px",
+                background: file.isCover ? "#0070f3" : "#ccc",
+                color: "white",
+                fontSize: "11px",
+                padding: "2px 6px",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              {file.isCover ? "Cover Image" : "Set Cover"}
+            </button>
           </div>
+        );
+      })}
+  </div>
+
+  {/* Validation Error */}
+  {errors.images && (
+    <p style={{ color: "red", fontSize: "13px", marginTop: "8px" }}>
+      {errors.images}
+    </p>
+  )}
+</div>
 
           {/* 🟩 Form Section */}
           <form onSubmit={handleSubmit}>
