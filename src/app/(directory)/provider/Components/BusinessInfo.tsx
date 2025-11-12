@@ -89,7 +89,7 @@ const BusinessInfo = ({ provider }) => {
                 </div>
               </div>
 
-              <div className="info-item">
+              {/* <div className="info-item">
                    <div className='info-label'>
                 <span className="">Company Phone number</span>
                 </div>
@@ -98,7 +98,26 @@ const BusinessInfo = ({ provider }) => {
                 <div className="info-value">
                   {phone ? <a href={`tel:${phone}`}>{phone}</a> : <span>N/A</span>}
                 </div>
+              </div> */}
+
+
+              <div className="info-item">
+                 <div className='info-label'>
+                <span className="">Company Phone number</span>
+                </div>
+
+
+                <div className="info-value">
+                  {phone}
+                  {phone ? <span>{phone}</span> : null}
+                </div>
               </div>
+
+
+
+
+
+
             </div>
           </div>
         </div>
