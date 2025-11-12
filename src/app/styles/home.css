@@ -1280,6 +1280,17 @@ font-size: 17px;
     padding: 20px 15px;
     border-radius: 4px; 
     transition: all 0.5s ease-in-out;
+    -webkit-appearance: none;
+
+}
+
+.form-grp select,
+.form-grp select:focus,
+.form-grp select:hover
+ {
+  background: url("../../../public/images/arrow1.svg") no-repeat center;
+  background-size: 10px;
+  background-position-x: 99%;
 }
 
 
@@ -1297,10 +1308,16 @@ font-size: 17px;
 .form-grp select:hover,
 .form-grp input:hover,
  .form-grp textarea:hover
-
 {
     box-shadow: 0 0 0 3px rgba(99, 102, 241, .2);
 }
+
+
+
+
+
+
+
 
 
 .company-profile1 .select-grp.form-grp input:focus {
