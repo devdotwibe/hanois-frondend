@@ -3275,6 +3275,25 @@ line-height: 1;
 .profile-page .back-bth {
     margin-bottom: 30px;
 }
+.sucess-img-text {
+    position: relative;
+      
+
+}
+
+
+.sucess-img-text::before {
+      content: "";
+    z-index: 9999;
+    background: url("../../../public/images/tik.svg");
+    background-repeat: no-repeat;
+    background-size: 12px;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+  
+    
+}
 
 
 

@@ -7,6 +7,9 @@ import { API_URL, IMG_URL } from "@/config";
 import HouseOuter from "../../Components/HouseOuter";
 import TabBtns from "../../Components/TabBtns";
 import { useRouter, useSearchParams } from "next/navigation";
+import ssimg from "../../../../../../../public/images/tik.svg"
+
+
 
 const EditProject = () => {
   const router = useRouter();
@@ -503,8 +506,20 @@ const handleSubmit = async (e) => {
                   boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
                 }}
               >
-                <h3 style={{ color: "green" }}>✅ Project Updated!</h3>
-                <p>Your project has been successfully updated.</p>
+                <h3 className="sucess-img-text"> 
+                   <span className="ss-img">
+                    <Image 
+                    src={ssimg}
+                    alt="img"
+                    width={18}
+                    height={18}
+                    
+                    />
+                  </span>
+                  Project Updated!</h3>
+                <p>
+                 
+                  Your project has been successfully updated.</p>
                 <button
                 className="close-poup"
                   onClick={() => {
