@@ -58,13 +58,16 @@ const ProjectComponent = () => {
 
   return (
     <div className="project-component">
-      <DetailCard
-        logo="/path/to/logo.png" // Placeholder logo, replace with actual project logo if available
-        name="Project Name" // Placeholder project name, replace with actual project name
-        description="This is a detailed description of the project." // Optional project description
-      />
-      
-            <TabBtns />
+      {/* 🟩 Dynamic DetailCard */}
+      {projects.length > 0 && (
+        <DetailCard
+          logo={projects[0]?.logo || "/path/to/logo.png"} // Replace with actual project logo if available
+          name={projects[0]?.name || "Project Name"} // Replace with actual project name if available
+          description={projects[0]?.description || "This is a detailed description of the project."} // Replace with actual project description
+        />
+      )}
+
+      <TabBtns />
 
       {/* 🟩 Add Button */}
       <button className="add-proj" onClick={handleAddClick}>
