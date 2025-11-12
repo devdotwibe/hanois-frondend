@@ -10,6 +10,7 @@ import React, { useState,useEffect } from 'react'
 import { API_URL } from "@/config";
 import ProviderCard from "./ProviderCard";
 import proposalimg from "../../../../../public/images/get-listed-1.jpg";
+import Select from "react-select";
 
 const AddNewForm = () => {
 
@@ -66,15 +67,23 @@ const AddNewForm = () => {
 
  const [selectedProviders, setSelectedProviders] = useState<number[]>([]);
 
+ const [selectedProviderIds, setSelectedProviderIds] = useState<number[]>([]);
+
   const handleSelect = (company: any, checked: boolean) => {
 
     if (checked) {
 
       setSelectedProviders((prev) => [...prev, company]);
+
+      setSelectedProviderIds((prev) => [...prev, company.id]);
+
       setProviders((prev) => prev.filter((p) => p.id !== company.id));
     } else {
     
       setProviders((prev) => [...prev, company]);
+
+       setSelectedProviderIds((prev) => prev.filter((id) => id !== company.id));
+
       setSelectedProviders((prev) => prev.filter((p) => p.id !== company.id));
     }
   };
@@ -144,7 +153,7 @@ const AddNewForm = () => {
     }, []);
 
 
-  const handleSubmit = async (e:any) => {
+const handleSubmit = async (e:any) => {
   e.preventDefault();
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -163,24 +172,35 @@ const AddNewForm = () => {
         location: formData.location,
         landSize: formData.landSize,
         luxuryLevel: formData.luxuryLevel,
-        services: formData.services,
+        service_ids: formData.services,
         constructionBudget: formData.constructionBudget,
         basement: formData.basement,
-        listingStyle: formData.listingStyle
+        listingStyle: formData.listingStyle,
+        provider_id: selectedProviderIds,
         })
     });
 
     const data = await res.json();
+
     console.log("API response:", data);
+    
+     if (data?.error === "Access token is required") {
+
+        localStorage.removeItem("token");
+    
+        window.location.href = "/login";
+        return;
+    }
 
     if (!res.ok) throw new Error(data.error || "Error submitting form");
-    setSubmitted(true);
-    setEditMode(false);
-    alert("Form submitted successfully");
-  } catch (error) {
-    alert("Failed to submit");
-    console.error(error);
-  }
+        setSubmitted(true);
+        setEditMode(false);
+        alert("Form submitted successfully");
+    } catch (error) {
+
+        // alert("Failed to submit");
+        console.error(error);
+    }
 };
 
 React.useEffect(() => {
@@ -243,13 +263,15 @@ const getServiceName = (id: string | number) => {
         formData?.luxuryLevel !== ""
     ) {
 
+        let calcBuildArea = 0;
+
         if(formData?.landSize =='yes')
         {
-            const calcBuildArea = formData.landSize * (constructionRate / 100) + formData.landSize;
+             calcBuildArea = formData.landSize * (constructionRate / 100) + formData.landSize;
         }
         else
         {
-            const calcBuildArea = formData.landSize * (constructionRate / 100);
+             calcBuildArea = formData.landSize * (constructionRate / 100);
         }
 
         const calcCostFinish = calcBuildArea * buildCost;
@@ -302,7 +324,12 @@ const getServiceName = (id: string | number) => {
              setListPrivate(false);
         }
 
-     },[formData?.listingStyle,formData?.projectType])
+     },[formData?.listingStyle,formData?.projectType]);
+
+    const serviceOptions = servicesList.map((ser) => ({
+        value: ser.id,
+        label: ser.name,
+    }));
 
 
 return (
@@ -393,18 +420,25 @@ return (
                     </div>
 
                     <div className="form-grp">
+
                         <label>Select Services</label>
-                        <select
-                            name="services"
-                            value={formData.services}
-                            onChange={handleChange}
-                            >
-                            <option value="">Select Service</option>
-                            {servicesList.map(ser => (
-                                <option key={ser.id} value={ser.id}>{ser.name}</option>
-                            ))}
-                        </select>
+                            <Select
+                                isMulti
+                                name="services"
+                                options={serviceOptions}
+                                value={serviceOptions.filter(opt => formData.services?.includes(opt.value))}
+                                onChange={(selected) => {
+                                const selectedValues = selected.map((item) => item.value);
+                                setFormData((prev) => ({
+                                    ...prev,
+                                    services: selectedValues,
+                                }));
+                                }}
+                                placeholder="Select services..."
+                                classNamePrefix="react-select"
+                            />
                     </div>
+
 
                     <div className="form-grp">
                         <label>construction Budget</label>
