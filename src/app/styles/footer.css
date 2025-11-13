@@ -255,7 +255,6 @@
 .prov-dashboard .footer .containers,
 .directory .footer .containers{gap: 0;}
 
-.footer-about.footer-column span {display: inline;}
 
 
 
@@ -265,6 +264,13 @@
 .prov-dashboard .footer .footer-about.footer-column,
 .directory .footer .footer-about.footer-column{
 max-width: 250px;}
+
+.seeker-dashboard1 .footer .footer-about.footer-column span,
+.prov-dashboard .footer .footer-about.footer-column span,
+.directory .footer .footer-about.footer-column span{
+ display: inline;
+}
+
 
 }
 

@@ -1893,9 +1893,80 @@ border-right: 1px solid #e0e0e0;
 .form-c {
     position: relative;
 }
-.form-c .login-success{
+
+
+.form-c .contact-success{
   right: -152px; top: 15px;
+
+  color: #00a056;
+    background-color: #fff;
+    border: 1px solid #00a056;
+    border-radius: 10px;
+    max-width: 300px;
+    max-height: 50px;
+    padding: 15px 20px;
+    position: absolute;
+    
+    box-shadow: 0 0 8px rgba(46, 204, 113, .3);
 }
+
+
+.contact-success p:before {
+    content: "";
+    background: url("../../../public/images/tik.svg") 0 0 / contain no-repeat;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 2px;
+    left: 0;
+}
+
+.contact-success p {
+    color: #00a056;
+    padding-left: 20px;
+    line-height: 1;
+    position: relative;
+}
+
+
+
+
+.form-c .contact-error{
+      border: 1px solid red;
+      color: red;
+box-shadow: 0 0 8px rgba(231, 76, 60, .6);
+
+
+ right: -152px; top: 15px;
+
+
+    background-color: #fff;
+   
+    border-radius: 10px;
+    max-width: 300px;
+    max-height: 50px;
+    padding: 15px 20px;
+    position: absolute;
+    
+
+}
+
+.contact-error p{position: relative;}
+
+
+.contact-error p::before{
+    content: "";
+    background: url("../../../public/images/warning-icon.svg") 0 0 / contain no-repeat;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 2px;
+    left: 0;
+}
+
+
+
+
 
 
 .sidebar-div1 {
