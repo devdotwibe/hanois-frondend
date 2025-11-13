@@ -2690,7 +2690,7 @@ color: #2050f5;
     margin: 0 0 8px;
   font-family: 'Avenir-Black';
     font-size: 23px;
-        color: #171725;
+        color: #171725; margin: 0 0 30px;
 
 }
 .after-edit .status-card {
