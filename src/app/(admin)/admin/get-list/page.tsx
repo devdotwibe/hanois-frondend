@@ -16,6 +16,8 @@ import MeaningfullTabContent from "@/app/(frontend)/components/MeaningfullTabCon
 
 import HelpTabContent from "@/app/(frontend)/components/HelpTabContent";
 
+import HtmlToggleEditor from "../components/HtmlToggleEditor";
+
 
 
 
@@ -198,7 +200,6 @@ const fetchData = async (sectionKey: string) => {
     setLoading(false);
   };
 
-  // Helper to update nested state keys for title/content in cards
   const updateCardField = (index: number, field: "title" | "content", lang: "en" | "ar", value: string) => {
     const updated = [...cards];
     updated[index][field][lang] = value;
@@ -234,28 +235,13 @@ const fetchData = async (sectionKey: string) => {
   
     {/* English Content */}
     <div className="form-field">
-  <label>Content</label>
-
-  {showSource ? (
-    <textarea
-      value={content.en}
-      onChange={(e) => setContent((prev) => ({ ...prev, en: e.target.value }))}
-      style={{
-        width: "100%",
-        height: "300px",
-        fontFamily: "monospace",
-        whiteSpace: "pre-wrap",
-      }}
-    />
-  ) : (
-    <ReactQuill
-      theme="snow"
-      value={content.en}
-      onChange={(v) => setContent((prev) => ({ ...prev, en: v }))}
-      modules={modules}
-    />
-  )}
-</div>
+      
+          <HtmlToggleEditor
+            label="Content (English)"
+            value={content.en}
+            onChange={(val) => setContent((prev) => ({ ...prev, en: val }))}
+          />
+    </div>
 
 
     {/* Arabic Content (Hidden) */}
