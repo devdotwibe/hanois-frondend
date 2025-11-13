@@ -262,7 +262,7 @@ padding: 80px 0 0;
 
 .faq-item {
   border-bottom: 1px solid #ddd;
-  padding: 30px 0;
+  padding: 20px 0;
 }
 
 .faq-item:last-child{border-bottom: none;}
@@ -278,7 +278,8 @@ padding: 80px 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0; color: #ffffff;
+  padding: 10px 0 0;
+   color: #ffffff;
 
 }
 
@@ -296,7 +297,8 @@ padding: 80px 0 0;
 }
 
 .faq-answer p {
-  margin: 10px 0; color: #ffffff;
+  margin: 0px 0 10px; 
+  color: #ffffff;
 }
 
 .faq-item.active .faq-answer {

@@ -91,7 +91,7 @@ export default function FaqSec({ lang }: { lang: string }) {
                   className="faq-answer"
                   style={{
                     maxHeight: activeIndex === index ? "500px" : "0",
-                    padding: activeIndex === index ? "10px 0" : "0",
+                    
                   }}
                   dir={lang === "ar" ? "rtl" : "ltr"}
                 >

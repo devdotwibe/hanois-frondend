@@ -409,12 +409,14 @@ button.close-poup:hover{
   background: #4c72f6;
 }
 
-/* .create-btn.invite-btn{
+.create-btn.invite-btn{
+  font-family: 'Avenir-medium';
+  padding-block: 14px;
+  font-size: 16px;
+}
 
-} */
 
-
-/* ---------------------------------------- */
+/* ----------------------------resp------------ */
 @media (max-width: 1204px) {
 
 
