@@ -372,7 +372,7 @@ useEffect(() => {
 
       setStatus({ loading: false, message: "Provider updated successfully!", success: true });
 
-      router.push(`/provider/dashboard/details?providerId=${encodeURIComponent(providerId)}`);
+      router.push(`/provider/dashboard/details/${providerId}`);
 
       setErrors({});
     } catch (err) {
