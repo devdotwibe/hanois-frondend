@@ -1,63 +1,76 @@
-// app/(directory)/service-provider-directory/Components/ServiceDiv.jsx
-import React from 'react';
-import { cookies } from 'next/headers';
-import { API_URL } from '@/config';
+"use client";
+import React, { useEffect, useState } from "react";
+import { API_URL } from "@/config";
 
-/**
- * Server component: fetches provider services and renders them.
- * Expects `provider` prop with at least `id`, `phone`, `website`.
- */
-const ServiceDiv = async ({ provider }) => {
+const ServiceDiv = ({ provider }) => {
   const providerId = provider?.id ?? provider?.provider_id ?? null;
 
-  if (!providerId) {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!providerId) {
+      setError("No provider selected.");
+      setLoading(false);
+      return;
+    }
+
+    const fetchServices = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const headers = { "Content-Type": "application/json" };
+        if (token) headers.Authorization = `Bearer ${token}`;
+
+        const url = `${API_URL.replace(/\/+$/, "")}/providers/all-provider-services?providerId=${encodeURIComponent(providerId)}`;
+
+        const res = await fetch(url, { method: "GET", headers });
+
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body?.error || body?.message || `Failed to fetch services (${res.status})`);
+        }
+
+        const body = await res.json();
+        const rows = Array.isArray(body?.data)
+          ? body.data
+          : Array.isArray(body)
+          ? body
+          : [];
+
+        setServices(rows.filter((r) => String(r.provider_id) === String(providerId)));
+      } catch (err) {
+        setError(err.message || "Something went wrong.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, [providerId]);
+
+  if (loading)
     return (
       <div className="serv-div">
         <h2>Service</h2>
-        <p>No provider selected.</p>
+        <p>Loading services...</p>
       </div>
     );
-  }
 
-  const cookieStore = cookies();
-  const token = cookieStore.get('token')?.value || null;
-
-  const headers = { "Content-Type": "application/json" };
-  if (token) headers.Authorization = `Bearer ${token}`;
-
-  const url = `${API_URL.replace(/\/+$/,"")}/providers/all-provider-services?providerId=${encodeURIComponent(providerId)}`;
-
-  let services = [];
-  let error = null;
-
-  try {
-    const res = await fetch(url, {
-      method: 'GET',
-      headers,
-      next: { revalidate: 60 },
-    });
-
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      throw new Error(body?.error || body?.message || `Failed to fetch services (${res.status})`);
-    }
-
-    const body = await res.json();
-    const rows = Array.isArray(body?.data) ? body.data : (Array.isArray(body) ? body : []);
-    services = rows.filter((r) => String(r.provider_id) === String(providerId));
-  } catch (err) {
-    error = String(err?.message || err);
-  }
+  if (error)
+    return (
+      <div className="serv-div">
+        <h2>Service</h2>
+        <p style={{ color: "red" }}>Failed to load services: {error}</p>
+      </div>
+    );
 
   return (
-    <div className='serv-div'>
+    <div className="serv-div">
       <h2>Service</h2>
 
-      {error ? (
-        <div style={{ color: 'red' }}>
-          <p>Failed to load services: {error}</p>
-        </div>
-      ) : services.length === 0 ? (
+      {services.length === 0 ? (
         <p>No services listed.</p>
       ) : (
         <div className="build-row">
@@ -73,13 +86,9 @@ const ServiceDiv = async ({ provider }) => {
                     ? `${svc.average_cost} ${svc.currency ?? ""}`
                     : "Contact for price"}
                 </p>
-                {/* {svc.created_at && (
-                  <small style={{ display: 'block', marginTop: 6, color: '#666' }}>
-                    Updated: {new Date(svc.updated_at ?? svc.created_at).toLocaleDateString()}
-                  </small>
-                )} */}
+
                 {svc.service_note && (
-                  <div style={{ marginTop: 8, color: '#333' }}>
+                  <div style={{ marginTop: 8, color: "#333" }}>
                     <strong>Note:</strong> {svc.service_note}
                   </div>
                 )}
@@ -91,9 +100,10 @@ const ServiceDiv = async ({ provider }) => {
 
       <div className="para-serv">
         <p>
-          Each project is unique, making budgets and costs vary depending on different factors. Call and speak to a team member for more information at 
-          {provider?.phone ? ` ${provider.phone}.` : ""} or visit our website at
-          {provider?.website ? ` ${provider.website}` : ""}
+          Each project is unique, making budgets and costs vary depending on different factors.
+          Call and speak to a team member for more information
+          {provider?.phone ? ` at ${provider.phone}` : ""} or visit our website
+          {provider?.website ? ` at ${provider.website}` : ""}.
         </p>
       </div>
     </div>
@@ -101,6 +111,7 @@ const ServiceDiv = async ({ provider }) => {
 };
 
 export default ServiceDiv;
+
 
 
 

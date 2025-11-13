@@ -194,7 +194,6 @@ useEffect(() => {
         service_notes: provider.service_notes ?? "",
       });
 
-      // Fetch provider_services for this provider and merge average_cost & currency
       try {
         const svcRes = await fetch(`${API_URL}providers/all-provider-services?providerId=${providerId}`);
         const svcJson = await svcRes.json();
@@ -235,7 +234,7 @@ useEffect(() => {
     }
   };
   fetchProvider();
-}, [servicesList]); // watch servicesList so we can populate names when services are loaded
+}, [servicesList]);
 
 
 
