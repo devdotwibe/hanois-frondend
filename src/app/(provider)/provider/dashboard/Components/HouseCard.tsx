@@ -381,6 +381,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
         wordBreak: "break-word",
       }}
     >
+      {headline }
     </p>
     <button
       className="house-card-edit-btn"
