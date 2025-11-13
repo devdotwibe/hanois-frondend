@@ -88,7 +88,6 @@ h1{
     margin: 0 0 10px !important; width: 100%; text-align: left; position: relative; transition: all 0.5s ease-in-out;
 }
 .admin-nav button.dropdown-btn::after {
-  content: "▼"; 
   display: inline-block;
   margin-left: 8px;
   font-size: 0.75rem; 

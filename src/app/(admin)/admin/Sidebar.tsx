@@ -12,6 +12,7 @@ export default function AdminSidebar() {
   const router = useRouter();
 
   const [pagesOpen, setPagesOpen] = useState(false);
+  const [optionsOpen, setOptionsOpen] = useState(false);
 
   const handleLogout = async () => {
           localStorage.removeItem("user");
@@ -48,10 +49,9 @@ export default function AdminSidebar() {
 
         <div
             className="pages-dropdown"
-            onMouseEnter={() => setPagesOpen(true)}
-            onMouseLeave={() => setPagesOpen(false)}
+             onClick={() => setPagesOpen(!pagesOpen)}
           >
-            <button className="dropdown-btn">Pages</button>
+        <button className="dropdown-btn">  Pages {pagesOpen ? "▲" : "▼"}</button>
 
           {pagesOpen && (
               <ul className="dropdown-menu">
@@ -80,12 +80,12 @@ export default function AdminSidebar() {
 
       <div
             className="pages-dropdown"
-            onMouseEnter={() => setPagesOpen(true)}
-            onMouseLeave={() => setPagesOpen(false)}
+            onClick={() => setOptionsOpen(!optionsOpen)}
           >
-            <button className="dropdown-btn">Options</button>
+            <button className="dropdown-btn"> Options {optionsOpen ? "▲" : "▼"}</button>
 
-          {pagesOpen && (
+          {optionsOpen && (
+
               <ul className="dropdown-menu">
                 <li>
                   <Link
@@ -105,24 +105,18 @@ export default function AdminSidebar() {
                   </Link>
                 </li>
 
-
- <li>
-        <Link
-          href="/admin/design"
-          className={pathname === "/admin/design" ? "active" : ""}
-        >
-          Design
-        </Link>
-      </li>
-
-
-      
+                  <li>
+                    <Link
+                      href="/admin/design"
+                      className={pathname === "/admin/design" ? "active" : ""}
+                    >
+                      Design
+                    </Link>
+                  </li>
 
               </ul>
             )}
         </div>
-
-
 
 
         <Link
