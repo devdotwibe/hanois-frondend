@@ -317,51 +317,53 @@ const HouseCard: React.FC<HouseCardProps> = ({
         <h2 className="house-card-title">{name}</h2>
 
         {/* Headline + Edit Icon */}
-{editing ? (
+     {editing ? (
   <div className="form-grp form-grp1" style={{ display: "flex", flexDirection: "column", gap: 6, width: "100%" }}>
-    <label htmlFor="headline-input">Professional Headline</label>
-
-    <div className="edt-up" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+    <label
+      htmlFor="headline-input"
+    >
+      Professional Headline
+    </label>
+    <div className="edt-up">
       <input
         id="headline-input"
         className="house-card-desc-input"
         value={headline}
         onChange={(e) => setHeadline(e.target.value)}
         placeholder="Professional headline"
+        style={{
+        
+        }}
       />
+{headline !== prevHeadlineRef.current && (
+  <>
+    <button
+      onClick={handleSaveHeadline}
+      disabled={savingHeadline}
+      style={{
+        border: "none",
+        cursor: "pointer",
+        fontSize: "1.2rem",
+      }}
+      title="Save"
+      className="save-btn"
+    ></button>
 
-      {/* Only show buttons if user typed something */}
-      {headline !== prevHeadlineRef.current && (
-        <>
-          <button
-            onClick={handleSaveHeadline}
-            disabled={savingHeadline}
-            className="save-btn"
-            title="Save"
-            style={{
-              border: "none",
-              cursor: "pointer",
-              fontSize: "1.2rem",
-            }}
-          >
-            ✓
-          </button>
+    <button
+      onClick={handleCancelEdit}
+      style={{
+        border: "none",
+        background: "transparent",
+        cursor: "pointer",
+      }}
+      title="Cancel"
+      className="cance-button"
+    >
+      ✖
+    </button>
+  </>
+)}
 
-          <button
-            onClick={handleCancelEdit}
-            className="cance-button"
-            title="Cancel"
-            style={{
-              border: "none",
-              background: "transparent",
-              cursor: "pointer",
-              fontSize: "1.2rem",
-            }}
-          >
-            ✖
-          </button>
-        </>
-      )}
     </div>
   </div>
 ) : (
