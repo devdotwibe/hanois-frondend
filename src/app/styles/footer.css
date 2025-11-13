@@ -14,6 +14,19 @@
 
 
 
+.seeker-dashboard1 .footer .containers,
+.prov-dashboard .footer .containers,
+.directory .footer .containers
+ {
+   justify-content: flex-start; 
+    gap: 9%; 
+    width: 100%;
+    max-width: 100%;
+    max-width: 100%;
+    padding-inline: 300px;
+}
+
+
 .footer {
   background-color: #fff;
   color: #000;
@@ -32,15 +45,6 @@
     margin-bottom: 120px;
 
 }
-
-
-
-
-
-
-
-
-
 
 .logo {
   font-size: 22px;
@@ -217,5 +221,50 @@
 @media (max-width: 600px) {
 
 .footer-column.f-links{width: 100%;}
+
+}
+
+
+@media (max-width: 1702px) {
+
+.seeker-dashboard1 .footer .containers, .prov-dashboard .footer .containers, .directory .footer .containers{gap: 7%;}
+
+}
+
+@media (max-width: 1600px) {
+
+
+.seeker-dashboard1 .footer .containers, .prov-dashboard .footer .containers, .directory .footer .containers {gap: 5%;}
+
+
+
+}
+
+@media (max-width: 1500px) {
+
+.footer-container.containers > div {
+    margin-right: 2.9%;
+}
+.footer-container.containers > div:last-child {
+    margin-right: 0%;
+}
+
+.seeker-dashboard1 .footer .containers, .prov-dashboard .footer .containers, .directory .footer .containers{gap: 0;}
+
+.footer-about.footer-column span {
+    display: inline;
+}
+.footer-about.footer-column {
+    max-width: 250px;
+}
+
+}
+
+
+@media (max-width: 1400px) {
+
+.footer-about.footer-column {
+    max-width: 168px;
+}
 
 }
