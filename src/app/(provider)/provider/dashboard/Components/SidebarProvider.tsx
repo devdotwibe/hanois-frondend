@@ -17,10 +17,20 @@ const SidebarProvider = () => {
     { href: "/provider/dashboard/public-projects", label: "Public Projects" },
   ];
 
-  const activePath =
-    links.some((link) => link.href === pathname)
-      ? pathname
-      : "/user/dashboard";
+  // normalize function: remove query string and trailing slashes
+  const normalize = (p) => {
+    if (!p) return "";
+    const noQuery = p.split("?")[0];
+    return noQuery.replace(/\/+$/, "") || "/";
+  };
+
+  // check active by normalization and startsWith (so subroutes count as active)
+  const isActive = (linkHref) => {
+    const np = normalize(pathname);
+    const nh = normalize(linkHref);
+    if (nh === "/") return np === "/";
+    return np === nh || np.startsWith(nh + "/") || np === nh;
+  };
 
   // Mandatory provider fields to check:
   // name, categories (array or categories_id), phone, location, team_size,
@@ -65,7 +75,7 @@ const SidebarProvider = () => {
 
   const handleCompanyClick = async (e) => {
     // prevent default Link navigation
-    e.preventDefault();
+    e?.preventDefault?.();
     if (checking) return; // avoid double click
 
     const providerId = getProviderIdFromStorage();
@@ -121,19 +131,23 @@ const SidebarProvider = () => {
     <div className="outr">
       <ul className="sidebarul">
         {links.map((link) => {
-          // render company profile link with click handler
+          const active = isActive(link.href) ? "active" : "";
+
+          // render company profile link with click handler (use Link so pathname updates consistently)
           if (link.href === "/provider/dashboard/company-profile") {
             return (
-              <li key={link.href} className={activePath === link.href ? "active" : ""}>
-                <a href={link.href} onClick={handleCompanyClick} style={{ cursor: checking ? "wait" : "pointer" }}>
-                  {checking ? "Checking..." : link.label}
-                </a>
+              <li key={link.href} className={active}>
+                <Link href={link.href} onClick={handleCompanyClick}>
+                  <span style={{ cursor: checking ? "wait" : "pointer" }}>
+                    {checking ? "Checking..." : link.label}
+                  </span>
+                </Link>
               </li>
             );
           }
 
           return (
-            <li key={link.href} className={activePath === link.href ? "active" : ""}>
+            <li key={link.href} className={active}>
               <Link href={link.href}>{link.label}</Link>
             </li>
           );
