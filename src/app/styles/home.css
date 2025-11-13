@@ -16,9 +16,18 @@
   font-family: 'Avenir-heavy';
   src: url('../fonts/Avenir-Heavy.woff');
 }
+
+
+
 @font-face {
   font-family: 'poppins-regular';
   src: url('../fonts/Poppins-Regular.woff');
+}
+
+
+@font-face {
+  font-family: 'poppins-medium';
+  src: url('../fonts/Poppins-Medium.woff');
 }
 
 
@@ -1271,7 +1280,27 @@ font-size: 17px;
 }
 
 
+.company-left input{
+  padding: 0 !important;
+  width: 22px;
+  height: 22px;
+  border-radius: 0 !important;
+      line-height: 1;
+    background: url(../../../public/images/check-icon-white.svg) center / 20px no-repeat !important;
+    border: none !important;
 
+}
+
+.company-left input:focus{
+  box-shadow: none !important;
+      border: none;
+
+}
+.company-left input:hover{
+  box-shadow: none !important;
+      border: none;
+
+}
 
 .multi-select-input,
 .form-grp input,
@@ -1291,9 +1320,9 @@ font-size: 17px;
 .form-grp select:focus,
 .form-grp select:hover
  {
-  background: url("../../../public/images/arrow1.svg") no-repeat;
-  background-size: 10px;
-  background-position-x: 99% !important;
+  background: url("../../../public/images/arrow1.svg") no-repeat !important;
+  background-size: 10px !important;
+  background-position-x: 98% !important;
 background-position-y: 50% !important;
 }
 
@@ -1323,10 +1352,53 @@ background-position-y: 50% !important;
 
 
 
+.react-select__control:focus{
+   background: #ffffff;
+  outline: none;
+   border-color: var(--primary-color); 
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+}
 
 
 
+.react-select__control {
+    color: #000;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 2px solid #d7dbec !important;
+    border-radius: 4px !important;
+    padding: 14px 15px;
+    transition: all .5s ease-in-out;
+}
+.react-select__control:hover
+{
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, .2);
+}
 
+.react-select__control .react-select__input-container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.react-select__value-container {
+    padding: 0;
+}
+
+
+.react-select__control .css-hlgwow{
+  padding-inline: 0;
+}
+.react-select__multi-value__label{
+    color: #374151;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 24px;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    display: inline-flex;
+}
 
 
 .company-profile1 .select-grp.form-grp input:focus {
@@ -3381,6 +3453,29 @@ border-radius: 6px;
 
 .wrapper-inputpublic .form-grp {
     max-width: 800px;
+}
+
+
+.form-grp.listing-styleouter .view-btn {
+    display: block;
+}
+
+.company-left button.remove-btn {
+  background: #f1f3fa; 
+  border-radius: 50%;
+  width: 28px;
+  height: 28px; cursor: pointer;
+}
+
+.company-left button.remove-btn:hover{
+  background: #2050f5;
+}
+.selected-section h3 {
+    margin: 10px 0 20px;
+}
+
+.listing-ul {
+    margin: 0 0 20px;
 }
 
 

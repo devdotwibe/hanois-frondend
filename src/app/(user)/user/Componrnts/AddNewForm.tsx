@@ -593,7 +593,7 @@ return (
 
 
                     <div className="create-btn-container">
-                        <button className='create-btn' type="submit">Create And Send Invite</button>
+                        <button className='create-btn invite-btn' type="submit">Create And Send Invite</button>
                     </div>
 
                 </form>

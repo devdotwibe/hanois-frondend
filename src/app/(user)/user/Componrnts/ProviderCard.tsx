@@ -38,8 +38,8 @@ const ProviderCard: React.FC<ProviderCardProps> = ({
             checked={isSelected}
             onChange={handleCheckboxChange}
             style={{
-              marginRight: "10px",
-              transform: "scale(1.2)",
+              
+             
               cursor: "pointer",
             }}
           />
