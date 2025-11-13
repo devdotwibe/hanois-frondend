@@ -269,13 +269,17 @@ const getServiceName = (id: string | number) => {
 
         let calcBuildArea = 0;
 
-        if(formData?.basement =='yes')
-        {
-             calcBuildArea = (formData.landSize * (constructionRate / 100) ) + formData.landSize;
-        }
-        else
-        {
-             calcBuildArea = formData.landSize * (constructionRate / 100);
+        const landSize = Number(formData?.landSize) || 0;
+
+        const rate = Number(constructionRate) || 0;
+
+        if (formData?.basement === 'yes') {
+
+            calcBuildArea = landSize * (rate / 100) + landSize;
+            
+        } else {
+
+            calcBuildArea = landSize * (rate / 100);
         }
 
         const calcCostFinish = calcBuildArea * buildCost;
