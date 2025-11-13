@@ -234,7 +234,9 @@
 @media (max-width: 1600px) {
 
 
-.seeker-dashboard1 .footer .containers, .prov-dashboard .footer .containers, .directory .footer .containers {gap: 5%;}
+.seeker-dashboard1 .footer .containers, 
+.prov-dashboard .footer .containers, 
+.directory .footer .containers {gap: 5%;}
 
 
 
@@ -249,22 +251,33 @@
     margin-right: 0%;
 }
 
-.seeker-dashboard1 .footer .containers, .prov-dashboard .footer .containers, .directory .footer .containers{gap: 0;}
+.seeker-dashboard1 .footer .containers,
+.prov-dashboard .footer .containers,
+.directory .footer .containers{gap: 0;}
 
-.footer-about.footer-column span {
-    display: inline;
-}
-.footer-about.footer-column {
-    max-width: 250px;
-}
+.footer-about.footer-column span {display: inline;}
+
+
+
+
+
+.seeker-dashboard1 .footer .footer-about.footer-column,
+.prov-dashboard .footer .footer-about.footer-column,
+.directory .footer .footer-about.footer-column{
+max-width: 250px;}
 
 }
 
 
 @media (max-width: 1400px) {
 
-.footer-about.footer-column {
-    max-width: 168px;
-}
+
+
+.seeker-dashboard1 .footer .footer-about.footer-column,
+.prov-dashboard .footer .footer-about.footer-column,
+.directory .footer .footer-about.footer-column{
+max-width: 168px;}
+
+
 
 }

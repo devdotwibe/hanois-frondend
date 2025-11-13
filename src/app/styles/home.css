@@ -59,7 +59,8 @@ strong{
 
 .torrance-card-info strong{
   color: #1b1b25;
-  font-family: "Poppins", sans-serif;
+  font-family: 'poppins-medium';
+  font-weight: normal;
 }
 
 .banner-div p {font-size: 18px;}
@@ -751,7 +752,7 @@ hr {
     margin-bottom: 60px;
 }
 
-.how-help {padding: 180px 0; text-align: center;  
+.how-help {padding: 80px 0; text-align: center;  
       background: #f1f3fa;
           width: 100%;
     float: left;
