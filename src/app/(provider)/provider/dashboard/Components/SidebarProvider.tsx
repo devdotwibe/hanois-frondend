@@ -63,86 +63,82 @@ const SidebarProvider = () => {
     return providerId;
   };
 
-const handleCompanyClick = async (e) => {
-  // Prevent default Link navigation
-  e.preventDefault();
+  const handleCompanyClick = async (e) => {
+    // prevent default Link navigation
+    e.preventDefault();
+    if (checking) return; // avoid double click
 
-  const providerId = getProviderIdFromStorage();
-  const token = localStorage.getItem("token");
+    const providerId = getProviderIdFromStorage();
+    const token = localStorage.getItem("token");
 
-  if (!providerId) {
-    // Nothing to check - go to edit page to let them create/enter details
-    router.push("/provider/dashboard/company-profile");
-    return;
-  }
+    if (!providerId) {
+      // nothing to check - go to edit page to let them create/enter details
+      router.push("/provider/dashboard/company-profile");
+      return;
+    }
 
-  // If no token, still try to go to edit page
-  if (!token) {
-    router.push(`/provider/dashboard/company-profile?providerId=${encodeURIComponent(providerId)}`);
-    return;
-  }
-
-  try {
-    const res = await fetch(`${API_URL}providers/${encodeURIComponent(providerId)}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const data = await res.json().catch(() => ({}));
-
-    if (!res.ok) {
-      // If we can't fetch provider, send to company-profile for editing
+    // if no token, still try to go to edit page (or redirect to login if you prefer)
+    if (!token) {
+      // You can choose to router.push('/login') here instead
       router.push(`/provider/dashboard/company-profile?providerId=${encodeURIComponent(providerId)}`);
       return;
     }
 
-    const provider = data?.provider ?? data ?? null;
+    setChecking(true);
+    try {
+      const res = await fetch(`${API_URL}providers/${encodeURIComponent(providerId)}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    if (hasAllMandatoryFields(provider)) {
-      router.push(`/provider/dashboard/details/${providerId}`);
-    } else {
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        // If we can't fetch provider, send to company-profile for editing
+        router.push(`/provider/dashboard/company-profile?providerId=${encodeURIComponent(providerId)}`);
+        return;
+      }
+
+      const provider = data?.provider ?? data ?? null;
+
+      if (hasAllMandatoryFields(provider)) {
+        router.push(`/provider/dashboard/details/${providerId}`);
+      } else {
+        router.push(`/provider/dashboard/company-profile?providerId=${encodeURIComponent(providerId)}`);
+      }
+    } catch (err) {
+      console.error("Error checking provider:", err);
+      // fallback to edit page
       router.push(`/provider/dashboard/company-profile?providerId=${encodeURIComponent(providerId)}`);
+    } finally {
+      setChecking(false);
     }
-  } catch (err) {
-    console.error("Error checking provider:", err);
-    // Fallback to edit page
-    router.push(`/provider/dashboard/company-profile?providerId=${encodeURIComponent(providerId)}`);
-  }
-};
-
-
+  };
 
   return (
     <div className="outr">
       <ul className="sidebarul">
         {links.map((link) => {
-          // Render company profile link with click handler
+          // render company profile link with click handler
           if (link.href === "/provider/dashboard/company-profile") {
             return (
-              <li
-                key={link.href}
-                className={activePath === link.href ? "active" : ""}
-              >
-                <a href={link.href} onClick={handleCompanyClick}>
-                  {link.label}
+              <li key={link.href} className={activePath === link.href ? "active" : ""}>
+                <a href={link.href} onClick={handleCompanyClick} style={{ cursor: checking ? "wait" : "pointer" }}>
+                  {checking ? "Checking..." : link.label}
                 </a>
               </li>
             );
           }
 
           return (
-            <li
-              key={link.href}
-              className={activePath === link.href ? "active" : ""}
-            >
+            <li key={link.href} className={activePath === link.href ? "active" : ""}>
               <Link href={link.href}>{link.label}</Link>
             </li>
           );
         })}
       </ul>
-
     </div>
   );
 };
