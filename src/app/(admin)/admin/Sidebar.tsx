@@ -5,7 +5,7 @@ import "./styles/admin.css";
 import { usePathname ,useRouter} from "next/navigation";
 import { API_URL } from '@/config'; 
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
@@ -24,6 +24,19 @@ export default function AdminSidebar() {
           router.push("/admin/login");
   };
 
+    useEffect(() => {
+      
+        if(pathname === "/admin/home" || pathname === "/admin/get-list")
+        {
+          setPagesOpen(true);
+        }
+
+        if(pathname === "/admin/categories" || pathname === "/admin/services" || pathname === "/admin/design")
+        {
+          setOptionsOpen(true);
+        }
+
+    }, [pathname]);
 
   return (
     <aside className="admin-sidebar">
