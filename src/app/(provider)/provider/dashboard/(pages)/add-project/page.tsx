@@ -260,6 +260,7 @@ const UploadBox = () => {
             provider?.notes ||
             provider?.service_notes ||
             provider?.professional_headline ||
+            ""
           }
         />
       ) : (

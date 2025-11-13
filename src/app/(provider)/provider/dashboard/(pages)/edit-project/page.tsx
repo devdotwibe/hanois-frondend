@@ -290,6 +290,7 @@ const handleSubmit = async (e) => {
     provider?.notes ||
     provider?.service_notes ||
     provider?.professional_headline ||
+    ""
     }
     />
     ) : (
