@@ -177,6 +177,10 @@ const handleSubmit = async (e:any) => {
         basement: formData.basement,
         listingStyle: formData.listingStyle,
         provider_id: selectedProviderIds,
+        build_area:BuildArea,
+        cost_finsh:CostFinish,
+        suggest_cost:SuggestCost,
+        total_cost:TotalCost,
         })
     });
 
@@ -184,7 +188,7 @@ const handleSubmit = async (e:any) => {
 
     console.log("API response:", data);
     
-     if (data?.error === "Access token is required") {
+    if (data?.error === "Access token is required" || data?.error === "Invalid or expired token") {
 
         localStorage.removeItem("token");
     
