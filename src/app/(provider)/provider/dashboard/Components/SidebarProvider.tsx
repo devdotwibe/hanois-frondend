@@ -17,10 +17,16 @@ const SidebarProvider = () => {
     { href: "/provider/dashboard/public-projects", label: "Public Projects" },
   ];
 
-  const activePath =
-    links.some((link) => link.href === pathname)
-      ? pathname
-      : "/user/dashboard";
+const activePath = (() => {
+  if (pathname.startsWith("/provider/dashboard/details/")) {
+    return "/provider/dashboard/company-profile";
+  }
+
+  return links.some((link) => link.href === pathname)
+    ? pathname
+    : "/user/dashboard";
+})();
+
 
   // Mandatory provider fields to check:
   // name, categories (array or categories_id), phone, location, team_size,
