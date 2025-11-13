@@ -1414,17 +1414,97 @@ background-position-y: 50% !important;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
 }
 
+.css-1p3m7a8-multiValue{
+  background: none !important;
+
+    color: #374151;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 30px !important;
+    align-items: center;
+    gap: 8px !important;
+    padding: 8px 16px;
+    font-size: 14px !important;
+    display: inline-flex; margin: 0 !important;
+}
+.css-9jq23d{
+  font-size: 14px !important;
+}
+.css-1dyz3mf{
+  gap: 8px !important; padding: 0 !important;
+}
+.css-tj5bde-Svg{
+      fill: #898989 !important;
+    stroke: #898989 !important;
+}
+.css-v7duua:hover {
+    background-color: #fff !important;
+    color: #898989 !important;
+}
+
+.react-select__indicator.react-select__clear-indicator.css-1xc3v61-indicatorContainer {
+    display: none !important;
+}
+.react-select__indicators{
+    display: none !important;
+
+}
 
 
+.css-1u9des2-indicatorSeparator{display: none;}
 .react-select__control {
     color: #000;
     -webkit-appearance: none;
     background: #fff;
     border: 2px solid #d7dbec !important;
     border-radius: 4px !important;
-    padding: 14px 15px;
-    transition: all .5s ease-in-out;
+    padding: 18px 15px;
+    transition: all .5s ease-in-out !important;
+
+     background: url("../../../public/images/arrow1.svg") no-repeat !important;
+  background-size: 10px !important;
+  background-position-x: 98% !important;
+background-position-y: 50% !important;
 }
+
+.react-select__control:focus{
+    border-color: var(--primary-color);
+    background: #fff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, .2);
+}
+.react-select__control:hover{
+     box-shadow: 0 0 0 3px rgba(99, 102, 241, .2);
+}
+
+.company-card.active .company-left input{
+width: 22px;
+  height: 22px;
+  background: url("../../../public/images/tik-blue.svg") no-repeat center !important;
+  background-size: 20px !important;
+  border: none;
+}
+
+
+
+
+
+
+.css-1xc3v61-indicatorContainer {
+    position: relative !important;
+    right: -12px !important;
+}
+
+
+.react-select__control:has(
+  .react-select__value-container--is-multi.react-select__value-container--has-value
+) {
+  padding-block: 10px !important;
+}
+
+
+
+
 .react-select__control:hover
 {
     box-shadow: 0 0 0 3px rgba(99, 102, 241, .2);
@@ -1446,7 +1526,7 @@ background-position-y: 50% !important;
 .react-select__multi-value__label{
     color: #374151;
     background-color: #fff;
-    border: 1px solid #e5e7eb;
+    
     border-radius: 24px;
     align-items: center;
     gap: 8px;
@@ -2673,6 +2753,8 @@ button.save-btn{
  top: -16px;
  right: -16px;
 }
+
+
 .dropdown-option.selected input{
    font-size: 0;
    width: 22px;
