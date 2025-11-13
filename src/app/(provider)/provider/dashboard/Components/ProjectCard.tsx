@@ -22,7 +22,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   return (
     <div className="project-card1">
-      <div className="project-header">
+      <div className="project-inner1">
+
+        <div className="project-header">
         <div>
           <h3 className="project-title">{title}</h3>
           <p className="project-user">{user}</p>
@@ -56,6 +58,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </p>
         <p>{description}</p>
       </div>
+
+      </div>
+
+
+      
+      
     </div>
   );
 };

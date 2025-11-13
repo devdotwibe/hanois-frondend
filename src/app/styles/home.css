@@ -2737,6 +2737,7 @@ button.show-more::after{
 
 .public-project-page .intro-tab{
     padding: 0px 40px 0;
+    max-width: 800px;
 
 }
 
@@ -3379,7 +3380,9 @@ border-radius: 6px;
 .torrance-slider-wrapper .slick-track {margin-left: 0;margin-right: 0;}
 
 
-
+.project-inner1 {
+    max-width: 800px;
+}
 
 
 
