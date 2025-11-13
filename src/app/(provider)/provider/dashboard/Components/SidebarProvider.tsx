@@ -11,7 +11,6 @@ const SidebarProvider = () => {
 
   const links = [
     { href: "/provider/dashboard", label: "Leads" },
-    // company-profile will be handled specially on click
     { href: "/provider/dashboard/company-profile", label: "Company Profile" },
     { href: "/provider/dashboard/paymentandbilling", label: "Payment And Billing" },
     { href: "/provider/dashboard/public-projects", label: "Public Projects" },
@@ -28,9 +27,6 @@ const activePath = (() => {
 })();
 
 
-  // Mandatory provider fields to check:
-  // name, categories (array or categories_id), phone, location, team_size,
-  // notes, service_id/services, service_notes
   const hasAllMandatoryFields = (provider) => {
     if (!provider) return false;
 
@@ -70,19 +66,16 @@ const activePath = (() => {
   };
 
 const handleCompanyClick = async (e) => {
-  // Prevent default Link navigation
   e.preventDefault();
 
   const providerId = getProviderIdFromStorage();
   const token = localStorage.getItem("token");
 
   if (!providerId) {
-    // Nothing to check - go to edit page to let them create/enter details
     router.push("/provider/dashboard/company-profile");
     return;
   }
 
-  // If no token, still try to go to edit page
   if (!token) {
     router.push(`/provider/dashboard/company-profile?providerId=${encodeURIComponent(providerId)}`);
     return;
@@ -99,7 +92,6 @@ const handleCompanyClick = async (e) => {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      // If we can't fetch provider, send to company-profile for editing
       router.push(`/provider/dashboard/company-profile?providerId=${encodeURIComponent(providerId)}`);
       return;
     }
@@ -113,7 +105,6 @@ const handleCompanyClick = async (e) => {
     }
   } catch (err) {
     console.error("Error checking provider:", err);
-    // Fallback to edit page
     router.push(`/provider/dashboard/company-profile?providerId=${encodeURIComponent(providerId)}`);
   }
 };
@@ -123,7 +114,6 @@ const handleCompanyClick = async (e) => {
     <div className="outr">
       <ul className="sidebarul">
           {links.map((link) => {
-            // Render company profile link with click handler
             if (link.href === "/provider/dashboard/company-profile") {
               return (
                 <li key={link.href} className={activePath === link.href ? "active" : ""}>
