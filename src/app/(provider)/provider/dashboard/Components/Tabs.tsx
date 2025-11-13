@@ -485,8 +485,8 @@ useEffect(() => {
               ></textarea>
 
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
-                <div style={{ fontSize: 12, color: "#666" }}>Add a short summary that will appear on your profile</div>
-                <div style={{ fontSize: 13, color: "#333" }}>{notesRemaining} characters remaining</div>
+                <div style={{ fontSize: 12, color: "#666" }}>Brief description of your profile.URLs are hyperlinked.</div>
+                <div style={{ fontSize: 13, color: "#333" }}>{notesRemaining} </div>
               </div>
             </div>
 
@@ -501,7 +501,7 @@ useEffect(() => {
                 onChange={handleChange}
                 placeholder="Enter website URL"
               />
-              <div style={{ fontSize: 12, color: "#666", marginTop: 6 }}>Your homepage, company site or blog</div>
+              <div style={{ fontSize: 12, color: "#666", marginTop: 6 }}>Your Homepage, Blog or Company site </div>
             </div>
 
             <div className="form-grp">
