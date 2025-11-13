@@ -79,15 +79,15 @@ const Login = () => {
 
       } else {
 
-          console.log("Login Success:", data);
-          
           localStorage.setItem("token", data.data.token);
 
           localStorage.setItem("auth", data.data.role);
 
           localStorage.setItem("user", JSON.stringify(data.data));
           
-          document.cookie = "auth=user; path=/;";
+          document.cookie = `token=${encodeURIComponent(data.data.token)}; path=/; max-age=${60 * 60 * 24 * 7};`;
+          
+          document.cookie = `auth=${encodeURIComponent(data.data.role)}; path=/; max-age=${60 * 60 * 24 * 7};`;
           
           if (data.data.redirectUrl) {
 

@@ -112,12 +112,8 @@ const Page = () => {
           setLoading(false);
           return;
         }
+        setLeads(data?.data);
 
-        const filtered = data.filter((lead) =>
-          Array.isArray(lead.provider_id) && lead.provider_id.includes(userId)
-        );
-
-        setLeads(filtered);
       } catch (err) {
         console.error("Fetch error:", err);
       } finally {
@@ -153,38 +149,39 @@ const Page = () => {
             </tr>
           </thead>
           <tbody>
-            {leads.map((lead, index) => (
-              <tr
-                key={index}
-                className="border-b hover:bg-gray-50 transition duration-150"
-              >
-                <td className="py-4 px-5 flex items-center space-x-3">
-                  <img
-                    src={`https://i.pravatar.cc/40?img=${index + 1}`}
-                    alt="Avatar"
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <span className="text-gray-800 font-medium">{lead.name}</span>
-                </td>
-                <td>
-                  <span className="border border-gray-400 px-3 py-1 rounded-full text-sm text-gray-700">
-                    {lead.projectType}
-                  </span>
-                </td>
-                <td className="py-4 px-5 text-gray-700">{lead.date}</td>
-                <td className="py-4 px-5 text-gray-700">{lead.email}</td>
-                <td className="py-4 px-5 text-gray-700">{lead.mobile}</td>
-                <td className="py-4 px-5">
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
-                      lead.status
-                    )}`}
-                  >
-                    {lead.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
+
+              { leads && leads.length > 0 && leads?.map((lead, index) => (
+                <tr
+                  key={index}
+                  className="border-b hover:bg-gray-50 transition duration-150"
+                >
+                  <td className="py-4 px-5 flex items-center space-x-3">
+                    <img
+                      src={`https://i.pravatar.cc/40?img=${index + 1}`}
+                      alt="Avatar"
+                      className="w-8 h-8 rounded-full"
+                    />
+                    <span className="text-gray-800 font-medium">{lead?.title}</span>
+                  </td>
+                  <td>
+                    <span className="border border-gray-400 px-3 py-1 rounded-full text-sm text-gray-700">
+                      {lead?.category?.name}
+                    </span>
+                  </td>
+                  <td className="py-4 px-5 text-gray-700">{new Date(lead.created_at).toLocaleDateString('en-GB')}</td>
+                  <td className="py-4 px-5 text-gray-700">{lead?.user?.email}</td>
+                  <td className="py-4 px-5 text-gray-700">{lead?.phone?.mobile}</td>
+                  <td className="py-4 px-5">
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
+                        lead.status
+                      )}`}
+                    >
+                      {lead.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

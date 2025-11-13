@@ -96,7 +96,7 @@ export async function middleware(request: NextRequest) {
 
     if (pathname.startsWith("/user") && !pathname.startsWith("/login")) {
 
-      if (!token && authType !='user') {
+      if (!token || authType !='user') {
 
         return NextResponse.redirect(new URL("/login", request.url));
 
@@ -106,7 +106,7 @@ export async function middleware(request: NextRequest) {
 
     if (pathname.startsWith("/provider") && !pathname.startsWith("/login")) {
 
-      if (!token && authType !='provider') {
+      if (!token || authType !='provider') {
 
         return NextResponse.redirect(new URL("/login", request.url));
 
