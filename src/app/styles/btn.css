@@ -225,7 +225,7 @@ button.new-proj:hover{
 
 button.house-card-btn {
     background: #ffffff;
-    border: 2px solid #000000;
+    border: 2px solid #000000 !important;
     padding: 10px 20px;
     margin: 20px 0 20px;
     border-radius: 8px; cursor: pointer;

@@ -110,6 +110,12 @@
 
 "use client";
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+
+
+import arrow1 from "../../../../../../public/images/arrow1.svg"
+import arrow2 from "../../../../../../public/images/arrow1.svg"
+
 
 interface Option {
   id: string;
@@ -186,7 +192,20 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             );
           })}
         </div>
-        <span className="arrow">{open ? "▲" : "▼"}</span>
+
+        <span className="arrow">
+         <Image
+    src={open ? arrow1 : arrow2}
+    alt="toggle arrow"
+    width={10}
+    height={10}
+    className="arrow-icon"
+  />
+          </span>
+
+        {/* <span className="arrow">{open ? "▲" : "▼"}</span> */}
+
+
       </div>
 
       {open && (
