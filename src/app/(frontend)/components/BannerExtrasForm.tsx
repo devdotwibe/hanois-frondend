@@ -6,29 +6,36 @@ import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
 import "../../(admin)/admin/home/admin-home.css";
 
-// 🟩 Load Quill dynamically (avoids SSR issues)
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+// 🟩 FIX 1 — Memoized dynamic import to prevent remounting
+const ReactQuill = dynamic(() => import("react-quill-new"), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function BannerExtrasForm() {
-  const [data, setData] = useState({
-    subtitle_en: "",
-    subheading_en: "",
-    buttonname_en: "",
-    subtitle_ar: "",
-    subheading_ar: "",
-    buttonname_ar: "",
-    subdescription_en: "",
-    subbuttonname_en: "",
-    subdescription_ar: "",
-    subbuttonname_ar: "",
-  });
+
+  // 🟩 FIX 2 — Independent states for each text editor
+  const [subtitle_en, setSubtitleEn] = useState("");
+  const [subdescription_en, setSubDescriptionEn] = useState("");
+
+  const [subtitle_ar, setSubtitleAr] = useState("");
+  const [subdescription_ar, setSubDescriptionAr] = useState("");
+
+  const [subheading_en, setSubHeadingEn] = useState("");
+  const [buttonname_en, setButtonNameEn] = useState("");
+
+  const [subheading_ar, setSubHeadingAr] = useState("");
+  const [buttonname_ar, setButtonNameAr] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [showSource, setShowSource] = useState(false);
 
-  // 🧠 Quill Toolbar Configuration
-  const modules = useMemo(
+  // 🟩 FIX 3 — Separate source toggles
+  const [subtitleSource, setSubtitleSource] = useState(false);
+  const [subDescSource, setSubDescSource] = useState(false);
+
+  // 🟩 Subtitle editor toolbar
+  const subtitleModules = useMemo(
     () => ({
       toolbar: {
         container: [
@@ -37,23 +44,42 @@ export default function BannerExtrasForm() {
           [{ list: "ordered" }, { list: "bullet" }],
           ["link"],
           ["clean"],
-          ["showHtml"], // custom button
+          ["showHtml"],
         ],
         handlers: {
-          showHtml: function () {
-            setShowSource((prev) => !prev);
-          },
+          showHtml: () => setSubtitleSource(prev => !prev),
         },
       },
     }),
     []
   );
 
-  // 🟩 Fetch banner extras and subextras on mount
+  // 🟩 Subdescription editor toolbar
+  const subDescModules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline", "strike"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["link"],
+          ["clean"],
+          ["showHtml"],
+        ],
+        handlers: {
+          showHtml: () => setSubDescSource(prev => !prev),
+        },
+      },
+    }),
+    []
+  );
+
+  // 🟩 Fetch banner extras and sub extras
   useEffect(() => {
     (async () => {
-      setLoading(true);
       try {
+        setLoading(true);
+
         const [extrasRes, subRes] = await Promise.all([
           axios.get(`${API_URL}banner/extras`),
           axios.get(`${API_URL}banner/subextras`),
@@ -62,28 +88,28 @@ export default function BannerExtrasForm() {
         const extras = extrasRes.data?.data?.extras || {};
         const sub = subRes.data?.data?.subExtras || {};
 
-        setData({
-          subtitle_en: extras.subtitle || "",
-          subheading_en: extras.subheading || "",
-          buttonname_en: extras.buttonname || "",
-          subtitle_ar: extras.arabicsubtitle || "",
-          subheading_ar: extras.arabicsubheading || "",
-          buttonname_ar: extras.arabicbuttonname || "",
-          subdescription_en: sub.subdescription || "",
-          subbuttonname_en: sub.subbuttonname || "",
-          subdescription_ar: sub.arabicsubdescription || "",
-          subbuttonname_ar: sub.arabicsubbuttonname || "",
-        });
-      } catch (err) {
-        console.error("❌ Failed to fetch banner extras:", err);
-        setMessage("❌ Unable to load banner extras data.");
+        // Fill states
+        setSubtitleEn(extras.subtitle || "");
+        setSubHeadingEn(extras.subheading || "");
+        setButtonNameEn(extras.buttonname || "");
+
+        setSubtitleAr(extras.arabicsubtitle || "");
+        setSubHeadingAr(extras.arabicsubheading || "");
+        setButtonNameAr(extras.arabicbuttonname || "");
+
+        setSubDescriptionEn(sub.subdescription || "");
+        setSubDescriptionAr(sub.arabicsubdescription || "");
+
+      } catch (error) {
+        console.error("Fetch error:", error);
+        setMessage("❌ Failed to load data");
       } finally {
         setLoading(false);
       }
     })();
   }, []);
 
-  // 🟩 Save or update banner extras + subextras
+  // 🟩 Save all extras
   const handleSave = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -92,25 +118,26 @@ export default function BannerExtrasForm() {
     try {
       await Promise.all([
         axios.put(`${API_URL}banner/update-extras`, {
-          subtitle: data.subtitle_en,
-          subheading: data.subheading_en,
-          buttonname: data.buttonname_en,
-          arabicsubtitle: data.subtitle_ar,
-          arabicsubheading: data.subheading_ar,
-          arabicbuttonname: data.buttonname_ar,
+          subtitle: subtitle_en,
+          subheading: subheading_en,
+          buttonname: buttonname_en,
+          arabicsubtitle: subtitle_ar,
+          arabicsubheading: subheading_ar,
+          arabicbuttonname: buttonname_ar,
         }),
         axios.put(`${API_URL}banner/update-subextras`, {
-          subdescription: data.subdescription_en,
-          subbuttonname: data.subbuttonname_en,
-          arabicsubdescription: data.subdescription_ar,
-          arabicsubbuttonname: data.subbuttonname_ar,
+          subdescription: subdescription_en,
+          subbuttonname: "", // you can add if needed
+          arabicsubdescription: subdescription_ar,
+          arabicsubbuttonname: "",
         }),
       ]);
 
-      setMessage("✅ Banner Extras and Sub Extras saved successfully!");
-    } catch (err) {
-      console.error("❌ Save failed:", err);
-      setMessage("❌ Error saving banner extras.");
+      setMessage("✅ Saved successfully!");
+
+    } catch (error) {
+      console.error("Save failed:", error);
+      setMessage("❌ Error saving");
     } finally {
       setLoading(false);
     }
@@ -118,100 +145,61 @@ export default function BannerExtrasForm() {
 
   return (
     <form onSubmit={handleSave}>
-      {/* 🟩 ENGLISH SECTION */}
       <div className="form-section">
-      
 
-        {/* Subtitle */}
+        {/* --------------------------------------- */}
+        {/* SUBTITLE EDITOR */}
+        {/* --------------------------------------- */}
         <label>Subtitle</label>
-        {showSource ? (
+
+        {subtitleSource ? (
           <textarea
-            value={data.subtitle_en}
-            onChange={(e) =>
-              setData({ ...data, subtitle_en: e.target.value })
-            }
+            value={subtitle_en}
+            onChange={(e) => setSubtitleEn(e.target.value)}
             style={{ width: "100%", height: "200px" }}
           />
         ) : (
           <ReactQuill
+            key={subtitleSource ? "subtitle-source" : "subtitle-editor"}
+            preserveWhitespace={true}
             theme="snow"
-            value={data.subtitle_en}
-            onChange={(val) => setData({ ...data, subtitle_en: val })}
-            modules={modules}
+            value={subtitle_en}
+            onChange={setSubtitleEn}
+            modules={subtitleModules}
           />
         )}
 
-      
         <hr />
 
-        {/* 🟩 Sub Description (merged from Tab 3) */}
+        {/* --------------------------------------- */}
+        {/* SUB DESCRIPTION EDITOR */}
+        {/* --------------------------------------- */}
         <label>Sub Description</label>
-        {showSource ? (
+
+        {subDescSource ? (
           <textarea
-            value={data.subdescription_en}
-            onChange={(e) =>
-              setData({ ...data, subdescription_en: e.target.value })
-            }
+            value={subdescription_en}
+            onChange={(e) => setSubDescriptionEn(e.target.value)}
             style={{ width: "100%", height: "200px" }}
           />
         ) : (
           <ReactQuill
+            key={subDescSource ? "subdesc-source" : "subdesc-editor"}
+            preserveWhitespace={true}
             theme="snow"
-            value={data.subdescription_en}
-            onChange={(val) => setData({ ...data, subdescription_en: val })}
-            modules={modules}
+            value={subdescription_en}
+            onChange={setSubDescriptionEn}
+            modules={subDescModules}
           />
         )}
 
-    
-      </div>
-
-      {/* 🟨 ARABIC SECTION (hidden) */}
-      <div className="form-section" style={{ display: "none" }}>
-        <h3>Arabic Content</h3>
-
-        <label>Subtitle (Arabic)</label>
-        <ReactQuill
-          theme="snow"
-          value={data.subtitle_ar}
-          onChange={(val) => setData({ ...data, subtitle_ar: val })}
-          modules={modules}
-        />
-
-    
-
-     
-
-        <label>Sub Description (Arabic)</label>
-        <input
-          type="text"
-          className="text-right"
-          value={data.subdescription_ar}
-          onChange={(e) =>
-            setData({ ...data, subdescription_ar: e.target.value })
-          }
-        />
-
-      
       </div>
 
       <button type="submit" disabled={loading}>
         {loading ? "Saving..." : "Save"}
       </button>
 
-      {message && (
-        <p
-          className={`message ${
-            message.includes("✅")
-              ? "success"
-              : message.includes("⚠️")
-              ? "warning"
-              : "error"
-          }`}
-        >
-          {message}
-        </p>
-      )}
+      {message && <p>{message}</p>}
     </form>
   );
 }
