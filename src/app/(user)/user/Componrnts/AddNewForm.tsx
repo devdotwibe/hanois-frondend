@@ -147,7 +147,6 @@ const AddNewForm = () => {
         }
   };
 
-
     useEffect(() => {
         fetch(`${API_URL}settings/construction_rate`)
         .then((res) => res.json())
@@ -156,11 +155,28 @@ const AddNewForm = () => {
     }, []);
 
 
-const handleSubmit = async (e:any) => {
+const handleSubmit = async (e: any) => {
   e.preventDefault();
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  let newErrors: any = {};
 
+  if (!formData.title.trim()) newErrors.title = "error";
+  if (!formData.projectType) newErrors.projectType = "error";
+  if (!formData.location.trim()) newErrors.location = "error";
+  if (!formData.landSize.trim()) newErrors.landSize = "error";
+  if (!formData.luxuryLevel) newErrors.luxuryLevel = "error";
+  if (!formData.services || formData.services.length === 0) newErrors.services = "error";
+  if (!formData.basement) newErrors.basement = "error";
+  if (!formData.listingStyle) newErrors.listingStyle = "error";
+
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  
   try {
     const res = await fetch(`${API_URL}/users/add_project`, {
       method: "POST",
@@ -180,46 +196,30 @@ const handleSubmit = async (e:any) => {
         basement: formData.basement,
         listingStyle: formData.listingStyle,
         provider_id: selectedProviderIds,
-        build_area:BuildArea,
-        cost_finsh:CostFinish,
-        suggest_cost:SuggestCost,
-        total_cost:TotalCost,
-        })
+        build_area: BuildArea,
+        cost_finsh: CostFinish,
+        suggest_cost: SuggestCost,
+        total_cost: TotalCost,
+      }),
     });
 
     const data = await res.json();
-
     console.log("API response:", data);
-    
-    if (data?.error === "Access token is required" || data?.error === "Invalid or expired token") {
-
-        localStorage.removeItem("token");
-    
-        window.location.href = "/login";
-        return;
-    }
 
     if (!res.ok) throw new Error(data.error || "Error submitting form");
 
-        setSubmitted(true);
+    setSubmitted(true);
+    setEditMode(false);
+    setsubmittedMessage(true);
 
-        setEditMode(false);
+    setTimeout(() => setsubmittedMessage(false), 5000);
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
-        setsubmittedMessage(true);
-        setTimeout(() => {
-
-            setsubmittedMessage(false);
-
-        }, 5000);
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        // alert("Form submitted successfully");
-    } catch (error) {
-
-        // alert("Failed to submit");
-        console.error(error);
-    }
+  } catch (error) {
+    console.error(error);
+  }
 };
+
 
 React.useEffect(() => {
   const loadData = async () => {
@@ -366,9 +366,13 @@ return (
                         <label>Title</label>
                         <input
                         name="title"
-                        placeholder="Title"
+                        placeholder='Title'
                         value={formData.title}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                            handleChange(e);
+                            setErrors(prev => ({ ...prev, title: "" }));
+                        }}
+                        className={`forminput ${errors.title ? "warnning-msg" : ""}`}
                         />
                     </div>
 
@@ -396,43 +400,56 @@ return (
                         <select
                             name="projectType"
                             value={formData.projectType}
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                handleChange(e);
+                                setErrors(prev => ({ ...prev, projectType: "" }));
+                            }}
+                            className={`forminput ${errors.projectType ? "warnning-msg" : ""}`}
                             >
                             <option value="">Select Project Type</option>
                             {categories.map(cat => (
                                 <option key={cat.id} value={cat.id}>{cat.name}</option>
                             ))}
                         </select>
-
-                         {errors.projectType && <p style={{ color: 'red', fontSize: '0.875rem', marginTop: '0.25rem' }} >{errors.projectType}</p>}
                     </div>
 
                     <div className="form-grp">
-                        <label>Location</label>
-                        <input
-                        name="location"
-                        placeholder="Kuwait City"
-                        value={formData.location}
-                        onChange={handleChange}
-                        />
+                    <label>Location</label>
+                    <input
+                    name="location"
+                    value={formData.location}
+                    onChange={(e) => {
+                        handleChange(e);
+                        setErrors(prev => ({ ...prev, location: "" }));
+                    }}
+                    className={`forminput ${errors.location ? "warnning-msg" : ""}`}
+                    />
                     </div>
+
 
                     <div className="form-grp">
                         <label>Land size</label>
                         <input
                         name="landSize"
-                        placeholder="115 m2"
                         value={formData.landSize}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                            handleChange(e);
+                            setErrors(prev => ({ ...prev, landSize: "" }));
+                        }}
+                        className={`forminput ${errors.landSize ? "warnning-msg" : ""}`}
                         />
                     </div>
 
                     <div className="form-grp">
                         <label>Luxury level</label>
-                        <select
+                            <select
                             name="luxuryLevel"
                             value={formData.luxuryLevel}
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                handleChange(e);
+                                setErrors(prev => ({ ...prev, luxuryLevel: "" }));
+                            }}
+                            className={`forminput ${errors.luxuryLevel ? "warnning-msg" : ""}`}
                             >
                             <option value="">Select Luxury Level</option>
                             {designLevels.map(des => (
@@ -444,21 +461,22 @@ return (
                     <div className="form-grp">
 
                         <label>Select Services</label>
-                            <Select
-                                isMulti
-                                name="services"
-                                options={serviceOptions}
-                                value={serviceOptions.filter(opt => formData.services?.includes(opt.value))}
-                                onChange={(selected) => {
-                                const selectedValues = selected.map((item) => item.value);
-                                setFormData((prev) => ({
-                                    ...prev,
-                                    services: selectedValues,
-                                }));
-                                }}
-                                placeholder="Select services..."
-                                classNamePrefix="react-select"
-                            />
+                        <Select
+                        isMulti
+                        name="services"
+                        options={serviceOptions}
+                        value={serviceOptions.filter(opt => formData.services?.includes(opt.value))}
+                        onChange={(selected) => {
+                            const selectedValues = selected.map((item) => item.value);
+                            setFormData(prev => ({
+                            ...prev,
+                            services: selectedValues,
+                            }));
+                            setErrors(prev => ({ ...prev, services: "" }));
+                        }}
+                        className={errors.services ? "warnning-msg" : ""}
+                        classNamePrefix="react-select"
+                        />
                     </div>
 
 
@@ -472,7 +490,7 @@ return (
                         />
                     </div>
 
-                <div className="radio-group">
+                <div className={`radio-group ${errors.basement ? "warnning-msg" : ""}`}>
                     <h5>Do you have a Basement?</h5>
 
                     <div className="radio-row">
@@ -506,7 +524,7 @@ return (
                     </div>
                 </div>
 
-                <div className="form-grp listing-styleouter">
+                <div className={`form-grp listing-styleouter ${errors.listingStyle ? "warnning-msg" : ""}`}>
                         <h5>Listing style</h5>
 
                         <div className="listing-style">

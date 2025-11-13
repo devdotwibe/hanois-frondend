@@ -51,7 +51,7 @@ const RemodellingDiv = () => {
         <RemodelingCard
           key={item.id}
           title={item.listing_style === "public" ? "Public" : "Private"} 
-          description={item.notes || ""}
+          description={item.title || ""}
           date={new Date(item.created_at).toLocaleDateString()}
           place={item.location || "N/A"}
           proposal={"0 proposals"} 
