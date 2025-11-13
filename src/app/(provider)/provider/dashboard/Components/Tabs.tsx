@@ -49,7 +49,6 @@ const handleTabClick = (tabId) => {
     services: [], 
     professionalHeadline: "",
     image: null,
-    service_notes: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -223,7 +222,6 @@ useEffect(() => {
         services,
         professionalHeadline: provider.professional_headline ?? provider.professionalHeadline ?? "",
         image: provider.image ?? null,
-        service_notes: provider.service_notes ?? "",
       });
 
       try {
@@ -354,7 +352,6 @@ useEffect(() => {
           currency: s.currency,
         })),
         professional_headline: formData.professionalHeadline,
-        service_notes: formData.service_notes,
 
       };
 
@@ -718,16 +715,7 @@ useEffect(() => {
 
 
 
-        <div className="form-grp">
-          <label>Service Note</label>
-          <input
-            type="text"
-            name="service_notes"         
-          value={formData.service_notes}
-            onChange={handleChange}
-            placeholder="Enter Service Note"
-          />
-        </div>
+
 
 
 

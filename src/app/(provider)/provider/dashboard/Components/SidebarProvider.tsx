@@ -44,9 +44,8 @@ const activePath = (() => {
       (Array.isArray(provider.service_id) && provider.service_id.length > 0) ||
       (Array.isArray(provider.service_id || provider.services) && (provider.service_id || provider.services).length > 0) ||
       (provider.service_id !== undefined && provider.service_id !== null && provider.service_id !== "");
-    const serviceNotesOk = Boolean(provider.service_notes && String(provider.service_notes).trim());
 
-    return nameOk && categoriesOk && phoneOk && locationOk && teamOk && notesOk && servicesOk && serviceNotesOk;
+    return nameOk && categoriesOk && phoneOk && locationOk && teamOk && notesOk && servicesOk ;
   };
 
   const getProviderIdFromStorage = () => {
