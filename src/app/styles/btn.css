@@ -385,6 +385,22 @@ button.close-poup:hover{
 }
 
 
+.create-btn{
+    color: #fff;
+    background: var(--primary-color);
+    border-radius: 5px;
+    padding: 10px 50px;
+    font-size: 13px;
+    font-weight: 400;
+    display: inline-block;
+    margin: 30px 0 0; cursor: pointer;
+}
+
+
+.create-btn:hover{
+  background: #4c72f6;
+}
+
 
 
 
