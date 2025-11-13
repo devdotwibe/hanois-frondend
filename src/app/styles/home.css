@@ -1620,7 +1620,9 @@ ul.tab-nav1 {
   margin-right: 0;
 }
 
-.torrance-card-image-wrap img {width: 100%;display: block;}
+.torrance-card-image-wrap img {width: 100%;display: block;
+    aspect-ratio: 16 / 9;
+}
 
 .torrance-slider-wrapper .torrance-card-image-wrap img {
     aspect-ratio: 16/9;
@@ -2160,7 +2162,7 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
 
 .build-col1 {
     width: 50%;
-    padding: 20px;
+    padding: 30px 20px;
 }
 
 .build-col2 {
@@ -3516,6 +3518,12 @@ line-height: 1;
 margin-right: 0;
 }
 
+
+.upload-area > div > div img{
+  width: 100%; height: 100%; object-fit: cover;
+  border-radius: 10px;
+}
+
 .grid-upload {
     display: flex;
     flex-wrap: wrap;
@@ -3563,7 +3571,11 @@ margin-right: 0;
   color: #404040;
 }
 
-
+.img-cover-up {
+    height: 40px;
+    width: 40px;
+    margin-inline: auto;
+}
 
 .project-type {
     font-size: 18px;
@@ -3577,7 +3589,7 @@ margin-right: 0;
 
 button.img-onclose {
     background: #f1f3fa;
-    color: #000000;
+    color: #000000; font-size: 14px;
 }
 button.img-onclose:hover {
     background: #2050F5;
@@ -3587,6 +3599,7 @@ button.img-onclose:hover {
 
 .setas-cover{padding: 8px 28px; line-height: 1;
 color: #ffffff;
+    background: rgb(204, 204, 204);
 
 font-size: 11px;
 position: absolute;

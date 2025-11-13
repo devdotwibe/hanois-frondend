@@ -231,6 +231,9 @@ button.house-card-btn {
     border-radius: 8px; cursor: pointer;
       font-family: 'Avenir-Black';
 }
+button.house-card-btn:hover {
+ background: #000000; color: #ffffff;
+}
 
 .add-proj{
     font-family: 'Avenir-Black';

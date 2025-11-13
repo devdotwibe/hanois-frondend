@@ -9,6 +9,9 @@ import DetailCard from "@/app/(directory)/provider/Components/DetailCard";
 import TabBtns from "../../Components/TabBtns";
 import { useRouter, useSearchParams } from "next/navigation";
 
+
+import sucesstik from "../../../../../../../public/images/sucess-msg.svg"
+
 const EditProject = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -304,35 +307,35 @@ const handleSubmit = async (e) => {
 {/* 🟩 Combined Upload & Preview Grid */}
 <div
   className="form-grp upload-area"
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
-    gap: "15px",
-    marginBottom: "30px",
-  }}
+  
 >
   {/* 🟦 Upload Box (first grid item) */}
-  <div
+  
+
+
+  <div>
+
+
+
+
+    <div
     className="upload-box"
-    style={{
-      border: "2px dashed #d1d5db",
-      borderRadius: "10px",
-      background: "#fafafa",
-      cursor: "pointer",
-      textAlign: "center",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "25px 15px",
-      minHeight: "150px",
-      transition: "all 0.2s ease-in-out",
-    }}
+    
     onClick={() => document.querySelector(".upload-input")?.click()}
     onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0070f3")}
     onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#d1d5db")}
   >
-    <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
+
+    <div className="cover-upload">
+      <div className="img-cover-up">
+              <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
+
+
+      </div>
+
+
+
+
     <h3 style={{ fontSize: "14px", fontWeight: "600", marginTop: "10px" }}>
       Upload an image
     </h3>
@@ -342,9 +345,16 @@ const handleSubmit = async (e) => {
     <span style={{ fontSize: "11px", color: "#999" }}>
       Supported: JPEG, PNG
     </span>
-  </div>
 
-  {/* Hidden Input for Upload */}
+    </div>
+
+
+
+
+
+    
+
+    {/* Hidden Input for Upload */}
   <input
     type="file"
     accept="image/*"
@@ -353,19 +363,21 @@ const handleSubmit = async (e) => {
     onChange={handleFileChange}
   />
 
+
+
+  </div>
+    
+  
+
+  
+
   {/* 🖼 Existing Images */}
   {existingImages.map((img, index) => (
     <div key={img.id} style={{ position: "relative" }}>
       <img
         src={`${IMG_URL}${img.image_path}`}
         alt="Project"
-        style={{
-          width: "100%",
-          height: "150px",
-          objectFit: "cover",
-          borderRadius: "10px",
-          border: img.is_cover ? "3px solid #0070f3" : "none",
-        }}
+        
       />
 
       {/* 🗑 Delete Existing Image */}
@@ -376,14 +388,15 @@ const handleSubmit = async (e) => {
           position: "absolute",
           top: "5px",
           right: "5px",
-          background: "rgba(0,0,0,0.5)",
-          color: "white",
+         
+      
           border: "none",
           borderRadius: "50%",
-          width: "24px",
-          height: "24px",
+          width: "22px",
+          height: "22px",
           cursor: "pointer",
         }}
+        className="img-onclose"
       >
         ✕
       </button>
@@ -398,17 +411,7 @@ const handleSubmit = async (e) => {
           }));
           setExistingImages(updated);
         }}
-        style={{
-          position: "absolute",
-          bottom: "5px",
-          left: "5px",
-          background: img.is_cover ? "#0070f3" : "#ccc",
-          color: "white",
-          fontSize: "12px",
-          padding: "2px 6px",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
+        className="setas-cover"
       >
         {img.is_cover ? "Cover Image" : "Set Cover"}
       </button>
@@ -423,13 +426,7 @@ const handleSubmit = async (e) => {
         <img
           src={previewUrl}
           alt="preview"
-          style={{
-            width: "100%",
-            height: "150px",
-            objectFit: "cover",
-            borderRadius: "10px",
-            border: file.isCover ? "3px solid #0070f3" : "none",
-          }}
+         
         />
 
         {/* 🗑 Remove New Image */}
@@ -480,6 +477,11 @@ const handleSubmit = async (e) => {
       </div>
     );
   })}
+
+
+</div>
+
+
 </div>
 
 
@@ -556,14 +558,7 @@ const handleSubmit = async (e) => {
   type="button"
    className="save-btn1"
   onClick={() => setDeleteModalVisible(true)}
-  style={{
-    background: "#0070f3", // Same blue as Update button
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    padding: "10px 16px",
-    cursor: "pointer",
-  }}
+  
 >
   Delete
 </button>
@@ -573,14 +568,7 @@ const handleSubmit = async (e) => {
   <button
     type="submit"
     className="save-btn1"
-    style={{
-      background: "#0070f3",
-      color: "#fff",
-      border: "none",
-      borderRadius: "6px",
-      padding: "10px 16px",
-      cursor: "pointer",
-    }}
+   
   >
     Update
   </button>
@@ -607,6 +595,8 @@ const handleSubmit = async (e) => {
                 alignItems: "center",
                 zIndex: 1000,
               }}
+
+              className="project-edit-popup"
             >
               <div
                 style={{
@@ -617,22 +607,25 @@ const handleSubmit = async (e) => {
                   boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
                 }}
               >
-                <h3 style={{ color: "green" }}>✅ Project Updated!</h3>
+                <h3 style={{ color: "green" }}>
+
+                  <Image 
+                  src={sucesstik}
+                  alt="img"
+                  width={40}
+                  height={40}
+                  />
+
+
+                  
+                  Project Updated!</h3>
                 <p>Your project has been successfully updated.</p>
                 <button
                   onClick={() => {
                     setModalVisible(false);
                     router.push("/provider/dashboard/projects");
                   }}
-                  style={{
-                    marginTop: "15px",
-                    background: "#0070f3",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "6px",
-                    padding: "8px 16px",
-                    cursor: "pointer",
-                  }}
+                  className="close-btnn1"
                 >
                   Close
                 </button>

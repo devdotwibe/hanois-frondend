@@ -105,3 +105,38 @@
 .proposal-popup  .modal-content{
   position: relative;
 }
+
+
+.close-btnn1{
+  background: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+ margin: 20px auto 0;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: background .3s;
+}
+
+
+.close-btnn1:hover{
+  background: #4c72f6;
+   
+}
+
+
+
+
+
+
+.project-edit-popup h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.project-edit-popup h3 {
+   
+    color: #37a770 !important;
+}
