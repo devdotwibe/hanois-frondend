@@ -42,6 +42,9 @@ const AddNewForm = () => {
 
 
   const [submitted, setSubmitted] = useState(false);
+  const [submittedMessage, setsubmittedMessage] = useState(false);
+
+  
   const [editMode, setEditMode] = useState(false);
 
   const [categories, setCategories] = useState<OptionItem[]>([]);
@@ -197,9 +200,20 @@ const handleSubmit = async (e:any) => {
     }
 
     if (!res.ok) throw new Error(data.error || "Error submitting form");
+
         setSubmitted(true);
+
         setEditMode(false);
-        alert("Form submitted successfully");
+
+        setsubmittedMessage(true);
+        setTimeout(() => {
+
+            setsubmittedMessage(false);
+
+        }, 5000);
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        // alert("Form submitted successfully");
     } catch (error) {
 
         // alert("Failed to submit");
@@ -611,6 +625,24 @@ return (
         {submitted && !editMode && (
         <div className="project-details-view">
 
+            {submittedMessage && (
+                <div
+                    className={
+                    submittedMessage
+                        ? "contact-success"
+                        : "contact-error"
+                    }
+                >
+                    <p
+                    style={{
+                        color: submittedMessage ? "green" : "red",
+                    }}
+                    >
+                        New Project Created Successfully
+                    </p>
+                </div>
+            )}
+
             <button
                 className="edit-button"
                 onClick={() => setEditMode(true)}
@@ -630,7 +662,9 @@ return (
             <h2>{formData.title}</h2>
 
             <p style={{ color: "green" }}>
+
             {formData.listingStyle === "public" ? "Public" : "Private"}
+
             </p>
 
             <h4>Brief</h4>
@@ -693,7 +727,8 @@ return (
 
              
             </div>
-        )}
+
+            )}
         </div>
     );
 }
