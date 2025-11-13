@@ -417,6 +417,7 @@ return (
                     <label>Location</label>
                     <input
                     name="location"
+                    placeholder='Location'
                     value={formData.location}
                     onChange={(e) => {
                         handleChange(e);
@@ -431,6 +432,7 @@ return (
                         <label>Land size</label>
                         <input
                         name="landSize"
+                        placeholder='Land Size'
                         value={formData.landSize}
                         onChange={(e) => {
                             handleChange(e);
@@ -474,7 +476,7 @@ return (
                             }));
                             setErrors(prev => ({ ...prev, services: "" }));
                         }}
-                        className={errors.services ? "warnning-msg" : ""}
+                        className={`forminput ${errors.services ? "warnning-msg" : ""}`}
                         classNamePrefix="react-select"
                         />
                     </div>
@@ -522,6 +524,9 @@ return (
                         </div>
 
                     </div>
+                        {errors.basement && (
+                            <p className="error-text">Basement selection is required</p>
+                        )}
                 </div>
 
                 <div className={`form-grp listing-styleouter ${errors.listingStyle ? "warnning-msg" : ""}`}>
@@ -555,6 +560,9 @@ return (
                             <li>Public projects will be pushed to all the service providers in the director</li>
                             <li>Private projects will be invite only</li>
                         </ul>
+                            {errors.listingStyle && (
+                                <p className="error-text">Please select a listing style</p>
+                            )}
 
                         {ListPrivate && (
 
