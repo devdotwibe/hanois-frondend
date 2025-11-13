@@ -6,8 +6,6 @@ import { IMG_URL } from "@/config";
 const DetailIntro = ({ provider }) => {
   const name = provider?.name || "Unknown Provider"; 
   const description =
-    provider?.notes ||
-    provider?.service_notes ||
     provider?.professional_headline ||
     "";
 
