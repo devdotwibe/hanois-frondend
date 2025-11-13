@@ -76,7 +76,7 @@ const loadProjects = async () => {
   };
 
   return (
-    <div>
+    <div className="wrapper-inputpublic">
       <div className="form-grp wrap-select">
         <input type="text" placeholder="Search" />
       </div>

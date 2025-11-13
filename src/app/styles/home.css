@@ -1291,7 +1291,12 @@ font-size: 17px;
 background-position-y: 50% !important;
 }
 
-
+.public-project-page .form-grp select,
+.public-project-page .form-grp select:focus, 
+.public-project-page .form-grp select:hover {
+    background: url("../../../public/images/arrow1.svg") 0 0 / 10px no-repeat;
+    background-position: 94% !important;
+}
 
 .form-grp select:focus,
 .form-grp input:focus,
@@ -3385,7 +3390,9 @@ border-radius: 6px;
 }
 
 
-
+.wrapper-inputpublic .form-grp {
+    max-width: 800px;
+}
 
 
 
