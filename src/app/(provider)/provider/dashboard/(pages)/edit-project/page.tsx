@@ -287,8 +287,6 @@ const handleSubmit = async (e) => {
     logo={provider?.image ? `${IMG_URL}${provider.image}` : "/path/to/logo.png"}
     name={provider?.name || "Unknown Provider"}
     description={
-    provider?.notes ||
-    provider?.service_notes ||
     provider?.professional_headline ||
     ""
     }
