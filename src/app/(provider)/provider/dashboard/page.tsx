@@ -92,7 +92,10 @@ const Page = () => {
         const userId = userData?.id;
 
         if (!token || !userId) {
-          console.error("User not logged in or token missing");
+
+          //  window.location.href = "/login";
+          //   return;
+
           setLoading(false);
           return;
         }
@@ -107,11 +110,15 @@ const Page = () => {
 
         const data = await res.json();
 
-        if (!res.ok) {
-          console.error("Error fetching leads:", data);
-          setLoading(false);
-          return;
+            
+        if (data?.error === "Access token is required" || data?.error === "Invalid or expired token") {
+
+            localStorage.removeItem("token");
+        
+            window.location.href = "/login";
+            return;
         }
+
         setLeads(data?.data);
 
       } catch (err) {
