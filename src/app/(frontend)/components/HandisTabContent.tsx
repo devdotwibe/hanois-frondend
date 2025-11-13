@@ -3,8 +3,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
 import { API_URL } from "@/config";
+import HtmlToggleEditor from "../../(admin)/admin/components/HtmlToggleEditor";
 
-// 🟩 Load ReactQuill dynamically (avoids SSR issues)
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export default function HandisTabContent() {
@@ -18,7 +18,6 @@ export default function HandisTabContent() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 🟩 Quill editor configuration
   const quillModules = useMemo(
     () => ({
       toolbar: [
@@ -31,7 +30,6 @@ export default function HandisTabContent() {
     []
   );
 
-  // 🟩 Fetch existing handis cards
   useEffect(() => {
     (async () => {
       try {
@@ -114,9 +112,7 @@ export default function HandisTabContent() {
   {[cards[3], ...cards.slice(0, 3)].map((card, i) => (
     <div key={i} className="card-section" style={{ marginBottom: "30px" }}>
      
-
-      {/* 🟩 Rich Text Editor for Title */}
-      <label>Title</label>
+      {/* <label>Title</label>
       <ReactQuill
         theme="snow"
         value={card.handistitle}
@@ -126,7 +122,17 @@ export default function HandisTabContent() {
           updateCardField(realIndex, "handistitle", v);
         }}
         modules={quillModules}
+      /> */}
+
+      <HtmlToggleEditor
+          label="Title"
+          value={card.handistitle}
+            onChange={(v) => {
+            const realIndex = i === 0 ? 3 : i - 1;
+            updateCardField(realIndex, "handistitle", v);
+          }}
       />
+
 
       {/* 🟩 Show image field for original cards 1–3 only */}
       {i !== 0 && (
