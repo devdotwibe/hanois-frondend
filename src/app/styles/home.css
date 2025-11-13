@@ -1342,6 +1342,11 @@ border-color: #f1c40f;
   background-color: #fffbe6;
     box-shadow: 0 0 8px rgba(241, 196, 15, 0.6);
 }
+.form-grp select.warnning-msg{
+border-color: #f1c40f;
+  background-color: #fffbe6;
+    box-shadow: 0 0 8px rgba(241, 196, 15, 0.6);
+}
 
 
 
