@@ -1944,7 +1944,7 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
    
     border-radius: 10px;
     max-width: 300px;
-    max-height: 50px;
+
     padding: 15px 20px;
     position: absolute;
     
@@ -1960,7 +1960,7 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
     width: 15px;
     height: 15px;
     position: absolute;
-    top: 2px;
+    top: 7px;
     left: 0;
 }
 
