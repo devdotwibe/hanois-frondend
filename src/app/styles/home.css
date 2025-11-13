@@ -3646,7 +3646,10 @@ border-radius: 6px;
 .listing-ul {
     margin: 0 0 20px;
 }
-
+.svc1 input:focus {
+    border: none;
+    outline: none;
+}
 
 
 /* ------------------------------------responsive */
