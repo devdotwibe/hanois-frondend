@@ -182,7 +182,7 @@ const ContactForm = () => {
 
 
 
-          {status.message && 
+          {/* {status.message && 
            
            
             <div className="login-success contact-sucess">
@@ -196,7 +196,27 @@ const ContactForm = () => {
             </div>
            
           
-          }
+          } */}
+
+
+          {status.message && (
+  <div
+    className={
+      status.success
+        ? "contact-success"
+        : "contact-error"
+    }
+  >
+    <p
+      style={{
+        color: status.success ? "green" : "red",
+      }}
+    >
+      {status.message}
+    </p>
+  </div>
+)}
+
 
 
 
