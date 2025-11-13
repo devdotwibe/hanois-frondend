@@ -269,7 +269,7 @@ const getServiceName = (id: string | number) => {
 
         let calcBuildArea = 0;
 
-        if(formData?.landSize =='yes')
+        if(formData?.basement =='yes')
         {
              calcBuildArea = formData.landSize * (constructionRate / 100) + formData.landSize;
         }
