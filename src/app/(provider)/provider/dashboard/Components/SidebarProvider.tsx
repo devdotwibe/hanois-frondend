@@ -113,29 +113,36 @@ const handleCompanyClick = async (e) => {
 };
 
 
+
   return (
     <div className="outr">
       <ul className="sidebarul">
-      {links.map((link) => {
-        // Render company profile link with click handler
-        if (link.href === "/provider/dashboard/company-profile") {
+        {links.map((link) => {
+          // Render company profile link with click handler
+          if (link.href === "/provider/dashboard/company-profile") {
+            return (
+              <li
+                key={link.href}
+                className={activePath === link.href ? "active" : ""}
+              >
+                <a href={link.href} onClick={handleCompanyClick}>
+                  {link.label}
+                </a>
+              </li>
+            );
+          }
+
           return (
-            <li key={link.href} className={activePath === link.href ? "active" : ""}>
-              <a href={link.href} onClick={handleCompanyClick}>
-                {link.label}
-              </a>
+            <li
+              key={link.href}
+              className={activePath === link.href ? "active" : ""}
+            >
+              <Link href={link.href}>{link.label}</Link>
             </li>
           );
-        }
-
-        return (
-          <li key={link.href} className={activePath === link.href ? "active" : ""}>
-            <Link href={link.href}>{link.label}</Link>
-          </li>
-        );
-      })}
-
+        })}
       </ul>
+
     </div>
   );
 };
