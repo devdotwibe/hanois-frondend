@@ -319,7 +319,7 @@ button.save-btn1:hover{
 
 .change-btn{
  background: none;
- border: 2px solid #000000;
+ border: 2px solid #000000 !important;
     color: #000000;
     cursor: pointer;
     border-radius: 5px;
@@ -327,13 +327,13 @@ button.save-btn1:hover{
     margin: 20px 0;
     padding: 12px 40px;
     display: block;
-      font-family: 'Avenir-medium';
+  font-family: 'Avenir-Black';
 
 }
 
 .upload-btn{
   background: none;
- border: 2px solid #000000;
+ border: 2px solid #000000 !important;
     color: #000000;
     cursor: pointer;
     border-radius: 5px;
@@ -341,7 +341,7 @@ button.save-btn1:hover{
     margin: 20px 0;
     padding: 12px 40px;
     display: block;
-      font-family: 'Avenir-medium';
+   font-family: 'Avenir-Black';
 }
 
 .details-btn {
