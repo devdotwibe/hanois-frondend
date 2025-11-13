@@ -3015,10 +3015,10 @@ button.show-more::after{
 .public-project-page .filter-container {
     border: none;
     position: absolute;
-    right: -300px;
+    right: -251px;
     top: 0;
-    width: 300px;
-        padding: 0 40px 0 40px;
+    width: 250px;
+        padding: 0 20px 0 20px;
 }
 
 .wrap-select input {
@@ -3028,8 +3028,8 @@ button.show-more::after{
   background-position-x: 18px !important;
 }
 .wrap-select {
-    margin: 0 0 40px;
-        padding: 0px 55px;
+    margin: 0 55px 40px;
+        /* padding: 0px 55px; */
 
 }
 

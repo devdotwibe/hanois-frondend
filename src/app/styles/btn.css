@@ -331,6 +331,11 @@ button.save-btn1:hover{
 
 }
 
+.change-btn:hover{
+  background: #000000;
+  color: #ffffff;
+}
+
 .upload-btn{
   background: none;
  border: 2px solid #000000 !important;
@@ -343,6 +348,13 @@ button.save-btn1:hover{
     display: block;
    font-family: 'Avenir-Black';
 }
+
+.upload-btn:hover{
+  background: #000000;
+  color: #ffffff;
+}
+
+
 
 .details-btn {
   background-color: #2050f5;
