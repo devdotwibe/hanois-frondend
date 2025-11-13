@@ -55,6 +55,38 @@ const handleTabClick = (tabId) => {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ loading: false, message: "", success: false });
 
+
+
+
+    // Helper: simple URL validator (allows http/https and common social URIs)
+  const isValidUrl = (value) => {
+    if (!value) return true; // empty value is allowed (use required attribute if you want required)
+    // allow URLs without protocol by checking and allowing host-like patterns, but require at least a dot.
+    // We'll accept values starting with http/https or values like "example.com" or "www.example.com".
+    try {
+      // If user included protocol, use native URL parsing
+      if (/^https?:\/\//i.test(value)) {
+        // will throw if invalid
+        new URL(value);
+        return true;
+      }
+      // if no protocol, check for a valid hostname pattern (simple)
+      // require at least one dot and valid chars (letters/numbers/-/_)
+      if (/^(?:www\.)?[a-z0-9\-_]+\.[a-z]{2,}(?:\/.*)?$/i.test(value)) {
+        return true;
+      }
+      return false;
+    } catch (_) {
+      return false;
+    }
+  };
+
+  const buildUrlError = (fieldLabel) => `${fieldLabel} must be a valid URL (e.g. https://example.com).`;
+
+
+
+
+
   const handleChange = (e) => {
     const { name, value, options } = e.target;
 
@@ -264,6 +296,19 @@ useEffect(() => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Validate URLs
+    const urlErrors = {};
+    if (!isValidUrl(formData.website)) urlErrors.website = buildUrlError("Website");
+    if (!isValidUrl(formData.facebook)) urlErrors.facebook = buildUrlError("Facebook");
+    if (!isValidUrl(formData.instagram)) urlErrors.instagram = buildUrlError("Instagram");
+    if (!isValidUrl(formData.other)) urlErrors.other = buildUrlError("Other");
+
+    // If any urlErrors, show them and abort submit
+    if (Object.keys(urlErrors).length > 0) {
+      setErrors(urlErrors);
+      setStatus({ loading: false, message: "Please fix the highlighted fields.", success: false });
+      return;
+    }
 
     setErrors({});
     setStatus({ loading: true, message: "", success: false });
@@ -492,17 +537,21 @@ useEffect(() => {
 
             <h4 style={{ fontWeight: 600, marginTop: 24  }}>Online Presence</h4>
 
-            <div className="form-grp">
-              <label>Website</label>
-              <input
-                type="text"
-                name="website"
-                value={formData.website}
-                onChange={handleChange}
-                placeholder="Enter website URL"
-              />
-              <div style={{ fontSize: 12, color: "#666", marginTop: 6 }}>Your Homepage, Blog or Company site </div>
-            </div>
+          <div className="form-grp">
+            <label>Website</label>
+            <input
+              type="text"
+              name="website"
+              value={formData.website}
+              onChange={handleChange}
+              placeholder="Enter website URL"
+            />
+            <div style={{ fontSize: 12, color: "#666", marginTop: 6 }}>Your Homepage, Blog or Company site </div>
+            {errors.website && (
+              <div style={{ color: "red", fontSize: 13, marginTop: 6 }}>{errors.website}</div>
+            )}
+          </div>
+
 
             <div className="form-grp">
               <label>Facebook</label>
@@ -513,6 +562,9 @@ useEffect(() => {
                 onChange={handleChange}
                 placeholder="Enter Facebook URL"
               />
+                  {errors.facebook && (
+              <div style={{ color: "red", fontSize: 13, marginTop: 6 }}>{errors.facebook}</div>
+            )}
             </div>
 
             <div className="form-grp">
@@ -524,6 +576,9 @@ useEffect(() => {
                 onChange={handleChange}
                 placeholder="Enter Instagram URL"
               />
+                  {errors.instagram && (
+              <div style={{ color: "red", fontSize: 13, marginTop: 6 }}>{errors.instagram}</div>
+            )}
             </div>
 
             <div className="form-grp">
@@ -535,6 +590,9 @@ useEffect(() => {
                 onChange={handleChange}
                 placeholder="Enter other social media URL"
               />
+                  {errors.other && (
+              <div style={{ color: "red", fontSize: 13, marginTop: 6 }}>{errors.other}</div>
+            )}
             </div>
 
             {/* ------------------------------- */}
