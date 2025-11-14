@@ -167,7 +167,7 @@ const Page = () => {
                     <img
                       src={`https://i.pravatar.cc/40?img=${index + 1}`}
                       alt="Avatar"
-                      className="w-[30px] h-[30px] rounded-full"
+                      className="w-[32px] h-[32px] rounded-full"
                     />
                     <span className="text-gray-800 font-medium">{lead?.title}</span>
                   </td>
