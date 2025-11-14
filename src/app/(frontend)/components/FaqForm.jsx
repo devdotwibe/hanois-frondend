@@ -207,7 +207,7 @@ const cancelDelete = () => {
   name="order"
   value={formData.order}
   onChange={handleChange}
-  style={{ width: "100%", padding: "8px", borderRadius: "6px" }}
+  
 >
   {Array.from({ length: faqs.length + 1 }, (_, i) => (
     <option key={i + 1} value={i + 1}>
