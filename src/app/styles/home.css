@@ -1294,6 +1294,10 @@ font-size: 17px;
     flex-wrap: wrap;
     flex-direction: column; margin: 20px 0 0;
 }
+.form-grp label.dark {
+  font-family: 'Avenir-medium';
+}
+
 
 .form-grp label {
     color: #1b1b25;
@@ -1720,16 +1724,14 @@ ul.tab-nav1 {
 
 .upload-box {
   border: 2px dashed #2050f5;
-     padding: 20px;
-     flex-direction: column;
-    
-
-     border-radius: 8px; text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30%;
-
+  padding: 20px;
+  flex-direction: column;
+  border-radius: 8px; text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  cursor: pointer;
 }
 
 
@@ -3525,7 +3527,7 @@ margin-right: 0;
 
 
 .upload-area > div > div img{
-  width: 100%; height: 100%; object-fit: cover;
+  width: 100%;  object-fit: cover;
   border-radius: 10px;
 }
 
@@ -3550,6 +3552,9 @@ margin-right: 0;
 
 .profile-page .back-bth {
     margin-bottom: 30px;
+}
+.back-bth {
+    cursor: pointer;
 }
 
 .sucess-img-text {
@@ -3766,6 +3771,32 @@ width: 200px;
 }
 
 .upload-doc input{display: none;}
+.upload-box h3{
+  font-size: 16px; margin: 10px 0;
+  line-height: 1.3;
+      font-family: Avenir-Book;
+}
+.upload-box p{
+     font-size: 12px;
+    color: #666;
+    margin: 5px 0;
+}
+.upload-box span{
+    font-size: 11px;
+    color: #999;
+}
+.send-proposal .intro-tab{
+  position: relative;
+}
+.send-proposal .intro-tab h3 {
+    padding-left: 60px;
+}
+
+.send-proposal button.back-bth {
+    position: absolute;
+}
+
+
 
 /* ------------------------------------responsive */
 

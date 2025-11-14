@@ -18,19 +18,19 @@ const SendProposalIntro = () => {
 
        <form>
         <div className="form-grp">
-            <label>Proposal Title</label>
+            <label className='dark'>Proposal Title</label>
             <input placeholder="Proposal Title"></input>
 
         </div>
         
         <div className="form-grp">
-            <label>Budget</label>
+            <label className='dark'>Budget</label>
             <input placeholder="$150.000"></input>
 
         </div>
         
         <div className="form-grp">
-            <label>Timeline</label>
+            <label className='dark'>Timeline</label>
             <input placeholder="6 months"></input>
         </div>
         <div className="form-grp">
@@ -40,12 +40,7 @@ const SendProposalIntro = () => {
         </div>
 
 
-
-
-        <Link href="/" className='send-prop-btn' >Send Proposal</Link>
-
-
-        <div className="upload-doc">
+            <div className="upload-doc">
             <div className="form-grp upload-area">
   <div>
     {/* Upload Box inside grid */}
@@ -95,6 +90,14 @@ const SendProposalIntro = () => {
 </div>
 
         </div>
+
+
+
+
+        <Link href="/" className='send-prop-btn dark-btn' >Send Proposal</Link>
+
+
+    
 
 
 

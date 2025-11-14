@@ -336,13 +336,13 @@ const handleSubmit = async (e) => {
 
 
 
-    <h3 style={{ fontSize: "14px", fontWeight: "600", marginTop: "10px" }}>
+    <h3>
       Upload an image
     </h3>
-    <p style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
+    <p>
       Browse your files to upload document
     </p>
-    <span style={{ fontSize: "11px", color: "#999" }}>
+    <span>
       Supported: JPEG, PNG
     </span>
 

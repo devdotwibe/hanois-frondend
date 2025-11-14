@@ -427,10 +427,35 @@ button.close-poup:hover{
   background: #4c72f6;
 }
 
+
+
+.dark-btn{
+    color: #fff;
+    background: var(--primary-color);
+}
+
+.dark-btn:hover{
+  background: #4c72f6;
+}
+
+.send-prop-btn{
+  width: 100%;
+  display: block; text-align: center;
+  padding: 15px 20px;
+  border-radius: 5px;
+  font-family: 'Avenir-Black';
+
+    margin-top: 30px;
+
+}
+
+
+
 .create-btn.invite-btn{
   font-family: 'Avenir-medium';
   padding-block: 14px;
   font-size: 16px;
+
 }
 
 
