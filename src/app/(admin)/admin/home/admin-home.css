@@ -897,7 +897,7 @@ select:hover
 }
 
 
-.form-field input[type="file"]
+ input[type="file"]
  {
   padding: 0px;
   border-radius: 6px;
@@ -913,7 +913,7 @@ select:hover
 
 
 
-.form-field input[type="file"]::-webkit-file-upload-button {
+ input[type="file"]::-webkit-file-upload-button {
   background-color: #ffffff;
   color: #000000;
   border: none;
@@ -928,6 +928,6 @@ select:hover
 
 }
 
-.form-field input[type="file"]::-webkit-file-upload-button:hover {
+input[type="file"]::-webkit-file-upload-button:hover {
   background-color: #000000; color: #ffffff;
 }
