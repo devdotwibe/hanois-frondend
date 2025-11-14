@@ -3761,7 +3761,11 @@ width: 200px;
 }
 
 
+.send-proposal form {
+    max-width: 800px;
+}
 
+.upload-doc input{display: none;}
 
 /* ------------------------------------responsive */
 

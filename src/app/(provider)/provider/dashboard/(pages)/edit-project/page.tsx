@@ -322,8 +322,8 @@ const handleSubmit = async (e) => {
     className="upload-box"
     
     onClick={() => document.querySelector(".upload-input")?.click()}
-    onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0070f3")}
-    onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#d1d5db")}
+    // onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0070f3")}
+    // onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#d1d5db")}
   >
 
     <div className="cover-upload">
