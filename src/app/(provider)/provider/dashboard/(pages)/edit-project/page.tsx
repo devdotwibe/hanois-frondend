@@ -461,14 +461,9 @@ const handleSubmit = async (e) => {
             setImageFile([...updatedFiles]);
           }}
           style={{
-            position: "absolute",
-            bottom: "5px",
-            left: "5px",
+            
             background: file.isCover ? "#2050f5" : "#ccc",
-            color: "white",
-            fontSize: "12px",
-            padding: "2px 6px",
-            borderRadius: "5px",
+            
             cursor: "pointer",
           }}
         >

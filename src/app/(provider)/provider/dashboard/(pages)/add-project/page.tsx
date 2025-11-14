@@ -380,13 +380,8 @@ const UploadBox = () => {
                 setImageFile([...updatedFiles]);
               }}
               style={{
-                
-              
                 background: file.isCover ? "#2050f5" : "#ccc",
-               
-              
-               
-                cursor: "pointer",
+                 cursor: "pointer",
               }}
             >
               {file.isCover ? "Cover Image" : "Set Cover"}

@@ -238,7 +238,7 @@ button.house-card-btn:hover {
 .add-proj{
     font-family: 'Avenir-Black';
   background: #ffffff;
-    border: 2px solid #2050f5;
+    border: 2px solid #2050f5 !important;
     padding: 10px 20px; color: #2050f5;
     margin: 20px 0 20px;
     border-radius: 8px; cursor: pointer; text-transform: capitalize;

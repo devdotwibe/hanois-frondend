@@ -1740,7 +1740,7 @@ ul.tab-nav1 {
 
 .proj-form1 .upload-box h3{
     font-family: 'Avenir-Book';  
-    font-size: 24px;
+    font-size: 14px;
 
 }
 .upload-icon {
@@ -2808,6 +2808,11 @@ margin-right: 0;
      line-height: 1.2;
 }
 
+
+.remodel-div1 h4.text-private {
+    color: #2050f5;
+}
+
 .featured-card-hilight .remodel-div1 h4{
 color: #2050f5;
 }
@@ -3522,7 +3527,8 @@ margin: 0 0 8px !important;
   width: 32%;
   margin-right: 1.9%;
   margin-bottom: 1.9%;
-  height: 210px; position: relative;
+  height: 220px; 
+  position: relative;
 }
 .upload-area > div > div:nth-child(3n){
 margin-right: 0;
@@ -3531,7 +3537,7 @@ margin-right: 0;
 
 .upload-area > div > div img{
   width: 100%;  object-fit: cover;
-  border-radius: 10px;
+  border-radius: 10px; height: 100%;
 }
 
 .grid-upload {
@@ -3596,6 +3602,7 @@ margin-right: 0;
 
 .img-cover-up img {
     margin: 0 auto 0;
+        height: auto !important;
 }
 
 
@@ -3802,6 +3809,25 @@ width: 200px;
 .serv-list-f .multi-select-input .tag {
     display: none;
 }
+
+.edit-proposalpage form{
+  max-width: 800px;
+}
+
+.edit-ph-col3 {
+    margin-left: auto;
+}
+
+.edit-proposal-header {
+    max-width: 800px; margin-top: 20px;
+}
+a.pro-snd {
+    background: #2050f5;
+    padding: 10px 15px;
+    border-radius: 38px;
+    color: #ffffff;
+}
+
 
 /* ------------------------------------responsive */
 

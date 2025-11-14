@@ -5,16 +5,41 @@ import Image1 from "../../../../../../public/images/left-arrow.svg"
 import Link from 'next/link'
 
 import Uploadimg from "../../../../../../public/images/upload.svg"
+import profile from "../../../../../../public/images/profile.png"
 
-const SendProposalIntro = () => {
+const EditProposalIntro = () => {
   return (
     <div>
          <div className="intro-tab">
-              <button className="back-bth">
+             <button className="back-bth">
             <Image src={Image1} alt="Back" width={40} height={40} />
        </button>
 
-       <h3>Send Proposal</h3>
+
+
+       <div className="edit-proposal-header proposal-header">
+        <div className="edit-ph-col1">
+            <Image 
+            src={profile}
+            alt='img'
+            width={80}
+            height={80}
+            />
+            
+        </div>
+       <div className="proposal-info">
+        <h3>Nilson Todd</h3>
+        <p>nillson.ni@gmaim.com</p>
+        <p>+1 (866) 580-2168</p></div>
+
+        <div className="edit-ph-col3">
+           <Link href="/" className='pro-snd'>Proposal Send</Link>
+
+        </div>
+
+       </div>
+              
+
 
        <form>
         <div className="form-grp">
@@ -105,4 +130,7 @@ const SendProposalIntro = () => {
   )
 }
 
-export default SendProposalIntro
+export default EditProposalIntro
+
+
+
