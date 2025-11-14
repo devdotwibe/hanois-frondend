@@ -286,7 +286,7 @@ const FeedbackForm = () => {
           <div className="modal-content providesucess">
             <h2>Success!</h2>
             <p>
-              Thank you for registering at <b>Hands</b>. Verification process
+              Thank you for registering at <b>Handis</b>. Verification process
               might take some time. You will receive an email once approved.
             </p>
             <button onClick={HandleNavigate} className="btn-home">

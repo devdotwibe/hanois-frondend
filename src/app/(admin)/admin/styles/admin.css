@@ -86,6 +86,8 @@ h1{
     text-decoration: none;
     transition: background-color .3s;
     margin: 0 0 10px !important; width: 100%; text-align: left; position: relative; transition: all 0.5s ease-in-out;
+    display: flex;
+    justify-content: space-between;
 }
 .admin-nav button.dropdown-btn::after {
   display: inline-block;

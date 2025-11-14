@@ -64,7 +64,10 @@ export default function AdminSidebar() {
             className="pages-dropdown"
              onClick={() => setPagesOpen(!pagesOpen)}
           >
-        <button className="dropdown-btn">  Pages {pagesOpen ? "▲" : "▼"}</button>
+        <button className="dropdown-btn">  Pages 
+          <span> {pagesOpen ? "▲" : "▼"}</span>
+         
+          </button>
 
           {pagesOpen && (
               <ul className="dropdown-menu">
@@ -95,7 +98,12 @@ export default function AdminSidebar() {
             className="pages-dropdown"
             onClick={() => setOptionsOpen(!optionsOpen)}
           >
-            <button className="dropdown-btn"> Options {optionsOpen ? "▲" : "▼"}</button>
+            <button className="dropdown-btn"> Options
+              <span>
+                {optionsOpen ? "▲" : "▼"}
+              </span> 
+              
+              </button>
 
           {optionsOpen && (
 

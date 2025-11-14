@@ -38,25 +38,27 @@
   background: #fff;
   border-radius: 16px;
   width: 320px;
-  max-width: 90%;
   padding: 24px;
   text-align: center;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   animation: slideUp 0.35s ease;
-  min-width: 600px;
+  min-width: 800px;
 }
 
 .modal-content{
   width: 100%;
-    max-width: 800px;
+    max-width: 660px;
     padding: 70px 50px 70px 50px;
 
 }
 .modal-content.providesucess{
-  padding: 97px;
+  padding: 80px;
 }
 
+.modal-content.providesucess{
+  min-width: 660px;
 
+}
 
 @keyframes fadeIn {
   from {
