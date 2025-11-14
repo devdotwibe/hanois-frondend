@@ -2646,13 +2646,10 @@ button.remove-tag {
 
 
 .dropdown-option input {
-    margin-right: 4px;
-
+    margin-right: 8px;
      border-radius: 0; line-height: 1;
-
     padding: 0;
     -webkit-appearance: none;
-
      font-size: 0;
    width: 22px;
   height: 22px;
@@ -3280,9 +3277,23 @@ a.edit-details {
 
 
 
+a.proposal-view {
+    color: #2563eb;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 40px;
+    font-family: 'Avenir-Black';
+    line-height: 1;
+    transition: all .2s ease-in-out; 
+    border: 2px solid #2563eb; font-size: 19px;
+}
 
+.lead-btn
 
-
+ {
+    margin-left: auto; padding-right: 20px;
+}
 
 
 .proposal-box {
@@ -3291,7 +3302,7 @@ a.edit-details {
   max-width: 100%;
   margin: 0px auto;
   text-align: left;
-  position: relative;
+  position: relative; height: 100%; overflow-y: auto;
 }
 
 .proposal-header {
@@ -3299,13 +3310,11 @@ a.edit-details {
   align-items: center;
   gap: 15px;
   margin-bottom: 25px;
-  width: 80px;
-  height: 80px;
+
 }
 .proposal-header img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 80px;
+  height: 80px;  object-fit: cover;
 }
 
 
@@ -3314,11 +3323,14 @@ a.edit-details {
   border-radius: 10px;
   object-fit: cover;
 }
-
+.proposal-info p{
+margin: 0 0 8px !important;
+}
 .proposal-info h3 {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
+  margin: 0 0 8px;
   color: #1e1e1e;
 }
 
@@ -3787,7 +3799,9 @@ width: 200px;
     position: absolute;
 }
 
-
+.serv-list-f .multi-select-input .tag {
+    display: none;
+}
 
 /* ------------------------------------responsive */
 

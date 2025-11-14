@@ -99,13 +99,14 @@
 
 
 .proposal-popup .modal-content p {
-
   margin-bottom: 0px;
 }
 
 
 .proposal-popup  .modal-content{
   position: relative;
+  max-height: 90vh;
+    height: 100%;
 }
 
 

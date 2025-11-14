@@ -596,7 +596,7 @@ useEffect(() => {
 
             <h4 style={{ fontWeight: 600,  marginTop: 24  }} >Services</h4>
 
-            <div className="">
+            <div className="serv-list-f">
               {/* <label>Select Services</label> */}
 
 

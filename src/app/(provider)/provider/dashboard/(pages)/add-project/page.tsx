@@ -382,7 +382,7 @@ const UploadBox = () => {
               style={{
                 
               
-                background: file.isCover ? "#CFCFD1" : "#ccc",
+                background: file.isCover ? "#2050f5" : "#ccc",
                
               
                

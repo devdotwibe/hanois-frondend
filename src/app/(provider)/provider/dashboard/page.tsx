@@ -220,9 +220,9 @@ const Page = () => {
        {openPopup &&
        createPortal(
 
-        <div className="modal-overlay proposal-popup lead-popup" onClick={() => setShowPopup(false)}>
+        <div className="modal-overlay proposal-popup lead-popup" onClick={() => setOpenPopup(false)}>
                   <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <button className="close-btn" onClick={() => setShowPopup(false)}>
+          <button className="close-btn" onClick={() => setOpenPopup(false)}>
                 </button>
             <div className="proposal-box">
               {/* Header Section */}
@@ -239,6 +239,21 @@ const Page = () => {
                   <p>nillson.ni@gmaim.com</p>
                   <p>+1 (866) 580-2168</p>
                 </div>
+
+                <div className="lead-btn">
+
+                  <Link href="/" className="proposal-view ">Send proposal</Link>
+                  <Link href="/" className="proposal-view hidden">View proposal</Link>
+
+                </div>
+
+
+               
+
+
+
+
+
               </div>
         
               {/* Details Section */}

@@ -466,10 +466,11 @@ line-height: 1;
   border: none;
   padding: 14px 60px;
   border-radius: 8px;
-  font-weight: 600;
   color: #fff;
   cursor: pointer;
   transition: 0.2s ease-in-out;
+    font-family: 'Avenir-medium';
+
 }
 
 

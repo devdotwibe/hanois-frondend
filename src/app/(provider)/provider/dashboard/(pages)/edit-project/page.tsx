@@ -464,7 +464,7 @@ const handleSubmit = async (e) => {
             position: "absolute",
             bottom: "5px",
             left: "5px",
-            background: file.isCover ? "#0070f3" : "#ccc",
+            background: file.isCover ? "#2050f5" : "#ccc",
             color: "white",
             fontSize: "12px",
             padding: "2px 6px",
