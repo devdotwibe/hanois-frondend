@@ -65,9 +65,9 @@ const getStatusColor = (status) => {
     case "Proposal Rejected":
       return "bg-red-100 text-red-700";
     case "Viewed":
-      return "bg-gray-100 text-gray-700";
+      return "";
     default:
-      return "bg-gray-50 text-gray-700";
+      return "";
   }
 };
 
@@ -144,15 +144,15 @@ const Page = () => {
       </div>
 
       <div className="overflow-x-auto leads-table">
-        <table className="min-w-full border-collapse">
+        <table className="border-collapse">
           <thead>
             <tr className="">
-              <th className="">Lead Name</th>
-              <th className="">Project Type</th>
-              <th className="">Date</th>
-              <th className="">Email</th>
-              <th className="">Mobile</th>
-              <th className="">Status</th>
+              <th className="lead-col">Lead Name</th>
+              <th className="project-col">Project Type</th>
+              <th className="date-col">Date</th>
+              <th className="email-col">Email</th>
+              <th className="mob-col">Mobile</th>
+              <th className="status-col">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -162,25 +162,26 @@ const Page = () => {
                   key={index}
                   className=""
                 >
-                  <td className="">
+                  <td className="lead-name lead-col">
+                    
                     <img
                       src={`https://i.pravatar.cc/40?img=${index + 1}`}
                       alt="Avatar"
-                      className="w-8 h-8 rounded-full"
+                      className="w-[30px] h-[30px] rounded-full"
                     />
                     <span className="text-gray-800 font-medium">{lead?.title}</span>
                   </td>
-                  <td>
-                    <span className="">
+                  <td className="project-col">
+                    <span className="project-type">
                       {lead?.category?.name}
                     </span>
                   </td>
-                  <td className="">{new Date(lead.created_at).toLocaleDateString('en-GB')}</td>
-                  <td className="">{lead?.user?.email}</td>
-                  <td className="">{lead?.phone?.mobile}</td>
-                  <td className="">
+                  <td className="date-col">{new Date(lead.created_at).toLocaleDateString('en-GB')}</td>
+                  <td className="email-col">{lead?.user?.email}</td>
+                  <td className="mob-col">{lead?.phone?.mobile}</td>
+                  <td className="status-col">
                     <span
-                      className={`py-1 ${getStatusColor(
+                      className={`highlightedd bg-blue ${getStatusColor(
                         lead.status
                       )}`}
                     >

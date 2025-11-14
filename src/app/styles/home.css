@@ -3655,6 +3655,112 @@ border-radius: 6px;
     border: none;
     outline: none;
 }
+/* ---------------------------------------------- */
+.leads-table th {
+    text-align: left;
+    padding-inline: 10px;
+}
+
+.leads-table th:first-child{
+  padding-left: 0;
+}
+.leads-table thead tr {
+    padding: 20px 0;
+    color: #404040;
+}
+
+.leads-table tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+}
+.leads-table tr{
+display: flex;
+
+}
+.leads-table tbody tr {
+      padding: 15px 0px;
+}
+.leads-table tbody tr td {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-inline: 10px;
+    font-family: 'Avenir-medium';
+    color: #404040;
+
+}
+.leads-table td.lead-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.leads-table tbody tr td:first-child{
+  padding-left: 0;
+}
+
+
+
+.leads-table span.project-type {
+    padding: 8px 14px;
+    border: 1.3px solid #000000; color: #000000;
+    border-radius: 30px;
+    display: inline-block;
+    line-height: 1;
+    font-family: 'Avenir-medium';
+
+}
+
+
+.highlightedd{
+ padding: 10px 14px;
+    line-height: 1;
+    border-radius: 30px;
+}
+
+.leads-table span.bg-blue {
+    background: #D4FFEF;
+}
+.leads-table span.bg-yellow {
+    background: #FBFEC4;
+}
+.leads-table span.bg-purple {
+    background: #DAE0FD;
+}
+.leads-table span.bg-pink {
+    background: #FFD3D3;
+}
+.leads-table span.viewed {
+    background: #F2F2F2;
+}
+
+
+
+
+
+.lead-col {
+    width: 145px;
+}
+
+.project-col {
+    width: 200px;
+}
+
+.date-col {
+    width: 130px;
+}
+
+.email-col{
+  width: 240px;
+}
+.mob-col {
+width: 190px;
+}
+
+.status-col {
+width: 200px;
+}
+
+
 
 
 /* ------------------------------------responsive */
