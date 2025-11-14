@@ -1376,7 +1376,7 @@ border-color: #f1c40f;
 .form-grp select:focus,
 .form-grp select:hover
  {
-  background: url("../../../public/images/arrow1.svg") no-repeat !important;
+  background: #ffffff url("../../../public/images/arrow1.svg") no-repeat !important;
   background-size: 10px !important;
   background-position-x: 98% !important;
 background-position-y: 50% !important;
@@ -3337,11 +3337,28 @@ a.edit-details {
 
 .proposal-details h4 {
   font-weight: 700;
-  color: #222;
+  color: #171725;
   margin-bottom: 15px;
   font-size: 20px;
+    font-family: 'Avenir-Black';
+
+}
+.cont-lead {
+    margin: 0 0 20px;
+}
+.proposal-details h4 span{
+    font-family: 'Avenir-Book'; font-weight: normal;
+    font-size: 16px; color: var(--primary-color);
+        padding-left: 10px;
+
 }
 
+.proposal-popup h5{
+  font-family: 'Avenir-medium';
+  font-size: 18px;
+  margin: 0 0 10px;
+
+}
 .detail-row {
   display: flex;
   justify-content: space-between;
@@ -3350,8 +3367,10 @@ a.edit-details {
 }
 
 .detail-row span {
-  font-weight: 600;
-  color: #333;
+   color: #171725;
+
+    font-family: 'poppins-medium';
+
 }
 
 .detail-row p {
@@ -3391,34 +3410,6 @@ a.edit-details {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-}
-
-.reject-btn,
-.accept-btn {
-line-height: 1;
-  border: none;
-  padding: 14px 60px;
-  border-radius: 8px;
-  font-weight: 600;
-  color: #fff;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-}
-
-.reject-btn {
-  background: #ff3b3b;
-}
-
-.reject-btn:hover {
-  background: #d32f2f;
-}
-
-.accept-btn {
-  background: #2563eb;
-}
-
-.accept-btn:hover {
-  background: #4c72f6;
 }
 
 .proposal-attachment a{

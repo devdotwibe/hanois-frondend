@@ -459,6 +459,54 @@ button.close-poup:hover{
 }
 
 
+.cancel-btn1,
+.reject-btn,
+.accept-btn {
+line-height: 1;
+  border: none;
+  padding: 14px 60px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+
+
+.cancel-btn1{
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #e0e0e0;
+}
+
+.reject-btn {
+  background: #ff3b3b;
+}
+
+.reject-btn:hover {
+  background: #d32f2f;
+}
+
+.accept-btn {
+  background: #2563eb;
+}
+
+.accept-btn:hover {
+  background: #4c72f6;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 /* ----------------------------resp------------ */
 @media (max-width: 1204px) {
 
