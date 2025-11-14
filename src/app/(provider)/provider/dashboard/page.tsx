@@ -133,26 +133,26 @@ const Page = () => {
 
   return (
     <div className="p-8">
-      <div className="intro-tab mb-6">
-        <h3 className="text-2xl font-semibold text-gray-800">
+      <div className="intro-tab">
+        <h3 className="">
           Provider Dashboard
         </h3>
-        <p className="text-gray-500 mt-1">
+        <p className="">
           Here is the list of your leads, you can check lead’s projects and
           contact with them
         </p>
       </div>
 
-      <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+      <div className="overflow-x-auto">
         <table className="min-w-full border-collapse">
           <thead>
-            <tr className="bg-gray-100 text-gray-700 text-left text-sm uppercase">
-              <th className="py-3 px-5">Lead Name</th>
-              <th className="py-3 px-5">Project Type</th>
-              <th className="py-3 px-5">Date</th>
-              <th className="py-3 px-5">Email</th>
-              <th className="py-3 px-5">Mobile</th>
-              <th className="py-3 px-5">Status</th>
+            <tr className="">
+              <th className="">Lead Name</th>
+              <th className="">Project Type</th>
+              <th className="">Date</th>
+              <th className="">Email</th>
+              <th className="">Mobile</th>
+              <th className="">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -160,9 +160,9 @@ const Page = () => {
               { leads && leads.length > 0 && leads?.map((lead, index) => (
                 <tr
                   key={index}
-                  className="border-b hover:bg-gray-50 transition duration-150"
+                  className=""
                 >
-                  <td className="py-4 px-5 flex items-center space-x-3">
+                  <td className="">
                     <img
                       src={`https://i.pravatar.cc/40?img=${index + 1}`}
                       alt="Avatar"
@@ -171,16 +171,16 @@ const Page = () => {
                     <span className="text-gray-800 font-medium">{lead?.title}</span>
                   </td>
                   <td>
-                    <span className="border border-gray-400 px-3 py-1 rounded-full text-sm text-gray-700">
+                    <span className="">
                       {lead?.category?.name}
                     </span>
                   </td>
-                  <td className="py-4 px-5 text-gray-700">{new Date(lead.created_at).toLocaleDateString('en-GB')}</td>
-                  <td className="py-4 px-5 text-gray-700">{lead?.user?.email}</td>
-                  <td className="py-4 px-5 text-gray-700">{lead?.phone?.mobile}</td>
-                  <td className="py-4 px-5">
+                  <td className="">{new Date(lead.created_at).toLocaleDateString('en-GB')}</td>
+                  <td className="">{lead?.user?.email}</td>
+                  <td className="">{lead?.phone?.mobile}</td>
+                  <td className="">
                     <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
+                      className={`py-1 ${getStatusColor(
                         lead.status
                       )}`}
                     >
