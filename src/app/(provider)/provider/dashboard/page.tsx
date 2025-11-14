@@ -132,7 +132,7 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="p-8">
+    <div className="">
       <div className="intro-tab">
         <h3 className="">
           Provider Dashboard
@@ -143,7 +143,7 @@ const Page = () => {
         </p>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto leads-table">
         <table className="min-w-full border-collapse">
           <thead>
             <tr className="">
