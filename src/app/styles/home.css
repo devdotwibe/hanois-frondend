@@ -634,7 +634,7 @@ padding: 80px 0 0;
 
 
 .get-listedpage .business-b-out .business-block {
-    height: 100%; padding-bottom: 20px; box-shadow: none;
+    height: 100%; padding-bottom: 0px; box-shadow: none;
 }
 
 
@@ -759,7 +759,7 @@ hr {
 
 .g-list .banner-div p {
     max-width: 735px;
-    margin-inline: auto;
+    margin-inline: auto; margin-bottom: 10px;
 }
 
 
@@ -780,7 +780,7 @@ hr {
 .banner-wrapp.g-list {
     width: 100%;
     float: left;
-    margin-bottom: 60px;
+
 }
 
 .how-help {padding: 80px 0; text-align: center;
@@ -804,7 +804,7 @@ hr {
 .how-help p{margin-inline: auto; max-width: 425px;}
 
 .build-outer {
-    padding: 80px 0 250px;
+    padding: 80px 0 150px;
     text-align: center;
          width: 100%;
     float: left; overflow: hidden;
@@ -844,7 +844,7 @@ position: relative;
 
 
 .h-outer {
-    padding: 200px 0 100px;
+    padding: 100px 0 100px;
         width: 100%;
     float: left;
 }
@@ -864,7 +864,7 @@ padding-block: 60px;
 }
 
 .h-div .h-div1:first-child:first-child{
-  position: relative; margin-bottom: 180px;
+  position: relative; margin-bottom: 100px;
 }
 
 .h-div .h-div1:first-child:first-child::after {
@@ -1155,10 +1155,32 @@ padding-left: 16px;
 
 .g-listbanner {
     margin-top: 100px;
+
+
+}
+
+
+.banner-div.g-listbanner {
+    float: left;
+    width: 100%;
+}
+
+
+.g-list .banner-div > p{
+  max-width: 100%; margin: 0;
+}
+
+.banner-wrapp.g-list .containers {
+    display: flex;
 }
 
 
 
+
+/* .banner-wrapp.g-list .containers {
+    width: 100%;
+    float: left;
+} */
 
 
 
@@ -3847,6 +3869,14 @@ a.pro-snd {
 
 .containers{width: 94%;}
 
+.business-div21 .content-top h3 span {display: inline;}
+
+.business-div21 .content-top {margin: 0 0 20px;}
+
+
+.get-listedpage .business-b-out {width: 32.6%;margin-right: 1%;}
+.business-div21 .content-top h3{font-size: 18px;}
+
 
 
 
@@ -3859,9 +3889,11 @@ a.pro-snd {
 @media (max-width: 1024px) {
 
 
-.faq-section,
-.business-wrap{padding: 80px 0 345px;}
 
+.business-wrap{padding: 80px 0 345px;}
+.faq-section{
+  padding: 80px 0 80px;
+}
 
 .ready-div{padding-bottom: 80px;}
 .bg-dark-blue{padding-top: 80px;}
@@ -3873,6 +3905,7 @@ a.pro-snd {
 .ready-div h3,
 .business-div1 h3,
 .faq-section h3  {font-size: 46px;}
+
 .faq-question{font-size: 30px;}
 .faq-question .icon {font-size: 38px;}
 .pricing-card{width: 44%;}
@@ -3882,6 +3915,34 @@ a.pro-snd {
     padding: 10px 0;
 }
 
+.build-outer{padding: 80px 0 80px;}
+.h-outer{padding: 80px 0 0;}
+
+.ch-col {
+    padding-top: 118px;
+}
+.h-div .h-div1:first-child:first-child{margin-bottom: 80px;}
+
+
+.banner-div.g-listbanner {margin: 40px 0 90px;}
+.how-help h2 {
+    font-size: 46px;
+}
+
+.text-areab h4{font-size: 28px;}
+
+
+
+.outer-imgb {
+    width: 70px;
+}
+
+.business-div21 .content-top h3{padding-left: 10px;}
+
+.buildimg-outer {
+    max-width: 100%;
+    width: 94%;
+}
 
 }
 
@@ -3898,6 +3959,12 @@ a.pro-snd {
 .pricing-card{width: 48%;}
 
 .faq-question p{font-size: 28px;}
+
+.outer-imgb { width: 60px;}
+.business-div21 .content-top h3 {font-size: 17px;}
+
+
+
 
 
 }
@@ -3979,6 +4046,149 @@ p {font-size: 14px;}
 .business-b-out:nth-child(3) {
     transform: translateY(200px);
 }
+.business-div21{justify-content: center; width: 100%;}
+.get-listedpage .business-b-out .business-block{width: 100%;}
+.get-listedpage .business-div21 .business-b-out:nth-child(2n) {
+    transform: none !important;
+}
+.get-listedpage .business-b-out{margin-bottom: 20px;}
+
+.build-card .text-areab {
+    width: 100%;
+}
+
+.build-card .img-b {
+    width: 100%;
+}
+.h-div .h-div1:first-child .build-card {
+    flex-direction: column-reverse;
+}
+.h-div .h-div1:nth-child(2) .build-card {
+    flex-direction: column-reverse;
+}
+
+.build-outer{padding: 55px 0 55px;}
+
+.h-div .h-div1:first-child:first-child:after {
+    display: none;
+}
+.h-div .h-div1:nth-child(2):after{display: none;}
+
+
+
+
+.h-div .h-div1{padding: 0;}
+
+.build-card .text-areab {
+    margin: 0 0 30px;
+}
+
+.build-card .img-b{
+  position: relative;
+  padding: 40px 0;
+}
+
+
+
+
+.h-div .h-div1:first-child.img-b {
+    position: relative;
+}
+.h-div .h-div1:nth-child(2) .img-b {
+    position: relative;
+}
+
+
+.h-div .h-div1:first-child .img-b:after {
+    content: "";
+    z-index: -1;
+    background: url(../../../public/images/bg1.jpg) center / cover no-repeat;
+    width: 63%;
+    height: 100%;
+    position: absolute;
+    top: 0%;
+    right: 0%;
+}
+
+
+.h-div .h-div1:nth-child(2) .img-b:after {
+    content: "";
+    z-index: 9;
+    background: url(../../../public/images/bg2.jpg) center / cover no-repeat;
+    border-radius: 0 30px 30px 0;
+    width: 39%;
+    height: 100%;
+    position: absolute;
+    top: 0%;
+    left: 0;
+}
+
+
+.build-card .img-b img {
+    position: relative;
+    z-index: 99;
+}
+
+
+
+.banner-div.g-listbanner {
+        margin: 20px 0 50px;
+}
+
+
+
+.how-help{padding: 50px 0;}
+.ch-col {padding: 0px 0 55px;}
+.h-outer {
+        padding: 50px 0 0;
+    }
+
+
+
+.get-listedpage .business-b-out:last-child .business-block {
+    margin-bottom: 0;
+}
+.get-listedpage .business-b-out:last-child{
+      margin-bottom: 0; padding-bottom: 20px;
+
+}
+
+.get-listedpage .business-b-out:last-child .business-block{
+  padding-bottom: 30px;
+}
+
+
+.how-help h2 {
+    font-size: 36px;
+}
+
+.text-areab h4{font-size: 22px;}
+
+
+
+
+.rev-f {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    flex-direction: column-reverse;
+}
+
+.business-div21 .content-top h3 {
+        font-size: 19px;
+    }
+
+    .business-div21 .content-top h3 span{display: inline;}
+
+
+.h-div1 .containers {
+    max-width: 100%;
+    width: 100%;
+}
+.h-div1 .containers .text-areab {
+    width: 90%;
+    margin-inline: auto;
+}
 }
 
 
@@ -3996,7 +4206,9 @@ p {font-size: 14px;}
 
 .faq-item{padding: 4px 0;}
 .ready-div h3 span{display: inline;}
-
+.get-listedpage .business-b-out {
+        width: 80%;
+    }
 }
 
 
@@ -4023,6 +4235,19 @@ p {font-size: 14px;}
         .business-b-out:nth-child(3) {
         transform: translateY(215px);
     }
+
+    .get-listedpage .business-b-out {
+        width: 100%; margin-right: 0;
+    }
+
+
+
+
+
+
+
+
+
 }
 
 
@@ -4035,8 +4260,11 @@ p {font-size: 14px;}
 
 
 
+@media (max-width: 768px) and (max-width: 900px) {
 
-
-
+    .business-div21 .content-top h3 {
+        padding-left: 0;
+    }
+  }
 
 

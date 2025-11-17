@@ -21,11 +21,22 @@ const page = () => {
 
       <GetListedBanner lang={lang} />
 
+      <div className="rev-f">
       <ChoosePlan />
 
       <ListCards />
 
+
+
       <HowHelp />
+
+      </div>
+
+
+
+
+
+
 
       <HelpSec />
 
