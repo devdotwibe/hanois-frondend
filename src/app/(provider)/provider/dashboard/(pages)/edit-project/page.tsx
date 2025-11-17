@@ -293,6 +293,8 @@ const handleSubmit = async (e) => {
     provider?.professional_headline ||
     ""
     }
+
+
     />
     ) : (
     <DetailCard />
@@ -559,7 +561,6 @@ const handleSubmit = async (e) => {
 </button>
 
 
-  {/* 💾 Update Button */}
   <button
     type="submit"
     className="save-btn1"

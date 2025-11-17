@@ -261,6 +261,7 @@ const UploadBox = () => {
             provider?.professional_headline ||
             ""
           }
+          
         />
       ) : (
         // fallback (should rarely render)

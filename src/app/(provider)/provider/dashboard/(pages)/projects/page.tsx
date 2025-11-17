@@ -142,6 +142,9 @@ const ProjectComponent = () => {
             provider?.professional_headline ||
             ""
           }
+              categories={categories}
+    providerCategories={provider?.categories_id}
+
         />
       ) : (
         <DetailCard />
