@@ -271,7 +271,7 @@ const UploadBox = () => {
 
       <div className="">
         <div className="proj-form1 company-profile1 upload-page">
-          <h3>Upload Project</h3>
+          <h3>Images</h3>
           <p>Upload your project images and details below</p>
 
 {/* 🟩 Upload + Preview Section */}
