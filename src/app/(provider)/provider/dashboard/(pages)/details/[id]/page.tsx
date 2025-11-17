@@ -24,6 +24,15 @@ export default function DetailsPage() {
       setLoading(false);
       return;
     }
+const [categories, setCategories] = useState([]);
+
+useEffect(() => {
+  fetch(`${API_URL}categories`)
+    .then(res => res.json())
+    .then(data => setCategories(data))
+    .catch(() => {});
+}, []);
+
 
     let isMounted = true;
 
@@ -78,7 +87,7 @@ export default function DetailsPage() {
     <div className="detcoldetail">
       <div className='detcol'>
         <div className="detcol-1">
-          <DetailIntro provider={provider} />
+          <DetailIntro provider={provider} categories={categories} />
           <AboutContainer provider={provider} />
           <BusinessInfo provider={provider} />
           <ServiceDiv provider={provider} />

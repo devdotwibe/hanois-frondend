@@ -3,11 +3,9 @@ import DetailCard from '@/app/(directory)/provider/Components/DetailCard';
 import defaultLogo from "../../../../../public/images/ahi-logo.jpg"; 
 import { IMG_URL } from "@/config";
 
-const DetailIntro = ({ provider }) => {
+const DetailIntro = ({ provider, categories }) => {
   const name = provider?.name || "Unknown Provider"; 
-  const description =
-    provider?.professional_headline ||
-    "";
+  const description = provider?.professional_headline || "";
 
   let logo = defaultLogo;
   if (provider?.image) {
@@ -22,13 +20,13 @@ const DetailIntro = ({ provider }) => {
 
   return (
     <div className="detail-page-intro">
-      <div className="">
-        <DetailCard
-          logo={logo}
-          name={name}
-          description={description}
-        />
-      </div>
+      <DetailCard
+        logo={logo}
+        name={name}
+        description={description}
+        categories={categories}
+        providerCategories={provider?.categories_id}
+      />
     </div>
   );
 };
