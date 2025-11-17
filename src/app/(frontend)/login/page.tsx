@@ -138,19 +138,13 @@ const Login = () => {
     }
 
     try {
-const payload = JSON.parse(atob(resetToken.split(".")[1]));
+      const res = await fetch(`${API_URL}providers/reset-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
 
-const endpoint =
-  payload.role === "provider"
-    ? `${API_URL}providers/reset-password`
-    : `${API_URL}users/reset-password`;
+        body: JSON.stringify({ token: resetToken, password }),
 
-const res = await fetch(endpoint, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ token: resetToken, password }),
-});
-
+      });
 
       const data = await res.json();
       if (res.ok) {
