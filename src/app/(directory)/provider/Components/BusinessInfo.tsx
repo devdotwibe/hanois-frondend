@@ -4,7 +4,7 @@ const BusinessInfo = ({ provider }) => {
   const country = provider?.country || "";
   const teamSize = provider?.team_size ? `${provider.team_size} employees` : "N/A";
   const location = provider?.location || "N/A";
-  const website = provider?.website || provider?.web || provider?.social_media || "";
+  const website = provider?.website || "";
   const phone = provider?.phone || "";
 
   const socialLinks = [];
