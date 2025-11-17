@@ -10,12 +10,6 @@ const MyAccount = () => {
 
           <MyAccountForm />
 
-          {/* <ChangePass /> */}
-
-
-
-
-
         </div>
 
       </div>
