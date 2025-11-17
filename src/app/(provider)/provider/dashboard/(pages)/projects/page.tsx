@@ -15,19 +15,15 @@ const ProjectComponent = () => {
   const router = useRouter();
 
   // Provider state for dynamic DetailCard
-  const [provider, setProvider] = useState<any | null>(null);
+  const [provider, setProvider] = useState(null);
   const [loadingProvider, setLoadingProvider] = useState(true);
-  const [providerError, setProviderError] = useState<string | null>(null);
-
-  // Categories state (for DetailCard dynamic categories)
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [providerError, setProviderError] = useState(null);
 
   // 🟩 Fetch only this provider’s projects
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const user = JSON.parse(localStorage.getItem("user") || "null");
+      const user = JSON.parse(localStorage.getItem("user"));
       const token = localStorage.getItem("token");
       const providerId = user?.id || user?.provider_id;
 
@@ -54,13 +50,13 @@ const ProjectComponent = () => {
     }
   };
 
-  // 🟩 Fetch provider details (with simple caching)
+  // 🟩 Fetch provider details (with simple caching) — same approach as UploadBox
   const fetchProviderData = async (forceRefresh = false) => {
     try {
       setLoadingProvider(true);
       setProviderError(null);
 
-      const user = JSON.parse(localStorage.getItem("user") || "null");
+      const user = JSON.parse(localStorage.getItem("user"));
       const tokenLocal = localStorage.getItem("token");
       const id = user?.id || user?.provider_id;
 
@@ -117,31 +113,10 @@ const ProjectComponent = () => {
     }
   };
 
-  // 🟩 Fetch categories once
-  const fetchCategories = async () => {
-    try {
-      setLoadingCategories(true);
-      const res = await fetch(`${API_URL}categories`);
-      if (!res.ok) {
-        console.warn("Failed to load categories:", res.status);
-        setCategories([]);
-        return;
-      }
-      const data = await res.json();
-      setCategories(data || []);
-    } catch (err) {
-      console.error("Failed to load categories", err);
-      setCategories([]);
-    } finally {
-      setLoadingCategories(false);
-    }
-  };
-
-  // 🟩 Load provider, projects and categories on mount
+  // 🟩 Load provider and projects on mount
   useEffect(() => {
     fetchProviderData();
     fetchProjects();
-    fetchCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -152,58 +127,25 @@ const ProjectComponent = () => {
     router.push(target);
   };
 
-  // Helper to build logo (supports absolute URLs)
-  const buildLogoUrl = (img?: string) => {
-    if (!img) return "/path/to/logo.png";
-    if (/^https?:\/\//i.test(img)) return img;
-    const cleanBase = (IMG_URL || "").replace(/\/+$/, "");
-    const cleanPath = img.replace(/^\/+/, "");
-    return `${cleanBase}/${cleanPath}`;
-  };
-
   return (
     <div className="project-component">
-{/* Dynamic DetailCard */}
-{loadingProvider || loadingCategories ? (
-  <p>Loading provider & categories...</p>
-) : providerError ? (
-  <p style={{ color: "red" }}>{providerError}</p>
-) : provider ? (
-  <>
-    {/* debug logs — remove after verifying */}
-    {typeof window !== "undefined" && (
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            console.log("DEBUG provider:", ${JSON.stringify(provider)});
-            console.log("DEBUG categories:", ${JSON.stringify(
-              // avoid large serialization issues
-              categories ? categories : []
-            )});
-          `,
-        }}
-      />
-    )}
-
-<DetailCard
-  logo={buildLogoUrl(provider?.image)}
-  name={provider?.name || "Unknown Provider"}
-  description={provider?.professional_headline || ""}
-  categories={categories}
-  providerCategories={provider?.categories_id || []}
-  loadingCategories={loadingCategories}
-/>
-
-  </>
-) : (
-  <DetailCard
-    logo="/path/to/logo.png"
-    name="Unknown Provider"
-    categories={categories}
-    providerCategories={[]}
-  />
-)}
-
+      {/* Dynamic DetailCard */}
+      {loadingProvider ? (
+        <p>Loading provider...</p>
+      ) : providerError ? (
+        <p style={{ color: "red" }}>{providerError}</p>
+      ) : provider ? (
+        <DetailCard
+          logo={provider?.image ? `${IMG_URL}${provider.image}` : "/path/to/logo.png"}
+          name={provider?.name || "Unknown Provider"}
+          description={
+            provider?.professional_headline ||
+            ""
+          }
+        />
+      ) : (
+        <DetailCard />
+      )}
 
       <TabBtns />
 
@@ -224,9 +166,9 @@ const ProjectComponent = () => {
           </p>
         ) : (
           <div className="torrance-div">
-            {projects.map((proj: any) => {
+            {projects.map((proj) => {
               const coverImgObj =
-                proj.images?.find((img: any) => img.is_cover) || proj.images?.[0];
+                proj.images?.find((img) => img.is_cover) || proj.images?.[0];
               const imageUrl = coverImgObj
                 ? `${IMG_URL}${coverImgObj.image_path}`
                 : "/images/property-img.jpg";
