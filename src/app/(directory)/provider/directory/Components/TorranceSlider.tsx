@@ -115,7 +115,7 @@ const TorranceSlider = () => {
 
   return (
     <div className="torrance-slider-wrapper">
-      <h2>My Projects</h2>
+      <h2>Projects</h2>
       {projects.length === 0 ? (
         <p style={{ textAlign: "center" }}>No projects found.</p>
       ) : (
