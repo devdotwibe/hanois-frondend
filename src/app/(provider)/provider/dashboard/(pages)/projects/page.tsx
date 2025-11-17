@@ -19,9 +19,6 @@ const ProjectComponent = () => {
   const [loadingProvider, setLoadingProvider] = useState(true);
   const [providerError, setProviderError] = useState(null);
 
-  // <<--- ADDED: categories state
-  const [categories, setCategories] = useState([]);
-
   // 🟩 Fetch only this provider’s projects
   const fetchProjects = async () => {
     try {
@@ -53,19 +50,7 @@ const ProjectComponent = () => {
     }
   };
 
-  // 🟩 Fetch categories (new)
-  const fetchCategories = async () => {
-    try {
-      // your categories endpoint used elsewhere in the app
-      const res = await axios.get(`https://hanois.dotwibe.com/api/api/categories`);
-      setCategories(res?.data || []);
-    } catch (err) {
-      console.error("Error fetching categories:", err);
-      // non-fatal; keep categories empty
-    }
-  };
-
-  // 🟩 Fetch provider details (with simple caching)
+  // 🟩 Fetch provider details (with simple caching) — same approach as UploadBox
   const fetchProviderData = async (forceRefresh = false) => {
     try {
       setLoadingProvider(true);
@@ -128,11 +113,10 @@ const ProjectComponent = () => {
     }
   };
 
-  // 🟩 Load provider, projects and categories on mount
+  // 🟩 Load provider and projects on mount
   useEffect(() => {
     fetchProviderData();
     fetchProjects();
-    fetchCategories(); // <<-- call new fetch
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -154,9 +138,10 @@ const ProjectComponent = () => {
         <DetailCard
           logo={provider?.image ? `${IMG_URL}${provider.image}` : "/path/to/logo.png"}
           name={provider?.name || "Unknown Provider"}
-          description={provider?.professional_headline || ""}
-          categories={categories}                       // <<-- now defined
-          providerCategories={provider?.categories_id}
+          description={
+            provider?.professional_headline ||
+            ""
+          }
         />
       ) : (
         <DetailCard />
