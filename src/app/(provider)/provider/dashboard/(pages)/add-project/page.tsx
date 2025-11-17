@@ -456,7 +456,7 @@ const UploadBox = () => {
                 id="location"
                 value={formData.location}
                 onChange={handleChange}
-                placeholder="Kuwait City"
+                placeholder="Location"
               />
               {errors.location && <p style={{ color: "red", fontSize: "13px" }}>{errors.location}</p>}
             </div>
@@ -469,7 +469,7 @@ const UploadBox = () => {
                 id="landSize"
                 value={formData.landSize}
                 onChange={handleChange}
-                placeholder="115 m2"
+                placeholder="Land size"
               />
               {errors.landSize && <p style={{ color: "red", fontSize: "13px" }}>{errors.landSize}</p>}
             </div>
