@@ -3967,15 +3967,23 @@ p {font-size: 14px;}
 .b-text h4 {
     color: #ffffff;}
 .business-wrap {
-    padding-bottom: 336px;
+    padding-bottom: 266px;
+}
+.get-listedpage .business-b-out {
+    width: 70%;
+}
+
+.business-b-out:nth-child(2) {
+    transform: translateY(107px);
+}
+.business-b-out:nth-child(3) {
+    transform: translateY(200px);
+}
 }
 
 
-}
 
-
-
-/* ----------- */
+/* ----------------------------------------------------------- */
 
 
 
@@ -3992,7 +4000,7 @@ p {font-size: 14px;}
 }
 
 
-/* ----------- */
+/* ------------------------------------------------------------ */
 
 @media (max-width: 480px) {
 .business-block {width: 100%;}
@@ -4002,14 +4010,19 @@ p {font-size: 14px;}
     width: 100%;
 }
 .business-wrap {
-    padding-bottom: 330px;
+    padding-bottom: 280px;
 }
 
 .content-top h3 span {
     display: inline;
 }
 
-
+.business-b-out:nth-child(2) {
+        transform: translateY(100px);
+    }
+        .business-b-out:nth-child(3) {
+        transform: translateY(215px);
+    }
 }
 
 
