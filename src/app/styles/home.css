@@ -3981,6 +3981,8 @@ a.pro-snd {
 
 @media (max-width: 767px) {
 
+  .build-card .img-b img{padding-inline: 5%;}
+
 .containers{width: 90%;}
 
 
@@ -4102,7 +4104,15 @@ p {font-size: 14px;}
 .h-div .h-div1:first-child .img-b:after {
     content: "";
     z-index: -1;
-    background: url(../../../public/images/bg1.jpg) center / cover no-repeat;
+    background:     linear-gradient(to left, rgba(255,255,255,0) 60%, #ffffff 100%),
+    url(../../../public/images/bg1.jpg) center / cover no-repeat;
+
+
+
+
+
+    /* background: url(../../../public/images/bg1.jpg) center / cover no-repeat; */
+
     width: 63%;
     height: 100%;
     position: absolute;
