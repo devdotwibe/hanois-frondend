@@ -169,6 +169,39 @@ const Login = () => {
   };
 
 
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+
+    const email = (document.getElementById("forgotEmail") as HTMLInputElement).value;
+
+    if (!email) {
+      alert("Please enter your email.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_URL}users/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "Email not found.");
+        return;
+      }
+
+      setShowPopup(true);
+
+    } catch (err) {
+      console.error("Forgot Password Error:", err);
+      alert("Something went wrong. Please try again.");
+    }
+  };
+
+
 
   return (
     <div className={`loginpage ${lang === "ar" ? "rtl" : ""}`}>
@@ -243,9 +276,14 @@ const Login = () => {
 
                 {loginError && <p style={{ color: 'red', marginTop: '10px' }} className="error-message">{loginError}</p>}
 
-                <Link href="" className="forget-pass">
+                <span
+                  className="forget-pass"
+                  onClick={() => setMode("forgot")}
+                  style={{ cursor: "pointer" }}
+                >
                   Forget password?
-                </Link>
+                </span>
+
 
               <button type="submit" className="login-btn">Log in</button>
 
@@ -300,34 +338,32 @@ const Login = () => {
 
           {/* -------forgotpassword----------------------------------------------------------- */}
 
-      {mode === "forgot" && (
+{mode === "forgot" && (
+  <div className="login-container forgot-pass">
 
-          <div className="login-container forgot-pass">
+    <h2>Forgot Password</h2>
 
-             <h2 className="">Forgot Password</h2>
+    <p>Enter your email and we’ll send you reset instructions.</p>
 
-             <p>Enter the email address you used when you joined and we’ll send you instructions to reset your password.</p>
+    <form className="login-form" onSubmit={handleForgotPassword}>
+      <div className="form-grp">
+        <label htmlFor="forgotEmail">Email</label>
+        <input 
+          type="email" 
+          id="forgotEmail" 
+          placeholder="Email" 
+          required 
+        />
+      </div>
 
-             <p>For security reasons, we do NOT store your password. So rest assured that we will never send your password via email.</p>
+      <button type="submit" className="login-btn">
+        Send reset instructions
+      </button>
+    </form>
 
-               <form className="login-form">
-              <div className="form-grp">
-                <label htmlFor="email">Email</label>
-                <input type="email" id="email" placeholder="Email" required />
-              </div>
+  </div>
+)}
 
-              
-
-              <button type="submit" className="login-btn" onClick={handleClick}>
-                Send rest instruction
-              </button>
-
-
-            </form>
-
-            
-          </div>
-      )}
 
 
           {showPopup &&
