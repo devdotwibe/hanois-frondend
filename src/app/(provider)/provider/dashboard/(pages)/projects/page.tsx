@@ -163,27 +163,47 @@ const ProjectComponent = () => {
 
   return (
     <div className="project-component">
-      {/* Dynamic DetailCard */}
-      {loadingProvider ? (
-        <p>Loading provider...</p>
-      ) : providerError ? (
-        <p style={{ color: "red" }}>{providerError}</p>
-      ) : provider ? (
-        <DetailCard
-          logo={buildLogoUrl(provider?.image)}
-          name={provider?.name || "Unknown Provider"}
-          description={provider?.professional_headline || ""}
-          categories={categories}
-          providerCategories={provider?.categories_id || []}
-        />
-      ) : (
-        <DetailCard
-          logo="/path/to/logo.png"
-          name="Unknown Provider"
-          categories={categories}
-          providerCategories={[]}
-        />
-      )}
+{/* Dynamic DetailCard */}
+{loadingProvider || loadingCategories ? (
+  <p>Loading provider & categories...</p>
+) : providerError ? (
+  <p style={{ color: "red" }}>{providerError}</p>
+) : provider ? (
+  <>
+    {/* debug logs — remove after verifying */}
+    {typeof window !== "undefined" && (
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            console.log("DEBUG provider:", ${JSON.stringify(provider)});
+            console.log("DEBUG categories:", ${JSON.stringify(
+              // avoid large serialization issues
+              categories ? categories : []
+            )});
+          `,
+        }}
+      />
+    )}
+
+<DetailCard
+  logo={buildLogoUrl(provider?.image)}
+  name={provider?.name || "Unknown Provider"}
+  description={provider?.professional_headline || ""}
+  categories={categories}
+  providerCategories={provider?.categories_id || []}
+  loadingCategories={loadingCategories}
+/>
+
+  </>
+) : (
+  <DetailCard
+    logo="/path/to/logo.png"
+    name="Unknown Provider"
+    categories={categories}
+    providerCategories={[]}
+  />
+)}
+
 
       <TabBtns />
 

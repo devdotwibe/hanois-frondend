@@ -289,9 +289,7 @@ const UploadBox = () => {
 
       <div className="cover-upload">
         <div className="img-cover-up">
-                              <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
-
-
+            <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
         </div>
 
         

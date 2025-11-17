@@ -6,17 +6,17 @@ type DetailCardProps = {
   logo: string | StaticImageData;
   name: string;
   description?: string;
-  categories: Array<any>;
-  providerCategories: number[];
-};
+ categories: Array<any>;
+  providerCategories: (number | string)[];
+  loadingCategories?: boolean;};
 
 const DetailCard: React.FC<DetailCardProps> = ({
   logo,
   name,
   description,
   categories,
-  providerCategories
-}) => {
+  providerCategories,
+  loadingCategories = false,}) => {
   const isString = typeof logo === "string";
 
   return (
@@ -33,46 +33,40 @@ const DetailCard: React.FC<DetailCardProps> = ({
 
       <div className="house-card-info">
 
-        {/* Dynamic Categories */}
 {/* Dynamic Categories */}
-<div className="outline-row">
-  {Array.isArray(providerCategories) && providerCategories.length > 0 ? (
-    providerCategories.map((catId) => {
-      // robust comparison: string-to-string to avoid type mismatch
-      const category = Array.isArray(categories)
-        ? categories.find((c) => String(c?.id) === String(catId))
-        : null;
+  <div className="outline-row">
+    {Array.isArray(providerCategories) && providerCategories.length > 0 ? (
+      providerCategories.map((catId) => {
+        // if categories still loading, show placeholder
+        if (loadingCategories || !Array.isArray(categories) || categories.length === 0) {
+          return (
+            <div key={String(catId)} className="outline-items">
+              <p style={{ opacity: 0.6, fontStyle: "italic" }}>Loading categories…</p>
+            </div>
+          );
+        }
 
-      if (!categories || categories.length === 0) {
-        // categories still loading or empty — show subtle placeholder
+        const category = categories.find((c) => String(c?.id) === String(catId));
+        if (!category) {
+          return (
+            <div key={String(catId)} className="outline-items">
+              <p style={{ opacity: 0.6, fontStyle: "italic" }}>{`Category #${String(catId)}`}</p>
+            </div>
+          );
+        }
+
         return (
           <div key={String(catId)} className="outline-items">
-            <p style={{ opacity: 0.6, fontStyle: "italic" }}>Loading categories…</p>
+            <p>{category.name}</p>
           </div>
         );
-      }
-
-      if (!category) {
-        // mapping failed — show ID so it's obvious (helpful for debugging)
-        return (
-          <div key={String(catId)} className="outline-items">
-            <p style={{ opacity: 0.6, fontStyle: "italic" }}>{`Category #${String(catId)}`}</p>
-          </div>
-        );
-      }
-
-      return (
-        <div key={String(catId)} className="outline-items">
-          <p>{category.name}</p>
-        </div>
-      );
-    })
-  ) : (
-    <div className="outline-items">
-      <p style={{ opacity: 0.6, fontStyle: "italic" }}>No categories</p>
-    </div>
-  )}
-</div>
+      })
+    ) : (
+      <div className="outline-items">
+        <p style={{ opacity: 0.6, fontStyle: "italic" }}>No categories</p>
+      </div>
+    )}
+  </div>
 
 
         <h2 className="house-card-title">{name}</h2>
