@@ -45,7 +45,7 @@ const ChangePass = () => {
 
 
           <button type="button" className="change-btn">
-            Forgot Passwordsss
+            Forgot Password
           </button>
 
           
