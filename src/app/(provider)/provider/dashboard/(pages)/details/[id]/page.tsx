@@ -10,36 +10,52 @@ import { useParams } from "next/navigation";
 import { API_URL } from "@/config";
 
 export default function DetailsPage() {
-  const params = useParams(); 
-  
-  const [provider, setProvider] = useState(null);
+  const params = useParams();
+  const providerId = params?.id; // no need to keep as state unless you plan to change it
+
+  // Provider state
+  const [provider, setProvider] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
-   const [providerId, setproviderId] = useState(params?.id);
+  // Categories state (moved to top-level)
+  const [categories, setCategories] = useState<any[]>([]);
 
+  // Fetch categories once on mount
+  useEffect(() => {
+    let isMounted = true;
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(`${API_URL}categories`);
+        if (!res.ok) {
+          // optionally handle status
+          return;
+        }
+        const data = await res.json();
+        if (isMounted) setCategories(data || []);
+      } catch (err) {
+        // swallow or set a non-fatal error (categories not critical)
+        console.error("Failed to load categories", err);
+      }
+    };
+    fetchCategories();
+    return () => { isMounted = false; };
+  }, []);
+
+  // Fetch provider when providerId changes
   useEffect(() => {
     if (!providerId) {
       setError("No providerId provided in URL.");
       setLoading(false);
       return;
     }
-const [categories, setCategories] = useState([]);
-
-useEffect(() => {
-  fetch(`${API_URL}categories`)
-    .then(res => res.json())
-    .then(data => setCategories(data))
-    .catch(() => {});
-}, []);
-
 
     let isMounted = true;
-
     const fetchProvider = async () => {
+      setLoading(true);
+      setError(null);
       try {
-
-        const token = localStorage.getItem("token");
+        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
         if (!token) {
           if (isMounted) {
@@ -60,13 +76,11 @@ useEffect(() => {
         const data = await res.json();
 
         if (!res.ok) {
-
           if (isMounted) setError(data?.error || `Failed to fetch provider (${res.status})`);
         } else {
           if (isMounted) setProvider(data?.provider ?? data ?? null);
         }
       } catch (err) {
-
         if (isMounted) setError(`Error loading provider: ${String(err)}`);
       } finally {
         if (isMounted) setLoading(false);
@@ -76,7 +90,6 @@ useEffect(() => {
     fetchProvider();
 
     return () => { isMounted = false; };
-    
   }, [providerId]);
 
   if (loading) return <div>Loading provider...</div>;
