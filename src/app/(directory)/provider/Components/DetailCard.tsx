@@ -27,7 +27,7 @@ const DetailCard: React.FC<DetailCardProps> = ({ logo, name, description }) => {
       <div className="house-card-info">
         <div className="outline-row">
           <div className="outline-items">
-            <p>Architecture</p>
+            <p>Architecturesssssssssssssssss</p>
           </div>
 
           <div className="outline-items">
