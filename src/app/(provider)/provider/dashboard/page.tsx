@@ -1,6 +1,6 @@
 "use client";
 
-import { API_URL } from "@/config";
+import { API_URL ,IMG_URL} from "@/config";
 import React, { useState,useEffect } from 'react'
 import { createPortal } from "react-dom";
 import Image from "next/image";
@@ -171,11 +171,16 @@ const Page = () => {
                 >
                   <td className="lead-name lead-col">
                     
-                    <img
-                      src={`https://i.pravatar.cc/40?img=${index + 1}`}
-                      alt="Avatar"
-                      className="w-[32px] h-[32px] rounded-full"
-                    />
+                    {lead?.user?.profile_image && (
+
+                      <img
+                        src={`${IMG_URL}uploads/${lead?.user?.profile_image}`}
+                        alt="Avatar"
+                        className="w-[32px] h-[32px] rounded-full"
+                      />
+
+                    )}
+
                     <span className="text-gray-800 font-medium">{lead?.title}</span>
                   </td>
                   <td className="project-col">
