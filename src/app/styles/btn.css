@@ -29,7 +29,7 @@
     background: var(--primary-color);
     color: #ffffff;
     font-size: 14px;
-    
+
 
     padding: 10px 26px;
     border-radius: 5px;
@@ -249,7 +249,7 @@ button.house-card-btn:hover {
     color: #fff;
     border-radius: 5px;
     padding: 18px 26px; line-height: 1;
-   
+
     font-size: 16px;
     display: inline-block; cursor: pointer;
 }
@@ -518,6 +518,20 @@ line-height: 1;
 
 }
 
+
+
+
+@media (max-width: 767px) {
+.get-listed {margin: 10px 0 0;}
+.signup-btn{margin: 10px 0 20px;}
+
+}
+
+
+
+
+
+
 @media (max-width: 600px) {
 .search-container button{font-size: 15px;padding: 15px 22px;}
 .header-div .h-btn{padding: 10px 15px;}
@@ -531,3 +545,5 @@ line-height: 1;
 .header-div .h-btn{display: none;}
 .header-div .h-login{margin: 0;}
 }
+
+

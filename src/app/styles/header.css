@@ -10,7 +10,7 @@
 }
 
 .prov-dashboard .header ,
-.public .header 
+.public .header
 {
     padding-top: 0;
     background: #ffffff;
@@ -42,7 +42,7 @@
 .directory .loged-inn-div > .loged-inn-div,
 .public .loged-inn-div > .loged-inn-div
  {
-    background: #ffffff; 
+    background: #ffffff;
 }
 
 
@@ -82,16 +82,16 @@
 
 .header {
     background-color: #ffffff;
-    padding: 50px 0 0px; transition: all 0.4s ease-in-out; 
+    padding: 50px 0 0px; transition: all 0.4s ease-in-out;
     border-bottom: 1px solid #ffffff;
-    
+
 }
 
 .header-div {
     background: #f1f3fa;
     padding: 22px 30px;
     border-radius: 12px;
-   
+
 }
 
 
@@ -171,6 +171,16 @@ body{position: relative;}
 
 .header {padding: 30px 0 60px;}
 
+
+.header.fixedtop .header-div {
+        padding: 22px 0px;
+
+
+}
+
+.header-div {
+    padding: 22px 22px;}
+
 }
 
 
@@ -186,10 +196,10 @@ body{position: relative;}
 
 
 @media (max-width: 767px) {
-.header-div {
-    padding: 12px 12px;
-}
 
+    .header-div {
+        padding: 12px 12px 12px 20px;
+    }
 
 .header {padding: 20px 0 40px;}
 
