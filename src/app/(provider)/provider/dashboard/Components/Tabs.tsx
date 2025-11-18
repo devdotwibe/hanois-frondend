@@ -46,7 +46,7 @@ const handleTabClick = (tabId) => {
     facebook: "",
     instagram: "",
     other: "",
-    services: [], 
+    services: [],
     professionalHeadline: "",
     image: null,
   });
@@ -406,7 +406,7 @@ useEffect(() => {
           </li>
         ))}
       </ul>
-     
+
       {/* Tab Content */}
       <div className="tab-content-wrap">
         <div className={`tab-panel ${activeTab === "companyinfo" ? "show" : ""}`}>
@@ -453,7 +453,7 @@ useEffect(() => {
               </select>
 
 
- 
+
 
 
 
@@ -464,7 +464,7 @@ useEffect(() => {
 
             </div> */}
 
-            <MultiSelect 
+            <MultiSelect
  label="Company Categories"
   options={categoriesList}
   selected={formData.categories}
@@ -476,7 +476,7 @@ useEffect(() => {
 
 
 
-            
+
 
             <div className="form-grp">
               <label>Company Phone Number</label>
@@ -624,7 +624,7 @@ useEffect(() => {
     selected={formData.services}
     onChange={(values) => {
       setFormData((prev) => ({ ...prev, services: values }));
-      handleServicesSelect(values); 
+      handleServicesSelect(values);
     }}
   />
 
@@ -632,7 +632,7 @@ useEffect(() => {
 
 
 
-           
+
               {selectedServices.length > 0 && (
                 <div className="svc-outer">
                   {selectedServices.map((svc, idx) => (
@@ -661,7 +661,7 @@ useEffect(() => {
                         style={{ padding: "10px", border: "none", background: "transparent" }}
                       />
 
-                        
+
                       </div>
 
 
@@ -675,24 +675,24 @@ useEffect(() => {
                         style={{ padding: "10px", border: "none", background: "transparent" }}
                       />
 
-                  
+
                       <select
                         value={svc.currency}
                         onChange={(e) => handleServiceFieldChange(idx, "currency", e.target.value)}
-                        
+
                       >
                         <option value="KD">KD</option>
                         <option value="USD">USD</option>
                         <option value="EUR">EUR</option>
                       </select>
 
-                 
+
                       <button
                         type="button"
                         onClick={() => removeService(svc.id)}
                         aria-label="Remove service"
                         style={{
-                    
+
                           fontSize: 16,
                         }}
                         className="removeservice"
@@ -701,10 +701,10 @@ useEffect(() => {
                       </button>
 
                       </div>
-                      
-                    
-                   
-                      
+
+
+
+
                     </div>
                   ))}
                 </div>
@@ -733,17 +733,24 @@ useEffect(() => {
            {status.message &&
 
              (
-              <div className="statusmsg-div1 contact-sucess" style={{ marginBottom: 12 }}>
-                <p style={{
-                   
-                     color: status.success ? "#00a056" : "red",
-                     borderColor: status.success ? "#e9f8ef" : "#ffe9e9",
-                    }}>
-                  
-                  {status.message}</p>
-              </div>
+             <div
+  className={`statusmsg-div1 ${
+    status.success ? "success-msg" : "error-msg"
+  }`}
+  style={{ marginBottom: 12 }}
+>
+  <p
+    style={{
+      color: status.success ? "#00a056" : "red",
+      borderColor: status.success ? "#e9f8ef" : "#ffe9e9",
+    }}
+  >
+    {status.message}
+  </p>
+</div>
+
             )
-            
+
             }
 
           </form>
