@@ -3377,8 +3377,8 @@ margin: 0 0 8px !important;
 .proposal-details h4 {
   font-weight: 700;
   color: #171725;
-  margin-bottom: 15px;
-  font-size: 20px;
+  margin-bottom: 10px;
+  font-size: 23px;
     font-family: 'Avenir-Black';
 
 }
@@ -3393,7 +3393,7 @@ margin: 0 0 8px !important;
 }
 
 .proposal-popup h5{
-  font-family: 'Avenir-medium';
+    font-family: 'poppins-medium';
   font-size: 18px;
   margin: 0 0 10px;
 
@@ -3406,9 +3406,13 @@ margin: 0 0 8px !important;
 }
 
 .detail-row span {
-   color: #171725;
-
+   color: #000000;
     font-family: 'poppins-medium';
+
+}
+
+.proposal-popup h5.scratch-text{
+    font-family: 'Avenir-Black';
 
 }
 
@@ -3850,15 +3854,6 @@ a.pro-snd {
     color: #ffffff;
 }
 
-.proposal-popup.public-poup .modal-content {
-    height: auto;
-    max-height: unset;
-}
-.public-poup .proposal-view span {
-    /* display: block; */
-    font-size: 12px;
-    color: #000000;
-}
 
 /* ------------------------------------responsive */
 
