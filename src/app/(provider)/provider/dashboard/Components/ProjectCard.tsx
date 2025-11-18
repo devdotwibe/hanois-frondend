@@ -76,14 +76,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     const data = await res.json();
     console.log("Lead response:", data);
 
-    alert(data.message);
+    
 
       // ✅ Redirect only if success
     if (data.success) {
       window.location.href = "/provider/dashboard"; 
     }
 
-    
+
   } catch (err) {
     console.error("Error adding to leads:", err);
   }
