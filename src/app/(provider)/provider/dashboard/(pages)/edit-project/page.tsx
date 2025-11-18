@@ -456,18 +456,7 @@ className="edit-proj-sucess add-sucess"
           onClick={() =>
             setImageFile((prev) => prev.filter((_, i) => i !== index))
           }
-          style={{
-            position: "absolute",
-            top: "5px",
-            right: "5px",
-            background: "rgba(0,0,0,0.5)",
-            color: "white",
-            border: "none",
-            borderRadius: "50%",
-            width: "24px",
-            height: "24px",
-            cursor: "pointer",
-          }}
+          className="img-onclose"
         >
           ✕
         </button>
@@ -475,6 +464,7 @@ className="edit-proj-sucess add-sucess"
         {/* 🌟 Set Cover */}
         <button
           type="button"
+          className="setas-cover"
           onClick={() => {
             const updatedFiles = imageFile.map((f, i) =>
               Object.assign(f, { isCover: i === index })

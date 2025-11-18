@@ -400,19 +400,6 @@ const UploadBox = () => {
                 setImageFile((prev) => prev.filter((_, i) => i !== index));
               }}
               className="img-onclose"
-              style={{
-                position: "absolute",
-                top: "5px",
-                right: "5px",
-                border: "none",
-                borderRadius: "50%",
-                width: "22px",
-                height: "22px",
-                cursor: "pointer",
-
-              }}
-
-
             >
               ✕
             </button>
