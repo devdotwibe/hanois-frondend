@@ -17,7 +17,7 @@
 }
 
 
-.thank-btn{background: none; border: 2px solid #000000; color: #000000; padding: 15px 20px; border-radius: 4px;  font-family: 'Avenir-Black'; cursor: pointer; width: 350px;
+.thank-btn{background: none; border: 2px solid #000000; color: #000000; padding: 15px 20px; border-radius: 4px;  font-family: 'Avenir-Black'; cursor: pointer; width: 350px; margin: 20px 0 0 ;
 }
 .thank-btn:hover{
     background: #000000; color: #ffffff;
@@ -196,4 +196,17 @@ color: #00a056; font-size: 20px; line-height: 1;
 .add-sucess span img {
     position: relative;
     top: -2px;
+}
+
+
+.fogot-poup .modal-content {
+    max-width: 530px;
+    min-width: 418px; padding: 50px ;
+}
+
+.fogot-poup h2 {
+  font-family: 'Avenir-Black';
+  font-size: 24px; line-height: 1; margin: 0 0 20px;
+
+
 }

@@ -395,8 +395,8 @@ const Login = () => {
           {showPopup &&
           createPortal(
 
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div className="modal-overlay fogot-poup">
+          <div className="modal-content ">
             <h2 className="">Follow email link</h2>
             <p className="">
               You need to follow the link to restart your password
