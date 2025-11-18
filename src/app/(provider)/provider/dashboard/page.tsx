@@ -74,8 +74,9 @@ const [leadNote, setLeadNote] = useState("");
 
 const openLeadModal = (lead: any) => {
   setSelectedLead(lead);
- setLeadStatus(lead?.status || lead?.lead_status || "");
-setLeadNote(lead?.description || "");
+setLeadStatus(lead?.lead_status ?? "Awaiting Review");
+setLeadNote(lead?.lead_description ?? "");
+
   setOpenPopup(true);
 };
 
@@ -183,12 +184,13 @@ const handleSaveLead = async () => {
                   <td className="status-col">
                     <span
                       className={`highlightedd bg-blue ${getStatusColor(
-                        lead.status
+                        lead.lead_status
                       )}`}
                       onClick={() => openLeadModal(lead)}
                       style={{ cursor: "pointer" }}
                     >
-                      {lead.status}
+                     {lead.lead_status ?? "Awaiting Review"}
+
                     </span>
                   </td>
                 </tr>
