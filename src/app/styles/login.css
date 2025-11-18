@@ -384,6 +384,7 @@ button.apple-btn,
 
 .logincol2 h2{font-size: 32px; margin: 0 0 20px;}
 
+.forget-pass { margin: 15px 0 15px;}
 
 }
 
@@ -430,8 +431,15 @@ button.back-bth {
     width: 100%;
 }
 
+.fogot-poup .modal-content {
+    padding: 40px;
+}
+
+
 
 }
+
+
 
 
 
@@ -444,5 +452,9 @@ button.back-bth {
 p.terms{
     max-width: 100%;
 }
+
+
+
+
 
 }

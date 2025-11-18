@@ -210,3 +210,39 @@ color: #00a056; font-size: 20px; line-height: 1;
 
 
 }
+
+
+/* ------------------------------------------------------- */
+@media (max-width: 767px) {
+
+
+.fogot-poup .modal-content{
+  padding: 40px;
+}
+.thank-btn{padding: 12px 20px; margin: 10px 0 0;}
+}
+
+/* ---------------------------------------------------------- */
+
+@media (max-width: 600px) {
+.fogot-poup .modal-content{max-width: unset !important;
+    min-width: unset !important; width: 90% !important;
+}
+
+.fogot-poup h2{font-size: 22px;}
+
+.fogot-poup h2 {
+    margin: 0 0 10px;}
+
+
+
+}
+
+/* ------------------------------------ */
+@media (max-width: 480px) {
+.thank-btn{width: 100%; margin: 0 0 0;}
+
+.fogot-poup .modal-content{padding: 40px 30px;}
+
+
+}
