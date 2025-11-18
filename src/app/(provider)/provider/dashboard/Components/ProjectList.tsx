@@ -4,76 +4,68 @@ import React, { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
 import { API_URL } from "@/config";
 
-interface ItemType {
+interface ServiceItem {
   id: number;
   name: string;
 }
 
+interface CategoryItem {
+  id: number;
+  name: string;
+}
+
+interface UserItem {
+  id: number;
+  name: string;
+  email: string;
+  phone: string | null;
+  profile_image: string | null;
+}
+
 interface ProjectItem {
   id: number;
+  user_id: number;
   title: string;
-  notes: string;
-  services: number | string;
-  luxury_level: number | string;
+  notes: string | null;
+  project_type: number | null;
+  location: string | null;
   land_size: string;
-  location: string;
+  luxury_level: number | null;
+  service_ids: number[] | null;
+  basement: string | null;
   listing_style: string;
+  build_area: number | null;
+  cost_finsh: number | null;
+  suggest_cost: number | null;
+  total_cost: number | null;
+  status: string | null;
+
+  user: UserItem | null;
+  category: CategoryItem | null;
+  service_list: ServiceItem[];
 }
 
 const ProjectList = () => {
   const [projects, setProjects] = useState<ProjectItem[]>([]);
-  const [categories, setCategories] = useState<ItemType[]>([]);
-  const [servicesList, setServicesList] = useState<ItemType[]>([]);
-  const [designLevels, setDesignLevels] = useState<ItemType[]>([]);
 
-  const loadMeta = async () => {
+  const loadProjects = async () => {
     try {
-      const [catRes, servRes, desRes] = await Promise.all([
-        fetch(`${API_URL}/categories`),
-        fetch(`${API_URL}/services`),
-        fetch(`${API_URL}/design`)
-      ]);
+      const res = await fetch(`${API_URL}/users/public-project`);
+      const data = await res.json();
 
-      setCategories(await catRes.json());
-      setServicesList(await servRes.json());
-      setDesignLevels(await desRes.json());
+      if (data.success && Array.isArray(data.data)) {
+        setProjects(data.data);
+      } else {
+        console.error("Unexpected API response:", data);
+      }
     } catch (err) {
-      console.error("Error loading dropdown lists", err);
+      console.error("Error fetching public projects:", err);
     }
   };
-
-const loadProjects = async () => {
-  try {
-    const res = await fetch(`${API_URL}/users/public-project`);
-    const data = await res.json();
-
-    if (Array.isArray(data)) {
-      setProjects(data);
-    } else if (data.success && Array.isArray(data.projects)) {
-      setProjects(data.projects);
-    } else {
-      console.error("Unexpected response:", data);
-    }
-  } catch (err) {
-    console.error("Error fetching public projects:", err);
-  }
-};
-
 
   useEffect(() => {
-    loadMeta();
     loadProjects();
   }, []);
-
-  const getServiceName = (id: string | number) => {
-    const found = servicesList.find(s => s.id === Number(id));
-    return found?.name || "";
-  };
-
-  const getDesignName = (id: string | number) => {
-    const found = designLevels.find(d => d.id === Number(id));
-    return found?.name || "";
-  };
 
   return (
     <div className="wrapper-inputpublic">
@@ -84,14 +76,22 @@ const loadProjects = async () => {
       <div className="listing-div">
         {projects.map((item) => (
           <ProjectCard
+           id={item.id}
             key={item.id}
             title={item.title}
-            user={"User"}
-            services={getServiceName(item.services)}
-            luxury={getDesignName(item.luxury_level)}
+            user={item.user?.name || "Unknown User"}
+            services={item.service_list?.map(s => s.name).join(", ")}
+            luxury={String(item.luxury_level || "N/A")}
             landSize={item.land_size}
-            location={item.location}
+            location={item.location || "N/A"}
             description={item.notes || ""}
+            listingStyle={item.listing_style}
+            basement={item.basement || "N/A"}
+            typeName={item.category?.name || "N/A"}
+            serviceNames={item.service_list?.map(s => s.name) || []}
+            email={item.user?.email}
+            phone={item.user?.phone || ""}
+            profileImage={item.user?.profile_image || ""}
           />
         ))}
       </div>
