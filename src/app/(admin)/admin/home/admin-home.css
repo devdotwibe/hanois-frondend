@@ -25,9 +25,12 @@
  }
 
  .container {
-     margin: 40px auto;
-     padding: 20px;
-     max-width: 1200px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px 24px 24px 24px;
+  color: #2c3e50;
+  border-radius: 14px;
+
  }
 
  h1 {
@@ -71,7 +74,7 @@
      margin-bottom: 40px !important;
      border-radius: 8px;
      background: #fff;
-     
+
  }
 
  .button {
@@ -125,11 +128,6 @@
  }
 
 
- /* Container for the form */
-.container {
-  margin: 30px auto;
-  padding: 0 15px;
-}
 
 /* Section grouping */
 .section {
@@ -416,7 +414,7 @@ label {
     border: 2px solid #d7dbec;
     border-radius: 4px 4px 0 0;
     transition: all .5s ease-in-out;
-  
+
 }
 
 .ql-container.ql-snow{
@@ -424,7 +422,7 @@ label {
     background: #fff;
     border: 2px solid #d7dbec;
     border-radius:0 0 4px 4px;
-    
+
     transition: all .5s ease-in-out;
 }
 
@@ -440,8 +438,8 @@ label {
 .ql-container .ql-editor:focus{
     background: #ffffff;
   outline: none;
-   border: 2px solid var(--primary-color); 
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+   border: 2px solid var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 .ql-container.ql-snow:focus,
@@ -449,8 +447,8 @@ input[type="text"]:focus,
 textarea:focus {
   background: #ffffff;
   outline: none;
-   border: 2px solid var(--primary-color); 
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+   border: 2px solid var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 .quill:hover,
@@ -657,14 +655,7 @@ button[type="submit"]:disabled {
 
 
 
-/* Container styling */
-.container {
-  margin: 0 auto;
-  padding: 24px 150px 24px 24px;
-  color: #2c3e50;
-  border-radius: 14px;
 
-}
 
 /* Page header */
 h1 {
@@ -678,7 +669,7 @@ h1 {
 .tabs {
   display: flex;
   gap: 12px;
-  
+
   margin-bottom: 28px;
 }
 
@@ -707,7 +698,7 @@ form {
 
 
   border-radius: 12px;
-  
+
 }
 
 /* For Tab 1 form sections */
@@ -750,7 +741,7 @@ input[type="text"]:focus {
 }
 input[type="text"]:hover
 {
-   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 
@@ -872,13 +863,13 @@ select{
     padding: 20px 15px;
         margin: 0 0 12px !important;
             border: 2px solid #d7dbec;
-            
+
 }
 select:focus{
   background: #ffffff;
   outline: none;
-   border-color: var(--primary-color); 
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+   border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 select,
@@ -892,8 +883,8 @@ background-position-y: 50% !important;
 
 select:hover
 {
-   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
- 
+   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+
 }
 
 

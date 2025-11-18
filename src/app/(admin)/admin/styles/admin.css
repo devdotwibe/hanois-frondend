@@ -72,7 +72,7 @@ h1{
   flex-direction: column;
 }
 .admin-nav .dropdown-menu a{
-  width: 100% !important; text-align: left; list-style: none; 
+  width: 100% !important; text-align: left; list-style: none;
    padding: 12px 19px 12px 40px; margin-bottom: 10px !important;  display: inline-block;
 }
 
@@ -92,7 +92,7 @@ h1{
 .admin-nav button.dropdown-btn::after {
   display: inline-block;
   margin-left: 8px;
-  font-size: 0.75rem; 
+  font-size: 0.75rem;
   transition: transform 0.3s ease;
       position: absolute;
     right: 0; top: 15px;
@@ -159,7 +159,7 @@ h1{
 .admin-nav a.active {
 color: #2050f5;
     background: #f0f2fb;
-      
+
 
 }
 
@@ -289,7 +289,7 @@ color: #2050f5;
 }
 form.settingsform {
     margin-top: 30px !important;
- 
+
 }
 
 .form-grp label {
@@ -305,7 +305,7 @@ form.settingsform {
     border: 2px solid #d7dbec;
      color: #000000;
     padding: 20px 15px;
-    border-radius: 4px !important; transition: all 0.5s ease-in-out; margin-bottom: 12px !important;
+    border-radius: 4px !important; transition: all 0.5s ease-in-out; margin-bottom: 12px !important; font-size: 16px;
 }
 
 .form-grp input:focus,
@@ -313,14 +313,14 @@ form.settingsform {
 {
   background: #ffffff;
   outline: none;
-   border-color: var(--primary-color); 
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+   border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 .form-grp input:hover,
 .form-grp textarea:hover
 {
-   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
- 
+   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+
 }
 
 
@@ -340,7 +340,7 @@ form.settingsform {
   padding: 6px 10px;
   margin-right: 5px;
   font-size: 0.85rem;
-  cursor: pointer; 
+  cursor: pointer;
   margin: 10px 10px 10px 0 !important;
   transition: background 0.3s;
 }
