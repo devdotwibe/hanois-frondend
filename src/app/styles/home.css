@@ -2649,7 +2649,7 @@ width: 20px; height: 20px;
 
 }
 .select-grp .dropdown-option{
-  width: 100%; display: block; line-height: 1;
+  width: max-content; display: block; line-height: 1;
       display: flex;
     align-items: center;
 }
@@ -2743,7 +2743,7 @@ margin-top: 25px;
 }
 
 .svc1 input {
-    padding: 0 !important;
+    padding: 0 !important; width: 100%;
 }
 
 
