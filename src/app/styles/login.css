@@ -354,7 +354,7 @@ span.eye-icon {
   padding-left: 70px;
 }
 
-
+.login-divider{margin: 0 0 30px;}
 }
 
 
@@ -371,7 +371,7 @@ button.back-bth {
 .login-container {
         margin-top: 98px;
         max-width: 100%;
-        padding-right: 70px;
+        padding-inline: 70px;
 }
 .form-grp input, .form-grp textarea{
     padding: 15px 15px;
@@ -382,6 +382,7 @@ button.apple-btn,
 .google-btn
 {padding: 15px 15px;}
 
+.logincol2 h2{font-size: 32px; margin: 0 0 20px;}
 
 
 }
@@ -411,14 +412,37 @@ button.back-bth {
 
 
 .login-container {
-        margin-top: 120px;
+        margin-top: 130px;
          padding-inline: 5%;
 
     }
 
 .login-divider {
-    margin: 0 0 30px;
+    margin: 0 0 20px;
 }
-.logincol2 h2{font-size: 30px;}
+.logincol2 h2{font-size: 30px;
+    margin: 0 0 10px;
+
+}
+
+
+.formcol2 .form-grp {
+    width: 100%;
+}
+
+
+}
+
+
+
+/* ----------------------------- */
+
+
+
+@media (max-width: 480px) {
+
+p.terms{
+    max-width: 100%;
+}
 
 }
