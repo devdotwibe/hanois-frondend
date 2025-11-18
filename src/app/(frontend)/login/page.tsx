@@ -170,42 +170,39 @@ const Login = () => {
     }
   };
 
-const [popupMessage, setPopupMessage] = useState<"sent" | "notfound" | "">("");
 
-// In handleForgotPassword:
-const handleForgotPassword = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
 
-  const email = (document.getElementById("forgotEmail") as HTMLInputElement).value;
+    const email = (document.getElementById("forgotEmail") as HTMLInputElement).value;
 
-  if (!email) {
-    alert("Please enter your email.");
-    return;
-  }
-
-  try {
-    const res = await fetch(`${API_URL}users/forgot-password`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-
-    const data = await res.json();
-
-    if (res.ok || data.message === "Password reset link sent to your email") {
-      // Success case (or fake success from backend)
-      setPopupMessage("sent");
-    } else if (data.error === "Email not found") {
-      // Only if backend still returns the error (not recommended)
-      setPopupMessage("notfound");
-    } else {
-      alert(data.error || "Something went wrong.");
+    if (!email) {
+      alert("Please enter your email.");
+      return;
     }
-  } catch (err) {
-    console.error("Forgot Password Error:", err);
-    alert("Something went wrong. Please try again.");
-  }
-};
+
+    try {
+      const res = await fetch(`${API_URL}users/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "Email not found.");
+        return;
+      }
+
+      setShowPopup(true);
+
+    } catch (err) {
+      console.error("Forgot Password Error:", err);
+      alert("Something went wrong. Please try again.");
+    }
+  };
+
 
 
   return (
@@ -225,7 +222,7 @@ const handleForgotPassword = async (e: React.FormEvent) => {
             />
           </div>
 
-          <div className="logo-div for-desk"    onClick={() => router.push("/")} >
+          <div className="logo-div"    onClick={() => router.push("/")} >
             <Link href="/">
              <Image
               src={headerlogo}
@@ -241,19 +238,6 @@ const handleForgotPassword = async (e: React.FormEvent) => {
 
         {/* Right Column */}
         <div className="logincol2">
-
-           <div className="logo-div for-mob"    onClick={() => router.push("/")} >
-            <Link href="/">
-             <Image
-              src={headerlogo}
-              alt="Login background"
-              width={100}
-              height={18}
-              className="login-img"
-            />
-            </Link>
-
-          </div>
 
           <button className="back-bth test"  onClick={() => router.push("/")}>
               <Image
@@ -408,33 +392,30 @@ const handleForgotPassword = async (e: React.FormEvent) => {
 
 
 
-{/* Custom Popups */}
-{(popupMessage === "sent" || popupMessage === "notfound") &&
-  createPortal(
-    <div className="modal-overlay" onClick={() => setPopupMessage("")}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>
-          {popupMessage === "sent" ? "Check Your Email" : "Email Not Found"}
-        </h2>
-        <p>
-          {popupMessage === "sent"
-            ? "We’ve sent a password reset link to your email. Please check your inbox (and spam folder)."
-            : "We couldn’t find an account with that email address."}
-        </p>
+          {showPopup &&
+          createPortal(
 
-        <button onClick={() => {
-          setPopupMessage("");
-          if (popupMessage === "sent") {
-            setMode("login"); // optional: go back to login
-          }
-        }} className="thank-btn">
-          OK, Thanks
-        </button>
-      </div>
-    </div>,
-    document.body
-  )
-}
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 className="">Follow email link</h2>
+            <p className="">
+              You need to follow the link to restart your password
+            </p>
+
+
+            <button
+              onClick={closePopup}
+              className="thank-btn"
+            >
+              OK, Thanks
+            </button>
+
+
+          </div>
+        </div>
+        ,
+        document.body
+      )}
 
           {/* -------reset password-------- */}
 
