@@ -8,6 +8,7 @@ const SideBar = () => {
 
   // Define your links
   const links = [
+    { href: "/user/dashboard", label: "Service Providers" },
     { href: "/user/dashboard", label: "My Project" },
     { href: "/user/my-account", label: "My Account" },
   ];
