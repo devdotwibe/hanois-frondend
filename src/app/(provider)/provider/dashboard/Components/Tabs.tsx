@@ -733,15 +733,22 @@ useEffect(() => {
            {status.message &&
 
              (
-              <div className="statusmsg-div1" style={{ marginBottom: 12 }}>
-                <p style={{
+             <div
+  className={`statusmsg-div1 ${
+    status.success ? "success-msg" : "error-msg"
+  }`}
+  style={{ marginBottom: 12 }}
+>
+  <p
+    style={{
+      color: status.success ? "#00a056" : "red",
+      borderColor: status.success ? "#e9f8ef" : "#ffe9e9",
+    }}
+  >
+    {status.message}
+  </p>
+</div>
 
-                     color: status.success ? "#00a056" : "red",
-                     borderColor: status.success ? "#e9f8ef" : "#ffe9e9",
-                    }}>
-
-                  {status.message}</p>
-              </div>
             )
 
             }
