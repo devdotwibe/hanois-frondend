@@ -601,7 +601,7 @@ padding: 80px 0 0;
 
 .btn-cvr{display: flex; justify-content: flex-end; flex-wrap: wrap; margin: 20px 0 0;}
 
-.btn-cvr .login-btn{width: 450px;}
+.btn-cvr .login-btn{width: 100%; max-width: 450px;}
 
 .b-card .b-img {border-radius: 11px;overflow: hidden;}
 
@@ -3945,6 +3945,10 @@ a.pro-snd {
     max-width: 100%;
     width: 94%;
 }
+.form-c h3{font-size: 34px;}
+
+.btn-cvr{justify-content: center;}
+
 
 }
 
@@ -4206,6 +4210,20 @@ p {font-size: 14px;}
         width: 90%;
         max-width: 100%;
     }
+
+
+.form-c h3{font-size: 32px; margin: 10px 0 14px;}
+.contact-div .form-c p {
+    font-size: 18px;
+}
+.form-c form {
+    margin-top: 20px;
+}
+
+.form-grp input, .form-grp textarea {
+    padding: 15px 15px;
+}
+
 }
 
 
@@ -4256,6 +4274,7 @@ p {font-size: 14px;}
     .get-listedpage .business-b-out {
         width: 100%; margin-right: 0;
     }
+
 
 
 
