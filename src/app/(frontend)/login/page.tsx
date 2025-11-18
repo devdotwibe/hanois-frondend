@@ -8,12 +8,14 @@ import appleimg from "../../../../public/images/apple.svg";
 import googleimg from "../../../../public/images/google.svg";
 import backarrow from "../../../../public/images/left-arrow.svg";
 import headerlogo from "../../../../public/images/logo2.png";
+import eyeicon from "../../../../public/images/eyeicon.svg"
+import eyeiconhide from "../../../../public/images/eyeiconhide.svg"
 
 import { createPortal } from "react-dom";
 import { useRouter,useSearchParams } from "next/navigation";
 
 import Link from "next/link";
-import { API_URL } from '@/config'; 
+import { API_URL } from '@/config';
 import "../signup/signup.css";
 
 
@@ -55,11 +57,11 @@ const Login = () => {
 
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    
+
     e.preventDefault();
 
-     setLoginError(""); 
-    
+     setLoginError("");
+
       const formData = new FormData(e.currentTarget as HTMLFormElement);
       const email = formData.get("email")?.toString() || "";
       const password = formData.get("password")?.toString() || "";
@@ -84,11 +86,11 @@ const Login = () => {
           localStorage.setItem("auth", data.data.role);
 
           localStorage.setItem("user", JSON.stringify(data.data));
-          
+
           document.cookie = `token=${encodeURIComponent(data.data.token)}; path=/; max-age=${60 * 60 * 24 * 7};`;
-          
+
           document.cookie = `auth=${encodeURIComponent(data.data.role)}; path=/; max-age=${60 * 60 * 24 * 7};`;
-          
+
           if (data.data.redirectUrl) {
 
               router.push(data.data.redirectUrl);
@@ -98,7 +100,7 @@ const Login = () => {
               router.push("/provider/dashboard");
 
             } else {
-              
+
               router.push("/user/dashboard");
           }
 
@@ -109,7 +111,7 @@ const Login = () => {
     }
   };
 
- 
+
   const handleClick = () => {
     setShowPopup(true);
   };
@@ -154,7 +156,7 @@ const Login = () => {
         setTimeout(() => {
 
           router.push('/login');
-          
+
         }, 5000);
 
       } else {
@@ -230,7 +232,7 @@ const Login = () => {
               className="login-img"
             />
             </Link>
-           
+
           </div>
         </div>
 
@@ -272,6 +274,30 @@ const Login = () => {
                     required
                     className={`input-field ${loginError ? 'email-invalid' : ''}`}
                   />
+
+                  <span className="eye-icon">
+                    <Image
+                    src={eyeiconhide}
+                    alt="img"
+                    width={20}
+                    height={20}
+
+                    />
+
+                    {/* ontoggle */}
+
+
+                    {/* <Image
+                    src={eyeicon}
+                    alt="img"
+                    width={20}
+                    height={20}
+
+                    /> */}
+
+
+
+                  </span>
                 </div>
 
                 {loginError && <p style={{ color: 'red', marginTop: '10px' }} className="error-message">{loginError}</p>}
@@ -348,11 +374,11 @@ const Login = () => {
     <form className="login-form" onSubmit={handleForgotPassword}>
       <div className="form-grp">
         <label htmlFor="forgotEmail">Email</label>
-        <input 
-          type="email" 
-          id="forgotEmail" 
-          placeholder="Email" 
-          required 
+        <input
+          type="email"
+          id="forgotEmail"
+          placeholder="Email"
+          required
         />
       </div>
 
@@ -368,7 +394,7 @@ const Login = () => {
 
           {showPopup &&
           createPortal(
-          
+
         <div className="modal-overlay">
           <div className="modal-content">
             <h2 className="">Follow email link</h2>
@@ -399,14 +425,14 @@ const Login = () => {
 
               <h2 className="">Reset Password</h2>
 
-              
+
                 <form className="login-form" onSubmit={handleResetPassword} >
 
                       <div className="form-grp">
                         <label htmlFor="password">Password</label>
                         <input
                           type="password"
-                          name="password"   
+                          name="password"
                           id="password"
                           placeholder="+8 characters"
                           onChange={(e) => setPassword(e.target.value)}
@@ -422,7 +448,7 @@ const Login = () => {
                         <input
                           type="password"
                           id="conformpassword"
-                          name="confirmPassword"  
+                          name="confirmPassword"
                           placeholder="Confirm a password"
                           required
                           onChange={(e) => setConfirmPassword(e.target.value)}
@@ -432,16 +458,16 @@ const Login = () => {
 
                       {error && <p style={{ color: "red", marginTop: "8px" }}>{error}</p>}
 
-                      {success && 
+                      {success &&
                           createPortal(
-                          <div className='login-success'> 
+                          <div className='login-success'>
                           <p>{success}</p>  </div>
                                   ,
                                 document.body
                           )
                         }
 
-              
+
                 <button type="submit" className="login-btn">
                   Reset Password
                 </button>
@@ -449,7 +475,7 @@ const Login = () => {
 
               </form>
 
-              
+
             </div>
         )}
 

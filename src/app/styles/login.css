@@ -91,14 +91,14 @@ button.back-bth {
 {
   background: #ffffff;
   outline: none;
-   border-color: var(--primary-color); 
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+   border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 .form-grp input:hover,
 .form-grp textarea:hover
 {
-   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
- 
+   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+
 }
 
 
@@ -123,7 +123,7 @@ button.back-bth {
 }
 
 
-.logincol2{width: 70%; 
+.logincol2{width: 70%;
     /* background: gray; */ position: relative;
 }
 
@@ -136,7 +136,7 @@ button.back-bth {
 
 
 .login-container {
-    padding-left: 150px; max-width: 640px; margin-top: 120px; 
+    padding-left: 150px; max-width: 640px; margin-top: 120px;
 }
 
 .form-grp {
@@ -147,7 +147,7 @@ button.back-bth {
 
 .form-grp label {
     color: #1b1b25;
-        margin-bottom: 4px; 
+        margin-bottom: 4px;
 }
 
 
@@ -160,12 +160,12 @@ text-decoration: underline;
 color: #000000;
   font-family: 'Avenir-Black'; transition: all 0.4s ease-in-out;
 
- 
+
 
  }
 
 .signup-text a:hover,
- .register-text a:hover{text-decoration: none;} 
+ .register-text a:hover{text-decoration: none;}
 
 
 .signup-text {text-align: center; margin: 0 0 10px; color: #a3a3a7;}
@@ -175,15 +175,15 @@ color: #000000;
 
 
 .login-form input::placeholder {
-  color: #a3a3a7;          
-  font-size: 16px;      
-          
+  color: #a3a3a7;
+  font-size: 16px;
+
 }
 
 
 form small{
-    color: #a3a3a7;  
-    margin: 10px 0 0;        
+    color: #a3a3a7;
+    margin: 10px 0 0;
 
 }
 
@@ -194,7 +194,7 @@ form small{
 }
 
 .divider .line1{
-    
+
     width: 100%; height: 0.1px; background: #000000;
     position: absolute; top: 50%; transform: translateY(-50%); z-index: 9;
 }
@@ -312,4 +312,28 @@ p.terms
     top: 2px;
     width: 15px;
     height: 15px;
+}
+
+
+
+
+span.eye-icon {
+    width: 20px;
+    position: absolute;
+    right: 0;
+}
+input#password {
+    padding-right: 40px;
+}
+
+.login-form .form-grp {position: relative;}
+span.eye-icon {
+    position: absolute;
+    top: 40px;
+    right: 15px;
+}
+
+.form-grp:has(.email-invalid) .eye-icon {
+    top: 38px;
+    right: 44px;
 }

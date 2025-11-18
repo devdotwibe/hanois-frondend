@@ -6,7 +6,12 @@ import { useRouter,useSearchParams } from 'next/navigation';
 import backarrow from "../../../../public/images/left-arrow.svg";
 import headerlogo from "../../../../public/images/logo2.png";
 import loginimg from "../../../../public/images/login-sidebar.png";
-import { API_URL } from '@/config'; 
+import eyeicon from "../../../../public/images/eyeicon.svg";
+import eyeiconhide from "../../../../public/images/eyeiconhide.svg";
+
+
+
+import { API_URL } from '@/config';
 import "./signup.css";
 import { createPortal } from "react-dom";
 import Link from 'next/link';
@@ -128,8 +133,8 @@ const SignUp = () => {
             <Image src={headerlogo} alt="Logo" width={100} height={18} className="login-img" />
             </Link>
 
-            
-            
+
+
           </div>
 
         </div>
@@ -182,11 +187,39 @@ const SignUp = () => {
 
                 <input type="password" className={`input-field ${errors.password ? 'email-invalid' : ''}`}  id="password" value={formData.password} onChange={handleChange} placeholder="+8 characters" required />
 
+                <span className="eye-icon">
+                    <Image
+                    src={eyeiconhide}
+                    alt="img"
+                    width={20}
+                    height={20}
+
+                    />
+
+                    {/* ontoggle */}
+
+
+                    {/* <Image
+                    src={eyeicon}
+                    alt="img"
+                    width={20}
+                    height={20}
+
+                    /> */}
+
+
+
+                  </span>
+
                  <span>Use 8 or more characters, with a mix of letters, numbers and synbols</span>
 
                  {errors.password && <span className="error" style={{ color: 'red', marginTop: '10px' }}>{errors.password}</span>}
 
               </div>
+
+
+
+
 
               <div className="form-grp">
                 <label htmlFor="confirmPassword">Confirm Password</label>
@@ -194,30 +227,30 @@ const SignUp = () => {
                 <input type="password" className={`input-field ${errors.confirmPassword ? 'email-invalid' : ''}`}  id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm a password" required />
 
                  {errors.confirmPassword && <span className="error" style={{ color: 'red', marginTop: '10px' }} >{errors.confirmPassword}</span>}
-                 
+
               </div>
 
               <button type="submit" className="login-btn">Sign up</button>
 
-                {successMessage && 
+                {successMessage &&
                  createPortal(
-                  <div className='login-success'> 
+                  <div className='login-success'>
                   <p>{successMessage}</p>  </div>
          ,
         document.body
                  )
 
-                  
+
                 }
-                {generalMessage && 
+                {generalMessage &&
                  createPortal(
-                  <div className='invalid-login'> 
+                  <div className='invalid-login'>
                   <p>{generalMessage}</p>  </div>
          ,
         document.body
                  )
 
-                  
+
                 }
 
             </form>
