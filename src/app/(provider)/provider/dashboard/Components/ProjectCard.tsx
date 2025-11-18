@@ -78,6 +78,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
     alert(data.message);
 
+      // ✅ Redirect only if success
+    if (data.success) {
+      window.location.href = "/provider/dashboard"; 
+    }
+
+    
   } catch (err) {
     console.error("Error adding to leads:", err);
   }
