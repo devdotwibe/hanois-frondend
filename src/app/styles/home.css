@@ -1364,12 +1364,12 @@ font-size: 17px;
 
 
 .form-grp input.warnning-msg{
-border-color: #ffffff;
+border-color: #ffffff !important;
   background-color: #fffbe6;
     box-shadow: 0 0 8px rgba(241, 196, 15, 0.6);
 }
 .form-grp select.warnning-msg{
-border-color: #ffffff;
+border-color: #ffffff !important;
   background-color: #fffbe6;
     box-shadow: 0 0 8px rgba(241, 196, 15, 0.6);
 }
@@ -3854,7 +3854,9 @@ a.pro-snd {
     color: #ffffff;
 }
 
-
+.add-proj-up {
+    position: relative;
+}
 /* ------------------------------------responsive */
 
 

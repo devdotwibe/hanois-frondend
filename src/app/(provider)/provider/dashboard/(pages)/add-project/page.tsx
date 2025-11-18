@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
 import uploadIcon from "../../../../../../../public/images/upload.svg";
+import sucesstik from "../../../../../../../public/images/tik.svg";
 import { API_URL, IMG_URL } from "@/config";
 import DetailCard from "@/app/(directory)/provider/Components/DetailCard";
 import TabBtns from "../../Components/TabBtns";
@@ -257,11 +258,11 @@ const UploadBox = () => {
           logo={provider?.image ? `${IMG_URL}${provider.image}` : "/path/to/logo.png"}
           name={provider?.name || "Unknown Provider"}
           description={
-         
+
             provider?.professional_headline ||
             ""
           }
-          
+
         />
       ) : (
         // fallback (should rarely render)
@@ -270,7 +271,55 @@ const UploadBox = () => {
 
       <TabBtns />
 
-      <div className="">
+      <div className="add-proj-up">
+
+          {/* 🟩 Success Modal */}
+          {modalVisible && (
+            <div
+
+              className="add-proj-sucess add-sucess"
+            >
+
+                {/* <h3>Project Saved!</h3> */}
+
+                <p>
+                  <span>
+                     <Image
+                  src={sucesstik}
+                  alt="img"
+                  width={18}
+                  height={18}
+                  />
+
+                  </span>
+
+                  Your project has been successfully saved.</p>
+                {/* <button
+                  onClick={() => {
+                    setModalVisible(false);
+                    router.push("/provider/dashboard/projects"); // 👈 redirect on close
+                  }}
+
+
+                  style={{
+                    marginTop: "15px",
+                    background: "#0070f3",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "6px",
+                    padding: "8px 16px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Close
+                </button> */}
+
+            </div>
+          )}
+
+
+
+
         <div className="proj-form1 company-profile1 upload-page">
           <h3>Images</h3>
           <p>Upload your project images and details below</p>
@@ -282,7 +331,7 @@ const UploadBox = () => {
     <div
       className="upload-box"
       onClick={() => document.querySelector(".upload-input")?.click()}
-      
+
       onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0070f3")}
       onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#ccc")}
     >
@@ -292,7 +341,7 @@ const UploadBox = () => {
             <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
         </div>
 
-        
+
       <h3 style={{ fontSize: "14px", marginTop: "10px" }}>Upload an image</h3>
       <p style={{ fontSize: "12px", color: "#666", margin: "5px 0" }}>
         Browse your files to upload document
@@ -320,7 +369,7 @@ const UploadBox = () => {
     </div>
 
     {/* Hidden File Input */}
-    
+
 
     {/* Preview Grid */}
     {imageFile &&
@@ -330,7 +379,7 @@ const UploadBox = () => {
         return (
           <div
             key={index}
-            
+
           >
             <img
               src={previewUrl}
@@ -355,7 +404,7 @@ const UploadBox = () => {
                 position: "absolute",
                 top: "5px",
                 right: "5px",
-            
+
                 border: "none",
                 borderRadius: "50%",
                 width: "22px",
@@ -518,57 +567,23 @@ const UploadBox = () => {
             </p>
           )}
 
-          {/* 🟩 Success Modal */}
-          {modalVisible && (
-            <div
-              style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                width: "100vw",
-                height: "100vh",
-                backgroundColor: "rgba(0,0,0,0.4)",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                zIndex: 1000,
-                animation: "fadeIn 0.3s ease-in-out",
-              }}
-            >
-              <div
-                style={{
-                  background: "white",
-                  padding: "30px 40px",
-                  borderRadius: "12px",
-                  textAlign: "center",
-                  boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-                  minWidth: "300px",
-                }}
-              >
-                <h3 style={{ color: "green", marginBottom: "10px" }}>✅ Project Saved!</h3>
-                <p>Your project has been successfully saved.</p>
-                <button
-                  onClick={() => {
-                    setModalVisible(false);
-                    router.push("/provider/dashboard/projects"); // 👈 redirect on close
-                  }}
-                  style={{
-                    marginTop: "15px",
-                    background: "#0070f3",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "6px",
-                    padding: "8px 16px",
-                    cursor: "pointer",
-                  }}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          )}
+
+
+
+
+
         </div>
+
+
+
+
+
+
+
+
       </div>
+
+
     </>
   );
 };

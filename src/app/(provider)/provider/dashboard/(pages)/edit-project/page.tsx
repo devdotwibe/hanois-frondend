@@ -10,7 +10,7 @@ import TabBtns from "../../Components/TabBtns";
 import { useRouter, useSearchParams } from "next/navigation";
 
 
-import sucesstik from "../../../../../../../public/images/sucess-msg.svg"
+import sucesstik from "../../../../../../../public/images/tik.svg"
 
 const EditProject = () => {
   const router = useRouter();
@@ -165,7 +165,7 @@ const EditProject = () => {
     }
   };
 
-  
+
   useEffect(() => {
     if (id) fetchProject();
   }, [id]);
@@ -298,10 +298,43 @@ const handleSubmit = async (e) => {
     />
     ) : (
     <DetailCard />
-    )}      
+    )}
       <TabBtns />
 
-      <div className="">
+      <div className="edit-proj-up">
+
+           {/* 🟩 Success Modal */}
+          {modalVisible &&  (
+            <div
+className="edit-proj-sucess add-sucess"
+            >
+
+                {/* <h3 style={{ color: "green" }}>Project Updated!</h3> */}
+
+                <p>
+                  <span><Image
+                  src={sucesstik}
+                  alt="img"
+                  width={18}
+                  height={18}
+                  /></span>
+                  Your project has been successfully updated.</p>
+                {/* <button
+                  onClick={() => {
+                    setModalVisible(false);
+                    router.push("/provider/dashboard/projects");
+                  }}
+                  className="close-btnn1"
+                >
+                  Close
+                </button> */}
+
+            </div>
+          )}
+
+
+
+
         <div className="proj-form1 company-profile1">
           <h3>Edit Project</h3>
           <p>Update your project images and details below</p>
@@ -309,10 +342,10 @@ const handleSubmit = async (e) => {
 {/* 🟩 Combined Upload & Preview Grid */}
 <div
   className="form-grp upload-area"
-  
+
 >
   {/* 🟦 Upload Box (first grid item) */}
-  
+
 
 
   <div>
@@ -322,7 +355,7 @@ const handleSubmit = async (e) => {
 
     <div
     className="upload-box"
-    
+
     onClick={() => document.querySelector(".upload-input")?.click()}
     // onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0070f3")}
     // onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#d1d5db")}
@@ -354,7 +387,7 @@ const handleSubmit = async (e) => {
 
 
 
-    
+
 
     {/* Hidden Input for Upload */}
   <input
@@ -368,10 +401,10 @@ const handleSubmit = async (e) => {
 
 
   </div>
-    
-  
 
-  
+
+
+
 
   {/* 🖼 Existing Images */}
   {existingImages.map((img, index) => (
@@ -379,7 +412,7 @@ const handleSubmit = async (e) => {
       <img
         src={`${IMG_URL}${img.image_path}`}
         alt="Project"
-        
+
       />
 
       {/* 🗑 Delete Existing Image */}
@@ -390,8 +423,8 @@ const handleSubmit = async (e) => {
           position: "absolute",
           top: "5px",
           right: "5px",
-         
-      
+
+
           border: "none",
           borderRadius: "50%",
           width: "22px",
@@ -406,6 +439,7 @@ const handleSubmit = async (e) => {
       {/* 🌟 Set Cover */}
       <button
         type="button"
+
         onClick={() => {
           const updated = existingImages.map((image, i) => ({
             ...image,
@@ -428,7 +462,7 @@ const handleSubmit = async (e) => {
         <img
           src={previewUrl}
           alt="preview"
-         
+
         />
 
         {/* 🗑 Remove New Image */}
@@ -463,9 +497,9 @@ const handleSubmit = async (e) => {
             setImageFile([...updatedFiles]);
           }}
           style={{
-            
+
             background: file.isCover ? "#2050f5" : "#ccc",
-            
+
             cursor: "pointer",
           }}
         >
@@ -555,7 +589,7 @@ const handleSubmit = async (e) => {
   type="button"
    className="save-btn1"
   onClick={() => setDeleteModalVisible(true)}
-  
+
 >
   Delete
 </button>
@@ -564,7 +598,7 @@ const handleSubmit = async (e) => {
   <button
     type="submit"
     className="save-btn1"
-   
+
   >
     Update
   </button>
@@ -576,58 +610,10 @@ const handleSubmit = async (e) => {
 
           </form>
 
-          {/* 🟩 Success Modal */}
-          {modalVisible && (
-            <div
-              style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                width: "100vw",
-                height: "100vh",
-                backgroundColor: "rgba(0,0,0,0.4)",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                zIndex: 1000,
-              }}
-
-              className="project-edit-popup"
-            >
-              <div
-                style={{
-                  background: "white",
-                  padding: "30px 40px",
-                  borderRadius: "12px",
-                  textAlign: "center",
-                  boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-                }}
-              >
-                <h3 style={{ color: "green" }}>
-
-                  <Image 
-                  src={sucesstik}
-                  alt="img"
-                  width={40}
-                  height={40}
-                  />
 
 
-                  
-                  Project Updated!</h3>
-                <p>Your project has been successfully updated.</p>
-                <button
-                  onClick={() => {
-                    setModalVisible(false);
-                    router.push("/provider/dashboard/projects");
-                  }}
-                  className="close-btnn1"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          )}
+
+
 
           {/* 🟥 Delete Confirmation Modal */}
 {deleteModalVisible && (
@@ -691,7 +677,7 @@ const handleSubmit = async (e) => {
                 headers: token ? { Authorization: `Bearer ${token}` } : {},
               });
               setDeleteModalVisible(false);
-             
+
               router.push("/provider/dashboard/projects");
             } catch (err) {
               console.error("❌ Error deleting project:", err);
