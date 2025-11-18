@@ -2543,9 +2543,9 @@ form small {
 }
 
 .budget-calc {
-    padding: 40px;
-    margin: 40px 0 0;
-    background: #f1f3fa;
+    padding: 40px 30px 25px;
+    margin: 10px 0 0;
+    background: #fafbff;
 
 }
 .budget-calculator {
@@ -2559,8 +2559,14 @@ form small {
 .bud-row {
     margin: 0 0 15px;
 }
+.bud-row p strong {
+    display: block;
+    margin: 0 0 6px;
+}
 
-
+.budget-calc h2 {
+    margin: 0 0 16px;
+}
 
 .create-btn {
     display: flex;
@@ -3148,8 +3154,7 @@ p.project-status {
 }
 
 
-.budget-calc{background-color: #ffffff;
-padding-left: 0;}
+
 
 .editbtn-div {
     display: flex;
