@@ -120,9 +120,12 @@
 
 .header-text {
     margin-inline: 30px;
+    display: none;
 }
 
-
+.header-div:has(.loged-inn-div) .header-text {
+    display: block;
+}
 .header-logo a {
     width: 100%;
        outline: none;

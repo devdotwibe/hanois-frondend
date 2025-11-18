@@ -1326,6 +1326,15 @@ font-size: 17px;
         margin-bottom: 4px;
 }
 
+
+
+.form-grp.prev-disabled label{
+color: #e1e1e2;}
+.form-grp.prev-disabled input{
+color: #e1e1e2;
+border: 2px solid #fafafc;}
+
+
 .multi-select-input{
   min-height: 68px;
 }
@@ -3301,17 +3310,7 @@ a.edit-details {
 
 
 
-a.proposal-view {
-    color: #2563eb;
-    cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 40px;
-    font-family: 'Avenir-Black';
-    line-height: 1;
-    transition: all .2s ease-in-out;
-    border: 2px solid #2563eb; font-size: 19px;
-}
+
 
 .lead-btn
 
@@ -3385,7 +3384,7 @@ margin: 0 0 8px !important;
 .proposal-details h4 span{
     font-family: 'Avenir-Book'; font-weight: normal;
     font-size: 16px; color: var(--primary-color);
-        padding-left: 10px;
+        padding-left: 10px; text-transform: capitalize;
 
 }
 
@@ -3501,10 +3500,12 @@ margin: 0 0 8px !important;
 }
 
 .my-account-form {
-    max-width: 500px;
+    /* max-width: 500px; */ position: relative;
     width: 100%;
 }
-
+.profile-container{
+  max-width: 500px;
+}
 
 .profile-actions {
     display: flex;
@@ -3882,6 +3883,14 @@ p.torrance-card-desc{
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
+}
+
+
+.profile-up img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 /* ------------------------------------responsive */

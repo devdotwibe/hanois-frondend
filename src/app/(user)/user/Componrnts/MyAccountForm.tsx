@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import profile from "../../../../../public/images/profile.png";
+import tik from "../../../../../public/images/tik.svg";
 import { API_URL,IMG_URL } from "@/config";
 
 
@@ -21,6 +22,7 @@ const MyAccountForm = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
 
+  // const [successMsg, setSuccessMsg] = useState("profile updated sucessfully");
   const [successMsg, setSuccessMsg] = useState("");
 
   useEffect(() => {
@@ -63,7 +65,7 @@ const MyAccountForm = () => {
         setUser(data?.data);
         setName(data?.data?.name || "");
         setPhone(data?.data?.phone || "");
-        setProfileImage(data?.data?.profile_image); 
+        setProfileImage(data?.data?.profile_image);
 
       } catch (err) {
 
@@ -251,11 +253,38 @@ const MyAccountForm = () => {
         </div>
 
 
-        {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+        {errorMsg &&
+         <p style={{ color: "red" }}>{errorMsg}</p>}
 
-        {successMsg && <p style={{ color: "green" }}>{successMsg}</p>}
 
          <form className="profile-form" onSubmit={handleSubmit}>
+
+
+           {successMsg
+         &&
+         <div className="add-sucess myaccount-suc">
+<p style={{ color: "green" }}>
+  <span>
+    <Image
+    src={tik}
+    alt='img'
+    width={18}
+    height={18}
+    />
+  </span>
+  {successMsg}
+         </p>
+         </div>
+
+
+
+
+         }
+
+
+
+
+
 
           <div className="form-grp">
 
@@ -272,7 +301,7 @@ const MyAccountForm = () => {
           </div>
 
 
-          <div className="form-grp">
+          <div className="form-grp prev-disabled">
             <label>Email</label>
              <input type="email" value={User?.email} disabled />
 
