@@ -159,9 +159,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     Add to Leads <span>free of charge</span>
                   </button>
 
-                    <Link href="/" className="proposal-view hidden">
-                      View proposal
-                    </Link>
+                   
                   </div>
 
                 </div>
