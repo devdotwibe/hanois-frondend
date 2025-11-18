@@ -74,8 +74,8 @@ const [leadNote, setLeadNote] = useState("");
 
 const openLeadModal = (lead: any) => {
   setSelectedLead(lead);
-  setLeadStatus(lead?.status || "");
-  setLeadNote(lead?.proposal_note || "");
+ setLeadStatus(lead?.status || lead?.lead_status || "");
+setLeadNote(lead?.description || "");
   setOpenPopup(true);
 };
 
@@ -95,7 +95,8 @@ const handleSaveLead = async () => {
         lead_id: selectedLead?.lead_id || null,   // if stored in leads table
         work_id: selectedLead?.id,               // work id always present
         status: leadStatus,
-        proposal_note: leadNote,
+      description: leadNote
+
       }),
     });
 
