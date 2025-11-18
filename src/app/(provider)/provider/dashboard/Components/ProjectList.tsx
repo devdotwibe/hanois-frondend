@@ -47,31 +47,7 @@ interface ProjectItem {
 
 const ProjectList = () => {
   const [projects, setProjects] = useState<ProjectItem[]>([]);
-  const [leadIds, setLeadIds] = useState<number[]>([]);
 
-  /** 🔹 Load provider lead work_ids */
-  const loadLeadIds = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const res = await fetch(`${API_URL}/providers/lead-work-ids`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        setLeadIds(data.workIds || []);
-      }
-    } catch (err) {
-      console.error("Error loading lead IDs:", err);
-    }
-  };
-
-  /** 🔹 Load public projects */
   const loadProjects = async () => {
     try {
       const res = await fetch(`${API_URL}/users/public-project`);
@@ -89,7 +65,6 @@ const ProjectList = () => {
 
   useEffect(() => {
     loadProjects();
-    loadLeadIds();
   }, []);
 
   return (
@@ -99,28 +74,26 @@ const ProjectList = () => {
       </div>
 
       <div className="listing-div">
-        {projects
-          .filter((item) => !leadIds.includes(item.id)) // 🔥 filter leads
-          .map((item) => (
-            <ProjectCard
-              id={item.id}
-              key={item.id}
-              title={item.title}
-              user={item.user?.name || "Unknown User"}
-              services={item.service_list?.map((s) => s.name).join(", ")}
-              luxury={String(item.luxury_level || "N/A")}
-              landSize={item.land_size}
-              location={item.location || "N/A"}
-              description={item.notes || ""}
-              listingStyle={item.listing_style}
-              basement={item.basement || "N/A"}
-              typeName={item.category?.name || "N/A"}
-              serviceNames={item.service_list?.map((s) => s.name) || []}
-              email={item.user?.email}
-              phone={item.user?.phone || ""}
-              profileImage={item.user?.profile_image || ""}
-            />
-          ))}
+        {projects.map((item) => (
+          <ProjectCard
+           id={item.id}
+            key={item.id}
+            title={item.title}
+            user={item.user?.name || "Unknown User"}
+            services={item.service_list?.map(s => s.name).join(", ")}
+            luxury={String(item.luxury_level || "N/A")}
+            landSize={item.land_size}
+            location={item.location || "N/A"}
+            description={item.notes || ""}
+            listingStyle={item.listing_style}
+            basement={item.basement || "N/A"}
+            typeName={item.category?.name || "N/A"}
+            serviceNames={item.service_list?.map(s => s.name) || []}
+            email={item.user?.email}
+            phone={item.user?.phone || ""}
+            profileImage={item.user?.profile_image || ""}
+          />
+        ))}
       </div>
     </div>
   );
