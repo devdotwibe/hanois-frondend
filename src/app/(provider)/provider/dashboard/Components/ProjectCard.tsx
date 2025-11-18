@@ -60,7 +60,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     }
   }
 
-  const handleAddToLeads = async () => {
+const handleAddToLeads = async () => {
   try {
     const token = localStorage.getItem("token");
 
@@ -70,19 +70,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ work_id: id })  // <-- must pass work_id
+      body: JSON.stringify({ work_id: id })
     });
 
     const data = await res.json();
     console.log("Lead response:", data);
 
-    
-
-      // ✅ Redirect only if success
+    // Redirect only if success
     if (data.success) {
-      window.location.href = "/provider/dashboard"; 
+      window.location.href = "/provider/dashboard";
     }
-
 
   } catch (err) {
     console.error("Error adding to leads:", err);
