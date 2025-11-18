@@ -382,13 +382,6 @@ className="edit-proj-sucess add-sucess"
     </span>
 
     </div>
-
-
-
-
-
-
-
     {/* Hidden Input for Upload */}
   <input
     type="file"
@@ -397,13 +390,7 @@ className="edit-proj-sucess add-sucess"
     className="upload-input hidden"
     onChange={handleFileChange}
   />
-
-
-
   </div>
-
-
-
 
 
   {/* 🖼 Existing Images */}
@@ -423,8 +410,6 @@ className="edit-proj-sucess add-sucess"
           position: "absolute",
           top: "5px",
           right: "5px",
-
-
           border: "none",
           borderRadius: "50%",
           width: "22px",

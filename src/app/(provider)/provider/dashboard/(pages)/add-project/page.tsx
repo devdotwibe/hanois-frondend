@@ -404,14 +404,15 @@ const UploadBox = () => {
                 position: "absolute",
                 top: "5px",
                 right: "5px",
-
                 border: "none",
                 borderRadius: "50%",
                 width: "22px",
                 height: "22px",
                 cursor: "pointer",
-                fontSize: "14px",
+
               }}
+
+
             >
               ✕
             </button>
