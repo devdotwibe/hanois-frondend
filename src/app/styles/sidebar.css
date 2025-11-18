@@ -30,21 +30,21 @@
 
 
 .sidebar-div {
-    margin-top: 70px; 
-       
+    margin-top: 70px;
+
 }
 .sidebar-pages {
     width: 100%;
      min-height: 500px;
-  
-    width: calc(100% - 250px); 
+
+    width: calc(100% - 250px);
     padding: 0 250px 0 55px;
     /* max-width: 1310px; */
 }
 .sidebarul {
     width: 250px;
      border-right: 1px solid #e0e0e0; height: 100%;
-  
+
     padding: 0 20px;
 }
 
@@ -56,6 +56,8 @@ ul.sidebarul li {
 ul.sidebarul li a {
     color: #000000;
       font-family: 'Avenir-medium';
+          width: 100%;
+    display: block;
 
 }
 ul.sidebarul li a:hover
@@ -66,7 +68,7 @@ color: #2050f5;
 }
 ul.sidebarul li:hover{
        background: #f0f2fb;
- 
+
 }
 ul.sidebarul li.active a{
     color: #2050f5;
