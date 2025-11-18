@@ -2114,7 +2114,7 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
     padding: 50px 0;
 }
 .detcol-1 {
-    width: 60%;
+    width: 70%;
 }
 
 .detcol-2 {
@@ -2180,7 +2180,7 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
 .build-col {
     display: flex;
     flex-wrap: wrap;
-    background: #f1f3fa;
+    background: #fafbff;
     margin: 0 0 20px;
     border-radius: 10px;
 }

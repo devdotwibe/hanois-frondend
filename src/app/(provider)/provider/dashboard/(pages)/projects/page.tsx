@@ -161,7 +161,7 @@ const ProjectComponent = () => {
         ) : error ? (
           <p style={{ color: "red", textAlign: "center" }}>{error}</p>
         ) : projects.length === 0 ? (
-          <p style={{ textAlign: "center", marginTop: "20px" }}>
+          <p className="no-projtext1" style={{marginTop: "20px" }}>
             No projects found. Please add one.
           </p>
         ) : (

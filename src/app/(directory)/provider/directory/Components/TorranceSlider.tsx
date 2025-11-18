@@ -117,7 +117,7 @@ const TorranceSlider = () => {
     <div className="torrance-slider-wrapper">
       <h2>Projects</h2>
       {projects.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No projects found.</p>
+        <p className="no-projtext">No projects found.</p>
       ) : (
         <Slider {...settings}>
           {projects.map((proj) => {
