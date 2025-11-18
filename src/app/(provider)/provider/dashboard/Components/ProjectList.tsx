@@ -22,6 +22,16 @@ interface UserItem {
   profile_image: string | null;
 }
 
+
+interface LuxuryLevelDetails {
+  id: number;
+  name: string;
+  quality: number;
+  cost: number;
+  rate: number;
+}
+
+
 interface ProjectItem {
   id: number;
   user_id: number;
@@ -30,6 +40,7 @@ interface ProjectItem {
   project_type: number | null;
   location: string | null;
   land_size: string;
+  luxury_level_details?: LuxuryLevelDetails | null;
   luxury_level: number | null;
   service_ids: number[] | null;
   basement: string | null;
@@ -43,6 +54,7 @@ interface ProjectItem {
   user: UserItem | null;
   category: CategoryItem | null;
   service_list: ServiceItem[];
+  
 }
 
 const ProjectList = () => {
@@ -108,7 +120,7 @@ const ProjectList = () => {
               title={item.title}
               user={item.user?.name || "Unknown User"}
               services={item.service_list?.map((s) => s.name).join(", ")}
-              luxury={String(item.luxury_level || "N/A")}
+              luxury={item.luxury_level_details?.name || "N/A"}  
               landSize={item.land_size}
               location={item.location || "N/A"}
               description={item.notes || ""}

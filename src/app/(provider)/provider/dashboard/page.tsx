@@ -193,6 +193,8 @@ const handleSaveLead = async () => {
 
                     </span>
                   </td>
+
+                  
                 </tr>
               ))}
           </tbody>
@@ -298,7 +300,8 @@ const handleSaveLead = async () => {
                       </p>
                     </div>
                     <div className="detail-col11">
-                      <p>{selectedLead?.luxury_level}</p>
+                   <p>{selectedLead?.luxury_level_details?.name || "N/A"}</p>
+
                     </div>
                   </div>
 
