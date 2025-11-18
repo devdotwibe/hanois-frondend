@@ -40,7 +40,7 @@ const TorranceCard = ({
 
       <div className="torrance-card-info">
         <h3>{title}</h3>
-        {description && <p className="desc">{description}</p>}
+        {description && <p className="torrance-card-desc">{description}</p>}
         <p><strong>Style:</strong> {styleType || "—"}</p>
         <p><strong>Space size:</strong> {spaceSize || "—"}</p>
         <p><strong>Location:</strong> {location || "—"}</p>
@@ -117,7 +117,7 @@ const TorranceSlider = () => {
     <div className="torrance-slider-wrapper">
       <h2>Projects</h2>
       {projects.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No projects found.</p>
+        <p className="no-projtext">No projects found.</p>
       ) : (
         <Slider {...settings}>
           {projects.map((proj) => {

@@ -27,6 +27,7 @@ const UploadBox = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [message, setMessage] = useState("");
+
   const [modalVisible, setModalVisible] = useState(false);
 
   // Provider state for dynamic DetailCard
@@ -400,18 +401,6 @@ const UploadBox = () => {
                 setImageFile((prev) => prev.filter((_, i) => i !== index));
               }}
               className="img-onclose"
-              style={{
-                position: "absolute",
-                top: "5px",
-                right: "5px",
-
-                border: "none",
-                borderRadius: "50%",
-                width: "22px",
-                height: "22px",
-                cursor: "pointer",
-                fontSize: "14px",
-              }}
             >
               ✕
             </button>
