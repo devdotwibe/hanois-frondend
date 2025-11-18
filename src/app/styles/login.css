@@ -337,3 +337,88 @@ span.eye-icon {
     top: 38px;
     right: 44px;
 }
+
+.logo-div.for-mob {
+    display: none;
+}
+
+
+
+/* ------------resp------------------------------------------------------------ */
+
+@media (max-width: 1240px) {
+
+
+
+.login-container{
+  padding-left: 70px;
+}
+
+
+}
+
+
+/* ---------------------------------------- */
+
+
+
+
+@media (max-width: 1024px) {
+button.back-bth {
+    width: 30px;
+    height: 30px;
+}
+.login-container {
+        margin-top: 98px;
+        max-width: 100%;
+        padding-right: 70px;
+}
+.form-grp input, .form-grp textarea{
+    padding: 15px 15px;
+}
+
+.login-btn,
+button.apple-btn,
+.google-btn
+{padding: 15px 15px;}
+
+
+
+}
+
+
+/* --------------------- */
+
+
+@media (max-width: 767px) {
+
+.logincol1 {
+    display: none;
+}
+
+.logincol2{width: 100%;}
+
+.logo-div.for-mob {
+    display: block;
+
+        width: 100%;
+        padding: 8px 5%;
+}
+button.back-bth {
+    top: 80px;
+    left: 5%;
+}
+
+
+.login-container {
+        margin-top: 120px;
+         padding-inline: 5%;
+
+    }
+
+.login-divider {
+    margin: 0 0 30px;
+}
+.logincol2 h2{font-size: 30px;}
+
+}
