@@ -30,15 +30,17 @@ const RemodelingCard: React.FC<RemodelingCardProps> = ({
 
 
       <div className="remodel-div1">
-        <h4 className="">{title}</h4>
-         <button >
+        <h4 className={title === "Private" ? "text-private" : ""}>
+          {title}
+        </h4>
+
+        <button>
           <Image 
-          src={moreoptions}
-          alt='img'
-          width={20}
-          height={20}
-          className='more-option-btn'
-          
+            src={moreoptions}
+            alt='img'
+            width={20}
+            height={20}
+            className='more-option-btn'
           />
         </button>
       </div>
