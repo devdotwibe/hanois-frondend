@@ -1652,7 +1652,7 @@ ul.tab-nav1 {
 }
 
 .torrance-card-image-wrap img {width: 100%;display: block;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 9; border-radius: 6px 6px 0 0;
 }
 
 .torrance-slider-wrapper .torrance-card-image-wrap img {
