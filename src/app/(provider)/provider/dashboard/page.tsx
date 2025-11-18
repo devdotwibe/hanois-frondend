@@ -190,7 +190,8 @@ const Page = () => {
                   </td>
                   <td className="date-col">{new Date(lead.created_at).toLocaleDateString('en-GB')}</td>
                   <td className="email-col">{lead?.user?.email}</td>
-                  <td className="mob-col">{lead?.phone?.mobile}</td>
+                <td className="mob-col">{lead?.user?.phone }</td>
+
 
 
                   {/* <td className="status-col">
