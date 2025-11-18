@@ -3850,8 +3850,15 @@ a.pro-snd {
     color: #ffffff;
 }
 
-
-
+.proposal-popup.public-poup .modal-content {
+    height: auto;
+    max-height: unset;
+}
+.public-poup .proposal-view span {
+    /* display: block; */
+    font-size: 12px;
+    color: #000000;
+}
 
 /* ------------------------------------responsive */
 
