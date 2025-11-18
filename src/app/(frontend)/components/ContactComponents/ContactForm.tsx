@@ -182,9 +182,9 @@ const ContactForm = () => {
 
 
 
-          {/* {status.message && 
-           
-           
+          {/* {status.message &&
+
+
             <div className="login-success contact-sucess">
                <p
               style={{
@@ -194,8 +194,8 @@ const ContactForm = () => {
               {status.message}
             </p>
             </div>
-           
-          
+
+
           } */}
 
 

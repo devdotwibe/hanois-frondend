@@ -2007,6 +2007,9 @@ border-right: 1px solid #e0e0e0;
 .form-c {
     position: relative;
 }
+.form-c .contact-error p{padding-left: 22px; position: relative;}
+
+
 
 
 .form-c .contact-success{
@@ -2049,23 +2052,16 @@ border-right: 1px solid #e0e0e0;
       border: 1px solid red;
       color: red;
 box-shadow: 0 0 8px rgba(231, 76, 60, .6);
-
-
- right: -152px; top: 15px;
-
-
+ right: -152px; top: 102px;
     background-color: #fff;
-
     border-radius: 10px;
-    max-width: 300px;
-
+    max-width: 434px;
     padding: 15px 20px;
     position: absolute;
 
 
 }
 
-.contact-error p{position: relative;}
 
 
 .contact-error p::before{
@@ -3857,6 +3853,19 @@ a.pro-snd {
 .add-proj-up {
     position: relative;
 }
+
+
+.form-c:has(.contact-error) form {
+        margin-top: 80px;
+    }
+
+.form-c:has(.contact-error) form {
+    margin-top: 80px;
+}
+
+
+
+
 /* ------------------------------------responsive */
 
 
@@ -3884,6 +3893,14 @@ a.pro-snd {
 .business-div21 .content-top h3{font-size: 18px;}
 
 
+.form-c .contact-error p {
+    font-size: 18px; padding-left: 20px;
+}
+.form-c .contact-error{
+  max-width: 390px;
+  top: 104px;
+  right: -89px;
+}
 
 
 }
@@ -3953,6 +3970,12 @@ a.pro-snd {
 
 .btn-cvr{justify-content: center;}
 
+
+.form-c .contact-error{
+
+  right: 0px;
+   top: 104px;
+}
 
 }
 
@@ -4227,6 +4250,18 @@ p {font-size: 14px;}
 .form-grp input, .form-grp textarea {
     padding: 15px 15px;
 }
+.contact-div .form-c p {
+        font-size: 17px;
+    }
+
+.form-c .contact-error{padding: 15px;}
+
+.form-c .contact-error{
+  top: 87px;
+}
+
+
+
 
 }
 
@@ -4282,8 +4317,22 @@ p {font-size: 14px;}
 
 
 
+    .contact-div .form-c p {
+        font-size: 14px;
+    }
+
+    .contact-error p:before{width: 13px;
+    height: 13px;}
 
 
+
+.form-c .contact-error p {
+        padding-left: 17px;}
+        .contact-error p:before{top: 5;}
+
+
+.form-c .contact-error{padding:10px 6px;
+ top: 90px;}
 
 
 
@@ -4376,3 +4425,10 @@ p {font-size: 14px;}
   }
 
 
+
+
+  @media (max-width: 358px){
+    .form-c .contact-error {
+        top: 110px;
+    }
+  }
