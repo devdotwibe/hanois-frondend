@@ -370,11 +370,12 @@ button.save-btn1:hover{
   transition: background 0.2s ease;
     font-family: 'Avenir-medium';
 
+
 }
 
 .details-btn:hover {
-  background-color: #2050f5;
-    font-family: 'Avenir-medium';
+  background: #4c72f6;
+
 
 }
 .close-btn {
