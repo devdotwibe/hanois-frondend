@@ -64,7 +64,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   try {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(`${API_URL}providers/add-lead`, {
+    const res = await fetch(`${API_URL}/providers/add-lead`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
