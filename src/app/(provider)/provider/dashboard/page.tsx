@@ -105,7 +105,7 @@ const handleSaveLead = async () => {
     console.log("SAVE RESPONSE:", data);
 
     if (data.success) {
-      alert("Saved!");
+     
 
       // Refresh leads immediately
       window.location.reload();
