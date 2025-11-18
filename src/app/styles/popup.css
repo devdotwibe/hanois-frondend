@@ -177,7 +177,7 @@ color: #00a056; font-size: 20px; line-height: 1;
     max-width: 434px;
     max-height: 50px;
     position: absolute;
-    top: 0;
+    top: -88px;
     right: 0;
 }
 
@@ -190,7 +190,7 @@ color: #00a056; font-size: 20px; line-height: 1;
     max-width: 460px;
     max-height: 50px;
     position: absolute;
-    top: 0;
+    top: -87px;
     right: 0;
 }
 .add-sucess span img {

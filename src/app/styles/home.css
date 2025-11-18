@@ -3873,6 +3873,14 @@ a.pro-snd {
 }
 
 
+.torrance-slider-wrapper .torrance-card-info p{
+overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
 
 
 /* ------------------------------------responsive */

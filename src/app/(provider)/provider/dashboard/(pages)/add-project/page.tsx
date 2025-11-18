@@ -27,6 +27,7 @@ const UploadBox = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [message, setMessage] = useState("");
+
   const [modalVisible, setModalVisible] = useState(false);
 
   // Provider state for dynamic DetailCard

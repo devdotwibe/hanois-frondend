@@ -34,7 +34,12 @@ const EditProject = () => {
   const [imageFile, setImageFile] = useState([]);
   const [existingImages, setExistingImages] = useState([]);
   const [message, setMessage] = useState("");
+
+
   const [modalVisible, setModalVisible] = useState(false);
+
+
+
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const [provider, setProvider] = useState(null);
