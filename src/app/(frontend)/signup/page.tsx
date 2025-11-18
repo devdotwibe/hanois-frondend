@@ -127,7 +127,7 @@ const SignUp = () => {
               height={1578} className="login-img" />
           </div>
 
-          <div className="logo-div" onClick={() => router.push("/")} >
+          <div className="logo-div for-desk" onClick={() => router.push("/")} >
 
             <Link href="/">
             <Image src={headerlogo} alt="Logo" width={100} height={18} className="login-img" />
@@ -141,6 +141,23 @@ const SignUp = () => {
 
         {/* Right Column */}
         <div className="logincol2">
+
+          <div className="logo-div for-mob"    onClick={() => router.push("/")} >
+            <Link href="/">
+             <Image
+              src={headerlogo}
+              alt="Login background"
+              width={100}
+              height={18}
+              className="login-img"
+            />
+            </Link>
+
+          </div>
+
+
+
+
           <button className="back-bth" onClick={() => router.push("/")}>
             <Image src={backarrow} alt="arrow" width={140} height={40} />
           </button>
