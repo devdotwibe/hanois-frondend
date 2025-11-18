@@ -23,7 +23,15 @@ export default function UsersPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${API_URL}users`);
+
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(`${API_URL}users`,
+          {headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
        
         const usersArray = response.data?.data?.users || [];
 
