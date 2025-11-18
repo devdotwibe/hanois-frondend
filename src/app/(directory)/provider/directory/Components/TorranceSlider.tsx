@@ -40,7 +40,7 @@ const TorranceCard = ({
 
       <div className="torrance-card-info">
         <h3>{title}</h3>
-        {description && <p className="desc">{description}</p>}
+        {description && <p className="torrance-card-desc">{description}</p>}
         <p><strong>Style:</strong> {styleType || "—"}</p>
         <p><strong>Space size:</strong> {spaceSize || "—"}</p>
         <p><strong>Location:</strong> {location || "—"}</p>
