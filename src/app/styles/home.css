@@ -4293,8 +4293,12 @@ p {font-size: 14px;}
   top: 87px;
 }
 
-
-
+.user-name p{
+  font-size: 14px;
+}
+.loged-inn-div > .loged-inn-div{
+  padding: 10px 36px 10px 30px;
+}
 
 }
 
