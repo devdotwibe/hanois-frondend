@@ -239,11 +239,15 @@ const handleSaveLead = async () => {
                     <p>{selectedLead?.user?.phone || "No phone"}</p>
                   </div>
 
-                  <div className="lead-btn">
-                    <Link href="/" className="proposal-view">
-                      Send proposal
-                    </Link>
-                  </div>
+                 <Link
+  href={`/provider/dashboard/send-proposal?work_id=${selectedLead.id}&user_id=${selectedLead.user_id}&provider_id=${JSON.parse(localStorage.getItem("user")).id}`}
+  className="proposal-view"
+>
+  Send proposal
+</Link>
+
+
+
                 </div>
 
                 {/* DETAILS */}

@@ -1,108 +1,163 @@
-import React from 'react'
-import Image from 'next/image'
+"use client";
 
-import Image1 from "../../../../../../public/images/left-arrow.svg"
-import Link from 'next/link'
+import React, { useState } from "react";
+import Image from "next/image";
+import { API_URL } from "@/config";
+import Image1 from "../../../../../../public/images/left-arrow.svg";
+import Uploadimg from "../../../../../../public/images/upload.svg";
+import { useRouter } from "next/navigation";
 
-import Uploadimg from "../../../../../../public/images/upload.svg"
+const SendProposalIntro = ({ work_id, user_id, provider_id }) => {
 
-const SendProposalIntro = () => {
+  const router = useRouter();
+
+  const [title, setTitle] = useState("");
+  const [budget, setBudget] = useState("");
+  const [timeline, setTimeline] = useState("");
+  const [description, setDescription] = useState("");
+  const [attachment, setAttachment] = useState(""); // No file upload now
+
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const token = localStorage.getItem("token");
+
+  const payload = {
+  work_id,
+  user_id,
+  provider_id,
+  title,
+  budget,
+  timeline,
+  description,
+  attachment
+};
+
+    try {
+      const res = await fetch(`${API_URL}/providers/send-proposal`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert("Proposal sent successfully!");
+        router.push("/user/providers");
+      } else {
+        alert(data.error || "Something went wrong");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error");
+    }
+
+    setLoading(false);
+  };
+
   return (
     <div>
-         <div className="intro-tab">
-              <button className="back-bth">
-            <Image src={Image1} alt="Back" width={40} height={40} />
-       </button>
+      <div className="intro-tab">
+        <button className="back-bth" onClick={() => router.back()}>
+          <Image src={Image1} alt="Back" width={40} height={40} />
+        </button>
 
-       <h3>Send Proposal</h3>
+        <h3>Send Proposal</h3>
 
-       <form>
-        <div className="form-grp">
-            <label className='dark'>Proposal Title</label>
-            <input placeholder="Proposal Title"></input>
+        <form onSubmit={handleSubmit}>
+          <div className="form-grp">
+            <label className="dark">Proposal Title</label>
+            <input
+              placeholder="Proposal Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
 
-        </div>
-        
-        <div className="form-grp">
-            <label className='dark'>Budget</label>
-            <input placeholder="$150.000"></input>
+          <div className="form-grp">
+            <label className="dark">Budget</label>
+            <input
+              placeholder="$150,000"
+              value={budget}
+              onChange={(e) => setBudget(e.target.value)}
+              required
+            />
+          </div>
 
-        </div>
-        
-        <div className="form-grp">
-            <label className='dark'>Timeline</label>
-            <input placeholder="6 months"></input>
-        </div>
-        <div className="form-grp">
+          <div className="form-grp">
+            <label className="dark">Timeline</label>
+            <input
+              placeholder="6 months"
+              value={timeline}
+              onChange={(e) => setTimeline(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-grp">
             <label>Proposal Letter</label>
-            <textarea placeholder="Proposal Letters" rows={4}></textarea>
-            <small>Breif discription for your profile, URLs are hyperlinked </small>
-        </div>
+            <textarea
+              placeholder="Proposal Letter"
+              rows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+            <small>Brief description for your proposal</small>
+          </div>
 
-
-            <div className="upload-doc">
+          {/* KEEP the upload UI if you want visually — but NO upload */}
+          <div className="upload-doc">
             <div className="form-grp upload-area">
-  <div>
-    {/* Upload Box inside grid */}
-    <div
-      className="upload-box"
-    >
+              <div>
+                <div className="upload-box">
+                  <div className="cover-upload">
+                    <div className="img-cover-up">
+                      <Image
+                        src={Uploadimg}
+                        alt="Upload Icon"
+                        width={40}
+                        height={40}
+                      />
+                    </div>
 
-      <div className="cover-upload">
-        <div className="img-cover-up">
-           <Image src={Uploadimg} alt="Upload Icon" width={40} height={40} />
+                    <h3>Upload an image</h3>
+                    <p>Browse your files to upload document</p>
+                    <span>Supported Formats: JPEG, PNG</span>
+                  </div>
 
+                  {/* File input disabled because backend doesn't handle files */}
+                 <input
+                    type="file"
+                    accept="image/*,.pdf,.ppt,.pptx"
+                    onChange={(e) => setAttachment(e.target.files[0])}
+                    style={{ opacity: 1, cursor: "pointer" }}
+                  />
 
-        </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        
-      <h3>Upload an image</h3>
-      <p>
-        Browse your files to upload document
-      </p>
-      <span>
-        Supported Formats: JPEG, PNG
-      </span>
-
-
+          <button
+            type="submit"
+            disabled={loading}
+            className="send-prop-btn dark-btn"
+          >
+            {loading ? "Sending..." : "Send Proposal"}
+          </button>
+        </form>
       </div>
-
-
-
-
-
-
-
-      <input
-      type="file"
-      accept="image/*"
-     
-    />
     </div>
+  );
+};
 
-
-    
-
-   
-  </div>
-
- 
-</div>
-
-        </div>
-
-        <Link href="/" className='send-prop-btn dark-btn' >Send Proposal</Link>
-
-       </form>
-
-
-
-
-
-        </div>
-      
-    </div>
-  )
-}
-
-export default SendProposalIntro
+export default SendProposalIntro;
