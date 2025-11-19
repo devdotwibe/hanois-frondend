@@ -139,12 +139,15 @@
 
 .header-text {
     margin-inline: 30px;
-    display: none;
+    /* display: none; */
 }
 
-.header-div:has(.loged-inn-div) .header-text {
+/* .header-div:has(.loged-inn-div) .header-text {
     display: block;
-}
+} */
+
+
+
 .header-logo a {
     width: 100%;
        outline: none;
@@ -435,9 +438,9 @@ button.close-btn11 {
 
 @media (max-width: 767px) {
 
-    .header-div:has(.loged-inn-div) .header-text {
+    /* .header-div:has(.loged-inn-div) .header-text {
     display: none;
-}
+} */
 
     .header-div {
         padding: 12px 12px 12px 20px;
