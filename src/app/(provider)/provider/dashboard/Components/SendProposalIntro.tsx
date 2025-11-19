@@ -115,37 +115,53 @@ const SendProposalIntro = ({ work_id, user_id, provider_id }) => {
           </div>
 
           {/* KEEP the upload UI if you want visually — but NO upload */}
-          <div className="upload-doc">
-            <div className="form-grp upload-area">
-              <div>
-                <div className="upload-box">
-                  <div className="cover-upload">
-                    <div className="img-cover-up">
-                      <Image
-                        src={Uploadimg}
-                        alt="Upload Icon"
-                        width={40}
-                        height={40}
-                      />
-                    </div>
+        <div className="upload-doc">
+<div className="form-grp upload-area">
+  <div>
+    <div
+      className="upload-box"
+      style={{
+        position: "relative",
+        cursor: "pointer",
+      }}
+    >
+      <div className="cover-upload" style={{ pointerEvents: "none" }}>
+        <div className="img-cover-up">
+          <Image
+            src={Uploadimg}
+            alt="Upload Icon"
+            width={40}
+            height={40}
+          />
+        </div>
 
-                    <h3>Upload an image</h3>
-                    <p>Browse your files to upload document</p>
-                    <span>Supported Formats: JPEG, PNG</span>
-                  </div>
+        <h3>Upload an image</h3>
+        <p>Browse your files to upload document</p>
+        <span>Supported Formats: JPEG, PNG, PDF, PPT</span>
+      </div>
 
-                  {/* File input disabled because backend doesn't handle files */}
-                 <input
-                    type="file"
-                    accept="image/*,.pdf,.ppt,.pptx"
-                    onChange={(e) => setAttachment(e.target.files[0])}
-                    style={{ opacity: 1, cursor: "pointer" }}
-                  />
+      {/* Invisible Input (Click Target) */}
+      <input
+        type="file"
+        accept="image/*,.pdf,.ppt,.pptx"
+        onChange={(e) => setAttachment(e.target.files[0])}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          opacity: 0,
+          cursor: "pointer",
+          zIndex: 10,
+        }}
+      />
+    </div>
+  </div>
+</div>
 
-                </div>
-              </div>
-            </div>
-          </div>
+</div>
+
 
           <button
             type="submit"
