@@ -84,9 +84,14 @@ strong{
     margin: 0 0 10px;
 }
 
+.e-proj-info1 .col-info3:nth-child(1) .col-info4:nth-child(2) p {
 
+    word-break: break-all;
+}
 
-
+.col-info3 {
+    display: flex;
+}
 
 
 
@@ -1602,7 +1607,7 @@ width: 22px;
 
 
 .house-card {
-    display: flex;
+    display: flex; flex-wrap: wrap;
         margin-bottom: 50px;
 }
 
@@ -1823,7 +1828,7 @@ ul.tab-nav1 {
   margin: 0 -5px;
 }
 .house-div {
-    display: flex;
+    display: flex; flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
 }
