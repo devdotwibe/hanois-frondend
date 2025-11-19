@@ -10,7 +10,12 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "hanois.dotwibe.com",
-        pathname: "/api/**", // ✅ broader match fixes double-slash case
+        pathname: "/api/**",
+      },
+      {
+        protocol: "https",
+        hostname: "hanois.dotwibe.com",
+        pathname: "/dotwibe/next/**",
       },
     ],
   },
