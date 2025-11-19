@@ -29,6 +29,10 @@
     padding-inline: 250px;
 }
 
+
+
+
+
 .seeker-dashboard1 .header .header-div,
 .prov-dashboard .header .header-div,
 .directory .header .header-div,
@@ -164,10 +168,42 @@
 
 body{position: relative;}
 
+/* ----------------------------------------------------------------------------- */
+@media (max-width: 1340px) {
+
+        .seeker-dashboard1 .header .containers ,
+.prov-dashboard .header .containers,
+.directory .header .containers,
+.public .header .containers
+{
+
+    padding-inline: 220px;
+}
 
 
+}
+/* ----------------------------------------------------------------------------- */
+@media (max-width: 1240px) {
 
 
+}
+
+/* ------------------------------------- */
+
+@media (min-width: 1025px) and (max-width: 1240px) {
+
+    .seeker-dashboard1 .header .containers ,
+.prov-dashboard .header .containers,
+.directory .header .containers,
+.public .header .containers
+{
+
+    padding-inline: 20px;
+}
+}
+
+
+/* --------------------------------------------------------------- */
 
 @media (max-width: 1024px) {
 .header-text {margin-inline: 14px;}
@@ -186,17 +222,44 @@ body{position: relative;}
 
 }
 
+/* ----------------------------------------------------- */
+
+@media (min-width: 901px) and (max-width: 1024px) {
+
+    .seeker-dashboard1 .header .containers ,
+.prov-dashboard .header .containers,
+.directory .header .containers,
+.public .header .containers
+{
+
+    padding-inline: 20px;
+}
+
+
+}
 
 
 
 
 
 
+/* ----------------------------------------------------------------- */
 
 
+@media (min-width: 768px) and (max-width: 900px) {
+
+    .seeker-dashboard1 .header .containers ,
+.prov-dashboard .header .containers,
+.directory .header .containers,
+.public .header .containers
+{
+
+    padding-inline: 20px;
+}
+}
 
 
-
+/* ------------------------------------------------------------------- */
 
 @media (max-width: 767px) {
 
@@ -209,5 +272,17 @@ body{position: relative;}
 .header-text{
     display: none; margin: 0;
 }
+
+
+
+.seeker-dashboard1 .header .containers ,
+.prov-dashboard .header .containers,
+.directory .header .containers,
+.public .header .containers
+{
+
+    padding-inline: 5%;
+}
+
 
 }

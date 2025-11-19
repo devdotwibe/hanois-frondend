@@ -102,30 +102,56 @@ const RepeatHouseDiv = ({ provider }) => {
           name={name}
           description={description}
         />
-      <button className="details-btn" onClick={handleDetailsClick}>Details</button>
+
+
+        <div className="house-div3">
+                <button className="details-btn" onClick={handleDetailsClick}>Details</button>
+
+
+        </div>
+
+
+
       </div>
 
       <div className="project-info e-proj-info1">
         <div className="info-left">
+          <div className="col-info3">
+
+             <div className="col-info4">
+                          <p><strong>Services</strong></p>
+
+             </div>
+            <div className="col-info4">
+                           <p> {services}</p>
+
+            </div>
 
 
 
 
+          </div>
+          <div className="col-info3">
 
-              <p><strong>Services</strong>{services}</p>
-
-
-
-
-
+             <div className="col-info4">
+                             <p><strong>Luxury type</strong></p>
 
 
+             </div>
+            <div className="col-info4">
+                       <p>{designNames || 'Not specified'}</p> {/* Display design names */}
+
+
+            </div>
 
 
 
 
-              <p><strong>Luxury type</strong>
-         {designNames || 'Not specified'}</p> {/* Display design names */}
+          </div>
+
+
+
+
 
 
 
@@ -135,8 +161,40 @@ const RepeatHouseDiv = ({ provider }) => {
         </div>
 
         <div className="info-right">
-              <p><strong>Starting Budget</strong>{startingBudget}</p>
-              <p><strong>Location</strong>{location}</p>
+          <div className="col-info3">
+
+            <div className="col-info4">
+                            <p><strong>Starting Budget</strong></p>
+
+
+            </div>
+            <div className="col-info4">
+                               <p>{startingBudget}</p>
+
+
+            </div>
+
+
+          </div>
+          <div className="col-info3">
+
+             <div className="col-info4">
+                            <p><strong>Location</strong></p>
+
+
+             </div>
+            <div className="col-info4">
+                                 <p>{location}</p>
+
+
+            </div>
+
+
+
+          </div>
+
+
+
         </div>
       </div>
 
