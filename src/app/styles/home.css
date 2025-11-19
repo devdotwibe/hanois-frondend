@@ -4173,6 +4173,11 @@ p.torrance-card-desc{
  .pagination button.next-btn img{
   width: 12px; height: 12px;
  }
+.outr {
+    display: none;
+}
+
+
 }
 
 /* ---------------------------------------------------- */
