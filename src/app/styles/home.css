@@ -448,6 +448,23 @@ padding: 80px 0 0;
     border: 1px solid #ffffff;
     border-radius: 8px;
 
+   /* box-shadow:
+    rgba(14, 63, 126, 0.04) 0px 0px 0px 1px,
+    rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px,
+    rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px,
+    rgba(42, 51, 70, 0.04) 0px 6px 6px -3px,
+    rgba(14, 63, 126, 0.04) 0px 12px 12px -6px,
+    rgba(14, 63, 126, 0.04) 0px 24px 24px -12px; */
+
+    box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px,
+     rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px,
+      rgba(42, 51, 70, 0.04) 0px 2px 2px -1px,
+       rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px,
+        rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px,
+         rgba(42, 51, 70, 0.03) 0px 10px 10px -5px,
+          rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;
+
+
 }
 .business-block:hover {
     box-shadow: 0 10px 30px hsla(217, 91%, 60%, 0.2);
@@ -3880,7 +3897,7 @@ p.torrance-card-desc{
 
 .pagination.outer {
     display: flex;
-    justify-content: center;
+    justify-content: center; margin: 40px 0 50px;
 }
 
 .pagination.outer .pagenumber {
@@ -3891,6 +3908,13 @@ p.torrance-card-desc{
     justify-content: center;
     align-items: center;
 }
+
+.pagination.outer .pagenumber.current-pg {
+    background: #e5e8ef;
+}
+
+
+
 
 .pagination-div {
     margin-inline: 10px;
@@ -3937,6 +3961,9 @@ p.torrance-card-desc{
 }
 
 
+
+
+
 /* ------------------------------------responsive */
 
 @media (max-width: 1541px) {
@@ -3947,6 +3974,16 @@ p.torrance-card-desc{
 
 /* ---------------------------------------------------------- */
 @media (max-width: 1340px) {
+
+  .public-project-page .intro-tab{
+    padding-inline: 25px;
+  }
+  .wrap-select{margin: 0 25px 25px;
+
+  }
+
+
+
 .filter-container{width: 220px;}
 
 .sidebar-div1{padding-right: 220px;}
@@ -3954,7 +3991,7 @@ p.torrance-card-desc{
 .spd-outer1{width: calc(100% - 220px);}
 
 .spd-outer1 .intro-div{
-  padding: 0 25px 0px;
+  padding: 0 25px 0px; margin-bottom: 25px;
 }
 .project-card1{
    padding: 25px  25px;
@@ -4093,8 +4130,22 @@ p.torrance-card-desc{
 
 
 
+.filter-container{
+  display: none;
+}
 
+.sidebar-div1 {
+        padding-right: 0px;
+    }
 
+    .spd-outer1{
+      border-right: none;
+      width: 100%;
+    }
+
+    .project-card1{padding-inline: 20px;}
+
+.spd-outer1 .intro-div{max-width: 100%;}
 }
 
 /* ----------- */
@@ -4361,6 +4412,7 @@ p {font-size: 14px;}
 .loged-inn-div > .loged-inn-div{
   padding: 10px 36px 10px 30px;
 }
+
 
 }
 

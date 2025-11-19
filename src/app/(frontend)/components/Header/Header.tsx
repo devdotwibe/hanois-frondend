@@ -13,7 +13,7 @@ const Header = () => {
   const [token, setToken] = useState<string | null>(null);
 
   const [auth, setauth] = useState(null);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -26,7 +26,7 @@ const Header = () => {
       window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
       }, []);
-   
+
   useEffect(() => {
 
      const authUser = localStorage.getItem("auth");
@@ -43,7 +43,7 @@ const Header = () => {
   return (
     <div className={`header ${isFixed ? "fixedtop" : ""}`}>
 
-      <div className="containers">
+      <div className="containers desk-header">
 
             <div className="header-div">
 
@@ -63,7 +63,7 @@ const Header = () => {
                 {(token ==null || auth =='admin')  && (
 
                   <div className="header-col2">
-                
+
                     <Link href="/login" className="h-login">
                       Log in
                     </Link>
@@ -73,7 +73,7 @@ const Header = () => {
                     </Link>
 
                   </div>
-                  
+
                 )}
 
                 {token && auth !='admin' &&(
@@ -93,6 +93,61 @@ const Header = () => {
 
             </div>
       </div>
+      <div className="containers mob-header">
+
+            <div className="header-div">
+
+              <>
+                <div className="header-col1">
+                  <div className="header-logo">
+                    <Link href="/">
+                      <Image src={logo} alt="logo" width={100} height={19} />
+                    </Link>
+                  </div>
+
+                  <div className="header-text">
+                    <p>Service Providers</p>
+                  </div>
+                </div>
+
+                {(token ==null || auth =='admin')  && (
+
+                  <div className="header-col2">
+
+                    <Link href="/login" className="h-login">
+                      Log in
+                    </Link>
+
+                    <Link href="/get-listed" className="h-btn">
+                      Get Listed
+                    </Link>
+
+                  </div>
+
+                )}
+
+                {token && auth !='admin' &&(
+
+                  <div className="logged-outer ">
+
+                    <div className="loged-inn-div">
+
+                      <UserDropdown />
+
+                    </div>
+
+                  </div>
+                )}
+
+              </>
+
+            </div>
+      </div>
+
+
+
+
+
     </div>
   );
 };

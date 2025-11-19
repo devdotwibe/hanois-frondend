@@ -102,7 +102,6 @@
 .header-div {
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }
 
 
@@ -168,7 +167,13 @@
 
 body{position: relative;}
 
-/* ----------------------------------------------------------------------------- */
+.desk-header {display: none;}
+
+.mob-header {display: block;}
+
+
+
+/* --------------------------------resp--------------------------------------------- */
 @media (max-width: 1340px) {
 
         .seeker-dashboard1 .header .containers ,
@@ -238,11 +243,16 @@ body{position: relative;}
 
 }
 
+/* -------------------------------------------------------------- */
+
+@media(max-width: 900px) {
 
 
+.desk-header {display: none;}
 
+.mob-header {display: block;}
 
-
+}
 /* ----------------------------------------------------------------- */
 
 

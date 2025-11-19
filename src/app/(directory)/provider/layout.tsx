@@ -39,27 +39,29 @@ export default function RootLayout({
       <body className="antialiased" suppressHydrationWarning={true}>
         <>
         <BodyClassManager />
+
+        
        <Header />
 
 
-       
-       
 
-      
 
-        
+
+
+
+
 
              {children}
 
-   
-           
 
 
-          
+
+
+
 
        <Footer />
         </>
-        
+
 
       </body>
     </html>
