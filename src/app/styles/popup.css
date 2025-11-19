@@ -238,6 +238,61 @@ a.proposal-view {
     transition: all .2s ease-in-out;
     border: 2px solid #2563eb; font-size: 19px;
 }
+
+.statusmsg-div1.comp-prof .error-msg {
+    color: red !important;
+    border: 1px solid red;
+    box-shadow: 0 0px 8px rgba(255, 0, 0, 0.3) !important;
+}
+
+.statusmsg-div1.comp-prof.success-msg{
+   color: #00a056 !important;
+    border: 1px solid #00a056 !important;
+}
+
+
+
+.statusmsg-div1.comp-prof p::before{
+display: none !important;
+}
+
+.statusmsg-div1.comp-prof p{
+  padding: 0 !important;
+  display: flex;
+  gap: 8px;
+}
+
+
+.statusmsg-div1 {
+    position: absolute;
+    top: 0px;
+    z-index: 999;
+    right: 100px;
+    color: #00a056;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border: 1px solid #00a056;
+        max-width: 300px;
+    max-height: 50px; background-color: #ffffff;
+    box-shadow: 0 0 8px rgba(46, 204, 113, .3);
+}
+.statusmsg-div1 p{
+   color: #00a056; line-height: 1; position: relative; padding-left: 20px;
+}
+
+.statusmsg-div1 p::before{
+    content: "";
+    position: absolute;
+    background: url(../../../public/images/tik.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    left: 0;
+    top: 2px;
+    width: 15px;
+    height: 15px;
+}
+
+
 /* ------------------------------------------------------- */
 @media (max-width: 767px) {
 

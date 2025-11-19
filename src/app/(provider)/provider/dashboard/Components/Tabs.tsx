@@ -4,6 +4,10 @@ import ProjectComponent from "./ProjectComponent";
 import { API_URL, SITE_URL } from "@/config";
 import { useRouter } from "next/navigation";
 import MultiSelect from "./MultiSelect";
+import Image from "next/image";
+import sucesstik from "../../../../../../public/images/tik.svg"
+import errmsg from "../../../../../../public/images/warning-icon.svg"
+
 
 
 const TABS = [
@@ -52,6 +56,8 @@ const handleTabClick = (tabId) => {
   });
 
   const [errors, setErrors] = useState({});
+
+
   const [status, setStatus] = useState({ loading: false, message: "", success: false });
 
 
@@ -733,21 +739,25 @@ useEffect(() => {
            {status.message &&
 
              (
-             <div
-  className={`statusmsg-div1 ${
+<div
+  className={`statusmsg-div1 comp-prof ${
     status.success ? "success-msg" : "error-msg"
   }`}
   style={{ marginBottom: 12 }}
 >
   <p
-    style={{
-      color: status.success ? "#00a056" : "red",
-      borderColor: status.success ? "#e9f8ef" : "#ffe9e9",
-    }}
+
   >
+    {status.success ? (
+      <Image src={sucesstik} alt="success" width={18} height={18} />
+    ) : (
+      <Image src={errmsg} alt="error" width={18} height={18} />
+    )}
+
     {status.message}
   </p>
 </div>
+
 
             )
 
