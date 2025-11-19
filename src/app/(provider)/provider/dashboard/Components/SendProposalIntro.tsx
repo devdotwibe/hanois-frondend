@@ -19,48 +19,52 @@ const SendProposalIntro = ({ work_id, user_id, provider_id }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-  const payload = {
-  work_id,
-  user_id,
-  provider_id,
-  title,
-  budget,
-  timeline,
-  description,
-  attachment
-};
+  // 🔥 MUST USE FORMDATA FOR FILE UPLOAD
+  const formData = new FormData();
+  formData.append("work_id", work_id);
+  formData.append("user_id", user_id);
+  formData.append("provider_id", provider_id);
+  formData.append("title", title);
+  formData.append("budget", budget);
+  formData.append("timeline", timeline);
+  formData.append("description", description);
 
-    try {
-      const res = await fetch(`${API_URL}/providers/send-proposal`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload),
-      });
+  // 🔥 ADD FILE
+  if (attachment) {
+    formData.append("attachment", attachment);
+  }
 
-      const data = await res.json();
+  try {
+    const res = await fetch(`${API_URL}/providers/send-proposal`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // ❌ DON'T SET Content-Type — browser does it automatically
+      },
+      body: formData,
+    });
 
-      if (data.success) {
-        alert("Proposal sent successfully!");
-        router.push("/user/providers");
-      } else {
-        alert(data.error || "Something went wrong");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Network error");
+    const data = await res.json();
+
+    if (data.success) {
+      alert("Proposal sent successfully!");
+      router.push("/user/providers");
+    } else {
+      alert(data.error || "Something went wrong");
     }
+  } catch (err) {
+    console.error(err);
+    alert("Network error");
+  }
 
-    setLoading(false);
-  };
+  setLoading(false);
+};
 
   return (
     <div>
