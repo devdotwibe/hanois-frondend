@@ -10,14 +10,17 @@ const DetailsIntro = ({ project }: any) => {
     <div className="details-intro">
 
       <div className="det-intro1">
-        <button>
+
+        {/* BACK TO DASHBOARD */}
+        <Link href="/user/dashboard">
           <Image 
             src={arrow}
             alt="back"
             width={40}
             height={40}
+            style={{ cursor: "pointer" }}
           />
-        </button>
+        </Link>
 
         <h2>{project.title}</h2>
       </div>
@@ -62,13 +65,13 @@ const DetailsIntro = ({ project }: any) => {
             {project.land_size}
           </div>
 
-          {/* LUXURY LEVEL NAME */}
+          {/* LUXURY LEVEL */}
           <div className="proj-meta1">
             <div className="proj-metacol"><strong>Luxury level</strong></div>
             {project.luxury_level_details?.name || project.luxury_level}
           </div>
 
-          {/* SERVICES — NAMES */}
+          {/* SERVICES */}
           <div className="proj-meta1">
             <div className="proj-metacol"><strong>Services</strong></div>
             {project.service_list?.map(s => s.name).join(", ") || "—"}

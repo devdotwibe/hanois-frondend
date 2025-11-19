@@ -50,6 +50,7 @@ const RemodellingDiv = () => {
       {projects && projects.length > 0  && projects?.map((item: any) => (
         <RemodelingCard
           key={item.id}
+            id={item.id}    
           title={item.listing_style === "public" ? "Public" : "Private"} 
           description={item.title || ""}
           date={new Date(item.created_at).toLocaleDateString()}
