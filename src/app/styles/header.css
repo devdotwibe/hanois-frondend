@@ -318,7 +318,7 @@ body{position: relative;}
 button.close-btn11 {
     position: absolute;
     right: 0;
-    top: 0;
+    top: -3px; font-size: 19px;
 }
 
 
