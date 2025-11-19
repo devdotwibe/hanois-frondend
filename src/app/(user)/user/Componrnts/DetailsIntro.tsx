@@ -35,6 +35,7 @@ const DetailsIntro = ({ project }: any) => {
       </ul>
 
       <div className="details-card">
+
         <h3 className="project-title">{project.title}</h3>
         <p className="project-status">{project.listing_style}</p>
 
@@ -43,31 +44,37 @@ const DetailsIntro = ({ project }: any) => {
 
         <div className="project-meta">
 
+          {/* TYPE */}
           <div className="proj-meta1">
             <div className="proj-metacol"><strong>Type</strong></div>
-            {project.project_type}
+            {project.category?.name || project.project_type}
           </div>
 
+          {/* LOCATION */}
           <div className="proj-meta1">
             <div className="proj-metacol"><strong>Location</strong></div>
             {project.location}
           </div>
 
+          {/* LAND SIZE */}
           <div className="proj-meta1">
             <div className="proj-metacol"><strong>Land size</strong></div>
             {project.land_size}
           </div>
 
+          {/* LUXURY LEVEL NAME */}
           <div className="proj-meta1">
             <div className="proj-metacol"><strong>Luxury level</strong></div>
-            {project.luxury_level}
+            {project.luxury_level_details?.name || project.luxury_level}
           </div>
 
+          {/* SERVICES — NAMES */}
           <div className="proj-meta1">
             <div className="proj-metacol"><strong>Services</strong></div>
-            {project.service_ids?.join(", ")}
+            {project.service_list?.map(s => s.name).join(", ") || "—"}
           </div>
 
+          {/* BASEMENT */}
           <div className="proj-meta1">
             <div className="proj-metacol"><strong>Basement</strong></div>
             {project.basement === "yes" ? "Yes" : "No"}

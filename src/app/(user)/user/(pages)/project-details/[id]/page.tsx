@@ -19,12 +19,13 @@ const ProjectDetailsPage = () => {
       try {
         const token = localStorage.getItem("token");
 
-const res = await fetch(`${API_URL}/users/project/${id}`, {
-  headers: {
-    Authorization: token ? `Bearer ${token}` : "",
-    "Content-Type": "application/json",
-  },
-});
+        const res = await fetch(`${API_URL}/users/project/${id}`, {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
+        });
+
         const data = await res.json();
         console.log("Fetched project data:", data);
 

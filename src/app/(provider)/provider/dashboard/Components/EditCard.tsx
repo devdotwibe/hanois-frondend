@@ -1,13 +1,18 @@
-import React from 'react'
-import Link from 'next/link'
+"use client";
+import React from "react";
+import Link from "next/link";
 
-const EditCard = () => {
+const EditCard = ({ project }: any) => {
   return (
     <div className='editbtn-div'>
-        <Link href="/" className='edit-details'>Edit </Link>
-      
+      <Link 
+        href={`/user/project-edit/${project.id}`} 
+        className='edit-details'
+      >
+        Edit
+      </Link>
     </div>
-  )
-}
+  );
+};
 
-export default EditCard
+export default EditCard;
