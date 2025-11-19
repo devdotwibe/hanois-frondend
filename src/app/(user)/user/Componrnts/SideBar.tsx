@@ -6,14 +6,14 @@ import { usePathname } from "next/navigation";
 const SideBar = () => {
   const pathname = usePathname();
 
-  // Define your links
+  // Sidebar links
   const links = [
     { href: "/user/providers", label: "Service Providers" },
     { href: "/user/dashboard", label: "My Project" },
     { href: "/user/my-account", label: "My Account" },
   ];
 
-  // Determine which one is active (default to first if none matches)
+  // Active path logic
   const activePath =
     links.some((link) => link.href === pathname)
       ? pathname
@@ -24,7 +24,7 @@ const SideBar = () => {
       <ul className="sidebarul">
         {links.map((link) => (
           <li
-            key={link.href}
+            key={link.href + link.label}   // ✅ unique key
             className={activePath === link.href ? "active" : ""}
           >
             <Link href={link.href}>{link.label}</Link>
