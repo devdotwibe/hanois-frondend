@@ -221,7 +221,7 @@ body{position: relative;}
   background: #ffffff;
   z-index: 9999;
   transition: top 0.4s ease-in-out;
-  padding: 20px;
+  padding: 30px 20px;
   overflow-y: auto;
 }
 
@@ -234,18 +234,18 @@ body{position: relative;}
 .mobile-menu-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; position: relative;
 }
 
 .mobile-menu-header .tabs {
   display: flex;
-  gap: 20px; width: 100%; border-bottom: 1px solid #f5f5f5;
+  gap: 50px; width: 100%; border-bottom: 1px solid #f5f5f5;
 }
 
 .mobile-menu-header .tabs button {
   background: none;
   border: none;
-  padding-bottom: 5px;
+  padding-bottom: 15px;
   font-size: 16px;
   color: #666;
 }
@@ -272,11 +272,14 @@ body{position: relative;}
   margin-top: 20px;
   list-style: none;
   padding: 0;
+  display: flex; flex-wrap: wrap;
+    gap: 10px;
+
 }
 
 .menu-list li {
-  padding: 14px 14px;
-  font-size: 16px;
+     padding: 10px 20px;
+  font-size: 15px;
   border-radius: 6px;
     font-family: 'Avenir-medium';
 
@@ -296,10 +299,27 @@ body{position: relative;}
 }
 
 
+.mob-header .filter-section > p {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.mob-header .filter-section {display: flex; flex-wrap: wrap; gap: 10px;}
+
+.mob-header .filter-section .checkbox-label{
+    margin-right: 20px;
+}
+.mob-header .filter-section .checkbox-label:last-child{
+    margin-right: 0;
+}
 
 
 
-
+button.close-btn11 {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
 
 
 /* --------------------------------resp--------------------------------------------- */
