@@ -102,7 +102,16 @@ const RepeatHouseDiv = ({ provider }) => {
           name={name}
           description={description}
         />
-      <button className="details-btn" onClick={handleDetailsClick}>Details</button>
+
+
+        <div className="house-div3">
+                <button className="details-btn" onClick={handleDetailsClick}>Details</button>
+
+
+        </div>
+
+
+
       </div>
 
       <div className="project-info e-proj-info1">

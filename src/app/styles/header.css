@@ -169,6 +169,20 @@
 body{position: relative;}
 
 /* ----------------------------------------------------------------------------- */
+@media (max-width: 1340px) {
+
+        .seeker-dashboard1 .header .containers ,
+.prov-dashboard .header .containers,
+.directory .header .containers,
+.public .header .containers
+{
+
+    padding-inline: 220px;
+}
+
+
+}
+/* ----------------------------------------------------------------------------- */
 @media (max-width: 1240px) {
 
 
@@ -220,6 +234,8 @@ body{position: relative;}
 
     padding-inline: 20px;
 }
+
+
 }
 
 

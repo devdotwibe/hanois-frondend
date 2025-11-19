@@ -89,6 +89,10 @@ strong{
     word-break: break-all;
 }
 
+
+.e-proj-info1 .col-info3 .col-info4 strong {
+    white-space: nowrap;
+}
 .col-info3 {
     display: flex;
 }
@@ -3924,13 +3928,45 @@ p.torrance-card-desc{
     margin-top: 15px;
 }
 
+.house-div3 {
+    width: 91px;
+}
+.house-div .house-card {
+    margin-bottom: 0;
+    width: calc(100% - 100px);
+}
+
+
 /* ------------------------------------responsive */
 
+@media (max-width: 1541px) {
+.project-info{width: 90%;}
+}
 
 
 
+/* ---------------------------------------------------------- */
 @media (max-width: 1340px) {
+.filter-container{width: 220px;}
 
+.sidebar-div1{padding-right: 220px;}
+
+.spd-outer1{width: calc(100% - 220px);}
+
+.spd-outer1 .intro-div{
+  padding: 0 25px 0px;
+}
+.project-card1{
+   padding: 25px  25px;
+
+}
+
+.project-info{width: 100%;}
+
+.project-inner1{
+  max-width: 100%;
+  width: 100%;
+}
 }
 
 /* ----------- */
@@ -3959,7 +3995,9 @@ p.torrance-card-desc{
   top: 104px;
   right: -89px;
 }
-
+.project-info{
+  width: 100%;
+}
 }
 
 /* ----------- */
