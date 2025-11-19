@@ -95,55 +95,48 @@ const RepeatHouseDiv = ({ provider }) => {
     : '$0'; // Fallback to default if no cost is found
 
   return (
-    <div className="repeat-house-div">
-      <div className="house-div">
+    <div className="repeat-house-div project-card1">
+      <div className="house-div project-inner1">
         <HouseCard1
           logo={logoSrc}
           name={name}
           description={description}
         />
-      <button className="detail-btn" onClick={handleDetailsClick}>Details</button>
+      <button className="details-btn" onClick={handleDetailsClick}>Details</button>
       </div>
 
-      <div className="details">
-        <div className="det1">
-          <div className="d-row">
-            <div className="d-col">
-              <p><strong>Services</strong></p>
-            </div>
-            <div className="d-col">
-              <p>{services}</p>
-            </div>
-          </div>
+      <div className="project-info e-proj-info1">
+        <div className="info-left">
 
-          <div className="d-row">
-            <div className="d-col">
-              <p><strong>Luxury type</strong></p>
-            </div>
-            <div className="d-col">
-              <p>{designNames || 'Not specified'}</p> {/* Display design names */}
-            </div>
-          </div>
+
+
+
+
+              <p><strong>Services</strong>{services}</p>
+
+
+
+
+
+
+
+
+
+
+
+              <p><strong>Luxury type</strong>
+         {designNames || 'Not specified'}</p> {/* Display design names */}
+
+
+
+
+
+
         </div>
 
-        <div className="det1 det2">
-          <div className="d-row">
-            <div className="d-col">
-              <p><strong>Starting Budget</strong></p>
-            </div>
-            <div className="d-col">
-              <p>{startingBudget}</p>
-            </div>
-          </div>
-
-          <div className="d-row">
-            <div className="d-col">
-              <p><strong>Location</strong></p>
-            </div>
-            <div className="d-col">
-              <p>{location}</p>
-            </div>
-          </div>
+        <div className="info-right">
+              <p><strong>Starting Budget</strong>{startingBudget}</p>
+              <p><strong>Location</strong>{location}</p>
         </div>
       </div>
 
@@ -169,19 +162,19 @@ export default RepeatHouseDiv;
 //   return (
 
 
-        
+
 //         <div className="repeat-house-div">
 
 //           <div className="house-div">
 
-//         <HouseCard 
-//         logo={logo1}   
+//         <HouseCard
+//         logo={logo1}
 //         name="American House Improvements Inc."
 //         description="LA’s Highly Rated, Award-Winning Construction & Renovation Firm"
 //       />
 
 
-   
+
 
 //       <button className='detail-btn'>Details</button>
 
@@ -196,7 +189,7 @@ export default RepeatHouseDiv;
 //             <div className="d-row">
 //               <div className="d-col">
 //                 <p><strong>Services</strong></p>
-                
+
 //               </div>
 //               <div className="d-col">
 //                 <p>Architectural Services / Construction</p>
@@ -206,7 +199,7 @@ export default RepeatHouseDiv;
 //             <div className="d-row">
 //               <div className="d-col">
 //                 <p><strong>Luxury type</strong></p>
-                
+
 //               </div>
 //               <div className="d-col">
 //                 <p>Modern, Futurism, Classic</p>
@@ -222,7 +215,7 @@ export default RepeatHouseDiv;
 //              <div className="d-row">
 //               <div className="d-col">
 //                 <p><strong> Starting Budget</strong></p>
-                
+
 //               </div>
 //               <div className="d-col">
 //                 <p>$10,000</p>
@@ -232,7 +225,7 @@ export default RepeatHouseDiv;
 //              <div className="d-row">
 //               <div className="d-col">
 //                 <p><strong> Location</strong></p>
-                
+
 //               </div>
 //               <div className="d-col">
 //                 <p>Kuwait</p>
@@ -246,11 +239,11 @@ export default RepeatHouseDiv;
 
 //         <ImageSlider />
 
-       
+
 
 //         </div>
-      
- 
+
+
 //   )
 // }
 

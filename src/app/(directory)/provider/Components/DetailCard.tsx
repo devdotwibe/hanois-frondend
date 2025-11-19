@@ -58,13 +58,13 @@ export default DetailCard;
 
 
 
- 
+
 // "use client";
 // import React from "react";
 // import Image, { StaticImageData } from "next/image";
 
 // type DetailCardProps = {
-//   logo: string | StaticImageData; 
+//   logo: string | StaticImageData;
 //   name: string;
 //   description?: string;
 // };
@@ -73,8 +73,8 @@ export default DetailCard;
 //   return (
 //     <div className="house-card detail-card">
 
-        
-   
+
+
 //       <div className="house-card-logo">
 
 //         <div className="h-logodiv">
@@ -87,10 +87,10 @@ export default DetailCard;
 //         />
 
 //         </div>
-       
+
 //       </div>
 
-     
+
 //       <div className="house-card-info">
 
 
@@ -109,7 +109,7 @@ export default DetailCard;
 
 //         </div>
 
-       
+
 
 
 

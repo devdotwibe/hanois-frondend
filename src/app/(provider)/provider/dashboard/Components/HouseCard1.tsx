@@ -3,7 +3,7 @@ import React from "react";
 import Image, { StaticImageData } from "next/image";
 
 type HouseCardProps = {
-  logo: string | StaticImageData; 
+  logo: string | StaticImageData;
   name: string;
   description?: string;
 };
@@ -16,8 +16,8 @@ const HouseCard1: React.FC<HouseCardProps> = ({ logo, name, description }) => {
         <Image
           src={logo}
           alt={`${name} logo`}
-          width={128}
-          height={128}
+          width={162}
+          height={162}
           className="house-card-img"
         />
       </div>

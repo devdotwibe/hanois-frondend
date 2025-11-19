@@ -1610,13 +1610,13 @@ width: 22px;
     padding-left: 20px;
 }
 .house-card-info h2{
-  font-size: 30px;
+  font-size: 28px;
   font-family: 'Avenir-Black';
   margin: 0 0 10px;
   color: #171725; line-height: 1.3;
 }
 
-
+.repeat-house-div .slick-track{margin-right: 0 !important; margin-left: 0 !important;}
 
 .house-card-logo {
     display: flex;
@@ -1877,15 +1877,17 @@ ul.tab-nav1 {
 
 
 .filter-container {
-  width: 300px;
-  padding: 32px 24px;
+  width: 250px;
+  padding: 0 20px;
   background-color: #ffffff;
   border-radius: 8px;
 border-right: 1px solid #e0e0e0;
 }
 
 .spd-outer1 {
-    width: calc(100% - 300px); padding: 0 300px 0 40px;
+    width: calc(100% - 250px); padding: 0 0px 0 0px;
+        border-right: 1px solid #e0e0e0;
+
 }
 
 .filter-title {
@@ -2090,7 +2092,7 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
 
 .sidebar-div1 {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; padding-right: 250px;
 }
 
 
@@ -3899,6 +3901,23 @@ p.torrance-card-desc{
     border-radius: 50%;
 }
 
+
+.spd-outer1 .intro-div {
+    padding-inline: 55px;
+    max-width: 800px;
+}
+
+.e-proj-info1 .info-left {
+    width: 48%;
+}
+
+.e-proj-info1 .info-right {
+    width: 48%;
+}
+
+.e-proj-info1 {
+    margin-top: 15px;
+}
 
 /* ------------------------------------responsive */
 
