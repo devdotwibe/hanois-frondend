@@ -87,9 +87,108 @@
 
 
 
+// "use client";
+
+// import React from "react";
+// import Slider, { Settings } from "react-slick";
+// import Image from "next/image";
+// import { ChevronLeft, ChevronRight } from "lucide-react";
+// import { IMG_URL } from "@/config";
+
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
+
+// const NextArrow = (props: any) => {
+//   const { onClick } = props;
+//   return (
+//     <button
+//       className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-700 p-2 rounded-full shadow-md z-10 transition"
+//       onClick={onClick}
+//     >
+//       <ChevronRight size={20} />
+//     </button>
+//   );
+// };
+
+// const PrevArrow = (props: any) => {
+//   const { onClick } = props;
+//   return (
+//     <button
+//       className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-700 p-2 rounded-full shadow-md z-10 transition"
+//       onClick={onClick}
+//     >
+//       <ChevronLeft size={20} />
+//     </button>
+//   );
+// };
+
+// const ImageSlider: React.FC<{ projects: any[] }> = ({ projects }) => {
+//   const settings: Settings = {
+//     dots: false,
+//     infinite: true,
+//     speed: 600,
+//     slidesToShow: 4,
+//     slidesToScroll: 1,
+//     autoplay: false,
+//     nextArrow: <NextArrow />,
+//     prevArrow: <PrevArrow />,
+//     mobileFirst: true,
+
+//     responsive: [
+//       {
+//         breakpoint: 1200,
+//         settings: { slidesToShow: 3 },
+//       },
+//       {
+//         breakpoint: 992,
+//         settings: { slidesToShow: 2 },
+//       },
+//       {
+//         breakpoint: 600,
+//         settings: { slidesToShow: 1 },
+//       },
+//       {
+//         breakpoint: 480,
+//         settings: { slidesToShow: 1 },
+//       },
+//     ],
+//   };
+
+//   const images = projects
+//     .map((project) => project.images)
+//     .flat()
+//     .map((image) => IMG_URL + image.image_path);
+
+//   return (
+//     <div className="relative mx-auto py-10 px-4">
+//       <Slider {...settings}>
+//         {images.map((src, index) => (
+//           <div key={index} className="px-2">
+//             <div className="rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+//               <Image
+//                 src={src}
+//                 alt={`Slide ${index + 1}`}
+//                 width={400}
+//                 height={300}
+//                 className="w-full h-[180px] object-cover"
+//                 loading="lazy"
+//               />
+//             </div>
+//           </div>
+//         ))}
+//       </Slider>
+//     </div>
+//   );
+// };
+
+// export default ImageSlider;
+
+
+
+
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Slider, { Settings } from "react-slick";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -98,12 +197,15 @@ import { IMG_URL } from "@/config";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+type Props = { projects: any[] };
+
 const NextArrow = (props: any) => {
   const { onClick } = props;
   return (
     <button
       className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-700 p-2 rounded-full shadow-md z-10 transition"
       onClick={onClick}
+      aria-label="Next"
     >
       <ChevronRight size={20} />
     </button>
@@ -116,67 +218,90 @@ const PrevArrow = (props: any) => {
     <button
       className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-700 p-2 rounded-full shadow-md z-10 transition"
       onClick={onClick}
+      aria-label="Prev"
     >
       <ChevronLeft size={20} />
     </button>
   );
 };
 
-const ImageSlider: React.FC<{ projects: any[] }> = ({ projects }) => {
+const ImageSlider: React.FC<Props> = ({ projects }) => {
+  const sliderRef = useRef<Slider | null>(null);
+
+  // settings: default desktop = 4, then breakpoints decrease
   const settings: Settings = {
     dots: false,
     infinite: true,
     speed: 600,
-    slidesToShow: 4,
+    slidesToShow: 4, // desktop
     slidesToScroll: 1,
     autoplay: false,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
-    mobileFirst: true,
-
+    adaptiveHeight: false,
+    variableWidth: false, // ensure fixed columns based on slidesToShow
+    // React-slick breakpoints are applied when viewport <= breakpoint
     responsive: [
-      {
-        breakpoint: 1200,
-        settings: { slidesToShow: 3 },
-      },
-      {
-        breakpoint: 992,
-        settings: { slidesToShow: 2 },
-      },
-      {
-        breakpoint: 600,
-        settings: { slidesToShow: 1 },
-      },
-      {
-        breakpoint: 480,
-        settings: { slidesToShow: 1 },
-      },
+      { breakpoint: 1024, settings: { slidesToShow: 3, slidesToScroll: 1 } },
+      { breakpoint: 768, settings: { slidesToShow: 2, slidesToScroll: 1 } },
+      { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
     ],
   };
 
+  // images array flattened
   const images = projects
     .map((project) => project.images)
     .flat()
     .map((image) => IMG_URL + image.image_path);
 
+  // Force a reflow / recalc after mount so slick calculates widths correctly
+  useEffect(() => {
+    // sometimes slick computes wrong when first mounted (esp. with SSR/hydration)
+    // this triggers a resize event and also navigates to 0 to force recalculation
+    const t = setTimeout(() => {
+      window.dispatchEvent(new Event("resize"));
+      if (sliderRef.current && typeof sliderRef.current.slickGoTo === "function") {
+        sliderRef.current.slickGoTo(0, true);
+      }
+    }, 100);
+    return () => clearTimeout(t);
+  }, []);
+
+  // If there are fewer images than slidesToShow, slick will show what's available
+  // but the layout will still be fine.
+
   return (
     <div className="relative mx-auto py-10 px-4">
-      <Slider {...settings}>
+      <Slider ref={sliderRef} {...settings}>
         {images.map((src, index) => (
           <div key={index} className="px-2">
             <div className="rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+              {/* make Image responsive inside the slide */}
               <Image
                 src={src}
                 alt={`Slide ${index + 1}`}
                 width={400}
                 height={300}
-                className="w-full h-[180px] object-cover"
+                // Force the rendered <img> to fill the card width and keep height
+                style={{ width: "100%", height: 180, objectFit: "cover" }}
                 loading="lazy"
               />
             </div>
           </div>
         ))}
       </Slider>
+
+      {/* small CSS tweaks to ensure slick respects width (you can also put these in your CSS file) */}
+      <style jsx global>{`
+        /* prevent slick from using inline widths from images */
+        .slick-slide > div {
+          display: block;
+        }
+        /* ensure the slick-list hides overflow cleanly */
+        .slick-list {
+          overflow: hidden;
+        }
+      `}</style>
     </div>
   );
 };
