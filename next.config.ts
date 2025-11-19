@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "hanois.dotwibe.com",
-        pathname: "/dotwibe/next/**",
+        pathname: "/strapi/**",
       },
     ],
   },
