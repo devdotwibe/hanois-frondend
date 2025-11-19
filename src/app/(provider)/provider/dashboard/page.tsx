@@ -184,12 +184,12 @@ const handleSaveLead = async () => {
                   <td className="status-col">
                     <span
                       className={`highlightedd bg-blue ${getStatusColor(
-                        lead.lead_status
+                        lead.status
                       )}`}
                       onClick={() => openLeadModal(lead)}
                       style={{ cursor: "pointer" }}
                     >
-                     {lead.lead_status ?? "Awaiting Review"}
+                     {lead.status ?? "Awaiting Review"}
 
                     </span>
                   </td>
