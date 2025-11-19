@@ -4121,6 +4121,8 @@ p.torrance-card-desc{
 .house-card-info h2{font-size: 24px;
   margin: 0 0 4px;
 }
+
+.sidebar-div1{margin-top: 0;}
 }
 
 
@@ -4542,10 +4544,24 @@ p {font-size: 14px;}
 
 
 
+/* ----------------------------------------------------------------------------------- */
+
+
+  @media (min-width: 901px) and (max-width: 1024px) {
+.sidebar-div1{padding-right: 20px;
+
+}
+
+.spd-outer1{border-right: none;}
+  }
+
+
+
 
 
 
 @media (min-width: 768px) and (max-width: 900px) {
+
 
     .business-div21 .content-top h3 {
         padding-left: 0;
@@ -4628,3 +4644,5 @@ p {font-size: 14px;}
         top: 110px;
     }
   }
+
+
