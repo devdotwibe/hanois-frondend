@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 
 type OptionItem = {
   id: number;
@@ -13,6 +14,10 @@ import proposalimg from "../../../../../public/images/get-listed-1.jpg";
 import Select from "react-select";
 
 const AddNewForm = () => {
+
+
+    const router = useRouter();
+
 
   const [formData, setFormData] = useState({
     title: "",
@@ -127,6 +132,7 @@ const AddNewForm = () => {
                 const res = await fetch(`${API_URL}providers/by-category/${value}`);
 
                 const data = await res.json();
+                console.log("API response:", data);
 
                 if (res.ok) {
 
@@ -207,6 +213,8 @@ const handleSubmit = async (e: any) => {
     console.log("API response:", data);
 
     if (!res.ok) throw new Error(data.error || "Error submitting form");
+  router.push(`/user/project-details/${data.data.project.id}`);
+
 
     setSubmitted(true);
     setEditMode(false);
@@ -648,113 +656,7 @@ return (
             </>
         )}
 
-        {submitted && !editMode && (
-        <div className="project-details-view">
 
-            {submittedMessage && (
-                <div
-                    className={
-                    submittedMessage
-                        ? "contact-success"
-                        : "contact-error"
-                    }
-                >
-                    <p
-                    style={{
-                        color: submittedMessage ? "green" : "red",
-                    }}
-                    >
-                        New Project Created Successfully
-                    </p>
-                </div>
-            )}
-
-            <button
-                className="edit-button"
-                onClick={() => setEditMode(true)}
-                style={{
-                    color: "#0066ff",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    fontSize: "16px",
-                    marginBottom: "20px",
-                    float: "right"
-                }}
-                >
-                Edit
-            </button>
-
-            <h2>{formData.title}</h2>
-
-            <p style={{ color: "green" }}>
-
-            {formData.listingStyle === "public" ? "Public" : "Private"}
-
-            </p>
-
-            <h4>Brief</h4>
-            <p>{formData.notes}</p>
-
-            <table className="details-table">
-            <tbody>
-                <tr><td>Type</td><td>{getCategoryName(formData.projectType)}</td></tr>
-                <tr><td>Location</td><td>{formData.location}</td></tr>
-                <tr><td>Land size</td><td>{formData.landSize}</td></tr>
-                <tr><td>Luxury level</td><td>{getDesignName(formData.luxuryLevel)}</td></tr>
-                <tr><td>Services</td><td>{getServiceName(formData.services)}</td></tr>
-                <tr><td>Basement</td><td>{formData.basement === "yes" ? "Yes" : "No"}</td></tr>
-            </tbody>
-            </table>
-
-
-                {ShowCalculator && (
-                        <>
-                        <h3>Budget Calculator 1</h3>
-
-                        <div className="budget-calculator">
-
-                            <div className="bud-col1">
-
-                                <div className="bud-row">
-
-                                <p><strong>Total max buildable area</strong></p>
-
-                                <p>870</p>
-
-                                </div>
-
-                                <div className="bud-row">
-                                <p><strong>Cost with finish</strong></p>
-                                <p>117 700</p>
-                                </div>
-                            </div>
-
-                            <div className="bud-col1 bud-col2">
-                                <div className="bud-row">
-                                <p><strong>Design Fee Cost</strong></p>
-
-                                <p>1 177 (5%)</p>
-
-                                </div>
-
-                                <div className="bud-row">
-
-                                <p><strong>Total Project Cost</strong></p>
-
-                                <p>118 877</p>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </>
-                )}
-
-             
-            </div>
-
-            )}
         </div>
     );
 }
