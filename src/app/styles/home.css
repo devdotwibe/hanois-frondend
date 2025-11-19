@@ -1839,7 +1839,9 @@ ul.tab-nav1 {
 
 /* ----------------------------------------------------------------------- */
 
-
+.house-card p.house-card-desc {
+    word-wrap: break-word;
+}
 
 
 .spd-outer .slick-slide {
@@ -1865,6 +1867,7 @@ ul.tab-nav1 {
 
 .house-div .house-card-info {
     padding-block: 30px;
+    width: calc(100% - 182px);
 }
 
 .details {
@@ -3902,7 +3905,9 @@ p.torrance-card-desc{
 
 .pagination.outer .pagenumber {
     border: 1px solid #e0e0e0;
-    padding: 7px 14px;
+    width: 36px;
+    height: 36px;
+
     line-height: 1; border-radius: 4px;
     display: flex;
     justify-content: center;
@@ -4108,7 +4113,14 @@ p.torrance-card-desc{
   right: 0px;
    top: 104px;
 }
+.intro-div h3 {
+    font-size: 26px;
+    margin: 0 0 10px;
+}
 
+.house-card-info h2{font-size: 24px;
+  margin: 0 0 4px;
+}
 }
 
 
@@ -4146,9 +4158,22 @@ p.torrance-card-desc{
     .project-card1{padding-inline: 20px;}
 
 .spd-outer1 .intro-div{max-width: 100%;}
+.sidebar-div1{margin-top: 0;}
+
+.public .header {
+    padding-bottom: 20px;
+}
+.pagination.outer{margin: 20px 0 0;}
+.pagination.outer .pagenumber {width: 30px; height: 30px; font-size: 13px;}
+
+.pagination button.prev-btn, .pagination button.next-btn{width: 30px; height: 30px;}
+.pagination button.prev-btn img,
+ .pagination button.next-btn img{
+  width: 12px; height: 12px;
+ }
 }
 
-/* ----------- */
+/* ---------------------------------------------------- */
 
 
 @media (min-width: 768px) {
@@ -4159,6 +4184,9 @@ p.torrance-card-desc{
 
 
 @media (max-width: 767px) {
+
+.spd-outer1 .intro-div{padding-inline: 5%;}
+  .project-card1{padding-inline: 5%;}
 
   .build-card .img-b img{padding-inline: 5%;}
 
@@ -4412,6 +4440,10 @@ p {font-size: 14px;}
 .loged-inn-div > .loged-inn-div{
   padding: 10px 36px 10px 30px;
 }
+.house-div .house-card-info {
+    width: 100%;
+    padding: 15px 0;
+}
 
 
 }
@@ -4434,12 +4466,25 @@ p {font-size: 14px;}
 .get-listedpage .business-b-out {
         width: 80%;
     }
+
+.e-proj-info1 .info-left, .e-proj-info1 .info-right {
+    width: 100%;
+}
+.project-info{margin-bottom: 5px;}
+.project-info p strong {
+    margin-right: 9px;}
 }
 
 
 /* ------------------------------------------------------------ */
 
 @media (max-width: 480px) {
+
+
+  .house-div3{width: 100%;}
+
+
+
 .business-block {width: 100%;}
 .search-container button {padding: 15px 20px;}
 .search-container input {padding: 12px 12px;}

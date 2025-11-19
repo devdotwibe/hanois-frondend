@@ -1,4 +1,19 @@
 
+@font-face {
+  font-family: 'Avenir-Book';
+  src: url('../fonts/Avenir-Book.woff');
+}
+@font-face {
+  font-family: 'Avenir-Black';
+  src: url('../fonts/Avenir-Black.woff');
+}
+@font-face {
+  font-family: 'Avenir-medium';
+  src: url('../fonts/Avenir-Medium.woff');
+}
+
+
+
 
 .seeker-dashboard1 .header-div,
 .directory .header-div,
@@ -168,9 +183,122 @@
 
 body{position: relative;}
 
-.desk-header {display: none;}
+.desk-header {display: block;}
 
-.mob-header {display: block;}
+.mob-header {display: none;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.mob-menu{
+    cursor: pointer; margin-left: 10px;
+}
+
+
+/* OVERLAY BACKGROUND */
+.mobile-menu-overlay {
+  position: fixed;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #ffffff;
+  z-index: 9999;
+  transition: top 0.4s ease-in-out;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* When Open */
+.mobile-menu-overlay.open {
+  top: 0;
+}
+
+
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mobile-menu-header .tabs {
+  display: flex;
+  gap: 20px; width: 100%; border-bottom: 1px solid #f5f5f5;
+}
+
+.mobile-menu-header .tabs button {
+  background: none;
+  border: none;
+  padding-bottom: 5px;
+  font-size: 16px;
+  color: #666;
+}
+
+.mobile-menu-header .tabs button {
+    cursor: pointer;
+      font-family: 'Avenir-medium';
+        border-bottom: 2px solid #ffffff !important;
+
+
+}
+
+.mobile-menu-header .tabs .active {
+
+  color: #3056ff;
+  border-bottom: 2px solid #3056ff !important;
+}
+
+
+.close-btn11{cursor: pointer;}
+
+/* Menu List */
+.menu-list {
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.menu-list li {
+  padding: 14px 14px;
+  font-size: 16px;
+  border-radius: 6px;
+    font-family: 'Avenir-medium';
+
+
+}
+.menu-list li.active {
+    background: #eff6ff;
+}
+.menu-list li.active a {
+    color: #2050f5;
+}
+
+/* Filters tab area */
+.filter-box {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+
+
+
+
 
 
 
@@ -247,12 +375,24 @@ body{position: relative;}
 /* -------------------------------------------------------------- */
 
 @media(max-width: 900px) {
-
+.mob-header .filter-container {
+    display: block;
+        padding: 0;
+    border: none;
+    width: 100%;
+}
 
 .desk-header {display: none;}
 
 .mob-header {display: block;}
+.div2h {
+    display: flex;
 
+    align-items: center;
+}
+.public .header.fixedtop {
+    padding-bottom: 0;
+}
 }
 /* ----------------------------------------------------------------- */
 
@@ -273,6 +413,10 @@ body{position: relative;}
 /* ------------------------------------------------------------------- */
 
 @media (max-width: 767px) {
+
+    .header-div:has(.loged-inn-div) .header-text {
+    display: none;
+}
 
     .header-div {
         padding: 12px 12px 12px 20px;
