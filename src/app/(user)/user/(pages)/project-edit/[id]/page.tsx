@@ -451,38 +451,52 @@ const EditProjectPage = () => {
         </div>
 
         {/* SERVICES (multi) */}
-       <div className="form-grp">
+     <div className="form-grp">
   <label>Select Services</label>
+
+  {console.log("▶ serviceOptions:", serviceOptions)}
+  {console.log("▶ formData.services:", formData.services)}
 
   <Select
     isMulti
     name="services"
     options={serviceOptions}
 
-    // ✅ Correct selected values binding
-    value={serviceOptions.filter((opt) =>
-      (formData.services || []).map(Number).includes(opt.value)
-    )}
+    // Logging filter result
+    value={serviceOptions.filter((opt) => {
+      const result = (formData.services || [])
+        .map(Number)
+        .includes(opt.value);
 
-    // ✅ Updates form correctly with numbers
+      console.log(
+        `▶ Checking opt.value=${opt.value} → Match?`,
+        result
+      );
+
+      return result;
+    })}
+
     onChange={(selected: any) => {
+      console.log("▶ Selected objects:", selected);
+
       const selectedValues = selected.map((item: any) => Number(item.value));
+      console.log("▶ Selected numeric VALUES:", selectedValues);
 
       setFormData((prev: any) => ({
         ...prev,
         services: selectedValues,
       }));
 
-      setErrors((p: any) => ({
-        ...p,
-        services: "",
-      }));
+      console.log("▶ Updated formData.services:", selectedValues);
+
+      setErrors((p: any) => ({ ...p, services: "" }));
     }}
 
     className={`forminput ${errors.services ? "warnning-msg" : ""}`}
     classNamePrefix="react-select"
   />
 </div>
+
 
 
         {/* construction Budget */}
