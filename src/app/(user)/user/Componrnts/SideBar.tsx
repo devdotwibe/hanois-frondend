@@ -17,7 +17,7 @@ const SideBar = () => {
   const activePath =
     links.some((link) => link.href === pathname)
       ? pathname
-      : "/user/dashboard";
+      : "/user/providers";
 
   return (
     <div className="outr">
