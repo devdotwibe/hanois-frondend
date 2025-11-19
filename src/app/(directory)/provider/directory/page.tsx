@@ -108,15 +108,17 @@ const ServiceProviderDirectory = () => {
             <RepeatHouseDiv key={provider.id} provider={provider} />
           ))}
 
-          <div className="pagination">
+          <div className="pagination outer">
             <button
+            className='prev-btn'
               disabled={currentPage === 1}
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
             >
               Previous
             </button>
-            <span>Page {currentPage} of {totalPages}</span>
+            <div className='pagination-div'> <span className='pagenumber current-pg'>{currentPage}</span> <span className='pagenumber total-pg'>{totalPages}</span></div>
             <button
+             className='next-btn'
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
             >
@@ -162,7 +164,7 @@ export default ServiceProviderDirectory;
 //       </div>
 
 
-      
+
 //     </div>
 //   )
 // }

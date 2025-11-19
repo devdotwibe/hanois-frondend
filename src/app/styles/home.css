@@ -3866,6 +3866,26 @@ p.torrance-card-desc{
     border-radius: 50%;
 }
 
+
+.pagination.outer {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination.outer .pagenumber {
+    border: 1px solid #e0e0e0;
+    padding: 7px 14px;
+    line-height: 1; border-radius: 4px;
+}
+
+.pagination-div {
+    margin-inline: 10px;
+}
+
+
+
+
+
 /* ------------------------------------responsive */
 
 
