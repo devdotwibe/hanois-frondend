@@ -109,7 +109,7 @@ const ViewProposalIntro = ({ proposal_id }) => {
 
                   {proposal.attachment ? (
                     <a
-                      href={`${IMG_URL}proposals/${proposal.attachment}`}
+                      href={`${IMG_URL}uploads/${proposal.attachment}`}
                       target="_blank"
                       className="text-blue-600 underline"
                     >
