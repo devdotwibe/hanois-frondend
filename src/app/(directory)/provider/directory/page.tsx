@@ -4,6 +4,11 @@ import Intro from '../Components/Intro';
 import RepeatHouseDiv from '../Components/RepeatHouseDiv';
 import DirectorySidebar from '../Components/DirectorySidebar';
 
+import Image from 'next/image';
+import arrowright from "../../../../../public/images/right-page.svg"
+import arrowleft from "../../../../../public/images/left-page.svg"
+
+
 const API_URL = 'https://hanois.dotwibe.com/api/api/providers';
 const ITEMS_PER_PAGE = 10;
 
@@ -114,7 +119,13 @@ const ServiceProviderDirectory = () => {
               disabled={currentPage === 1}
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
             >
-              Previous
+              <Image
+              src={arrowleft}
+              alt='img'
+              width={14}
+              height={14}
+              />
+
             </button>
             <div className='pagination-div'> <span className='pagenumber current-pg'>{currentPage}</span> <span className='pagenumber total-pg'>{totalPages}</span></div>
             <button
@@ -122,7 +133,14 @@ const ServiceProviderDirectory = () => {
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
             >
-              Next
+
+               <Image
+              src={arrowright}
+              alt='img'
+              width={14}
+              height={14}
+              />
+
             </button>
           </div>
         </div>
