@@ -3817,7 +3817,7 @@ width: 200px;
     max-width: 800px;
 }
 
-.upload-doc input{display: none;}
+.upload-doc input{display: block;}
 .upload-box h3{
   font-size: 16px; margin: 10px 0;
   line-height: 1.3;
