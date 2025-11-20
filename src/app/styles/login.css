@@ -370,7 +370,6 @@ button.back-bth {
 }
 .login-container {
         margin-top: 98px;
-        max-width: 100%;
         padding-inline: 70px;
 }
 .form-grp input, .form-grp textarea{
@@ -427,9 +426,6 @@ button.back-bth {
 }
 
 
-.formcol2 .form-grp {
-    width: 100%;
-}
 
 .fogot-poup .modal-content {
     padding: 40px;
@@ -439,7 +435,12 @@ button.back-bth {
 
 }
 
+/* ----------------------------------------------- */
 
+
+@media (max-width: 600px) {
+.formcol2 .form-grp {width: 100%;}
+}
 
 
 

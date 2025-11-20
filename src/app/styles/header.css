@@ -374,8 +374,8 @@ button.close-btn11 {
 
 }
 
-.header-div {
-    padding: 22px 22px;}
+.header-div {padding: 22px 22px;}
+
 
 }
 
@@ -418,13 +418,25 @@ button.close-btn11 {
 }
 
 
- .header
- {
-    padding-bottom: 0px;
-}
-.header {
-    border-bottom: 1px solid #ebeaea;
-}
+
+
+
+
+.seeker-dashboard1 .header,
+ .prov-dashboard .header,
+  .directory .header,
+   .public .header{
+        border-bottom: 1px solid #ebeaea;
+            padding-bottom: 0px;
+
+
+   }
+
+
+
+
+
+
 
 }
 /* ----------------------------------------------------------------- */
@@ -451,7 +463,23 @@ button.close-btn11 {
     /* .header-div:has(.loged-inn-div) .header-text {
     display: none;
 } */
-.header{padding-bottom: 0 !important;}
+
+    .header.fixedtop .header-div {
+        padding: 15px 0;
+    }
+
+.seeker-dashboard1 .header,
+ .prov-dashboard .header,
+  .directory .header,
+   .public .header{
+
+            padding-bottom: 0px;
+
+
+   }
+
+
+
 
     .header-div {
         padding: 12px 12px 12px 20px;

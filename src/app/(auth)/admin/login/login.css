@@ -145,15 +145,27 @@ width: 100%;
 
 .form-group input:focus {
   outline: none;
-  border-color: var(--primary-color); 
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); 
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 .form-group input::placeholder {
-  color: #a3a3a7;          
-  font-size: 16px;      
-          
+  color: #a3a3a7;
+  font-size: 16px;
+
 }
 
 
 .site-logo img{border: none;}
+
+
+
+
+
+
+
+@media (max-width: 767px) {
+
+.login-error{font-size: 14px;}
+
+}

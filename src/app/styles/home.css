@@ -784,7 +784,10 @@ hr {
 }
 
 
-
+.g-list .banner-div > p {
+    display: flex;
+    flex-wrap: wrap; justify-content: center;
+}
 
 .g-list .banner-div p {
     max-width: 735px;
@@ -4327,6 +4330,9 @@ margin-inline: 0;}
 
 @media (max-width: 1240px) {
 
+.g-listbanner { margin-top: 80px;}
+
+
 .e-spd-outer.public-project-page{border-right: none;}
 .containers{width: 94%;}
 
@@ -4355,18 +4361,22 @@ margin-inline: 0;}
 
 }
 /* ------------------------------------------- */
+
+
+
 @media (max-width: 1025px) and  (max-width: 1240px){
 .info-left, .info-right {
     width: 47%;
 }
 
 }
-/* ----------- */
+/* ------------------------------------------------------------ */
 
 
 
 @media (max-width: 1024px) {
 
+.banner-div{margin-top: 20px;}
 
 
 .business-wrap{padding: 80px 0 345px;}
@@ -4380,6 +4390,8 @@ margin-inline: 0;}
 .blue-card .b-card {width: 32.2%;}
 .business-div2 {width: 40%;}
 
+
+.arc-cover h3,
 .banner-div h2,
 .ready-div h3,
 .business-div1 h3,
@@ -4403,7 +4415,7 @@ margin-inline: 0;}
 .h-div .h-div1:first-child:first-child{margin-bottom: 80px;}
 
 
-.banner-div.g-listbanner {margin: 40px 0 90px;}
+.banner-div.g-listbanner {margin: 10px auto 90px;}
 .how-help h2 {
     font-size: 46px;
 }
@@ -4519,6 +4531,11 @@ margin-inline: 0;}
 
 
 .form-grp.wrap-select{padding-inline: 0;}
+.build-card .text-areab { width: 34%;}
+.build-card .img-b {width: 61%;}
+
+
+
 
 }
 
@@ -4635,14 +4652,17 @@ margin-inline: 0;}
 
 .business-div2{width: 100%;}
 
-.bg-blue1{background: var(--primary-color); padding-top: 50px;}
+
+
+.bg-blue1{background: var(--primary-color); padding-top: 50px;
+        transform: translatey(4px);}
 
 .business-block {
     width: 70%;
     margin-inline: auto;
 }
 
-
+.arc-cover h3,
 .banner-div h2,
 .ready-div h3,
 .business-div1 h3,
@@ -4954,16 +4974,19 @@ padding-block: 15px;
     padding-bottom: 280px;
 }
 
+.business-b-out{
+          transform: translateY(0px);
 
+}
 
 .business-b-out:nth-child(2) {
-        transform: translateY(100px);
+        transform: translateY(97px);
     }
-        .business-b-out:nth-child(3) {
+.business-b-out:nth-child(3) {
         transform: translateY(198px);
     }
 
-    .get-listedpage .business-b-out {
+.get-listedpage .business-b-out {
         width: 100%; margin-right: 0;
     }
 
