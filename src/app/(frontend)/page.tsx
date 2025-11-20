@@ -18,10 +18,11 @@ export default function Home() {
         <Banner lang={lang} />
 
         <ReadySec lang={lang} />
+                <ArchetectCommunity />
+
 
         <BusinessSec lang={lang} />
 
-        <ArchetectCommunity />
 
         <FaqSec lang={lang} />
 
