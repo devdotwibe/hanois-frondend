@@ -1010,6 +1010,10 @@ padding-block: 60px;
   position: relative;
 
 }
+
+.arc-act1 button{cursor: pointer;}
+
+
 .serv-prov-form {
   position: relative;
   z-index: 1;

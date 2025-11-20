@@ -287,7 +287,48 @@ const ArcCard: React.FC<ArcCardProps> = ({
 
 
 
-          {openComment && (
+
+
+           {showPopup && (
+        <div className="popup-overlay1"
+        onClick={() => setShowPopup(false)}>
+          <div className="popup-box"
+          onClick={(e) => e.stopPropagation()}>
+            <h3>Share</h3>
+
+            <div className="share-icons">
+
+              <div className="share-icon1">
+                <Image src={carbonlink} alt="img" height={20} width={20}/>
+              </div>
+              <div className="share-icon1">
+                <Image src={imgs1} alt="img" height={20} width={20}/>
+              </div>
+
+              <div className="share-icon1">
+                <Image src={imgs2} alt="img" height={20} width={20}/>
+              </div>
+              <div className="share-icon1">
+                <Image src={imgs3} alt="img" height={20} width={20}/>
+              </div>
+              <div className="share-icon1">
+                <Image src={imgs4} alt="img" height={20} width={20}/>
+              </div>
+
+            </div>
+
+            <div className="popup-buttons">
+              {/* <button onClick={() => setShowPopup(false)}>Cancel</button> */}
+            </div>
+
+
+          </div>
+        </div>
+      )}
+
+      </div>
+
+         {openComment && (
         <div className="commented-sec">
 
 
@@ -332,45 +373,6 @@ const ArcCard: React.FC<ArcCardProps> = ({
         </div>
       )}
 
-
-           {showPopup && (
-        <div className="popup-overlay1"
-        onClick={() => setShowPopup(false)}>
-          <div className="popup-box"
-          onClick={(e) => e.stopPropagation()}>
-            <h3>Share</h3>
-
-            <div className="share-icons">
-
-              <div className="share-icon1">
-                <Image src={carbonlink} alt="img" height={20} width={20}/>
-              </div>
-              <div className="share-icon1">
-                <Image src={imgs1} alt="img" height={20} width={20}/>
-              </div>
-
-              <div className="share-icon1">
-                <Image src={imgs2} alt="img" height={20} width={20}/>
-              </div>
-              <div className="share-icon1">
-                <Image src={imgs3} alt="img" height={20} width={20}/>
-              </div>
-              <div className="share-icon1">
-                <Image src={imgs4} alt="img" height={20} width={20}/>
-              </div>
-
-            </div>
-
-            <div className="popup-buttons">
-              {/* <button onClick={() => setShowPopup(false)}>Cancel</button> */}
-            </div>
-
-
-          </div>
-        </div>
-      )}
-
-      </div>
 
     </div>
   );
