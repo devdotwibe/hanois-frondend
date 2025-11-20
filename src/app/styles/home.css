@@ -4201,7 +4201,7 @@ button.send-arrow {
 }
 
 .e-arc11 .arc-profile-sec {
-    width: 100%;
+    width: 100%; justify-content: space-between;
 }
 span.time-now {
     display: block;
@@ -4214,7 +4214,7 @@ span.time-now {
 }
 
 .e-arc11 .arc-head-text {
-    width: calc(100% - 40px); text-align: left;
+    width: calc(100% - 50px); text-align: left;
         background: #ffffff;
     padding: 15px; border-radius: 5px;
 }
