@@ -4324,7 +4324,7 @@ margin-inline: 0;}
 
 @media (max-width: 1240px) {
 
-
+.e-spd-outer.public-project-page{border-right: none;}
 .containers{width: 94%;}
 
 .business-div21 .content-top h3 span {display: inline;}

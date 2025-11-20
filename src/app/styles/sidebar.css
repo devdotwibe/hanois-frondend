@@ -140,6 +140,10 @@ ul.sidebarul li.active{
 /* ---------------------------------------------- */
 @media (min-width: 1025px) and  (max-width: 1240px){
 .sidebar-pages{padding-inline: 20px;}
+
+.sidebar-pages:has(.e-main) {
+    padding-right: 220px;
+}
 }
 /* ------------------------------------------ */
 @media (max-width: 1024px) {
@@ -151,6 +155,10 @@ ul.sidebarul li.active{
 
 @media (min-width: 901px) and  (max-width: 1024px){
 .sidebar-pages{padding-inline: 20px;}
+
+.sidebar-pages:has(.e-main) {
+    padding-right: 220px;
+}
 }
 
 /* ------------------------------------------------ */
