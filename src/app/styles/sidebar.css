@@ -41,6 +41,13 @@
     padding: 0 250px 0 55px;
     /* max-width: 1310px; */
 }
+
+
+.public-proj .sidebar-pages{
+  padding-right: 250px;
+}
+
+
 .sidebarul {
     width: 250px;
      border-right: 1px solid #e0e0e0; height: 100%;
@@ -104,13 +111,22 @@ ul.sidebarul li.active{
     width: 100%; align-items: flex-start;
 }
 
-
-
-
+/* ---------------------------------------------- */
+@media (min-width: 1025px) and  (max-width: 1240px){
+.sidebar-pages{padding-inline: 20px;}
+}
+/* ------------------------------------------ */
 @media (max-width: 1024px) {
 .sidebar-div{margin-top: 0;}
 
 }
+
+/* ----------------------------------------------------- */
+
+@media (min-width: 901px) and  (max-width: 1024px){
+.sidebar-pages{padding-inline: 20px;}
+}
+
 /* ------------------------------------------------ */
 
 
