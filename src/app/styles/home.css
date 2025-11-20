@@ -4260,6 +4260,9 @@ span.time-now {
     margin: 0 -5px;
 }
 
+.filter-section select {
+  width: 100%; box-sizing: border-box;
+}
 
 /* ------------------------------------responsive */
 

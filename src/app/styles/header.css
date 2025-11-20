@@ -422,7 +422,9 @@ button.close-btn11 {
  {
     padding-bottom: 20px;
 }
-
+.header {
+    border-bottom: 1px solid #ebeaea;
+}
 
 }
 /* ----------------------------------------------------------------- */
