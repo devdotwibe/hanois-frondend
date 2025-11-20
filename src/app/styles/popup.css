@@ -153,8 +153,9 @@
 
 
 .proposal-popup.public-poup .modal-content {
-    height: auto;
-    max-height: unset;
+    height: 100vh;
+    max-height: 90vh; padding-bottom: 20px;
+
 }
 
 .public-poup .proposal-view{

@@ -3408,11 +3408,11 @@ margin: 0 0 8px !important;
 
 }
 
-.proposal-details h4 span.green-text1{
-color: red;
+.proposal-details h4 span.public-text{
+color: #53d8a7;
 }
-.proposal-details h4 span.blue-text1{
-color: red;
+.proposal-details h4 span.private-text{
+color: #2050f5;
 }
 
 
@@ -3435,11 +3435,13 @@ color: red;
 }
 .detail-row {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  max-width: 240px;
-}
 
+  margin-bottom: 8px;
+
+}
+.detail-row .detail-col11:first-child {
+    width: 154px;
+}
 .detail-row span {
    color: #000000;
     font-family: 'poppins-medium';
@@ -4253,9 +4255,22 @@ span.time-now {
 
 @media (max-width: 1541px) {
 .project-info{width: 90%;}
+
+.torrance-card-badge {
+    padding: 10px;
+    font-size: 13px;
+}
+.torrance-card-badge{left: 14px;}
+
 }
 
+/* ---------------------------------------------------------- */
 
+
+@media (max-width: 1440px) {
+
+
+}
 
 /* ---------------------------------------------------------- */
 @media (max-width: 1340px) {
@@ -4267,7 +4282,7 @@ span.time-now {
 
   }
 
-
+/* ----------------- */
 
 .filter-container{width: 220px;}
 
