@@ -26,14 +26,17 @@ const DetailsIntro = ({ project }: any) => {
       </div>
 
       <ul className="tab-nav1">
-       <li>
-  <Link 
-    href={`/user/Proposals/${project.id}`} 
-    className="tab-btn"
-  >
-    Proposals ({project.proposals?.length || 0})
-  </Link>
-</li>
+       {project.proposals?.length > 0 && (
+  <li>
+    <Link 
+      href={`/user/Proposals/${project.id}`} 
+      className="tab-btn"
+    >
+      Proposals ({project.proposals.length})
+    </Link>
+  </li>
+)}
+
 
         <li>
           <Link 

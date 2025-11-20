@@ -4,10 +4,69 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { API_URL } from "@/config";
+import { IMG_URL ,API_URL } from "@/config";
 
 const CompanyCard = ({ proposal }: { proposal: any }) => {
   const [showPopup, setShowPopup] = useState(false);
+
+  // safely read provider data
+  const provider = proposal.provider || {};
+
+
+  const handleAccept = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(
+      `${API_URL}/providers/proposal/${proposal.id}/accept`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await res.json();
+    if (data.success) {
+      alert("Proposal accepted!");
+      setShowPopup(false);
+    } else {
+      alert(data.error || "Failed to accept proposal");
+    }
+  } catch (err) {
+    console.error("Accept error:", err);
+  }
+};
+
+const handleReject = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(
+      `${API_URL}/providers/proposal/${proposal.id}/reject`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await res.json();
+    if (data.success) {
+      alert("Proposal rejected!");
+      setShowPopup(false);
+    } else {
+      alert(data.error || "Failed to reject proposal");
+    }
+  } catch (err) {
+    console.error("Reject error:", err);
+  }
+};
+
+
+
 
   return (
     <>
@@ -15,14 +74,21 @@ const CompanyCard = ({ proposal }: { proposal: any }) => {
       <div className="company-card">
         <div className="company-left">
           <Image
-            src="/images/default-user.png"
-            alt="Provider"
-            width={70}
-            height={70}
-            className="company-logo"
-          />
+  src={
+    provider.image
+      ? `${IMG_URL}${provider.image}`
+      : "/images/default-user.png"
+  }
+  alt={provider.name || "Provider"}
+  width={70}
+  height={70}
+  className="company-logo"
+  unoptimized
+/>
+
 
           <div className="company-info">
+            {/* You can also show provider name here if you want */}
             <h4>{proposal.title}</h4>
             <p>{proposal.budget}</p>
           </div>
@@ -59,16 +125,23 @@ const CompanyCard = ({ proposal }: { proposal: any }) => {
               <div className="proposal-box">
                 {/* Header */}
                 <div className="proposal-header">
-                  <Image
-                    src="/images/default-user.png"
-                    alt="Provider"
-                    width={70}
-                    height={70}
-                    className="proposal-logo"
-                  />
+                 <Image
+  src={
+    provider.image
+      ? `${IMG_URL}${provider.image}`
+      : "/images/default-user.png"
+  }
+  alt={provider.name || "Provider"}
+  width={70}
+  height={70}
+  className="company-logo"
+  unoptimized
+/>
+
                   <div className="proposal-info">
-                    <h3>Provider #{proposal.provider_id}</h3>
-                    <p>Proposal ID: {proposal.id}</p>
+                    <h3>{provider.name || "Unknown Provider"}</h3>
+                    {provider.email && <p>{provider.email}</p>}
+                    {provider.phone && <p>{provider.phone}</p>}
                   </div>
                 </div>
 
@@ -100,30 +173,80 @@ const CompanyCard = ({ proposal }: { proposal: any }) => {
                   </div>
 
                   {/* ATTACHMENTS */}
-                  <div className="proposal-attachment">
-                    <h5><strong>Attachments:</strong></h5>
+                 {/* ATTACHMENTS (Same UI as ViewProposalIntro BUT using IMG_URL) */}
+<div className="proposal-attachment">
+  <h5><strong>Attachments:</strong></h5>
 
-                    {proposal.attachments?.length > 0 ? (
-                      proposal.attachments.map((att: any) => (
-                        <Link
-                          key={att.id}
-                          href={`${API_URL}/proposals/${att.attachment}`}
-                          target="_blank"
-                        >
-                          📎 {att.attachment}
-                        </Link>
-                      ))
-                    ) : (
-                      <p>No attachments</p>
-                    )}
-                  </div>
+  {proposal.attachments?.length > 0 ? (
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "12px",
+        marginTop: "10px",
+      }}
+    >
+      {proposal.attachments.map((file: any, index: number) => {
+        // File full URL using IMG_URL
+        const fileUrl = `${IMG_URL}proposals/${file.attachment}`;
+
+        // Check if file is an image
+        const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(file.attachment);
+
+        return (
+          <div key={index} style={{ textAlign: "center" }}>
+
+            {isImage ? (
+              <img
+                src={fileUrl}
+                alt="Attachment"
+                style={{
+                  width: "120px",
+                  height: "120px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                }}
+              />
+            ) : (
+              <a
+                href={fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block",
+                  padding: "8px 12px",
+                  background: "#f3f3f3",
+                  borderRadius: "6px",
+                  border: "1px solid #ddd",
+                }}
+              >
+                📄 {file.attachment}
+              </a>
+            )}
+
+          </div>
+        );
+      })}
+    </div>
+  ) : (
+    <p style={{ marginTop: "10px" }}>No attachments uploaded</p>
+  )}
+</div>
+
                 </div>
 
                 {/* ACTION BUTTONS */}
-                <div className="proposal-actions">
-                  <button className="reject-btn">Reject</button>
-                  <button className="accept-btn">Accept</button>
-                </div>
+               <div className="proposal-actions">
+  <button className="reject-btn" onClick={handleReject}>
+    Reject
+  </button>
+
+  <button className="accept-btn" onClick={handleAccept}>
+    Accept
+  </button>
+</div>
+
               </div>
             </div>
           </div>,

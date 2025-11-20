@@ -116,6 +116,11 @@ const handleSaveLead = async () => {
 };
 
 
+const getProposalStatus = (lead: any) => {
+  if (lead?.proposal_details?.is_accepted === true) return "Proposal Accepted";
+  if (lead?.proposal_details?.is_accepted === false) return "Proposal Rejected";
+  return "Awaiting Review"; // null or undefined
+};
 
 
   return (
@@ -181,18 +186,16 @@ const handleSaveLead = async () => {
                   <td className="mob-col">{lead?.user?.phone || "N/A"}</td>
 
                   {/* Status */}
-                  <td className="status-col">
-                    <span
-                      className={`highlightedd bg-blue ${getStatusColor(
-                        lead.status
-                      )}`}
-                      onClick={() => openLeadModal(lead)}
-                      style={{ cursor: "pointer" }}
-                    >
-                     {lead.status ?? "Awaiting Review"}
+                 <td className="status-col">
+  <span
+    className={`highlightedd bg-blue ${getStatusColor(getProposalStatus(lead))}`}
+    style={{ cursor: "pointer" }}
+    onClick={() => openLeadModal(lead)}
+  >
+    {getProposalStatus(lead)}
+  </span>
+</td>
 
-                    </span>
-                  </td>
 
                   
                 </tr>

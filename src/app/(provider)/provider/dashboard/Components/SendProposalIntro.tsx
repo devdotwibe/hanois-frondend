@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import Image from "next/image";
 import { API_URL } from "@/config";
 import Image1 from "../../../../../../public/images/left-arrow.svg";
@@ -60,6 +61,17 @@ const SendProposalIntro = ({ work_id, user_id, provider_id }) => {
     setLoading(false);
   };
 
+
+  useEffect(() => {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  if (userData?.name) {
+    setTitle(userData.name); // Auto-fill title with provider name
+  }
+}, []);
+
+
+
+
   return (
     <div>
       <div className="intro-tab">
@@ -74,11 +86,13 @@ const SendProposalIntro = ({ work_id, user_id, provider_id }) => {
           <div className="form-grp">
             <label className="dark">Proposal Title</label>
             <input
-              placeholder="Proposal Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
+  placeholder="Proposal Title"
+  value={title}
+  onChange={(e) => setTitle(e.target.value)}
+  required
+  disabled
+/>
+
           </div>
 
           {/* Budget */}

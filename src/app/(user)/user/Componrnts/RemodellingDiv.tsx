@@ -55,7 +55,8 @@ const RemodellingDiv = () => {
           description={item.title || ""}
           date={new Date(item.created_at).toLocaleDateString()}
           place={item.location || "N/A"}
-          proposal={"0 proposals"} 
+        proposal={`${item?.proposals?.length || 0} proposals`}
+
           className={"featured-card"} 
         />
       ))}
