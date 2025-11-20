@@ -4354,7 +4354,13 @@ margin-inline: 0;}
 .content-top h3 span{display: inline;}
 
 }
+/* ------------------------------------------- */
+@media (max-width: 1025px) and  (max-width: 1240px){
+.info-left, .info-right {
+    width: 47%;
+}
 
+}
 /* ----------- */
 
 
