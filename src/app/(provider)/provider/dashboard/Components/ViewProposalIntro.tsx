@@ -122,25 +122,60 @@ const ViewProposalIntro = ({ proposal_id }) => {
           {/* 📌 SHOW IMAGE INSTEAD OF BUTTON */}
         {/* SMALL IMAGE PREVIEW ONLY */}
 <div className="form-grp">
-  <label>Attachment</label>
+  <label>Attachments</label>
 
-  {proposal.attachment ? (
-    <img
-      src={`${IMG_URL}uploads/${proposal.attachment}`}
-      alt="Attachment"
+  {proposal.attachments && proposal.attachments.length > 0 ? (
+    <div
       style={{
-        width: "120px",
-        height: "120px",
-        objectFit: "cover",
-        borderRadius: "8px",
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "12px",
         marginTop: "10px",
-        border: "1px solid #ddd"
       }}
-    />
+    >
+      {proposal.attachments.map((file, index) => {
+        const fileUrl = `${IMG_URL}proposals/${file.attachment}`;
+        const isImage = /\.(jpg|jpeg|png|gif|webp|png)$/i.test(file.attachment);
+
+        return (
+          <div key={index} style={{ textAlign: "center" }}>
+            {isImage ? (
+              <img
+                src={fileUrl}
+                alt="Attachment"
+                style={{
+                  width: "120px",
+                  height: "120px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                }}
+              />
+            ) : (
+              <a
+                href={fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block",
+                  padding: "8px 12px",
+                  background: "#f3f3f3",
+                  borderRadius: "6px",
+                  border: "1px solid #ddd",
+                }}
+              >
+                📄 {file.attachment}
+              </a>
+            )}
+          </div>
+        );
+      })}
+    </div>
   ) : (
-    <p style={{ marginTop: "10px" }}>No attachment uploaded</p>
+    <p style={{ marginTop: "10px" }}>No attachments uploaded</p>
   )}
 </div>
+
 
 
           {/* BACK BUTTON */}

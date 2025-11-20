@@ -6,7 +6,9 @@ import { API_URL, IMG_URL } from "@/config";
 import { useRouter } from "next/navigation";
 
 import BackIcon from "../../../../../../public/images/left-arrow.svg";
-import ProfileImg from "../../../../../../public/images/profile.png";
+import ProfileImg from "../../../../../../public/images/upload.svg";
+
+
 
 const EditProposalIntro = ({ proposal_id }) => {
   const router = useRouter();
@@ -19,7 +21,8 @@ const EditProposalIntro = ({ proposal_id }) => {
   const [budget, setBudget] = useState("");
   const [timeline, setTimeline] = useState("");
   const [description, setDescription] = useState("");
-  const [attachment, setAttachment] = useState<File | null>(null);
+ const [attachments, setAttachments] = useState([]);
+
 
   /** FETCH PROPOSAL DETAILS */
   useEffect(() => {
@@ -64,9 +67,9 @@ const EditProposalIntro = ({ proposal_id }) => {
     formData.append("timeline", timeline);
     formData.append("description", description);
 
-    if (attachment) {
-      formData.append("attachment", attachment);
-    }
+   attachments.forEach(file => {
+  formData.append("attachments", file);
+});
 
     try {
       const res = await fetch(
@@ -93,6 +96,39 @@ const EditProposalIntro = ({ proposal_id }) => {
 
   if (loading) return <p>Loading...</p>;
   if (!proposal) return <p>No proposal found</p>;
+
+
+  const deleteAttachment = async (attachmentId) => {
+  const token = localStorage.getItem("token");
+
+  if (!confirm("Are you sure you want to delete this attachment?")) return;
+
+  try {
+    const res = await fetch(`${API_URL}/providers/delete-proposal-attachment/${attachmentId}`
+, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      // Remove from UI instantly
+      setProposal((prev) => ({
+        ...prev,
+        attachments: prev.attachments.filter((att) => att.id !== attachmentId),
+      }));
+    } else {
+      alert("Delete failed");
+    }
+  } catch (err) {
+    console.error("Delete error:", err);
+  }
+};
+
+
 
   return (
     <div className="intro-tab">
@@ -170,16 +206,51 @@ const EditProposalIntro = ({ proposal_id }) => {
           ></textarea>
         </div>
 
-        {/* NEW CLEAN ATTACHMENT SECTION */}
-       <div className="form-grp upload-area">
-  <label className="dark">Attachment</label>
+<div className="form-grp upload-area">
+  <label className="dark">Existing Attachments</label>
 
-  {/* SHOW EXISTING FILE IF AVAILABLE */}
-  {proposal.attachment && (
-    <div style={{ marginBottom: "10px" }}>
-      <p>Current Attachment:</p>
+  {/* SHOW ALL EXISTING ATTACHMENTS */}
+  {proposal.attachments && proposal.attachments.length > 0 ? (
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "12px",
+        marginBottom: "15px",
+      }}
+    >
+      {proposal.attachments.map((file, index) => {
+        const fileUrl = `${IMG_URL}proposals/${file.attachment}`;
+        const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(file.attachment);
+
+        return (
+         <div key={index} style={{ position: "relative", textAlign: "center" }}>
+    
+    {/* DELETE BUTTON */}
+    <button
+      onClick={() => deleteAttachment(file.id)}
+      style={{
+        position: "absolute",
+        top: "-8px",
+        right: "-8px",
+        background: "red",
+        color: "white",
+        borderRadius: "50%",
+        border: "none",
+        width: "22px",
+        height: "22px",
+        cursor: "pointer",
+        fontSize: "12px",
+        zIndex: 10,
+      }}
+    >
+      ✕
+    </button>
+
+    {/* IMAGE OR FILE LINK */}
+    {isImage ? (
       <img
-        src={`${IMG_URL}uploads/${proposal.user.profile_image}`}
+        src={fileUrl}
         alt="Attachment"
         style={{
           width: "120px",
@@ -189,18 +260,36 @@ const EditProposalIntro = ({ proposal_id }) => {
           border: "1px solid #ddd",
         }}
       />
+    ) : (
+      <a
+        href={fileUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          display: "block",
+          padding: "8px 12px",
+          background: "#f3f3f3",
+          borderRadius: "6px",
+          border: "1px solid #ddd",
+        }}
+      >
+        📄 {file.attachment}
+      </a>
+    )}
+  </div>
+        );
+      })}
     </div>
+  ) : (
+    <p style={{ marginBottom: "10px" }}>No existing attachments</p>
   )}
 
+  {/* UPLOAD NEW ATTACHMENT */}
+  <label className="dark">Upload New Attachment</label>
   <div className="upload-box" style={{ position: "relative", cursor: "pointer" }}>
     <div className="cover-upload" style={{ pointerEvents: "none" }}>
       <div className="img-cover-up">
-        <Image
-          src={ProfileImg}
-          alt="Upload Icon"
-          width={40}
-          height={40}
-        />
+        <Image src={ProfileImg} alt="Upload Icon" width={40} height={40} />
       </div>
 
       <h3>Upload a file</h3>
@@ -209,10 +298,14 @@ const EditProposalIntro = ({ proposal_id }) => {
     </div>
 
     {/* Invisible File Input */}
-    <input
-      type="file"
-      accept="image/*,.pdf,.ppt,.pptx,.doc,.docx"
-      onChange={(e) => setAttachment(e.target.files[0])}
+<input
+  type="file"
+  multiple
+  accept="image/*,.pdf,.ppt,.pptx,.doc,.docx"
+  onChange={(e) => {
+    const files = Array.from(e.target.files);
+    setAttachments((prev)=> [...prev, ...files]);
+  }}
       style={{
         position: "absolute",
         top: 0,
