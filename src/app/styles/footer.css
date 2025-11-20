@@ -368,9 +368,7 @@ max-width: 168px;}
     .footer-container{
       justify-content: space-between;
     }
-.public .footer-container.containers,
-.prov-dashboard .footer{padding-inline: 20px; gap: 0;
-}
+
 
 .seeker-dashboard1 .footer .containers,
  .prov-dashboard .footer .containers,
@@ -395,7 +393,8 @@ max-width: 168px;}
 .footer-container{margin-bottom: 50px;}
 
 .public .footer-container.containers,
-.prov-dashboard .footer .containers{padding-inline: 5%;}
+.prov-dashboard .footer .containers,
+.seeker-dashboard1 .footer .containers{padding-inline: 5%;}
 
 }
 
