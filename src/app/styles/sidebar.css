@@ -43,7 +43,7 @@
 }
 
 
-.public-proj .sidebar-pages{
+.sidebar-pages{
   padding-right: 250px;
 }
 
@@ -114,6 +114,29 @@ ul.sidebarul li.active{
     width: 100%; align-items: flex-start;
 }
 
+
+
+
+
+
+/* ---------resp---------------------------------------- */
+
+
+@media (max-width: 1340px) {
+.sidebarul{
+  width: 220px;
+}
+.sidebar-pages {
+    width: calc(100% - 220px);
+}
+.sidebar-pages{padding-right: 222px;}
+
+
+.filter-container {
+    right: -222px;
+}
+}
+
 /* ---------------------------------------------- */
 @media (min-width: 1025px) and  (max-width: 1240px){
 .sidebar-pages{padding-inline: 20px;}
@@ -136,6 +159,7 @@ ul.sidebarul li.active{
 
 @media (max-width: 900px) {
 .sidebar-pages{padding-inline: 20px !important;width: 100%;}
+.wrap-select{padding-inline: 0;}
 }
 
 

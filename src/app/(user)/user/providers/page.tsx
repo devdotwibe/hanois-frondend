@@ -98,7 +98,7 @@ const ServiceProviderDirectory = () => {
           onCategoryChange={(cat) => setSelectedCategory(cat)}
           selectedCategory={selectedCategory}
         />
-        <div className="spd-outer1">
+        <div className="e-spd-outer1">
           <Intro
             query={query}
             onQueryChange={setQuery}

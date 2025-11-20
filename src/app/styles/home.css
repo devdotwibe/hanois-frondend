@@ -4269,7 +4269,8 @@ span.time-now {
 
 
 @media (max-width: 1440px) {
-
+.wrap-select{padding-inline: 55px;
+margin-inline: 0;}
 
 }
 
@@ -4279,7 +4280,7 @@ span.time-now {
   .public-project-page .intro-tab{
     padding-inline: 25px;
   }
-  .wrap-select{margin: 0 25px 25px;
+  .wrap-select{margin: 0 0px 25px; padding-inline: 25px;
 
   }
 
