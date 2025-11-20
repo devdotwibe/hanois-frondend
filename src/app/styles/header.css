@@ -217,7 +217,7 @@ body{position: relative;}
 /* OVERLAY BACKGROUND */
 .mobile-menu-overlay {
   position: fixed;
-  top: -100%;
+  top: -150%;
   left: 0;
   width: 100%;
   height: 100vh;
@@ -416,6 +416,14 @@ button.close-btn11 {
 .public .header.fixedtop {
     padding-bottom: 0;
 }
+
+.public .header,
+.prov-dashboard .header
+ {
+    padding-bottom: 20px;
+}
+
+
 }
 /* ----------------------------------------------------------------- */
 

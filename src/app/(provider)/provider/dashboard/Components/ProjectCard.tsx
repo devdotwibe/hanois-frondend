@@ -89,31 +89,109 @@ const handleAddToLeads = async () => {
 
 
   return (
-    <div className="project-card1">
+    <div className="project-card1 e-public-card">
       <div className="project-inner1">
 
         {/* Header */}
         <div className="project-header">
-          <div>
+          <div className="house-card">
             <h3 className="project-title">{title}</h3>
             <p className="project-user">{user}</p>
           </div>
 
-          <button className="details-btn" onClick={() => setOpenPopup(true)}>
-            Details
-          </button>
+<           div className="house-div3">
+             <button className="details-btn" onClick={() => setOpenPopup(true)}>
+              Details
+             </button>
+
+            </div>
+
+
+
+
         </div>
 
         {/* Info */}
         <div className="project-info">
           <div className="info-left">
-            <p><strong>Services</strong> {services}</p>
-            <p><strong>Luxury type</strong> {luxury}</p>
+
+
+            <div className="col-info3">
+
+              <div className="col-info4">
+                            <p><strong>Services</strong></p>
+
+
+              </div>
+              <div className="col-info4">
+                            <p>{services}</p>
+
+
+              </div>
+
+            </div>
+
+
+            <div className="col-info3">
+
+              <div className="col-info4">
+                            <p><strong>Luxury type</strong></p>
+
+
+              </div>
+              <div className="col-info4">
+                            <p>{luxury}</p>
+
+
+              </div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
           </div>
 
           <div className="info-right">
-            <p><strong>Land size</strong> {landSize}</p>
-            <p><strong>Location</strong> {location}</p>
+
+             <div className="col-info3">
+
+              <div className="col-info4">
+                            <p><strong>Land size</strong></p>
+
+              </div>
+              <div className="col-info4">
+                              <p>{landSize}</p>
+
+              </div>
+
+            </div>
+
+
+             <div className="col-info3">
+
+              <div className="col-info4">
+                            <p><strong>Location</strong></p>
+
+              </div>
+              <div className="col-info4">
+                            <p>{location}</p>
+
+              </div>
+
+            </div>
+
+
+
+
+
+
           </div>
         </div>
 
@@ -121,6 +199,9 @@ const handleAddToLeads = async () => {
         <div className="project-desc">
           <p><strong>Short Description:</strong></p>
           <p>{description}</p>
+
+
+
         </div>
 
       </div>
@@ -129,9 +210,9 @@ const handleAddToLeads = async () => {
       {openPopup &&
         createPortal(
           <div className="modal-overlay proposal-popup lead-popup public-poup" onClick={() => setOpenPopup(false)}>
-            
+
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              
+
               <button className="close-btn" onClick={() => setOpenPopup(false)}></button>
 
               <div className="proposal-box">
@@ -155,14 +236,14 @@ const handleAddToLeads = async () => {
                   </div>
 
                   <div className="lead-btn">
-                  <button 
+                  <button
                     className="proposal-view"
                     onClick={handleAddToLeads}
                   >
                     Add to Leads <span>free of charge</span>
                   </button>
 
-                   
+
                   </div>
 
                 </div>

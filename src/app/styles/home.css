@@ -500,6 +500,9 @@ padding: 80px 0 0;
 
 }
 .content-top h3 span{display: block;}
+
+
+
 .content-top h3 span{
   display: block;
 }
@@ -825,7 +828,7 @@ hr {
 
 
 .how-help h2{
-  font-size: 48px; margin: 0 0 20px; color: #000000;
+  font-size: 48px; margin: 0 0 20px; color: #000000; line-height: 1.3;
 }
 .how-help p{margin-inline: auto; max-width: 425px;}
 
@@ -846,7 +849,7 @@ hr {
 .build1 h4 {
     font-size: 32px;
     color: #000000;
-    margin: 0 0 14px;
+    margin: 0 0 14px; line-height: 1.3;
 }
 .build1 {
     position: relative;
@@ -881,7 +884,7 @@ position: relative;
 .h-div .h-div1:first-child .build-card {flex-direction: row-reverse; }
 .text-areab h4 {
     color: #000000;
-    margin: 0 0 14px; font-size: 32px;
+    margin: 0 0 14px; font-size: 32px; line-height: 1.3;
 }
 
 .build-grad{position: relative;}
@@ -3030,7 +3033,7 @@ button.show-more::after{
 }
 
 .project-header {
-  display: flex;
+  display: flex; flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
@@ -3086,6 +3089,9 @@ button.show-more::after{
   background-size: 30px !important;
   background-position-x: 18px !important;
 }
+
+
+
 .wrap-select {
     margin: 0 55px 40px;
 
@@ -3960,11 +3966,11 @@ p.torrance-card-desc{
     max-width: 800px;
 }
 
-.e-proj-info1 .info-left {
+ .info-left {
     width: 48%;
 }
 
-.e-proj-info1 .info-right {
+ .info-right {
     width: 48%;
 }
 
@@ -3975,9 +3981,78 @@ p.torrance-card-desc{
 .house-div3 {
     width: 91px;
 }
-.house-div .house-card {
+.project-card1 .house-card {
     margin-bottom: 0;
     width: calc(100% - 100px);
+}
+
+
+.e-public-card .house-card {
+    flex-wrap: wrap;
+}
+.e-public-card .house-card h3 {
+width: 100%;}
+.e-public-card .house-card p {
+    width: 100%;
+}
+
+
+
+.arc-community-sec {
+    background: #ffffff;
+    padding: 100px 0;
+}
+
+
+
+
+
+
+
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.popup-box {
+  width: 400px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.comment-input {
+  width: 100%;
+  height: 120px;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.submit-btn {
+  background: #000;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: none;
 }
 
 
@@ -4055,6 +4130,9 @@ p.torrance-card-desc{
 .project-info{
   width: 100%;
 }
+
+.content-top h3 span{display: inline;}
+
 }
 
 /* ----------- */
@@ -4138,10 +4216,29 @@ p.torrance-card-desc{
 }
 
 .sidebar-div1{margin-top: 0;}
+.intro-tab h3{font-size: 26px;}
+.build1 h4{font-size: 28px;}
+
 }
 
 
-/* ----------- */
+
+/* ---------------------------------------------------------------- */
+
+
+
+  @media (min-width: 901px) and (max-width: 1024px) {
+.sidebar-div1{padding-right: 20px;
+
+}
+.e-public-card .info-left, .e-public-card .info-right{width: 100%;}
+.spd-outer1{border-right: none;}
+  }
+
+
+
+
+/* ------------------------------------------------------------- */
 
 
 @media (max-width: 900px) {
@@ -4167,48 +4264,135 @@ p.torrance-card-desc{
         padding-right: 0px;
     }
 
+.wrap-select{margin-inline: 0;}
+
+.public-project-page .intro-tab{padding-inline: 0;}
     .spd-outer1{
-      border-right: none;
+      border-right: none; padding-inline: 20px;
       width: 100%;
     }
 
-    .project-card1{padding-inline: 20px;}
+    .project-card1{padding-inline: 0px;}
 
 .spd-outer1 .intro-div{max-width: 100%;}
 .sidebar-div1{margin-top: 0;}
 
-.public .header {
-    padding-bottom: 20px;
-}
+
+
+
 .pagination.outer{margin: 20px 0 0;}
 .pagination.outer .pagenumber {width: 30px; height: 30px; font-size: 13px;}
 
 .pagination button.prev-btn, .pagination button.next-btn{width: 30px; height: 30px;}
 .pagination button.prev-btn img,
- .pagination button.next-btn img{
-  width: 12px; height: 12px;
- }
-.outr {
-    display: none;
-}
+ .pagination button.next-btn img{width: 12px; height: 12px;}
+.outr {display: none;}
+
+.public-project-page{border-right: none;}
+.sidebar-pages{padding-inline: 0;}
+
+
 
 
 }
+
+
+
+
+/* ------------------------------------------------------- */
+
+
+
+@media (min-width: 768px) and (max-width: 900px) {
+
+
+    .business-div21 .content-top h3 {
+        padding-left: 0;
+    }
+
+.h-div .h-div1:first-child:first-child:after{display: none;}
+
+.h-div .h-div1:nth-child(2):after{display: none;}
+
+
+
+
+.h-div .h-div1:first-child.img-b {
+    position: relative;
+}
+.h-div .h-div1:nth-child(2) .img-b {
+    position: relative;
+}
+
+
+.h-div .h-div1:first-child .img-b:after {
+    content: "";
+    z-index: -1;
+    background:     linear-gradient(to left, rgba(255,255,255,0) 60%, #ffffff 100%),
+    url(../../../public/images/bg1.jpg) center / cover no-repeat;
+    width: 63%;
+    height: 100%;
+    position: absolute;
+    top: 0%;
+    right: 0%;
+}
+
+
+.h-div .h-div1:nth-child(2) .img-b:after {
+    content: "";
+    z-index: 9;
+    background: url(../../../public/images/bg2.jpg) center / cover no-repeat;
+    border-radius: 0 30px 30px 0;
+    width: 39%;
+    height: 100%;
+    position: absolute;
+    top: 0%;
+    left: 0;
+}
+
+.build-card .img-b img {
+    position: relative;
+    z-index: 99; padding-block: 30px;
+}
+
+.h-div .h-div1 .build-card{
+  align-items: flex-start;
+}
+.h-div .h-div1 .containers{width: 100%;}
+
+.h-div .h-div1:first-child .build-card .img-b {
+    padding-right: 3%;
+}
+.spd-outer1 .intro-div{padding-inline: 0;}
+.h-div .h-div1:first-child .build-card .text-areab {
+    padding-left: 3%;
+}
+
+
+.h-div .h-div1:nth-child(2) .build-card .img-b {
+    padding-left: 3%;
+}
+.h-div .h-div1:nth-child(2) .build-card .text-areab{
+    padding-right: 3%;
+}
+
+
+  }
+
 
 /* ---------------------------------------------------- */
 
 
-@media (min-width: 768px) {
 
-}
 
-/* ----------- */
 
 
 @media (max-width: 767px) {
 
-.spd-outer1 .intro-div{padding-inline: 5%;}
-  .project-card1{padding-inline: 5%;}
+  .spd-outer1{padding-inline: 5%;}
+
+.spd-outer1 .intro-div{padding-inline: 0%;}
+  .project-card1{padding-inline: 0%;}
 
   .build-card .img-b img{padding-inline: 5%;}
 
@@ -4417,7 +4601,6 @@ p {font-size: 14px;}
         font-size: 19px;
     }
 
-    .business-div21 .content-top h3 span{display: inline;}
 
 
 .h-div1 .containers {
@@ -4446,6 +4629,14 @@ p {font-size: 14px;}
 .form-grp input, .form-grp textarea {
     padding: 15px 15px;
 }
+
+.multi-select-input{
+padding-block: 15px;
+}
+.multi-select-input {
+    min-height: 58px;
+}
+.multi-select-input.has-selected{padding-block: 6px;}
 .contact-div .form-c p {
         font-size: 17px;
     }
@@ -4466,8 +4657,14 @@ p {font-size: 14px;}
     width: 100%;
     padding: 15px 0;
 }
+.wrap-select input{
+  padding-left: 40px;
+    background-size: 20px !important;
 
+    background-position-x: 10px !important;
 
+}
+.build1 h4{font-size: 22px;}
 }
 
 
@@ -4477,6 +4674,12 @@ p {font-size: 14px;}
 
 
 @media (max-width: 600px) {
+
+.house-card-info {
+    padding-left: 0;
+    width: 100%;
+}
+
 .blue-card .b-card {
     width: 80%;margin: 0 auto 40px;
 }
@@ -4489,12 +4692,20 @@ p {font-size: 14px;}
         width: 80%;
     }
 
-.e-proj-info1 .info-left, .e-proj-info1 .info-right {
+.info-left,
+ .info-right {
     width: 100%;
 }
 .project-info{margin-bottom: 5px;}
 .project-info p strong {
     margin-right: 9px;}
+
+
+.e-public-card .house-card {
+   margin: 0 0 10px;
+}
+
+
 }
 
 
@@ -4517,15 +4728,13 @@ p {font-size: 14px;}
     padding-bottom: 280px;
 }
 
-.content-top h3 span {
-    display: inline;
-}
+
 
 .business-b-out:nth-child(2) {
         transform: translateY(100px);
     }
         .business-b-out:nth-child(3) {
-        transform: translateY(215px);
+        transform: translateY(198px);
     }
 
     .get-listedpage .business-b-out {
@@ -4567,94 +4776,13 @@ p {font-size: 14px;}
 /* ----------------------------------------------------------------------------------- */
 
 
-  @media (min-width: 901px) and (max-width: 1024px) {
-.sidebar-div1{padding-right: 20px;
-
-}
-
-.spd-outer1{border-right: none;}
-  }
 
 
 
 
 
 
-@media (min-width: 768px) and (max-width: 900px) {
 
-
-    .business-div21 .content-top h3 {
-        padding-left: 0;
-    }
-
-.h-div .h-div1:first-child:first-child:after{display: none;}
-
-.h-div .h-div1:nth-child(2):after{display: none;}
-
-
-
-
-.h-div .h-div1:first-child.img-b {
-    position: relative;
-}
-.h-div .h-div1:nth-child(2) .img-b {
-    position: relative;
-}
-
-
-.h-div .h-div1:first-child .img-b:after {
-    content: "";
-    z-index: -1;
-    background:     linear-gradient(to left, rgba(255,255,255,0) 60%, #ffffff 100%),
-    url(../../../public/images/bg1.jpg) center / cover no-repeat;
-    width: 63%;
-    height: 100%;
-    position: absolute;
-    top: 0%;
-    right: 0%;
-}
-
-
-.h-div .h-div1:nth-child(2) .img-b:after {
-    content: "";
-    z-index: 9;
-    background: url(../../../public/images/bg2.jpg) center / cover no-repeat;
-    border-radius: 0 30px 30px 0;
-    width: 39%;
-    height: 100%;
-    position: absolute;
-    top: 0%;
-    left: 0;
-}
-
-.build-card .img-b img {
-    position: relative;
-    z-index: 99; padding-block: 30px;
-}
-
-.h-div .h-div1 .build-card{
-  align-items: flex-start;
-}
-.h-div .h-div1 .containers{width: 100%;}
-
-.h-div .h-div1:first-child .build-card .img-b {
-    padding-right: 3%;
-}
-
-.h-div .h-div1:first-child .build-card .text-areab {
-    padding-left: 3%;
-}
-
-
-.h-div .h-div1:nth-child(2) .build-card .img-b {
-    padding-left: 3%;
-}
-.h-div .h-div1:nth-child(2) .build-card .text-areab{
-    padding-right: 3%;
-}
-
-
-  }
 
 
 

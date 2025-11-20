@@ -542,6 +542,8 @@ line-height: 1;
 .search-container button{font-size: 15px;padding: 15px 22px;}
 .header-div .h-btn{padding: 10px 15px;}
 .header-div .h-login{padding: 10px 15px;}
+button.house-card-btn{margin-top: 3px;}
+
 }
 
 

@@ -16,7 +16,8 @@
 
 .seeker-dashboard1 .footer .containers,
 .prov-dashboard .footer .containers,
-.directory .footer .containers
+.directory .footer .containers,
+.public .footer-container.containers
  {
    justify-content: flex-start;
     gap: 9%;
@@ -192,9 +193,137 @@
   margin-right: 0 !important;
 }
 
+.public .footer-container.containers {
+    width: 100%;
+    padding-inline: 250px;
+    max-width: 100%;
+    margin-inline: 0;
+}
+
 /* ----------------responsive------------------------------------------------------------------------ */
 
 
+
+
+/* ---------------------------------------------------------- */
+
+
+
+@media (max-width: 1702px) {
+
+.seeker-dashboard1 .footer .containers, .prov-dashboard .footer .containers, .directory .footer .containers{gap: 7%;}
+
+}
+
+
+/* --------------------------------- */
+
+
+
+@media (max-width: 1600px) {
+
+
+.seeker-dashboard1 .footer .containers,
+.prov-dashboard .footer .containers,
+.directory .footer .containers {gap: 5%;}
+
+
+
+}
+
+
+
+/* --------------------------------------------- */
+
+
+@media (max-width: 1500px) {
+
+.footer-container.containers > div {
+    margin-right: 2.9%;
+}
+.footer-container.containers > div:last-child {
+    margin-right: 0%;
+}
+.public .footer-container.containers,
+.seeker-dashboard1 .footer .containers,
+.prov-dashboard .footer .containers,
+.directory .footer .containers{gap: 0;}
+
+.seeker-dashboard1 .footer .footer-about.footer-column,
+.prov-dashboard .footer .footer-about.footer-column,
+.directory .footer .footer-about.footer-column{
+max-width: 250px;}
+
+.seeker-dashboard1 .footer .footer-about.footer-column span,
+.prov-dashboard .footer .footer-about.footer-column span,
+.directory .footer .footer-about.footer-column span{
+ display: inline;
+}
+
+
+}
+
+
+/* ---------------------------------- */
+
+
+
+@media (max-width: 1400px) {
+
+.seeker-dashboard1 .footer .footer-about.footer-column,
+.prov-dashboard .footer .footer-about.footer-column,
+.directory .footer .footer-about.footer-column
+{
+max-width: 168px;}
+
+.footer p{font-size: 13px;}
+
+}
+
+/* --------------------------------------------------------------------- */
+
+
+
+@media (min-width: 1241px) and (max-width: 1340px){
+
+
+.public .footer-container.containers {
+    width: 100%;
+    margin-inline: 0;
+    padding-inline: 220px;
+    max-width: 100%;
+}
+
+}
+
+
+/* ---------------------------------------------------------- */
+@media (min-width: 1025px) and (max-width: 1240px){
+
+
+.public .footer-container.containers
+{justify-content: space-between;
+    width: 100%;
+    margin-inline: 0;
+    padding-inline: 20px;
+    max-width: 100%;
+}
+.seeker-dashboard1 .footer .containers,
+ .prov-dashboard .footer .containers,
+  .directory .footer .containers{
+ width: 100%;
+    margin-inline: 0;
+    padding-inline: 20px;
+    max-width: 100%; justify-content: space-between;
+}
+
+.footer-container{margin-bottom: 90px;}
+
+}
+
+
+
+/* ----------------------------- */
 
 @media (max-width: 1024px) {
 
@@ -207,6 +336,28 @@
 }
 
 
+
+/* --------------------------------------------------------------- */
+@media (min-width: 901px) and (max-width: 1024px){
+
+.public .footer-container.containers
+ {
+    width: 100%; justify-content: space-between;
+    margin-inline: 0;
+    padding-inline: 20px; gap: 0;
+}
+
+.seeker-dashboard1 .footer .containers,
+ .prov-dashboard .footer .containers,
+ .directory .footer .containers{padding-inline: 20px !important;
+  width: 100%;
+    margin-inline: 0; justify-content: space-between;
+
+}
+
+}
+/* ----------------------------------------------- */
+
 @media (min-width: 768px) and  (max-width: 900px){
 .footer-container .footer-about.footer-column {
     width: 25%;
@@ -217,21 +368,34 @@
     .footer-container{
       justify-content: space-between;
     }
-
-
+.public .footer-container.containers,
+.prov-dashboard .footer{padding-inline: 20px; gap: 0;
 }
 
+.seeker-dashboard1 .footer .containers,
+ .prov-dashboard .footer .containers,
+ .directory .footer .containers{padding-inline: 20px !important;}
 
+}
+/* -------------------------------------------------------------- */
 
 
 @media (max-width: 767px) {
-.footer-about.footer-column {width: 100%; margin: 0 0 40px;}
+.footer-about.footer-column {width: 100%; margin: 0 0 40px; max-width: 100%;}
 .footer-about.footer-column span{display: inline;}
+
+
+
+.seeker-dashboard1 .footer .footer-about.footer-column,
+ .prov-dashboard .footer .footer-about.footer-column,
+ .directory .footer .footer-about.footer-column{max-width: 100% !important;}
 
 .footer{padding-top: 50px;}
 .footer-logo{margin: 0 0 15px;}
 .footer-container{margin-bottom: 50px;}
 
+.public .footer-container.containers,
+.prov-dashboard .footer .containers{padding-inline: 5%;}
 
 }
 
@@ -261,11 +425,7 @@
 
 
 
-
-
-
-
-
+/* --------------------------------------------- */
 
 @media (max-width: 600px) {
 
@@ -274,123 +434,12 @@
 }
 
 
-@media (max-width: 1702px) {
+/* --------------------------------------- */
 
-.seeker-dashboard1 .footer .containers, .prov-dashboard .footer .containers, .directory .footer .containers{gap: 7%;}
-
-}
-
-@media (max-width: 1600px) {
-
-
-.seeker-dashboard1 .footer .containers,
-.prov-dashboard .footer .containers,
-.directory .footer .containers {gap: 5%;}
-
-
-
-}
-
-@media (max-width: 1500px) {
-
-.footer-container.containers > div {
-    margin-right: 2.9%;
-}
-.footer-container.containers > div:last-child {
-    margin-right: 0%;
-}
-
-.seeker-dashboard1 .footer .containers,
-.prov-dashboard .footer .containers,
-.directory .footer .containers{gap: 0;}
-
-
-
-
-
-
-.seeker-dashboard1 .footer .footer-about.footer-column,
-.prov-dashboard .footer .footer-about.footer-column,
-.directory .footer .footer-about.footer-column{
-max-width: 250px;}
-
-.seeker-dashboard1 .footer .footer-about.footer-column span,
-.prov-dashboard .footer .footer-about.footer-column span,
-.directory .footer .footer-about.footer-column span{
- display: inline;
-}
+@media (max-width: 480px) {
 
 
 }
 
 
-
-
-
-
-@media (max-width: 1400px) {
-
-.seeker-dashboard1 .footer .footer-about.footer-column,
-.prov-dashboard .footer .footer-about.footer-column,
-.directory .footer .footer-about.footer-column
-{
-max-width: 168px;}
-
-.footer p{font-size: 13px;}
-
-}
-
-/* --------------------------------------------------------------------- */
-
-.public .footer-container.containers {
-    width: 100%;
-    margin: 0;
-    padding-inline: 250px;
-    max-width: 100%;
-}
-
-@media (min-width: 1241px) and (max-width: 1340px){
-
-
-.public .footer-container.containers {
-    width: 100%;
-    margin: 0;
-    padding-inline: 220px;
-    max-width: 100%;
-}
-
-}
-
-
-/* ---------------------------------------------------------- */
-@media (min-width: 1025px) and (max-width: 1240px){
-
-
-.public .footer-container.containers {
-    width: 100%;
-    margin: 0;
-    padding-inline: 220px;
-    max-width: 100%;
-}
-
-}
-/* --------------------------------------------------------- */
-@media (min-width: 1025px) and (max-width: 1240px){
-
-.public .footer-container.containers {
-    width: 100%;
-    margin: 0;
-    padding-inline: 20px;
-}
-
-}
-/* --------------------------------------------------------------- */
-@media (min-width: 901px) and (max-width: 1024px){
-
-.public .footer-container.containers {
-    width: 100%;
-    margin: 0;
-    padding-inline: 20px;
-}
-
-}
+/* --------------------------------------- */
