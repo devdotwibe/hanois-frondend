@@ -172,10 +172,12 @@ const EditProposalIntro = ({ proposal_id }) => {
         <div className="form-grp">
           <label className="dark">Proposal Title</label>
           <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter proposal title"
-          />
+  value={title}
+  readOnly
+  disabled          // fully locks editing
+  style={{ background: "#f3f3f3", cursor: "not-allowed" }}
+/>
+
         </div>
 
         <div className="form-grp">
@@ -302,10 +304,17 @@ const EditProposalIntro = ({ proposal_id }) => {
   type="file"
   multiple
   accept="image/*,.pdf,.ppt,.pptx,.doc,.docx"
-  onChange={(e) => {
-    const files = Array.from(e.target.files);
-    setAttachments((prev)=> [...prev, ...files]);
-  }}
+onChange={(e) => {
+  const files = Array.from(e.target.files);
+
+  const processed = files.map((file) => ({
+    file,
+    preview: URL.createObjectURL(file),
+  }));
+
+  setAttachments((prev) => [...prev, ...processed]);
+}}
+
       style={{
         position: "absolute",
         top: 0,
@@ -317,7 +326,77 @@ const EditProposalIntro = ({ proposal_id }) => {
         zIndex: 10,
       }}
     />
+
+   
+
+
+
   </div>
+
+   {attachments.length > 0 && (
+  <div style={{ marginTop: "15px" }}>
+    <h4>New Uploads</h4>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+      {attachments.map((item, index) => {
+        const isImage = item.file.type.startsWith("image/");
+
+        return (
+          <div key={index} style={{ position: "relative" }}>
+            {/* delete button */}
+            <button
+              onClick={() => {
+                const updated = [...attachments];
+                updated.splice(index, 1);
+                setAttachments(updated);
+              }}
+              style={{
+                position: "absolute",
+                top: "-6px",
+                right: "-6px",
+                background: "red",
+                color: "white",
+                borderRadius: "50%",
+                border: "none",
+                width: "20px",
+                height: "20px",
+                cursor: "pointer",
+              }}
+            >
+              ✕
+            </button>
+
+            {/* Preview */}
+            {isImage ? (
+              <img
+                src={item.preview}
+                alt="Preview"
+                style={{
+                  width: "120px",
+                  height: "120px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                  border: "1px solid #ddd",
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  padding: "8px",
+                  background: "#eee",
+                  borderRadius: "6px",
+                  border: "1px solid #ccc",
+                }}
+              >
+                📄 {item.file.name}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+)}
+
 </div>
 
         {/* SUBMIT BUTTON */}
