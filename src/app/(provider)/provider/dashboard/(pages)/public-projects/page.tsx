@@ -5,11 +5,11 @@ import FilterBy from '../../Components/FilterBy'
 
 const page = () => {
   return (
-    <div className='public-project-page'>
+    <div className='public-project-page e-main'>
 
         <PublicIntro />
 
-    
+
 
 
         <ProjectList />
@@ -17,8 +17,8 @@ const page = () => {
 
         <FilterBy />
 
-      
-      
+
+
     </div>
   )
 }
