@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
@@ -53,12 +53,15 @@ interface ProjectItem {
   service_list: ServiceItem[];
 }
 
-const ProjectList = () => {
+interface ProjectListProps {
+  selectedServices: ServiceItem[];
+}
+
+const ProjectList = ({ selectedServices }: ProjectListProps) => {
   const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [leadIds, setLeadIds] = useState<number[]>([]);
   const [search, setSearch] = useState("");
 
-  // Load provider lead work_ids
   const loadLeadIds = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -73,11 +76,17 @@ const ProjectList = () => {
     }
   };
 
-  // Load public projects, filtered via search
-  const loadProjects = async (searchVal = "") => {
+  const loadProjects = async () => {
     try {
-      const url = `${API_URL}/users/public-project${searchVal ? `?search=${encodeURIComponent(searchVal)}` : ""}`;
-      const res = await fetch(url);
+      const params = new URLSearchParams();
+      if (search) params.set("search", search);
+      if (selectedServices?.length > 0) {
+        params.set(
+          "serviceIds",
+          selectedServices.map((s) => s.id).join(",")
+        );
+      }
+      const res = await fetch(`${API_URL}/users/public-project?${params.toString()}`);
       const data = await res.json();
       if (data.success && Array.isArray(data.data)) setProjects(data.data);
       else console.error("Unexpected API response:", data);
@@ -86,10 +95,14 @@ const ProjectList = () => {
     }
   };
 
-  useEffect(() => { loadLeadIds(); }, []);
-  useEffect(() => { loadProjects(search); }, [search]);
+  useEffect(() => {
+    loadLeadIds();
+  }, []);
 
-  // UI rendering
+  useEffect(() => {
+    loadProjects();
+  }, [search, selectedServices]);
+
   return (
     <div className="wrapper-inputpublic">
       <div className="form-grp wrap-select">
@@ -97,19 +110,20 @@ const ProjectList = () => {
           type="text"
           placeholder="Search"
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
+
       <div className="listing-div">
         {projects
-          .filter(item => !leadIds.includes(item.id))
-          .map(item => (
+          .filter((item) => !leadIds.includes(item.id))
+          .map((item) => (
             <ProjectCard
               key={item.id}
               id={item.id}
               title={item.title}
               user={item.user?.name || "Unknown User"}
-              services={item.service_list?.map(s => s.name).join(", ")}
+              services={item.service_list?.map((s) => s.name).join(", ")}
               luxury={item.luxury_level_details?.name || "N/A"}
               landSize={item.land_size}
               location={item.location || "N/A"}
@@ -117,7 +131,7 @@ const ProjectList = () => {
               listingStyle={item.listing_style}
               basement={item.basement || "N/A"}
               typeName={item.category?.name || "N/A"}
-              serviceNames={item.service_list?.map(s => s.name) || []}
+              serviceNames={item.service_list?.map((s) => s.name) || []}
               email={item.user?.email}
               phone={item.user?.phone || ""}
               profileImage={item.user?.profile_image || ""}
