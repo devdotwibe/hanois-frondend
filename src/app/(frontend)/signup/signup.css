@@ -2,7 +2,8 @@
 
 .input-field.email-valid {
   border-color: #2ecc71;
-  background-color: #e6f7ee;
+  /* background-color: #e6f7ee; */
+  background-color: #ffffff;
   position: relative;  padding-right: 50px;
  box-shadow: 0 0 8px rgba(46, 204, 113, 0.6);
  background-color: rgba(46, 204, 113, 0.6) !important;
@@ -14,7 +15,9 @@
 .form-grp input.email-valid:focus{
  border-color: #2ecc71;
   box-shadow: 0 0 8px rgba(46, 204, 113, 0.6);
-   background-color: rgba(46, 204, 113, 0.6) !important;
+   /* background-color: rgba(46, 204, 113, 0.6) !important; */
+     background-color: #ffffff !important;
+
 
 
 }
@@ -38,7 +41,7 @@
 .input-field.email-invalid {
   border-color: #e74c3c;
   box-shadow: 0 0 8px rgba(231, 76, 60, 0.6);
-  background-color: #fdecea;
+  /* background-color: #fdecea; */
   position: relative;
 }
 
