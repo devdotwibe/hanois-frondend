@@ -170,8 +170,11 @@ ul.sidebarul li a {
 
 
 @media (max-width: 900px) {
-.sidebar-pages{padding-inline: 20px !important;width: 100%;}
+.sidebar-pages{padding-inline: 30px !important;width: 100%;}
 .wrap-select{padding-inline: 0;}
+
+.sidebar-div{margin-top: 50px;}
+
 }
 
 

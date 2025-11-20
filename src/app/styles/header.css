@@ -417,10 +417,10 @@ button.close-btn11 {
     padding-bottom: 0;
 }
 
-.public .header,
-.prov-dashboard .header
+
+ .header
  {
-    padding-bottom: 20px;
+    padding-bottom: 0px;
 }
 .header {
     border-bottom: 1px solid #ebeaea;
@@ -439,7 +439,7 @@ button.close-btn11 {
 
 {
 
-    padding-inline: 20px;
+    padding-inline: 30px;
 }
 }
 
@@ -451,6 +451,7 @@ button.close-btn11 {
     /* .header-div:has(.loged-inn-div) .header-text {
     display: none;
 } */
+.header{padding-bottom: 0 !important;}
 
     .header-div {
         padding: 12px 12px 12px 20px;
@@ -473,5 +474,7 @@ button.close-btn11 {
     padding-inline: 5%;
 }
 
-
+.header-logo {
+    width: 80px;
+}
 }

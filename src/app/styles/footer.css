@@ -394,7 +394,7 @@ max-width: 168px;}
 
 .seeker-dashboard1 .footer .containers,
  .prov-dashboard .footer .containers,
- .directory .footer .containers{padding-inline: 20px !important; justify-content: space-between;}
+ .directory .footer .containers{padding-inline: 30px !important; justify-content: space-between;}
 
 }
 /* -------------------------------------------------------------- */

@@ -175,6 +175,14 @@ const Header = () => {
   >
     <Link href="/provider/dashboard/public-projects">Public Projects</Link>
   </li>
+  <li
+    className={pathname === "/get-listed" ? "active" : ""}
+    onClick={() => setIsMenuOpen(false)}
+  >
+    <Link href="/get-listed">Get Listed</Link>
+  </li>
+
+
 </ul>
 
                   )}
