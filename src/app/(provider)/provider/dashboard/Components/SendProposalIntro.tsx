@@ -15,7 +15,8 @@ const SendProposalIntro = ({ work_id, user_id, provider_id }) => {
   const [budget, setBudget] = useState("");
   const [timeline, setTimeline] = useState("");
   const [description, setDescription] = useState("");
-  const [attachment, setAttachment] = useState(""); // No file upload now
+ const [attachments, setAttachments] = useState([]);
+
 
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +26,6 @@ const handleSubmit = async (e) => {
 
   const token = localStorage.getItem("token");
 
-  // 🔥 MUST USE FORMDATA FOR FILE UPLOAD
   const formData = new FormData();
   formData.append("work_id", work_id);
   formData.append("user_id", user_id);
@@ -35,17 +35,16 @@ const handleSubmit = async (e) => {
   formData.append("timeline", timeline);
   formData.append("description", description);
 
-  // 🔥 ADD FILE
-  if (attachment) {
-    formData.append("attachment", attachment);
-  }
+  // Multiple attachments
+  attachments.forEach((file) => {
+    formData.append("attachments", file);
+  });
 
   try {
     const res = await fetch(`${API_URL}/providers/send-proposal`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        // ❌ DON'T SET Content-Type — browser does it automatically
       },
       body: formData,
     });
@@ -146,20 +145,13 @@ const handleSubmit = async (e) => {
 
       {/* Invisible Input (Click Target) */}
       <input
-        type="file"
-        accept="image/*,.pdf,.ppt,.pptx"
-        onChange={(e) => setAttachment(e.target.files[0])}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          opacity: 0,
-          cursor: "pointer",
-          zIndex: 10,
-        }}
-      />
+  type="file"
+  multiple
+  accept="image/*,.pdf,.ppt,.pptx"
+ onChange={(e) => setAttachments([...e.target.files])}
+
+/>
+
     </div>
   </div>
 </div>
