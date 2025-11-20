@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import React, { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
@@ -22,7 +22,6 @@ interface UserItem {
   profile_image: string | null;
 }
 
-
 interface LuxuryLevelDetails {
   id: number;
   name: string;
@@ -30,7 +29,6 @@ interface LuxuryLevelDetails {
   cost: number;
   rate: number;
 }
-
 
 interface ProjectItem {
   id: number;
@@ -50,84 +48,76 @@ interface ProjectItem {
   suggest_cost: number | null;
   total_cost: number | null;
   status: string | null;
-
   user: UserItem | null;
   category: CategoryItem | null;
   service_list: ServiceItem[];
-  
 }
 
 const ProjectList = () => {
   const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [leadIds, setLeadIds] = useState<number[]>([]);
+  const [search, setSearch] = useState("");
 
-  /** 🔹 Load provider lead work_ids */
+  // Load provider lead work_ids
   const loadLeadIds = async () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-
       const res = await fetch(`${API_URL}/providers/lead-work-ids`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-
       const data = await res.json();
-
-      if (data.success) {
-        setLeadIds(data.workIds || []);
-      }
+      if (data.success) setLeadIds(data.workIds || []);
     } catch (err) {
       console.error("Error loading lead IDs:", err);
     }
   };
 
-  /** 🔹 Load public projects */
-  const loadProjects = async () => {
+  // Load public projects, filtered via search
+  const loadProjects = async (searchVal = "") => {
     try {
-      const res = await fetch(`${API_URL}/users/public-project`);
+      const url = `${API_URL}/users/public-project${searchVal ? `?search=${encodeURIComponent(searchVal)}` : ""}`;
+      const res = await fetch(url);
       const data = await res.json();
-
-      if (data.success && Array.isArray(data.data)) {
-        setProjects(data.data);
-      } else {
-        console.error("Unexpected API response:", data);
-      }
+      if (data.success && Array.isArray(data.data)) setProjects(data.data);
+      else console.error("Unexpected API response:", data);
     } catch (err) {
       console.error("Error fetching public projects:", err);
     }
   };
 
-  useEffect(() => {
-    loadProjects();
-    loadLeadIds();
-  }, []);
+  useEffect(() => { loadLeadIds(); }, []);
+  useEffect(() => { loadProjects(search); }, [search]);
 
+  // UI rendering
   return (
     <div className="wrapper-inputpublic">
       <div className="form-grp wrap-select">
-        <input type="text" placeholder="Search" />
+        <input
+          type="text"
+          placeholder="Search"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
       </div>
-
       <div className="listing-div">
         {projects
-          .filter((item) => !leadIds.includes(item.id)) // 🔥 filter leads
-          .map((item) => (
+          .filter(item => !leadIds.includes(item.id))
+          .map(item => (
             <ProjectCard
-              id={item.id}
               key={item.id}
+              id={item.id}
               title={item.title}
               user={item.user?.name || "Unknown User"}
-              services={item.service_list?.map((s) => s.name).join(", ")}
-              luxury={item.luxury_level_details?.name || "N/A"}  
+              services={item.service_list?.map(s => s.name).join(", ")}
+              luxury={item.luxury_level_details?.name || "N/A"}
               landSize={item.land_size}
               location={item.location || "N/A"}
               description={item.notes || ""}
               listingStyle={item.listing_style}
               basement={item.basement || "N/A"}
               typeName={item.category?.name || "N/A"}
-              serviceNames={item.service_list?.map((s) => s.name) || []}
+              serviceNames={item.service_list?.map(s => s.name) || []}
               email={item.user?.email}
               phone={item.user?.phone || ""}
               profileImage={item.user?.profile_image || ""}
