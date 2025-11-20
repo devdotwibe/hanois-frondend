@@ -21,7 +21,7 @@ export default function Home() {
 
         <BusinessSec lang={lang} />
 
-        {/* <ArchetectCommunity /> */}
+        <ArchetectCommunity />
 
         <FaqSec lang={lang} />
 
