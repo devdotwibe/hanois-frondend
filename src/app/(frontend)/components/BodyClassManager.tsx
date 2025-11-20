@@ -8,7 +8,7 @@ export default function BodyClassManager() {
   const pathname = usePathname();
 
   useEffect(() => {
-  
+
     if (pathname.startsWith("/login") || pathname.startsWith("/signup")) {
       document.body.classList.add("login-body");
     } else {
@@ -16,16 +16,11 @@ export default function BodyClassManager() {
     }
 
 
-
     if (pathname.startsWith("/serviceprovider/signup")) {
       document.body.classList.add("serv-signup");
     } else {
       document.body.classList.remove("serv-signup");
     }
-
-
-
-
 
 
     if (pathname.startsWith("/provider/dashboard")) {
@@ -36,7 +31,7 @@ export default function BodyClassManager() {
 
 
 
- 
+
     if (pathname.startsWith("/provider/dashboard/public-projects")) {
       document.body.classList.add("public-proj");
     } else {
@@ -46,8 +41,28 @@ export default function BodyClassManager() {
 
 
 
- 
-    if (pathname.startsWith("/provider/directory")) {
+
+    // if (pathname.startsWith("/provider/directory")) {
+    //   document.body.classList.add("public");
+    // } else {
+    //   document.body.classList.remove("public");
+    // }
+
+
+    if (pathname.startsWith("/service-provider-directory")) {
+      document.body.classList.add("directory");
+    } else {
+      document.body.classList.remove("directory");
+    }
+
+
+    if (pathname.startsWith("/user")) {
+      document.body.classList.add("seeker-dashboard1");
+    } else {
+      document.body.classList.remove("seeker-dashboard1");
+    }
+
+    if (pathname.startsWith("/user/providers")) {
       document.body.classList.add("public");
     } else {
       document.body.classList.remove("public");
@@ -61,13 +76,6 @@ export default function BodyClassManager() {
 
 
 
- 
-
-    if (pathname.startsWith("/service-provider-directory")) {
-      document.body.classList.add("directory");
-    } else {
-      document.body.classList.remove("directory");
-    }
 
 
 
@@ -76,32 +84,6 @@ export default function BodyClassManager() {
 
 
 
-
-
-
-    
-    if (pathname.startsWith("/user")) {
-      document.body.classList.add("seeker-dashboard1");
-    } else {
-      document.body.classList.remove("seeker-dashboard1");
-    }
-
-
-
-    
-   
-
-
-
-
-
-
-
-
-  
-
-
-  
   }, [pathname]);
 
   return null;

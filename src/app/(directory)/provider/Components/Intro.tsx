@@ -2,11 +2,19 @@ import React from 'react'
 
 const Intro = ({ query, onQueryChange, total }) => {
   return (
-    <div className='intro-div'>
+    <div className=''>
+
+      <div className="intro-tab">
+
       <h3>Service Provider List</h3>
       <p>Here is the list of your leads, you can check lead’s projects and contact with them</p>
 
-      <div className="form-grp">
+      </div>
+
+
+
+
+      <div className="form-grp wrap-select">
         <input
           type="text"
           placeholder="Search by name, service or location"
@@ -39,12 +47,11 @@ export default Intro
 
 //         </div>
 
-       
-      
+
+
 //     </div>
 //   )
 // }
 
 // export default Intro
 
- 

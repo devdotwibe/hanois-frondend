@@ -95,6 +95,9 @@ ul.sidebarul li.active{
 
 
 
+.public .sidebar-pages {
+    padding-left: 0;
+}
 
 
 .seeker-col1 h2 {

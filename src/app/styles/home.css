@@ -1838,7 +1838,6 @@ background: linear-gradient(
 
 
 
-.sidebar-div1{margin-top: 70px;}
 
 .containers-limit{padding-inline: 300px;}
 .faq-question p {
@@ -1936,8 +1935,7 @@ border-right: 1px solid #e0e0e0;
 }
 
 .spd-outer1 {
-    width: calc(100% - 250px); padding: 0 0px 0 0px;
-        border-right: 1px solid #e0e0e0;
+     padding: 0 0px 0 0px;
 
 }
 
@@ -2143,7 +2141,7 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
 
 .sidebar-div1 {
     display: flex;
-    flex-wrap: wrap; padding-right: 250px;
+    flex-wrap: wrap;
 }
 
 
@@ -3070,7 +3068,6 @@ button.show-more::after{
 
 
 
-
 .public-project-page{
   position: relative;
     border-right: 1px solid #e0e0e0;
@@ -3078,7 +3075,7 @@ button.show-more::after{
 }
 
 
-.public-project-page .filter-container {
+.filter-container {
     border: none;
     position: absolute;
     right: -251px;
@@ -3092,12 +3089,15 @@ button.show-more::after{
   background: url("../../../public/images/search-icon.svg") no-repeat center !important;
   background-size: 30px !important;
   background-position-x: 18px !important;
+  max-width: 800px;
 }
 
 
 
 .wrap-select {
     margin: 0 55px 40px;
+    width: 100%;
+    max-width: 800px;
 
 }
 
@@ -3978,7 +3978,6 @@ p.torrance-card-desc{
 
 
 .spd-outer1 .intro-div {
-    padding-inline: 55px;
     max-width: 800px;
 }
 
@@ -4250,7 +4249,9 @@ span.time-now {
 .arc-img:hover img {
     transform: scale(1.11);
 }
-
+.spd-outer {
+    position: relative;
+}
 /* ------------------------------------responsive */
 
 @media (max-width: 1541px) {

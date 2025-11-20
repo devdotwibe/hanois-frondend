@@ -92,8 +92,8 @@ const ServiceProviderDirectory = () => {
   }, [filtered, currentPage]);
 
   return (
-    <div className='spd-outer'>
-      <div className="sidebar-div1">
+    <div className='e-spd-outer public-project-page'>
+      <div className="">
         <DirectorySidebar
           onCategoryChange={(cat) => setSelectedCategory(cat)}
           selectedCategory={selectedCategory}
