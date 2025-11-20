@@ -35,7 +35,7 @@
 }
 .sidebar-pages {
     width: 100%;
-     min-height: 300px;
+     min-height: 350px;
 
     width: calc(100% - 250px);
     padding: 0 250px 0 55px;

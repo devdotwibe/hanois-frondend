@@ -372,7 +372,7 @@ max-width: 168px;}
 
 .seeker-dashboard1 .footer .containers,
  .prov-dashboard .footer .containers,
- .directory .footer .containers{padding-inline: 20px !important;}
+ .directory .footer .containers{padding-inline: 20px !important; justify-content: space-between;}
 
 }
 /* -------------------------------------------------------------- */
@@ -394,7 +394,7 @@ max-width: 168px;}
 
 .public .footer-container.containers,
 .prov-dashboard .footer .containers,
-.seeker-dashboard1 .footer .containers{padding-inline: 5%;}
+.seeker-dashboard1 .footer .containers{padding-inline: 5%; justify-content: space-between;}
 
 }
 
