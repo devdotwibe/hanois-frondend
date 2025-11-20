@@ -505,9 +505,23 @@ line-height: 1;
 
 
 
+.load-more {
+    margin-inline: auto;
+    display: block;
+    width: fit-content;
+    color: #fff;
+    background: var(--primary-color);
+    border-radius: 5px;
+    padding: 10px 27px;
+  font-family: 'Avenir-Black';
+    font-size: 13px;
+    font-weight: 400;
+}
 
+.load-more:hover{
+    background: #4c72f6;
 
-
+}
 
 
 

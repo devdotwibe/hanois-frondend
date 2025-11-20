@@ -3407,6 +3407,16 @@ margin: 0 0 8px !important;
     font-family: 'Avenir-Black';
 
 }
+
+.proposal-details h4 span.green-text1{
+color: red;
+}
+.proposal-details h4 span.blue-text1{
+color: red;
+}
+
+
+
 .cont-lead {
     margin: 0 0 20px;
 }
@@ -4227,7 +4237,17 @@ span.time-now {
     gap: 10px;
 }
 
+.arc-img {
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+}
+.arc-img img{
+    transition: all 0.5s ease-in-out;
+}
 
+.arc-img:hover img {
+    transform: scale(1.11);
+}
 
 /* ------------------------------------responsive */
 

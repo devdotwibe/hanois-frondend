@@ -1,7 +1,7 @@
 import React from 'react'
 import ArcCard from './ArcCard'
 import imghouse from "../../../../public/images/property-img.jpg"
-
+import Link from 'next/link';
 const data = [
   {
     name: "Sarah Mitchell",
@@ -45,6 +45,9 @@ const ArchetectCommunity = () => {
               </div>
             ))}
           </div>
+
+
+          <Link href="/" className='load-more'>Load More Post</Link>
 
         </div>
       </div>
