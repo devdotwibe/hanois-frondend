@@ -106,7 +106,7 @@ const EditProposalIntro = ({ proposal_id }) => {
   try {
     const res = await fetch(`${API_URL}/providers/delete-proposal-attachment/${attachmentId}`
 , {
-      method: "POST",
+      method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },

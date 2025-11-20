@@ -26,7 +26,7 @@ const DetailsIntro = ({ project }: any) => {
       </div>
 
       <ul className="tab-nav1">
-        <li><Link href="/Proposals" className="tab-btn">Proposals</Link></li>
+        <li><Link href="/user/Proposals" className="tab-btn">Proposals</Link></li>
         <li>
           <Link 
             href={`/user/project-details/${project.id}`} 

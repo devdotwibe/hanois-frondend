@@ -249,11 +249,20 @@ const ImageSlider: React.FC<Props> = ({ projects }) => {
   };
 
   // images array flattened
-  const images = projects
-    .map((project) => project.images)
-    .flat()
-    .map((image) => IMG_URL + image.image_path);
+  // const images = projects
+  //   .map((project) => project.images)
+  //   .flat()
+  //   .map((image) => IMG_URL + image.image_path);
 
+
+  const images = projects
+  .map((project) => project.images || [])      // ensure array
+  .flat()
+  .filter((img) => img && img.image_path)       // remove nulls + missing paths
+  .map((img) => IMG_URL + img.image_path);
+
+
+  
   // Force a reflow / recalc after mount so slick calculates widths correctly
   useEffect(() => {
     // sometimes slick computes wrong when first mounted (esp. with SSR/hydration)
