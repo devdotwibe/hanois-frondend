@@ -132,15 +132,27 @@ max-width: 400px;
 }
 
 
+
+.form-group input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  background-color: #ffffff !important;
+}
+
+
+
+
+
 .form-group input {
   outline: none;
 width: 100%;
     color: #000; font-size: 15px;
-    border: 1px solid #d7dbec;
+    border: 2px solid #d7dbec;
     border-radius: 4px;
     padding: 20px 15px;
     transition: all .5s ease-in-out; width: 100%;
     box-sizing: border-box;
+    background-color: #ffffff !important;
 }
 
 .form-group input:focus {
