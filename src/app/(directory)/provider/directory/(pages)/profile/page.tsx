@@ -100,7 +100,9 @@ const Page = () => {
           <div className="proj-details">
             <h3 className="scope-title">Project Details</h3>
 
-            <div className="proj-grid">
+            <div className="proj-grid e-grid">
+
+
               <div className="proj-grid2">
                 <div className="proj-col1">
                   <p>
@@ -109,13 +111,20 @@ const Page = () => {
                   <p>{project.location}</p>
                 </div>
 
+
+              </div>
+
+              <div className="proj-grid2">
                 <div className="proj-col1">
                   <p>
                     <strong>Style</strong>
                   </p>
                   <p>{project.design_name}</p>
                 </div>
+
               </div>
+
+
 
               <div className="proj-grid2">
                 <div className="proj-col1">
@@ -125,13 +134,22 @@ const Page = () => {
                   <p>{project.project_type_name}</p>
                 </div>
 
+
+              </div>
+
+              <div className="proj-grid2">
                 <div className="proj-col1">
                   <p>
                     <strong>Space Size</strong>
                   </p>
                   <p>{project.land_size}</p>
                 </div>
+
+
               </div>
+
+
+
             </div>
           </div>
 
@@ -139,7 +157,7 @@ const Page = () => {
           </div>
 
 
-         
+
 
 
 
