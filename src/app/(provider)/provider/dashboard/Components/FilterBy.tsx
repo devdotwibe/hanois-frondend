@@ -9,30 +9,29 @@ interface ServiceItem {
 }
 
 const FilterBy = () => {
-  const [services, setServices] = useState<ServiceItem[]>([]);
+  const [allServices, setAllServices] = useState<ServiceItem[]>([]);
   const [selectedServices, setSelectedServices] = useState<ServiceItem[]>([]);
 
+  // Fetch all service details from new API endpoint returning {id, name} list
   useEffect(() => {
-    const fetchServices = async () => {
+    const fetchAllServices = async () => {
       try {
-        const response = await fetch(`${API_URL}/services`);
-        const data = await response.json();
-        setServices(data);
+        const response = await fetch(`${API_URL}/users/public-services`);
+        const json = await response.json();
+        setAllServices(json.data); // data is array of {id, name}
       } catch (error) {
-        console.error("Failed to fetch services:", error);
+        console.error("Failed to fetch services details:", error);
       }
     };
-
-    fetchServices();
+    fetchAllServices();
   }, []);
 
   // Handle selection change from dropdown
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = Number(e.target.value);
-    const selectedService = services.find(s => s.id === selectedId);
-    
+    const selectedService = allServices.find(s => s.id === selectedId);
     if (
-      selectedService && 
+      selectedService &&
       !selectedServices.some(s => s.id === selectedService.id)
     ) {
       setSelectedServices(prev => [...prev, selectedService]);
@@ -55,7 +54,7 @@ const FilterBy = () => {
           <div className="select-wrapper form-grp">
             <select onChange={handleSelectChange} value="">
               <option value="">Categories</option>
-              {services.map((service) => (
+              {allServices.map(service => (
                 <option key={service.id} value={service.id}>
                   {service.name}
                 </option>
@@ -64,6 +63,7 @@ const FilterBy = () => {
           </div>
         </div>
 
+        {/* Render tags based on selectedServices */}
         <div className="tags-container">
           {selectedServices.map(service => (
             <div key={service.id} className="tag">
