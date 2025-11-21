@@ -9,7 +9,7 @@ import "./admin-home.css";
 import BannerExtrasForm from "@/app/(frontend)/components/BannerExtrasForm";
 import FaqForm from "@/app/(frontend)/components/FaqForm";
 import BannerSubExtrasForm from "@/app/(frontend)/components/BannerSubExtrasForm";
-
+import HtmlToggleEditor from "../components/HtmlToggleEditor";
 
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
@@ -319,20 +319,12 @@ useEffect(() => {
         <form onSubmit={handleSave}>
           {/* 🟩 English Title */}
 <div className="section">
-  <label>Header Content</label>
-  <ReactQuill
-    theme="snow"
-    value={titles.en}
-    onChange={(value) => setTitles({ ...titles, en: value })}
-    modules={modules}
-    style={{
-      height: "250px",
-      marginBottom: "20px",
-      backgroundColor: "#fff",
-      borderRadius: "8px",
-      border: "1px solid #ccc",
-    }}
-  />
+  <HtmlToggleEditor
+  label="Header Content"
+  value={titles.en}
+  onChange={(value) => setTitles({ ...titles, en: value })}
+/>
+
 </div>
 
 

@@ -5,6 +5,7 @@ import { API_URL } from "@/config";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
 import "../../(admin)/admin/home/admin-home.css";
+import HtmlToggleEditor from "@/app/(admin)/admin/components/HtmlToggleEditor";
 
 // 🟩 FIX 1 — Memoized dynamic import to prevent remounting
 const ReactQuill = dynamic(() => import("react-quill-new"), {
@@ -30,50 +31,8 @@ export default function BannerExtrasForm() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // 🟩 FIX 3 — Separate source toggles
-  const [subtitleSource, setSubtitleSource] = useState(false);
-  const [subDescSource, setSubDescSource] = useState(false);
-
-  // 🟩 Subtitle editor toolbar
-  const subtitleModules = useMemo(
-    () => ({
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, false] }],
-          ["bold", "italic", "underline", "strike"],
-          [{ list: "ordered" }, { list: "bullet" }],
-          ["link"],
-          ["clean"],
-          ["showHtml"],
-        ],
-        handlers: {
-          showHtml: () => setSubtitleSource(prev => !prev),
-        },
-      },
-    }),
-    []
-  );
 
   // 🟩 Subdescription editor toolbar
-  const subDescModules = useMemo(
-    () => ({
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, false] }],
-          ["bold", "italic", "underline", "strike"],
-          [{ list: "ordered" }, { list: "bullet" }],
-          ["link"],
-          ["clean"],
-          ["showHtml"],
-        ],
-        handlers: {
-          showHtml: () => setSubDescSource(prev => !prev),
-        },
-      },
-    }),
-    []
-  );
-
   // 🟩 Fetch banner extras and sub extras
   useEffect(() => {
     (async () => {
@@ -150,48 +109,23 @@ export default function BannerExtrasForm() {
         {/* --------------------------------------- */}
         {/* SUBTITLE EDITOR */}
         {/* --------------------------------------- */}
-        <label>Subtitle</label>
-
-        {subtitleSource ? (
-          <textarea
-            value={subtitle_en}
-            onChange={(e) => setSubtitleEn(e.target.value)}
-            style={{ width: "100%", height: "200px" }}
-          />
-        ) : (
-          <ReactQuill
-            key={subtitleSource ? "subtitle-source" : "subtitle-editor"}
-            preserveWhitespace={true}
-            theme="snow"
-            value={subtitle_en}
-            onChange={setSubtitleEn}
-            modules={subtitleModules}
-          />
-        )}
+   <HtmlToggleEditor
+  label="Subtitle"
+  value={subtitle_en}
+  onChange={setSubtitleEn}
+/>
 
         <hr />
 
         {/* --------------------------------------- */}
         {/* SUB DESCRIPTION EDITOR */}
         {/* --------------------------------------- */}
-        <label>Sub Description</label>
+        <HtmlToggleEditor
+  label="Sub Description"
+  value={subdescription_en}
+  onChange={setSubDescriptionEn}
+/>
 
-        {subDescSource ? (
-          <textarea
-            value={subdescription_en}
-            onChange={(e) => setSubDescriptionEn(e.target.value)}
-            style={{ width: "100%", height: "200px" }}
-          />
-        ) : (
-          <ReactQuill
-            key={subDescSource ? "subdesc-source" : "subdesc-editor"}
-            preserveWhitespace={true}
-            theme="snow"
-            value={subdescription_en}
-            onChange={setSubDescriptionEn}
-            modules={subDescModules}
-          />
-        )}
 
       </div>
 

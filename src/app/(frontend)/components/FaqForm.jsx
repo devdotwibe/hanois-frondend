@@ -73,10 +73,16 @@ const [deleteId, setDeleteId] = useState(null);
 
 const fetchFaqs = async () => {
   try {
-    const res = await axios.get(`${API_URL}faq`);
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get(`${API_URL}faq`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     const allFaqs = res.data?.data?.faqs || [];
 
-    // ✅ Filter only English FAQs
     const englishFaqs = allFaqs.filter(
       (faq) => (faq.language || "").trim().toLowerCase() === "en"
     );
@@ -112,19 +118,40 @@ const faqData = {
   try {
 let res;
 if (editingId) {
-  res = await axios.put(`${API_URL}faq/${editingId}`, {
-    title: formData.engtitle,          // ✅ match DB column
-    question: formData.engquestion,    // ✅ match DB column
-    answer: formData.enganswer,        // ✅ match DB column
-     order: parseInt(formData.order),  
-  });
+  res = await axios.put(
+    `${API_URL}faq/${editingId}`,
+    {
+      title: formData.engtitle,
+      question: formData.engquestion,
+      answer: formData.enganswer,
+      order: parseInt(formData.order),
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
 } else {
-  res = await axios.post(`${API_URL}faq`, faqData);
+  res = await axios.post(
+    `${API_URL}faq`,
+    faqData,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
 }
 
 
     if (res.status === 200 || res.status === 201) {
-      setMessage(editingId ? "✅ FAQ updated successfully!" : "✅ FAQ created successfully!");
+     setMessage(editingId ? "✅ FAQ updated successfully!" : "✅ FAQ created successfully!");
+
+setTimeout(() => {
+  setMessage("");
+}, 1000); // 1 second
+
       fetchFaqs();
      setFormData({
     engtitle: "",
@@ -169,8 +196,19 @@ const handleDelete = (id) => {
 
 const confirmDelete = async () => {
   try {
-    await axios.delete(`${API_URL}faq/${deleteId}`);
-    setMessage("✅ FAQ deleted successfully!");
+    await axios.delete(`${API_URL}faq/${deleteId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+   setMessage("✅ FAQ deleted successfully!");
+
+// hide after 1 second
+setTimeout(() => {
+  setMessage("");
+}, 1000);
+
     fetchFaqs();
   } catch (err) {
     console.error("❌ Delete failed:", err);

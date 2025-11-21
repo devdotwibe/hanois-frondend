@@ -37,9 +37,7 @@ const ContactForm = () => {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
-    if (!formData.companyName.trim()) {
-      newErrors.companyName = "Please enter your Company Name";
-    }
+  
 
     return newErrors;
   };
@@ -86,11 +84,21 @@ const ContactForm = () => {
       }
     } catch (error) {
       console.error("Error submitting contact form:", error);
-      setStatus({
-        loading: false,
-        message: "Something went wrong. Please try again.",
-        success: false,
-      });
+     setStatus({
+  loading: false,
+  message: "Something went wrong. Please try again.",
+  success: false,
+});
+
+// hide message after 1 second
+setTimeout(() => {
+  setStatus({
+    loading: false,
+    message: "",
+    success: false,
+  });
+}, 1000);
+
     }
   };
 
@@ -167,7 +175,12 @@ const ContactForm = () => {
               onChange={handleChange}
               placeholder="Add notes"
               rows={4}
+               maxLength={1024}
             ></textarea>
+            <p style={{ fontSize: "12px", textAlign: "right", marginTop: "4px" }}>
+  {1024 - formData.notes.length}
+</p>
+
             <small>Brief description for your profile. URLs are hyperlinked.</small>
           </div>
 

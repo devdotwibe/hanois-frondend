@@ -237,7 +237,7 @@ const fetchData = async (sectionKey: string) => {
     <div className="form-field">
       
           <HtmlToggleEditor
-            label="Content (English)"
+            label="Content"
             value={content.en}
             onChange={(val) => setContent((prev) => ({ ...prev, en: val }))}
           />

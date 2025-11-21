@@ -16,7 +16,16 @@ export default function FaqSec({ lang }: { lang: string }) {
     const fetchFaqs = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("https://hanois.dotwibe.com/api/api/faq");
+
+        const token = localStorage.getItem("token");
+      const res = await axios.get(
+  "https://hanois.dotwibe.com/api/api/faq",
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
         const allFaqs = res.data?.data?.faqs || [];
 
         // Filter by selected language
