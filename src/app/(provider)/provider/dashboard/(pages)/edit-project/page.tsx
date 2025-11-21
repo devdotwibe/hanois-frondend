@@ -237,6 +237,10 @@ const getDesignStyleName = () => {
     });
 
     setModalVisible(true);
+    setTimeout(() => {
+  router.push("/provider/dashboard/projects");
+}, 1000);
+
   };
 
   // ------------------------------------------

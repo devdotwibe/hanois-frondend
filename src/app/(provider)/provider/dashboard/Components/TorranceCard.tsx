@@ -58,7 +58,7 @@ const TorranceCard: React.FC<TorranceCardProps> = ({
           <strong>Style:</strong> {styleType}
         </p>
         <p>
-          <strong>Space size:</strong> {spaceSize}
+          <strong>Space size:</strong> {spaceSize}  m²
         </p>
         <p>
           <strong>Location:</strong> {location}

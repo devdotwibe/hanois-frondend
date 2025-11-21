@@ -135,7 +135,7 @@ const handleAddToLeads = async () => {
             <div className="col-info3">
 
               <div className="col-info4">
-                            <p><strong>Luxury type</strong></p>
+                            <p><strong>Luxury name</strong></p>
 
 
               </div>

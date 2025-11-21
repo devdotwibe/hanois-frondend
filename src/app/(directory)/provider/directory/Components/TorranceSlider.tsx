@@ -42,7 +42,7 @@ const TorranceCard = ({
         <h3>{title}</h3>
         {description && <p className="torrance-card-desc">{description}</p>}
         <p><strong>Style:</strong> {styleType || "—"}</p>
-        <p><strong>Space size:</strong> {spaceSize || "—"}</p>
+        <p><strong>Space size:</strong> {spaceSize || "—"} m²</p>
         <p><strong>Location:</strong> {location || "—"}</p>
       </div>
     </div>

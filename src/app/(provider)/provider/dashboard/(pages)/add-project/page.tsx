@@ -36,6 +36,10 @@ const UploadBox = () => {
   const [providerError, setProviderError] = useState(null);
 
   const [showPreview, setShowPreview] = useState(false);
+const [notesCount, setNotesCount] = useState(1024);
+
+
+
 
   useEffect(() => {
     try {
@@ -103,12 +107,21 @@ const UploadBox = () => {
     fetchDesigns();
     fetchCategories();
   }, []);
+const handleChange = (e) => {
+  const { id, value } = e.target;
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
+  // Notes field special case
+  if (id === "notes") {
+    if (value.length <= 1024) {
+      setFormData((prev) => ({ ...prev, [id]: value }));
+      setNotesCount(1024 - value.length);
+    }
+  } else {
     setFormData((prev) => ({ ...prev, [id]: value }));
-    setErrors((prev) => ({ ...prev, [id]: "" }));
-  };
+  }
+
+  setErrors((prev) => ({ ...prev, [id]: "" }));
+};
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -174,8 +187,12 @@ const UploadBox = () => {
         },
       });
 
-      setModalVisible(true);
-      setTimeout(() => setModalVisible(false), 3000);
+    setModalVisible(true);
+
+setTimeout(() => {
+  router.push("/provider/dashboard/projects");
+}, 1000);
+
 
       setFormData({
         title: "",
@@ -343,8 +360,13 @@ const UploadBox = () => {
                   <textarea
                     id="notes"
                     value={formData.notes}
+                    maxLength={1024}
                     onChange={handleChange}
                   />
+                    <p style={{ fontSize: "12px", color: "#666", marginTop: "4px" }}>
+    {notesCount}
+  </p>
+
                   {errors.notes && <p style={{ color: "red" }}>{errors.notes}</p>}
                 </div>
 
