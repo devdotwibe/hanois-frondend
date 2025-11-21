@@ -9,13 +9,12 @@ import DetailCard from "@/app/(directory)/provider/Components/DetailCard";
 import TabBtns from "../../Components/TabBtns";
 import { useRouter, useSearchParams } from "next/navigation";
 
-
-import sucesstik from "../../../../../../../public/images/tik.svg"
+import sucesstik from "../../../../../../../public/images/tik.svg";
 
 const EditProject = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const id = searchParams.get("id"); // 👈 Get project ID from URL
+  const id = searchParams.get("id");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -35,17 +34,31 @@ const EditProject = () => {
   const [existingImages, setExistingImages] = useState([]);
   const [message, setMessage] = useState("");
 
-
   const [modalVisible, setModalVisible] = useState(false);
-
-
-
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const [provider, setProvider] = useState(null);
   const [loadingProvider, setLoadingProvider] = useState(true);
   const [providerError, setProviderError] = useState(null);
-  // 🟩 Load provider + token
+
+  // ➤ PREVIEW TOGGLE
+  const [showPreview, setShowPreview] = useState(false);
+
+  const getProjectTypeName = () => {
+  const item = categoryList.find(c => c.id == formData.projectType);
+  return item ? item.name : "";
+};
+
+const getDesignStyleName = () => {
+  const item = designList.find(d => d.id == formData.designStyle);
+  return item ? item.name : "";
+};
+
+
+
+  // ------------------------------------------
+  // LOAD PROVIDER DATA
+  // ------------------------------------------
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const storedToken = localStorage.getItem("token");
@@ -53,174 +66,152 @@ const EditProject = () => {
     if (storedToken) setToken(storedToken);
   }, []);
 
-
   const fetchProviderData = async (forceRefresh = false) => {
-      try {
+    try {
       setLoadingProvider(true);
       setProviderError(null);
-
 
       const user = JSON.parse(localStorage.getItem("user"));
       const tokenLocal = localStorage.getItem("token");
       const idLocal = user?.id || user?.provider_id;
 
-
       if (!idLocal) {
-      setProviderError("No provider ID found. Please log in again.");
-      setLoadingProvider(false);
-      return;
+        setProviderError("No provider ID found. Please log in again.");
+        setLoadingProvider(false);
+        return;
       }
-
 
       const cacheKey = `provider_${idLocal}`;
       const cached = localStorage.getItem(cacheKey);
-      if (cached && !forceRefresh) {
-      try {
-      const cachedData = JSON.parse(cached);
-      setProvider(cachedData);
-      setLoadingProvider(false);
-      return;
-      } catch (e) {
-      console.warn("Failed to parse cached provider, fetching fresh.", e);
-      }
-      }
 
+      if (cached && !forceRefresh) {
+        try {
+          setProvider(JSON.parse(cached));
+          setLoadingProvider(false);
+          return;
+        } catch {}
+      }
 
       const res = await fetch(`${API_URL}providers/${encodeURIComponent(idLocal)}`, {
-      method: "GET",
-      headers: {
-      "Content-Type": "application/json",
-      ...(tokenLocal && { Authorization: `Bearer ${tokenLocal}` }),
-      },
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          ...(tokenLocal && { Authorization: `Bearer ${tokenLocal}` }),
+        },
       });
 
-
       if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      setProviderError(body?.error || `Failed to fetch provider (${res.status})`);
-      setLoadingProvider(false);
-      return;
+        const body = await res.json().catch(() => ({}));
+        setProviderError(body?.error || `Failed to fetch provider (${res.status})`);
+        setLoadingProvider(false);
+        return;
       }
-
 
       const data = await res.json();
       const providerData = data?.provider || null;
       setProvider(providerData);
-
-
-      if (providerData) {
-      try {
       localStorage.setItem(cacheKey, JSON.stringify(providerData));
-      } catch (e) {
-      console.warn("Failed to cache provider data:", e);
-      }
-      }
-      } catch (err) {
-      console.error("Error fetching provider data:", err);
+    } catch {
       setProviderError("Failed to load provider data.");
-      } finally {
+    } finally {
       setLoadingProvider(false);
-      }
+    }
   };
 
-
-  // 🟩 Fetch dropdown data
+  // ------------------------------------------
+  // FETCH DESIGN + CATEGORY
+  // ------------------------------------------
   const fetchDesigns = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/design`);
-      setDesignList(res.data);
-    } catch (err) {
-      console.error("Error fetching design list:", err);
-    }
+    const res = await axios.get(`${API_URL}/design`);
+    setDesignList(res.data);
   };
 
   const fetchCategories = async () => {
-    try {
-      const res = await axios.get(`https://hanois.dotwibe.com/api/api/categories`);
-      setCategoryList(res.data);
-    } catch (err) {
-      console.error("Error fetching categories:", err);
-    }
+    const res = await axios.get(`https://hanois.dotwibe.com/api/api/categories`);
+    setCategoryList(res.data);
   };
 
   useEffect(() => {
     fetchDesigns();
     fetchCategories();
-     fetchProviderData();
+    fetchProviderData();
   }, []);
 
-  // 🟩 Fetch existing project data
+  // ------------------------------------------
+  // FETCH EXISTING PROJECT
+  // ------------------------------------------
   const fetchProject = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/projects/${id}`);
-      if (res.data.success) {
-        const project = res.data.data.project;
-        setFormData({
-          title: project.title || "",
-          notes: project.notes || "",
-          projectType: project.project_type_id || "",
-          location: project.location || "",
-          landSize: project.land_size || "",
-          designStyle: project.design_id || "",
-        });
-        setExistingImages(project.images || []);
-      }
-    } catch (err) {
-      console.error("Error fetching project:", err);
+    const res = await axios.get(`${API_URL}/projects/${id}`);
+    if (res.data.success) {
+      const project = res.data.data.project;
+      setFormData({
+        title: project.title || "",
+        notes: project.notes || "",
+        projectType: project.project_type_id || "",
+        location: project.location || "",
+        landSize: project.land_size || "",
+        designStyle: project.design_id || "",
+      });
+
+      // SAVE EXISTING IMAGES
+      setExistingImages(project.images || []);
     }
   };
-
 
   useEffect(() => {
     if (id) fetchProject();
   }, [id]);
 
-  // 🟩 Handle input changes
+  // ------------------------------------------
+  // INPUT CHANGES
+  // ------------------------------------------
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
-    setErrors((prev) => ({ ...prev, [id]: "" }));
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+    setErrors({ ...errors, [e.target.id]: "" });
   };
 
-  // 🟩 Handle file uploads
   const handleFileChange = (e) => {
-    const newFiles = Array.from(e.target.files);
-    setImageFile((prev) => (prev ? [...prev, ...newFiles] : newFiles));
-    setErrors((prev) => ({ ...prev, images: "" }));
+    const newFiles = Array.from(e.target.files).map((file) => ({
+      file,
+      previewUrl: URL.createObjectURL(file),
+      isCover: false,
+    }));
+    setImageFile((prev) => [...prev, ...newFiles]);
   };
 
-  // 🟩 Delete existing image (from DB)
+  // ------------------------------------------
+  // DELETE EXISTING IMAGE
+  // ------------------------------------------
   const handleDeleteImage = async (imgId) => {
-    try {
-      await axios.delete(`${API_URL}/project-images/${imgId}`);
-      setExistingImages((prev) => prev.filter((img) => img.id !== imgId));
-    } catch (err) {
-      console.error("Error deleting image:", err);
-    }
+    await axios.delete(`${API_URL}/project-images/${imgId}`);
+    setExistingImages(existingImages.filter((img) => img.id !== imgId));
   };
 
-  // 🟩 Validate form
+  // ------------------------------------------
+  // VALIDATE FORM
+  // ------------------------------------------
   const validateForm = () => {
-    const newErrors = {};
-    if (!formData.title.trim()) newErrors.title = "Title is required.";
-    if (!formData.notes.trim()) newErrors.notes = "Notes are required.";
+    let newErrors = {};
+    if (!formData.title) newErrors.title = "Title is required.";
+    if (!formData.notes) newErrors.notes = "Notes are required.";
     if (!formData.projectType) newErrors.projectType = "Project Type is required.";
-    if (!formData.location.trim()) newErrors.location = "Location is required.";
-    if (!formData.landSize.trim()) newErrors.landSize = "Land Size is required.";
+    if (!formData.location) newErrors.location = "Location is required.";
+    if (!formData.landSize) newErrors.landSize = "Land Size is required.";
     if (!formData.designStyle) newErrors.designStyle = "Design Style is required.";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // 🟩 Handle submit (update project)
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!validateForm()) return;
+  // ------------------------------------------
+  // UPDATE PROJECT (SUBMIT FORM)
+  // ------------------------------------------
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
-  try {
     const formDataObj = new FormData();
 
-    // 🟩 Basic project fields
     formDataObj.append("title", formData.title);
     formDataObj.append("notes", formData.notes);
     formDataObj.append("location", formData.location);
@@ -228,23 +219,16 @@ const handleSubmit = async (e) => {
     formDataObj.append("project_type_id", formData.projectType);
     formDataObj.append("design_id", formData.designStyle);
 
-    // 🟩 Include which existing image is cover (if any)
-    if (existingImages.length > 0) {
-      const coverImage = existingImages.find((img) => img.is_cover);
-      if (coverImage) {
-        formDataObj.append("existing_cover_id", coverImage.id);
-      }
+    const coverExisting = existingImages.find((img) => img.is_cover);
+    if (coverExisting) {
+      formDataObj.append("existing_cover_id", coverExisting.id);
     }
 
-    // 🟩 Add newly uploaded images (if any)
-    if (imageFile.length > 0) {
-      imageFile.forEach((file) => {
-        formDataObj.append("images", file);
-        formDataObj.append("is_cover_flags[]", file.isCover ? "true" : "false");
-      });
-    }
+    imageFile.forEach((img) => {
+      formDataObj.append("images", img.file);
+      formDataObj.append("is_cover_flags[]", img.isCover ? "true" : "false");
+    });
 
-    // 🟩 Send PUT-equivalent request (multipart/form-data safe)
     await axios.post(`${API_URL}/projects/${id}`, formDataObj, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -253,269 +237,239 @@ const handleSubmit = async (e) => {
     });
 
     setModalVisible(true);
-  } catch (err) {
-    console.error("❌ Error updating project:", err);
-    setMessage("❌ Failed to update project.");
-  }
-};
+  };
 
+  // ------------------------------------------
+  // PREVIEW COMPONENT
+  // ------------------------------------------
+  const PreviewComponent = ({ data, existingImages, newImages, onBack }) => {
+    const allImages = [
+      ...existingImages.map((img) => ({
+        url: `${IMG_URL}${img.image_path}`,
+        isCover: img.is_cover,
+      })),
+      ...newImages.map((img) => ({
+        url: img.previewUrl,
+        isCover: img.isCover,
+      })),
+    ];
 
-// // 🟩 Handle project delete
-// const handleDelete = async () => {
-//   if (!id) return alert("Invalid project ID.");
+    const coverImage = allImages.find((i) => i.isCover);
+    const otherImages = allImages.filter((i) => !i.isCover);
 
-//   const confirmDelete = window.confirm("Are you sure you want to delete this project?");
-//   if (!confirmDelete) return;
+    return (
+      <div className="preview-wrapper">
+        <button className="back-bth" onClick={onBack}>
+          Back
+        </button>
 
-//   try {
-//     await axios.delete(`${API_URL}/projects/${id}`, {
-//       headers: token ? { Authorization: `Bearer ${token}` } : {},
-//     });
+        {coverImage && (
+          <div className="prov-pro-img">
+            <img src={coverImage.url} className="project-img" />
+          </div>
+        )}
 
-//     alert("✅ Project deleted successfully!");
-//     router.push("/provider/dashboard/projects");
-//   } catch (err) {
-//     console.error("❌ Error deleting project:", err);
-//     alert("❌ Failed to delete project.");
-//   }
-// };
+        <div className="project-details detailed">
+          <h2 className="project-title">{data.title}</h2>
 
+          <h3 className="about-title">About</h3>
+          <p className="about-text">{data.notes}</p>
+        </div>
 
+        {otherImages.map((img, idx) => (
+          <div key={idx} className="prov-pro-img">
+            <img src={img.url} className="project-img" />
+          </div>
+        ))}
 
+        <div className="proj-details">
+          <h3 className="scope-title">Project Details</h3>
+          <p>
+            <strong>Location</strong> — {data.location}
+          </p>
+          <p>
+         <strong>Style</strong> — {getDesignStyleName()}
 
-  return (
-    <>
-    {/* Dynamic DetailCard */}
-    {loadingProvider ? (
-    <p>Loading provider...</p>
-    ) : providerError ? (
-    <p style={{ color: "red" }}>{providerError}</p>
-    ) : provider ? (
-    <DetailCard
-    logo={provider?.image ? `${IMG_URL}${provider.image}` : "/path/to/logo.png"}
-    name={provider?.name || "Unknown Provider"}
-    description={
-    provider?.professional_headline ||
-    ""
-    }
+          </p>
+          <p>
+           <strong>Type</strong> — {getProjectTypeName()}
+          </p>
+          <p>
+            <strong>Space Size</strong> — {data.landSize} m²
+          </p>
+        </div>
+      </div>
+    );
+  };
 
-
+  // ------------------------------------------
+  // MAIN RETURN (WITH PREVIEW)
+  // ------------------------------------------
+  return showPreview ? (
+    <PreviewComponent
+      data={formData}
+      existingImages={existingImages}
+      newImages={imageFile}
+      onBack={() => setShowPreview(false)}
     />
-    ) : (
-    <DetailCard />
-    )}
+  ) : (
+    <>
+      {/* Provider Section */}
+      {loadingProvider ? (
+        <p>Loading provider...</p>
+      ) : providerError ? (
+        <p style={{ color: "red" }}>{providerError}</p>
+      ) : provider ? (
+        <DetailCard
+          logo={
+            provider?.image ? `${IMG_URL}${provider.image}` : "/path/to/logo.png"
+          }
+          name={provider?.name || "Unknown Provider"}
+          description={provider?.professional_headline || ""}
+        />
+      ) : (
+        <DetailCard />
+      )}
+
       <TabBtns />
 
       <div className="edit-proj-up">
-
-           {/* 🟩 Success Modal */}
-          {modalVisible &&  (
-            <div
-className="edit-proj-sucess add-sucess"
-            >
-
-                {/* <h3 style={{ color: "green" }}>Project Updated!</h3> */}
-
-                <p>
-                  <span><Image
-                  src={sucesstik}
-                  alt="img"
-                  width={18}
-                  height={18}
-                  /></span>
-                  Your project has been successfully updated.</p>
-                {/* <button
-                  onClick={() => {
-                    setModalVisible(false);
-                    router.push("/provider/dashboard/projects");
-                  }}
-                  className="close-btnn1"
-                >
-                  Close
-                </button> */}
-
-            </div>
-          )}
-
-
-
+        {/* Success Modal */}
+        {modalVisible && (
+          <div className="edit-proj-sucess add-sucess">
+            <p>
+              <span>
+                <Image src={sucesstik} alt="img" width={18} height={18} />
+              </span>
+              Your project has been successfully updated.
+            </p>
+          </div>
+        )}
 
         <div className="proj-form1 company-profile1">
           <h3>Edit Project</h3>
-          <p>Update your project images and details below</p>
 
-{/* 🟩 Combined Upload & Preview Grid */}
-<div
-  className="form-grp upload-area"
+          {/* -------- Images Section -------- */}
+          <div className="form-grp upload-area">
+            {/* Upload */}
+            <div>
+              <div
+                className="upload-box"
+                onClick={() => document.querySelector(".upload-input")?.click()}
+              >
+                <div className="cover-upload">
+                  <div className="img-cover-up">
+                    <Image src={uploadIcon} alt="Upload" width={40} height={40} />
+                  </div>
+                  <h3>Upload an image</h3>
+                  <p>Browse your files to upload document</p>
+                  <span>Supported: JPEG, PNG</span>
+                </div>
 
->
-  {/* 🟦 Upload Box (first grid item) */}
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  className="upload-input hidden"
+                  onChange={handleFileChange}
+                />
+              </div>
 
+              {/* Existing Images */}
+              {existingImages.map((img, index) => (
+                <div key={img.id} style={{ position: "relative" }}>
+                  <img src={`${IMG_URL}${img.image_path}`} />
 
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteImage(img.id)}
+                    className="img-onclose"
+                  >
+                    ✕
+                  </button>
 
-  <div>
+                  <button
+                    type="button"
+                    className="setas-cover"
+                    onClick={() => {
+                      const updated = existingImages.map((image, i) => ({
+                        ...image,
+                        is_cover: i === index,
+                      }));
+                      setExistingImages(updated);
+                    }}
+                  >
+                    {img.is_cover ? "Cover Image" : "Set Cover"}
+                  </button>
+                </div>
+              ))}
 
+              {/* New Images */}
+              {imageFile.map((img, index) => (
+                <div key={index} style={{ position: "relative" }}>
+                  <img src={img.previewUrl} />
 
+                  <button
+                    className="img-onclose"
+                    onClick={() =>
+                      setImageFile((prev) => prev.filter((_, i) => i !== index))
+                    }
+                  >
+                    ✕
+                  </button>
 
+                  <button
+                    className="setas-cover"
+                    onClick={() => {
+                      const updated = imageFile.map((f, i) =>
+                        Object.assign(f, { isCover: i === index })
+                      );
+                      setImageFile([...updated]);
+                    }}
+                    style={{
+                      background: img.isCover ? "#2050f5" : "#ccc",
+                    }}
+                  >
+                    {img.isCover ? "Cover Image" : "Set Cover"}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
 
-    <div
-    className="upload-box"
-
-    onClick={() => document.querySelector(".upload-input")?.click()}
-    // onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0070f3")}
-    // onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#d1d5db")}
-  >
-
-    <div className="cover-upload">
-      <div className="img-cover-up">
-              <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
-
-
-      </div>
-
-
-
-
-    <h3>
-      Upload an image
-    </h3>
-    <p>
-      Browse your files to upload document
-    </p>
-    <span>
-      Supported: JPEG, PNG
-    </span>
-
-    </div>
-    {/* Hidden Input for Upload */}
-  <input
-    type="file"
-    accept="image/*"
-    multiple
-    className="upload-input hidden"
-    onChange={handleFileChange}
-  />
-  </div>
-
-
-  {/* 🖼 Existing Images */}
-  {existingImages.map((img, index) => (
-    <div key={img.id} style={{ position: "relative" }}>
-      <img
-        src={`${IMG_URL}${img.image_path}`}
-        alt="Project"
-
-      />
-
-      {/* 🗑 Delete Existing Image */}
-      <button
-        type="button"
-        onClick={() => handleDeleteImage(img.id)}
-        style={{
-          position: "absolute",
-          top: "5px",
-          right: "5px",
-          border: "none",
-          borderRadius: "50%",
-          width: "22px",
-          height: "22px",
-          cursor: "pointer",
-        }}
-        className="img-onclose"
-      >
-        ✕
-      </button>
-
-      {/* 🌟 Set Cover */}
-      <button
-        type="button"
-
-        onClick={() => {
-          const updated = existingImages.map((image, i) => ({
-            ...image,
-            is_cover: i === index,
-          }));
-          setExistingImages(updated);
-        }}
-        className="setas-cover"
-      >
-        {img.is_cover ? "Cover Image" : "Set Cover"}
-      </button>
-    </div>
-  ))}
-
-  {/* 🆕 New Uploaded Image Previews */}
-  {imageFile.map((file, index) => {
-    const previewUrl = URL.createObjectURL(file);
-    return (
-      <div key={index} style={{ position: "relative" }}>
-        <img
-          src={previewUrl}
-          alt="preview"
-
-        />
-
-        {/* 🗑 Remove New Image */}
-        <button
-          type="button"
-          onClick={() =>
-            setImageFile((prev) => prev.filter((_, i) => i !== index))
-          }
-          className="img-onclose"
-        >
-          ✕
-        </button>
-
-        {/* 🌟 Set Cover */}
-        <button
-          type="button"
-          className="setas-cover"
-          onClick={() => {
-            const updatedFiles = imageFile.map((f, i) =>
-              Object.assign(f, { isCover: i === index })
-            );
-            setImageFile([...updatedFiles]);
-          }}
-          style={{
-
-            background: file.isCover ? "#2050f5" : "#ccc",
-
-            cursor: "pointer",
-          }}
-        >
-          {file.isCover ? "Cover Image" : "Set Cover"}
-        </button>
-      </div>
-    );
-  })}
-
-
-</div>
-
-
-</div>
-
-
-          {/* 🟩 Form Section */}
+          {/* -------- Form Section -------- */}
           <form onSubmit={handleSubmit}>
             {/* Title */}
             <div className="form-grp">
               <label htmlFor="title">Title</label>
-              <input type="text" id="title" value={formData.title} onChange={handleChange} />
+              <input
+                id="title"
+                value={formData.title}
+                onChange={handleChange}
+              />
               {errors.title && <p style={{ color: "red" }}>{errors.title}</p>}
             </div>
 
             {/* Notes */}
             <div className="form-grp">
               <label htmlFor="notes">Notes</label>
-              <textarea id="notes" value={formData.notes} onChange={handleChange} rows={4}></textarea>
+              <textarea
+                id="notes"
+                rows={4}
+                value={formData.notes}
+                onChange={handleChange}
+              />
               {errors.notes && <p style={{ color: "red" }}>{errors.notes}</p>}
             </div>
 
-            {/* Project Type */}
+            {/* Dropdowns */}
             <div className="form-grp">
               <label htmlFor="projectType">Project Type</label>
-              <select id="projectType" value={formData.projectType} onChange={handleChange}>
+              <select
+                id="projectType"
+                value={formData.projectType}
+                onChange={handleChange}
+              >
                 <option value="">Select Project Type</option>
                 {categoryList.map((cat) => (
                   <option key={cat.id} value={cat.id}>
@@ -523,165 +477,107 @@ className="edit-proj-sucess add-sucess"
                   </option>
                 ))}
               </select>
-              {errors.projectType && <p style={{ color: "red" }}>{errors.projectType}</p>}
+              {errors.projectType && (
+                <p style={{ color: "red" }}>{errors.projectType}</p>
+              )}
             </div>
 
-            {/* Location */}
             <div className="form-grp">
               <label htmlFor="location">Location</label>
-              <input type="text" id="location" value={formData.location} onChange={handleChange} />
-              {errors.location && <p style={{ color: "red" }}>{errors.location}</p>}
+              <input
+                id="location"
+                value={formData.location}
+                onChange={handleChange}
+              />
+              {errors.location && (
+                <p style={{ color: "red" }}>{errors.location}</p>
+              )}
             </div>
 
-            {/* Land Size */}
             <div className="form-grp">
               <label htmlFor="landSize">Land Size</label>
-              <input type="text" id="landSize" value={formData.landSize} onChange={handleChange} />
-              {errors.landSize && <p style={{ color: "red" }}>{errors.landSize}</p>}
+              <input
+                id="landSize"
+                value={formData.landSize}
+                onChange={handleChange}
+              />
+              {errors.landSize && (
+                <p style={{ color: "red" }}>{errors.landSize}</p>
+              )}
             </div>
 
-            {/* Design Style */}
             <div className="form-grp">
               <label htmlFor="designStyle">Design Style</label>
-              <select id="designStyle" value={formData.designStyle} onChange={handleChange}>
-                <option value="">Select Design Style</option>
-                {designList.map((design) => (
-                  <option key={design.id} value={design.id}>
-                    {design.name}
+              <select
+                id="designStyle"
+                value={formData.designStyle}
+                onChange={handleChange}
+              >
+                <option value="">Select</option>
+                {designList.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.name}
                   </option>
                 ))}
               </select>
-              {errors.designStyle && <p style={{ color: "red" }}>{errors.designStyle}</p>}
+              {errors.designStyle && (
+                <p style={{ color: "red" }}>{errors.designStyle}</p>
+              )}
             </div>
 
-            {/* Update Button */}
-          <div
-  className="btn-cvr"
-  style={{
-    display: "flex",
-    justifyContent: "flex-end",
-    gap: "10px",
-    marginTop: "20px",
-  }}
->
-  {/* 🗑 Delete Button */}
-<button
-  type="button"
-   className="save-btn1"
-  onClick={() => setDeleteModalVisible(true)}
+            {/* -------- Buttons -------- */}
+            <div className="btn-cvr" style={{ display: "flex", gap: "10px" }}>
+              
+              {/* ➤ Preview Button */}
+              <button
+                type="button"
+                className="preview-btn"
+                onClick={() => setShowPreview(true)}
+              >
+                Preview
+              </button>
 
->
-  Delete
-</button>
+              {/* Delete */}
+              <button
+                type="button"
+                className="save-btn1"
+                onClick={() => setDeleteModalVisible(true)}
+              >
+                Delete
+              </button>
 
-
-  <button
-    type="submit"
-    className="save-btn1"
-
-  >
-    Update
-  </button>
-</div>
-
-
-
-
-
+              {/* Update */}
+              <button type="submit" className="save-btn1">
+                Update
+              </button>
+            </div>
           </form>
 
+          {/* Delete modal */}
+          {deleteModalVisible && (
+            <div className="delete-modal-bg">
+              <div className="delete-modal">
+                <h3>Are you sure?</h3>
+                <p>This action cannot be undone.</p>
 
+                <div className="delete-modal-buttons">
+                  <button onClick={() => setDeleteModalVisible(false)}>
+                    Cancel
+                  </button>
 
-
-
-
-          {/* 🟥 Delete Confirmation Modal */}
-{deleteModalVisible && (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100vw",
-      height: "100vh",
-      backgroundColor: "rgba(0,0,0,0.4)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 1000,
-    }}
-  >
-    <div
-      style={{
-        background: "white",
-        padding: "30px 40px",
-        borderRadius: "12px",
-        textAlign: "center",
-        boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-        width: "90%",
-        maxWidth: "400px",
-      }}
-    >
-      <h3 style={{ color: "#333" }}>Are you sure?</h3>
-      <p style={{ marginTop: "10px", color: "#555" }}>
-        Are you sure you want to delete this project? <br />
-        This action cannot be undone.
-      </p>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "15px",
-          marginTop: "25px",
-        }}
-      >
-        <button
-          onClick={() => setDeleteModalVisible(false)}
-          style={{
-            background: "#ccc",
-            color: "#333",
-            border: "none",
-            borderRadius: "6px",
-            padding: "8px 16px",
-            cursor: "pointer",
-          }}
-        >
-          Cancel
-        </button>
-
-        <button
-          onClick={async () => {
-            try {
-              await axios.delete(`${API_URL}/projects/${id}`, {
-                headers: token ? { Authorization: `Bearer ${token}` } : {},
-              });
-              setDeleteModalVisible(false);
-
-              router.push("/provider/dashboard/projects");
-            } catch (err) {
-              console.error("❌ Error deleting project:", err);
-              alert("❌ Failed to delete project.");
-            }
-          }}
-          style={{
-            background: "#dc3545",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            padding: "8px 16px",
-            cursor: "pointer",
-          }}
-        >
-          Yes, Delete
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
-
-
+                  <button
+                    onClick={async () => {
+                      await axios.delete(`${API_URL}/projects/${id}`);
+                      router.push("/provider/dashboard/projects");
+                    }}
+                    className="danger-btn"
+                  >
+                    Yes, Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
