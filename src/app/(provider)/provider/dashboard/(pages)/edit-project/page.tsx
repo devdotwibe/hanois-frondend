@@ -131,11 +131,39 @@ const getDesignStyleName = () => {
     setCategoryList(res.data);
   };
 
-  useEffect(() => {
-    fetchDesigns();
-    fetchCategories();
-    fetchProviderData();
-  }, []);
+  const fetchProviderDataFromAPI = async () => {
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const id = user?.id || user?.provider_id;
+    const tokenLocal = localStorage.getItem("token");
+
+    if (!id) {
+      console.log("No provider id.");
+      return;
+    }
+
+    const res = await fetch(`https://hanois.dotwibe.com/api/api/providers/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(tokenLocal && { Authorization: `Bearer ${tokenLocal}` }),
+      },
+    });
+
+    const data = await res.json();
+    setProvider(data.provider);
+  } catch (err) {
+    console.log("Provider fetch failed", err);
+  }
+};
+
+
+
+ useEffect(() => {
+  fetchDesigns();
+  fetchCategories();
+  fetchProviderDataFromAPI();  
+  fetchProject();
+}, []);
 
   // ------------------------------------------
   // FETCH EXISTING PROJECT
@@ -158,10 +186,15 @@ const getDesignStyleName = () => {
     }
   };
 
+// FETCH PROVIDER DATA (same as Add Project page)
+
+
   useEffect(() => {
     if (id) fetchProject();
   }, [id]);
 
+
+  
   // ------------------------------------------
   // INPUT CHANGES
   // ------------------------------------------
@@ -261,6 +294,9 @@ const getDesignStyleName = () => {
     const coverImage = allImages.find((i) => i.isCover);
     const otherImages = allImages.filter((i) => !i.isCover);
 
+
+
+
     return (
       <div className="preview-wrapper">
         <button className="back-bth" onClick={onBack}>
@@ -305,6 +341,15 @@ const getDesignStyleName = () => {
       </div>
     );
   };
+
+  useEffect(() => {
+  console.log("Provider:", provider);
+  console.log("CategoryList:", categoryList);
+  console.log("Provider Categories:", provider?.categories_id);
+}, [provider, categoryList]);
+
+
+
 
   // ------------------------------------------
   // MAIN RETURN (WITH PREVIEW)
@@ -467,24 +512,38 @@ const getDesignStyleName = () => {
             </div>
 
             {/* Dropdowns */}
-            <div className="form-grp">
-              <label htmlFor="projectType">Project Type</label>
-              <select
-                id="projectType"
-                value={formData.projectType}
-                onChange={handleChange}
-              >
-                <option value="">Select Project Type</option>
-                {categoryList.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-              {errors.projectType && (
-                <p style={{ color: "red" }}>{errors.projectType}</p>
-              )}
-            </div>
+       <div className="form-grp">
+  <label htmlFor="projectType">Project Type</label>
+
+  {!provider || !provider.categories_id || categoryList.length === 0 ? (
+    <p>Loading categories...</p>
+  ) : (
+    <select
+      id="projectType"
+      value={formData.projectType}
+      onChange={handleChange}
+    >
+      <option value="">Select Project Type</option>
+
+      {provider.categories_id.map((catId) => {
+        const cat = categoryList.find((c) => c.id === catId);
+        if (!cat) return null;
+
+        return (
+          <option key={cat.id} value={cat.id}>
+            {cat.name}
+          </option>
+        );
+      })}
+    </select>
+  )}
+
+  {errors.projectType && (
+    <p style={{ color: "red" }}>{errors.projectType}</p>
+  )}
+</div>
+
+
 
             <div className="form-grp">
               <label htmlFor="location">Location</label>

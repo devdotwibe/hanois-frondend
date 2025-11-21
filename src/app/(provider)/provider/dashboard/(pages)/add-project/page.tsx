@@ -371,19 +371,31 @@ setTimeout(() => {
                 </div>
 
                 <div className="form-grp">
-                  <label>Project Type</label>
-                  <select id="projectType" value={formData.projectType} onChange={handleChange}>
-                    <option value="">Select</option>
-                    {categoryList.map((cat) => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.name}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.projectType && (
-                    <p style={{ color: "red" }}>{errors.projectType}</p>
-                  )}
-                </div>
+  <label>Project Type</label>
+
+  <select
+    id="projectType"
+    value={formData.projectType}
+    onChange={handleChange}
+  >
+    <option value="">Select</option>
+
+    {provider?.categories_id?.map((catId) => {
+      const cat = categoryList.find((c) => c.id === catId);
+      if (!cat) return null;
+
+      return (
+        <option key={cat.id} value={cat.id}>
+          {cat.name}
+        </option>
+      );
+    })}
+  </select>
+
+  {errors.projectType && (
+    <p style={{ color: "red" }}>{errors.projectType}</p>
+  )}
+</div>
 
                 <div className="form-grp">
                   <label>Location</label>
