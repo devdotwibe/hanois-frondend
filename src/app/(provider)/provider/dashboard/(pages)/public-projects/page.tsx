@@ -1,20 +1,42 @@
-import React from 'react'
+// import React from 'react'
+// import ProjectList from '../../Components/ProjectList'
+// import PublicIntro from '../../Components/PublicIntro'
+// import FilterBy from '../../Components/FilterBy'
+
+// const page = () => {
+//   return (
+//     <div className='public-project-page e-main'>
+
+//         <PublicIntro />
+
+//         <ProjectList />
+
+//         <FilterBy />
+
+//     </div>
+//   )
+// }
+
+// export default page
+
+
+'use client'
+
+import React, { useState } from 'react'
 import ProjectList from '../../Components/ProjectList'
 import PublicIntro from '../../Components/PublicIntro'
 import FilterBy from '../../Components/FilterBy'
 
-const page = () => {
+const Page = () => {
+  const [filterServiceIds, setFilterServiceIds] = useState<number[]>([])
+
   return (
     <div className='public-project-page e-main'>
-
-        <PublicIntro />
-
-        <ProjectList />
-
-        <FilterBy />
-
+      <PublicIntro />
+      <FilterBy onFilterChange={setFilterServiceIds} />
+      <ProjectList filterServiceIds={filterServiceIds} />
     </div>
   )
 }
 
-export default page
+export default Page

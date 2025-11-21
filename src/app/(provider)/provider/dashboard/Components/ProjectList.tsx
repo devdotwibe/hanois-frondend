@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProjectCard from "./ProjectCard";
 import { API_URL } from "@/config";
 
@@ -53,12 +53,15 @@ interface ProjectItem {
   service_list: ServiceItem[];
 }
 
-const ProjectList = () => {
+interface ProjectListProps {
+  filterServiceIds: number[];
+}
+
+const ProjectList: React.FC<ProjectListProps> = ({ filterServiceIds }) => {
   const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [leadIds, setLeadIds] = useState<number[]>([]);
   const [search, setSearch] = useState("");
 
-  // Load provider lead work_ids
   const loadLeadIds = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -73,7 +76,6 @@ const ProjectList = () => {
     }
   };
 
-  // Load public projects, filtered via search
   const loadProjects = async (searchVal = "") => {
     try {
       const url = `${API_URL}/users/public-project${searchVal ? `?search=${encodeURIComponent(searchVal)}` : ""}`;
@@ -89,7 +91,12 @@ const ProjectList = () => {
   useEffect(() => { loadLeadIds(); }, []);
   useEffect(() => { loadProjects(search); }, [search]);
 
-  // UI rendering
+  // Filter projects based on selected service IDs
+  const filteredProjects = projects.filter(project =>
+    filterServiceIds.length === 0 ||
+    (project.service_ids?.some(id => filterServiceIds.includes(id)) ?? false)
+  );
+
   return (
     <div className="wrapper-inputpublic">
       <div className="form-grp wrap-select">
@@ -101,7 +108,7 @@ const ProjectList = () => {
         />
       </div>
       <div className="listing-div">
-        {projects
+        {filteredProjects
           .filter(item => !leadIds.includes(item.id))
           .map(item => (
             <ProjectCard
