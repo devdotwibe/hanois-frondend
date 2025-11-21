@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { API_URL } from "@/config";
 import "react-quill-new/dist/quill.snow.css";
 import "../../(admin)/admin/home/admin-home.css";
+import HtmlToggleEditor from "@/app/(admin)/admin/components/HtmlToggleEditor";
 
 // 🟩 Dynamically import ReactQuill (avoids SSR issues)
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
@@ -259,79 +260,20 @@ const cancelDelete = () => {
 
 
         {/* 🟩 English Question with ReactQuill */}
-        <label>Question</label>
-        {showSourceQuestion ? (
-          <textarea
-            value={formData.engquestion}
-            onChange={(e) =>
-              setFormData({ ...formData, engquestion: e.target.value })
-            }
-            style={{
-              width: "100%",
-              height: "200px",
-              border: "1px solid #ccc",
-              borderRadius: "6px",
-              padding: "10px",
-              fontFamily: "monospace",
-              backgroundColor: "#1e1e1e",
-              color: "#dcdcdc",
-            }}
-          />
-        ) : (
-          <ReactQuill
-            key={`question-${editingId || "new"}`} 
-            theme="snow"
-            value={formData.engquestion}
-            onChange={(val) => setFormData({ ...formData, engquestion: val })}
-            modules={{
-              ...modules,
-              toolbar: {
-                ...modules.toolbar,
-                handlers: {
-                  codeView: () =>
-                    setShowSourceQuestion((prev) => !prev),
-                },
-              },
-            }}
-          />
-        )}
+      {/* 🟩 English Question Editor */}
+<HtmlToggleEditor
+  label="Question"
+  value={formData.engquestion}
+  onChange={(val) => setFormData({ ...formData, engquestion: val })}
+/>
 
-        {/* 🟩 English Answer with ReactQuill */}
-        <label>Answer</label>
-        {showSourceAnswer ? (
-          <textarea
-            value={formData.enganswer}
-            onChange={(e) =>
-              setFormData({ ...formData, enganswer: e.target.value })
-            }
-            style={{
-              width: "100%",
-              height: "200px",
-              border: "1px solid #ccc",
-              borderRadius: "6px",
-              padding: "10px",
-              fontFamily: "monospace",
-              backgroundColor: "#1e1e1e",
-              color: "#dcdcdc",
-            }}
-          />
-        ) : (
-          <ReactQuill
-           key={`answer-${editingId || "new"}`}
-            theme="snow"
-            value={formData.enganswer}
-            onChange={(val) => setFormData({ ...formData, enganswer: val })}
-            modules={{
-              ...modules,
-              toolbar: {
-                ...modules.toolbar,
-                handlers: {
-                  codeView: () => setShowSourceAnswer((prev) => !prev),
-                },
-              },
-            }}
-          />
-        )}
+{/* 🟩 English Answer Editor */}
+<HtmlToggleEditor
+  label="Answer"
+  value={formData.enganswer}
+  onChange={(val) => setFormData({ ...formData, enganswer: val })}
+/>
+
 
         {/* 🟩 Arabic Fields */}
         {/* <label>Arabic Title</label>
