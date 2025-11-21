@@ -4496,7 +4496,7 @@ right: -40px;
     padding: 0; row-gap: 4px;  border: none; box-shadow: none;
 }
     .detcol-1 {
-        margin-top: 62px;
+        margin-top: 90px;
     }
 .add-btn{margin-top: 0;}
 
@@ -4517,6 +4517,7 @@ right: -40px;
 }
 
 .detcol-2{width: 100%;}
+.project-card{display: flex; flex-wrap: wrap; justify-content: flex-start;}
 
 }
 
