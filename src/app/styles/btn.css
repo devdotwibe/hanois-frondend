@@ -341,7 +341,7 @@ button.save-btn1:hover{
 
 .upload-btn{
   background: none;
- border: 2px solid #000000 !important;
+ border: 2px solid #000000 !important; white-space: nowrap;
     color: #000000;
     cursor: pointer;
     border-radius: 5px;
