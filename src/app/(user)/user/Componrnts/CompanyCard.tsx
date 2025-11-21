@@ -9,6 +9,12 @@ import { IMG_URL ,API_URL } from "@/config";
 const CompanyCard = ({ proposal }: { proposal: any }) => {
   const [showPopup, setShowPopup] = useState(false);
 
+  const [status, setStatus] = useState({
+  success: false,
+  message: "",
+});
+
+
   // safely read provider data
   const provider = proposal.provider || {};
 
@@ -29,10 +35,22 @@ const CompanyCard = ({ proposal }: { proposal: any }) => {
 
     const data = await res.json();
     if (data.success) {
-      alert("Proposal accepted!");
-      setShowPopup(false);
+    setStatus({
+  success: true,
+  message: "Proposal accepted successfully!",
+});
+
+// Close popup after 1.5 seconds
+setTimeout(() => {
+  setShowPopup(false);
+}, 1500);
+
     } else {
-      alert(data.error || "Failed to accept proposal");
+     setStatus({
+  success: false,
+  message: data.error || "Failed to accept proposal",
+});
+
     }
   } catch (err) {
     console.error("Accept error:", err);
@@ -55,10 +73,22 @@ const handleReject = async () => {
 
     const data = await res.json();
     if (data.success) {
-      alert("Proposal rejected!");
-      setShowPopup(false);
+   setStatus({
+  success: false,          // red message
+  message: "Proposal rejected!",
+});
+
+// Close popup after 1.5 sec
+setTimeout(() => {
+  setShowPopup(false);
+}, 1500);
+
     } else {
-      alert(data.error || "Failed to reject proposal");
+     setStatus({
+  success: false,
+  message: data.error || "Failed to reject proposal",
+});
+
     }
   } catch (err) {
     console.error("Reject error:", err);
@@ -235,6 +265,24 @@ const handleReject = async () => {
 </div>
 
                 </div>
+{status.message && (
+  <div
+    className={status.success ? "contact-success" : "contact-error"}
+    style={{ marginTop: "10px" }}
+  >
+    <p
+      style={{
+        color: status.success ? "green" : "red",
+        fontSize: "14px",
+        margin: 0,
+      }}
+    >
+      {status.message}
+    </p>
+  </div>
+)}
+
+
 
                 {/* ACTION BUTTONS */}
                <div className="proposal-actions">

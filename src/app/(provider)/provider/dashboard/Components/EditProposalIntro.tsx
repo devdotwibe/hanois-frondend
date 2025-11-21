@@ -23,6 +23,10 @@ const EditProposalIntro = ({ proposal_id }) => {
   const [description, setDescription] = useState("");
  const [attachments, setAttachments] = useState([]);
 
+const [status, setStatus] = useState({
+  success: false,
+  message: "",
+});
 
   /** FETCH PROPOSAL DETAILS */
   useEffect(() => {
@@ -83,10 +87,18 @@ const EditProposalIntro = ({ proposal_id }) => {
 
       const data = await res.json();
 
-      if (data.success) {
-        alert("Proposal updated successfully!");
-        router.push("/provider/dashboard");
-      } else {
+   if (data.success) {
+  setStatus({
+    success: true,
+    message: "Proposal updated successfully!",
+  });
+
+  // Hide message after 2 seconds and redirect
+  setTimeout(() => {
+    router.push("/provider/dashboard");
+  }, 2000);
+}
+ else {
         alert("Failed to update proposal");
       }
     } catch (error) {
@@ -398,6 +410,29 @@ onChange={(e) => {
 )}
 
 </div>
+{status.message && (
+  <div
+    className={
+      status.success
+        ? "contact-success"
+        : "contact-error"
+    }
+  >
+    <p
+      style={{
+        color: status.success ? "green" : "red",
+        fontSize: "14px",
+        textAlign: "left",
+        marginTop: "4px",
+      }}
+    >
+      {status.message}
+    </p>
+  </div>
+)}
+
+
+
 
         {/* SUBMIT BUTTON */}
         <button

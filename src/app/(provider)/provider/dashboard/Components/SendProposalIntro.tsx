@@ -17,6 +17,11 @@ const SendProposalIntro = ({ work_id, user_id, provider_id }) => {
   const [description, setDescription] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({
+  success: false,
+  message: "",
+});
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,16 +52,30 @@ const SendProposalIntro = ({ work_id, user_id, provider_id }) => {
 
       const data = await res.json();
 
-      if (data.success) {
-        alert("Proposal sent successfully!");
-        router.push("/user/providers");
-      } else {
-        alert(data.error || "Something went wrong");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Network error");
-    }
+if (data.success) {
+  setStatus({
+    success: true,
+    message: "Proposal sent successfully!",
+  });
+
+  // Redirect after 2 seconds
+  setTimeout(() => {
+    router.push("/user/providers");
+  }, 2000);
+
+} else {
+  setStatus({
+    success: false,
+    message: data.error || "Something went wrong",
+  });
+}
+} catch (err) {
+  console.error(err);
+  setStatus({
+    success: false,
+    message: "Network error",
+  });
+}
 
     setLoading(false);
   };
@@ -221,6 +240,30 @@ const SendProposalIntro = ({ work_id, user_id, provider_id }) => {
               ))}
             </div>
           </div>
+
+{status.message && (
+  <div
+    className={
+      status.success
+        ? "contact-success"
+        : "contact-error"
+    }
+    style={{ marginTop: "10px" }}
+  >
+    <p
+      style={{
+        color: status.success ? "green" : "red",
+        fontSize: "14px",
+        textAlign: "left",
+        marginTop: "4px",
+      }}
+    >
+      {status.message}
+    </p>
+  </div>
+)}
+
+
 
           {/* Submit */}
           <button
