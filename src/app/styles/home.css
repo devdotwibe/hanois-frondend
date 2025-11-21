@@ -2459,7 +2459,7 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
 
 .prov-pro-img img {
     width: 100%;
-    display: block; border-radius: 20px; object-fit: cover;
+    display: block; border-radius: 20px; object-fit: cover; object-fit: cover;
 }
 
 .prov-pro-img{
@@ -3536,6 +3536,8 @@ color: #2050f5;
     display: flex;
     align-items: center;
     gap: 20px;
+        width: 100px;
+    height: 100px;
 }
 .seeker-col1 h2 span {
     color: #77767D;
@@ -3905,7 +3907,7 @@ p.torrance-card-desc{
 
 
 .profile-up img {
-    width: 100px;
+    width: 100px; aspect-ratio: 16/16;
     height: 100px;
     object-fit: cover;
     border-radius: 50%;
@@ -4694,6 +4696,17 @@ right: -40px;
 .proj-details {
     margin-top: 20px;
 }
+.company-profile1 button.save-btn1 {
+    margin-inline: auto;
+}
+button.removeservice {
+    top: -9px; width: 20px; height: 20px;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 }
 
