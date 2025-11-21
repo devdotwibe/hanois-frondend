@@ -23,7 +23,7 @@ export default function BodyClassManager() {
     }
 
 
-    if (pathname.startsWith("/provider/dashboard")) {
+    if (pathname.startsWith("/provider/")) {
       document.body.classList.add("prov-dashboard");
     } else {
       document.body.classList.remove("prov-dashboard");
