@@ -521,9 +521,39 @@ line-height: 1;
 
 }
 
+.send-btn {
+  width: 100%;
+   background: var(--primary-color);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.send-btn:hover {
+     background: #4c72f6;
+}
 
 
+.add-btn {
+  margin-top: 16px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 15px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
 
+.add-btn:hover {
+  text-decoration: underline;
+}
 
 
 /* ----------------------------resp------------ */
@@ -537,12 +567,35 @@ line-height: 1;
 }
 
 
+@media (max-width: 1024px) {
+
+
+.add-btn{white-space: nowrap; margin:0 0 0 10px; width: fit-content;}
+
+.send-btn{width: fit-content; padding-inline: 40px;}
+.project-card{display: flex; flex-wrap: wrap; justify-content: flex-end;}
+}
+
+
+
+
+
+
 
 
 @media (max-width: 767px) {
 .get-listed {margin: 10px 0 0;}
 .signup-btn{margin: 10px 0 20px;}
+.send-btn {
+    font-size: 14px;
+    padding: 12px 20px;
+}
+.add-btn{font-size: 14px;}
 
+.torrance-card-info{padding: 15px;}
+
+.torrance-card-info h3{font-size: 19px;}
+.torrance-card-info p{font-size: 14px; margin: 0 0 8px;}
 }
 
 

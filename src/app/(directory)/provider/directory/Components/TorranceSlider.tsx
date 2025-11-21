@@ -119,7 +119,9 @@ const TorranceSlider = () => {
       {projects.length === 0 ? (
         <p className="no-projtext">No projects found.</p>
       ) : (
-        <Slider {...settings}>
+
+        <div className="t-slider">
+          <Slider {...settings}>
           {projects.map((proj) => {
             const coverImgObj =
               proj.images?.find((img) => img.is_cover) || proj.images?.[0];
@@ -143,6 +145,14 @@ const TorranceSlider = () => {
             );
           })}
         </Slider>
+
+        </div>
+
+
+
+
+
+
       )}
     </div>
   );

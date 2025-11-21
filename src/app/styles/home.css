@@ -1659,7 +1659,6 @@ width: 22px;
     align-items: center;
     padding: 10px;
     border: 1px solid #e0e0e0; border-radius: 4px;
-   width: 182px;
 }
 
 
@@ -2368,6 +2367,7 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
     color: #2050f5;
     text-decoration: underline;
       font-family: 'Avenir-medium';
+          word-wrap: break-word;
 
 }
 
@@ -2451,38 +2451,8 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
   pointer-events: none;
 }
 
-.send-btn {
-  width: 100%;
-   background: var(--primary-color);
-  color: #fff;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
 
-.send-btn:hover {
-     background: #4c72f6;
-}
 
-.add-btn {
-  margin-top: 16px;
-  width: 100%;
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 15px;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.add-btn:hover {
-  text-decoration: underline;
-}
 
 
 .prov-pro-img img {
@@ -4331,7 +4301,11 @@ margin-inline: 0;}
 @media (max-width: 1240px) {
 
   .torrance-slider-wrapper {
+    padding-inline: 0px;
+}
+.t-slider{
     padding-inline: 40px;
+
 }
 
 .torrance-slider-wrapper .arrow-btn.prev,
@@ -4415,6 +4389,13 @@ right: -40px;
 
 
 @media (max-width: 1024px) {
+.about-content h3{font-size: 21px; }
+.businesscontainer h2{font-size: 21px;}
+.serv-div h2{font-size: 21px;margin: 0 0 20px;}
+
+  .build-col1 {
+    padding: 20px;
+}
 
 .banner-div{margin-top: 20px;}
 
@@ -4500,6 +4481,34 @@ right: -40px;
 .info2 {
     padding-left: 30px;
 }
+
+.project-card {
+    display: flex;
+    padding: 0; row-gap: 4px;  border: none; box-shadow: none;
+}
+    .detcol-1 {
+        margin-top: 62px;
+    }
+.add-btn{margin-top: 0;}
+
+.detcol-2.after-edit {
+    position: absolute;
+    right: 0px;
+    padding: 0;
+    top: 0;
+}
+.detcol-1{width: 100%;}
+
+
+
+.after-edit .status-card {
+    width: 100%;
+    max-width: 100%;
+
+}
+
+.detcol-2{width: 100%;}
+
 }
 
 
@@ -4577,52 +4586,39 @@ right: -40px;
 .build-card .text-areab { width: 34%;}
 .build-card .img-b {width: 61%;}
 
-.detcol-2.after-edit {
-    position: absolute;
-    right: 20px;
-    padding: 0;
-    top: 0;
-}
-
-.detcol-1{width: 100%;}
-.project-card{padding: 20px;}
-
-.info-value a {
-  word-break: break-all;
-}
 
 
 
-.detcol-2.after-edit {
-    width: 100%;
-
-}
-
-.project-card {
-    display: flex;
-    padding: 0; row-gap: 4px;  border: none; box-shadow: none;
-}
-
-.after-edit .status-card {
-    max-width: 328px;
-}
 
 
 
-    .detcol-1 {
-        margin-top: 62px;
-    }
-.add-btn{margin-top: 0;}
 
-.send-btn {
-    padding: 12px;
-    line-height: 1;
-    font-size: 15px;
-}
-.businesscontainer h2{font-size: 22px;}
+
+
+
+
+
+
+
+
 .house-card{margin-bottom: 40px;}
 
 .about-content{margin-bottom: 40px;}
+
+
+.business-b-out:nth-child(2) {
+    margin-top: -108px;
+    transform: translateY(108px);
+}
+
+.business-b-out:nth-child(3) {
+    margin-top: -108px;
+    transform: translateY(202px);
+}
+
+    .business-block {
+        padding: 30px 20px 40px;
+    }
 }
 
 
@@ -4704,7 +4700,7 @@ right: -40px;
 .h-div .h-div1:nth-child(2) .build-card .text-areab{
     padding-right: 3%;
 }
-
+.company-profile1{max-width: 100%;}
 
   }
 
@@ -5070,18 +5066,30 @@ padding-block: 15px;
 
 
 
-/* .business-b-out:first-child{top: 100px;}
-.business-b-out:nth-child(2) {transform: none; margin-top: 0; top: 190px;}
-.business-b-out:nth-child(3) {transform: none; margin-top: 0; top: 380px;
+.text-support p {min-height: 84px;}
+
+.business-b-out:nth-child(2) {
+    transform: translateY(107px);
+}
+.business-b-out:nth-child(3) {
+    transform: translateY(213x);
+}
+
+
+
+/*
+.business-b-out:first-child{top: 100px;}
+.business-b-out:nth-child(2) {transform: none; margin-top: 0;}
+.business-b-out:nth-child(3) {transform: none; margin-top: 0;
 } */
 
-
+/*
 .business-b-out:nth-child(2) {
         transform: translateY(80px);
     }
 .business-b-out:nth-child(3) {
         transform: translateY(198px);
-    }
+    } */
 
 
 
@@ -5129,6 +5137,17 @@ padding-block: 15px;
 .build-col2 {
     border: none;
 }
+
+
+
+.form-grp.form-grp1 input{max-width: 100%;
+  width: 100%;
+  min-width: unset;
+}
+
+
+
+
 
 }
 
