@@ -5,6 +5,7 @@ import axios from "axios";
 
 
 const ContactForm = () => {
+  
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -19,6 +20,8 @@ const ContactForm = () => {
     message: "",
     success: false,
   });
+
+    const messageRef = React.useRef(null);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -37,7 +40,8 @@ const ContactForm = () => {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
-  
+
+
 
     return newErrors;
   };
@@ -71,6 +75,8 @@ const ContactForm = () => {
           message: "Message sent successfully!",
           success: true,
         });
+
+
         setFormData({
           fullName: "",
           email: "",
@@ -84,21 +90,11 @@ const ContactForm = () => {
       }
     } catch (error) {
       console.error("Error submitting contact form:", error);
-     setStatus({
-  loading: false,
-  message: "Something went wrong. Please try again.",
-  success: false,
-});
-
-// hide message after 1 second
-setTimeout(() => {
-  setStatus({
-    loading: false,
-    message: "",
-    success: false,
-  });
-}, 1000);
-
+      setStatus({
+        loading: false,
+        message: "Something went wrong. Please try again.",
+        success: false,
+      });
     }
   };
 
@@ -212,19 +208,12 @@ setTimeout(() => {
           } */}
 
 
-          {status.message && (
+{status.message && (
   <div
-    className={
-      status.success
-        ? "contact-success"
-        : "contact-error"
-    }
+    ref={messageRef}
+    className={status.success ? "contact-success" : "contact-error"}
   >
-    <p
-      style={{
-        color: status.success ? "green" : "red",
-      }}
-    >
+    <p style={{ color: status.success ? "green" : "red" }}>
       {status.message}
     </p>
   </div>

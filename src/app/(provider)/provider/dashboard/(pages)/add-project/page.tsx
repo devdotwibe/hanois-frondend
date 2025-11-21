@@ -30,140 +30,98 @@ const UploadBox = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  // Provider state for dynamic DetailCard
+  // Provider
   const [provider, setProvider] = useState(null);
   const [loadingProvider, setLoadingProvider] = useState(true);
   const [providerError, setProviderError] = useState(null);
 
-  // 🟩 Load provider data and token from localStorage
+  const [showPreview, setShowPreview] = useState(false);
+
   useEffect(() => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const storedToken = localStorage.getItem("token");
 
-      if (user && user.id) {
-        setProviderId(user.id);
-      }
-      if (storedToken) {
-        setToken(storedToken);
-      }
+      if (user?.id) setProviderId(user.id);
+      if (storedToken) setToken(storedToken);
     } catch (err) {
-      console.error("Error reading localStorage:", err);
+      console.error("LOCAL STORAGE ERROR:", err);
     }
   }, []);
 
-  // 🟩 Fetch provider details (with simple caching)
-  const fetchProviderData = async (forceRefresh = false) => {
+  const fetchProviderData = async () => {
     try {
       setLoadingProvider(true);
-      setProviderError(null);
 
       const user = JSON.parse(localStorage.getItem("user"));
-      const tokenLocal = localStorage.getItem("token");
       const id = user?.id || user?.provider_id;
+      const tokenLocal = localStorage.getItem("token");
 
       if (!id) {
-        setProviderError("No provider ID found. Please log in again.");
-        setLoadingProvider(false);
+        setProviderError("No provider id found, login again.");
         return;
       }
 
-      const cacheKey = `provider_${id}`;
-      const cached = localStorage.getItem(cacheKey);
-      if (cached && !forceRefresh) {
-        try {
-          const cachedData = JSON.parse(cached);
-          setProvider(cachedData);
-          setLoadingProvider(false);
-          return;
-        } catch (e) {
-          // fallthrough to fetch fresh if cache is corrupt
-          console.warn("Failed to parse cached provider, fetching fresh.", e);
-        }
-      }
-
-      const res = await fetch(`${API_URL}providers/${encodeURIComponent(id)}`, {
-        method: "GET",
+      const res = await fetch(`${API_URL}providers/${id}`, {
         headers: {
           "Content-Type": "application/json",
-          ...(tokenLocal && { Authorization: `Bearer ${tokenLocal}` }),
+          Authorization: tokenLocal ? `Bearer ${tokenLocal}` : "",
         },
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        setProviderError(body?.error || `Failed to fetch provider (${res.status})`);
-        setLoadingProvider(false);
+        setProviderError("Cannot load provider.");
         return;
       }
 
-      const data = await res.json();
-      const providerData = data?.provider || null;
-      setProvider(providerData);
-
-      if (providerData) {
-        try {
-          localStorage.setItem(cacheKey, JSON.stringify(providerData));
-        } catch (e) {
-          console.warn("Failed to cache provider data:", e);
-        }
-      }
+      setProvider(data?.provider);
     } catch (err) {
-      console.error("Error fetching provider data:", err);
-      setProviderError("Failed to load provider data.");
+      setProviderError("Error loading provider.");
     } finally {
       setLoadingProvider(false);
     }
   };
 
-  // 🟩 Fetch design styles (from local backend)
   const fetchDesigns = async () => {
     try {
       const res = await axios.get(`${API_URL}/design`);
       setDesignList(res.data);
-    } catch (error) {
-      console.error("Error fetching design list:", error);
-    }
+    } catch (err) {}
   };
 
-  // 🟩 Fetch project categories (from live API)
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`https://hanois.dotwibe.com/api/api/categories`);
+      const res = await axios.get("https://hanois.dotwibe.com/api/api/categories");
       setCategoryList(res.data);
-    } catch (error) {
-      console.error("Error fetching project types:", error);
-    }
+    } catch (err) {}
   };
 
-  // 🟩 Load provider, designs and categories on mount
   useEffect(() => {
-    if (providerId !== null) {
-      fetchProviderData();
-    } else {
-      // Try fetching anyway; fetchProviderData reads localStorage internally
-      fetchProviderData();
-    }
+    fetchProviderData();
     fetchDesigns();
     fetchCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [providerId]);
+  }, []);
 
-  // 🟩 Handle input change
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
-    setErrors((prev) => ({ ...prev, [id]: "" })); // clear error on change
+    setErrors((prev) => ({ ...prev, [id]: "" }));
   };
 
-  // 🟩 Handle file change
   const handleFileChange = (e) => {
-    const newFiles = Array.from(e.target.files);
-    setImageFile((prev) => (prev ? [...prev, ...newFiles] : newFiles));
-    setErrors((prev) => ({ ...prev, images: "" }));
+    const files = Array.from(e.target.files);
+
+    const mapped = files.map((file) => ({
+      file,
+      previewUrl: URL.createObjectURL(file),
+      isCover: false,
+    }));
+
+    setImageFile((prev) => (prev ? [...prev, ...mapped] : mapped));
   };
 
-  // 🟩 Validate all fields
   const validateForm = () => {
     const newErrors = {};
 
@@ -173,14 +131,13 @@ const UploadBox = () => {
     if (!formData.location.trim()) newErrors.location = "Location is required.";
     if (!formData.landSize.trim()) newErrors.landSize = "Land Size is required.";
     if (!formData.designStyle) newErrors.designStyle = "Design Style is required.";
-    if (!imageFile || imageFile.length === 0) newErrors.images = "Please upload at least one image.";
+    if (!imageFile || imageFile.length === 0)
+      newErrors.images = "Please upload at least one image.";
 
     setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0; // returns true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
-  // 🟩 Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -189,13 +146,11 @@ const UploadBox = () => {
     const providerIdLocal = user?.id || user?.provider_id;
 
     if (!providerIdLocal) {
-      setMessage("❌ You must be logged in as a provider.");
+      setMessage("❌ Login again.");
       return;
     }
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
       const formDataObj = new FormData();
@@ -207,29 +162,20 @@ const UploadBox = () => {
       formDataObj.append("project_type_id", formData.projectType);
       formDataObj.append("design_id", formData.designStyle);
 
-      if (imageFile && imageFile.length > 0) {
-        imageFile.forEach((file) => {
-          formDataObj.append("images", file);
-          formDataObj.append("is_cover_flags[]", file.isCover ? "true" : "false");
-        });
-      }
+      imageFile.forEach((file) => {
+        formDataObj.append("images", file.file);
+        formDataObj.append("is_cover_flags[]", file.isCover ? "true" : "false");
+      });
 
       await axios.post(`${API_URL}/projects`, formDataObj, {
         headers: {
           "Content-Type": "multipart/form-data",
-          ...(token && { Authorization: `Bearer ${token}` }),
+          Authorization: token ? `Bearer ${token}` : "",
         },
       });
 
-      // 🟩 Show success modal
       setModalVisible(true);
-
-      // Auto close after 3 seconds
-      setTimeout(() => {
-        setModalVisible(false);
-        // optional: redirect after success
-        // router.push("/provider/dashboard/projects");
-      }, 3000);
+      setTimeout(() => setModalVisible(false), 3000);
 
       setFormData({
         title: "",
@@ -240,339 +186,229 @@ const UploadBox = () => {
         designStyle: "",
       });
       setImageFile(null);
-      setErrors({});
-    } catch (error) {
-      console.error("Error saving project:", error);
-      setMessage("❌ Failed to save project");
+    } catch (err) {
+      setMessage("❌ Project save failed.");
     }
   };
 
+  // --- PREVIEW COMPONENT ---
+  const PreviewComponent = ({ data, images, onBack }) => {
+    const coverImage = images?.find((i) => i.isCover)?.previewUrl;
+    const otherImages = images?.filter((i) => !i.isCover);
+
+    return (
+      <div className="preview-wrapper">
+        <button className="back-bth" onClick={onBack}>Back</button>
+
+        {coverImage && (
+          <div className="prov-pro-img">
+            <img src={coverImage} className="project-img" />
+          </div>
+        )}
+
+        <div className="project-details detailed">
+          <h2 className="project-title">{data.title}</h2>
+          <p className="project-type">{data.projectType}</p>
+          <h3 className="about-title">About</h3>
+          <p className="about-text">{data.notes}</p>
+        </div>
+
+        {otherImages?.map((img, idx) => (
+          <div key={idx} className="prov-pro-img">
+            <img src={img.previewUrl} className="project-img" />
+          </div>
+        ))}
+
+        <div className="proj-details">
+          <h3 className="scope-title">Project Details</h3>
+          <p><strong>Location</strong> — {data.location}</p>
+          <p><strong>Style</strong> — {data.designStyle}</p>
+          <p><strong>Type</strong> — {data.projectType}</p>
+          <p><strong>Space Size</strong> — {data.landSize} m²</p>
+        </div>
+      </div>
+    );
+  };
+
+  // =====================
+  //       RETURN
+  // =====================
+
   return (
     <>
-      {/* Dynamic DetailCard */}
-      {loadingProvider ? (
-        <p>Loading provider...</p>
-      ) : providerError ? (
-        <p style={{ color: "red" }}>{providerError}</p>
-      ) : provider ? (
-        <DetailCard
-          logo={provider?.image ? `${IMG_URL}${provider.image}` : "/path/to/logo.png"}
-          name={provider?.name || "Unknown Provider"}
-          description={
-
-            provider?.professional_headline ||
-            ""
-          }
-
+      {showPreview ? (
+        <PreviewComponent
+          data={formData}
+          images={imageFile}
+          onBack={() => setShowPreview(false)}
         />
       ) : (
-        // fallback (should rarely render)
-        <DetailCard />
-      )}
+        <>
+          {loadingProvider ? (
+            <p>Loading provider...</p>
+          ) : providerError ? (
+            <p style={{ color: "red" }}>{providerError}</p>
+          ) : (
+            <DetailCard
+              logo={provider?.image ? `${IMG_URL}${provider.image}` : "/logo.png"}
+              name={provider?.name}
+              description={provider?.professional_headline}
+            />
+          )}
 
-      <TabBtns />
+          <TabBtns />
 
-      <div className="add-proj-up">
-
-          {/* 🟩 Success Modal */}
-          {modalVisible && (
-            <div
-
-              className="add-proj-sucess add-sucess"
-            >
-
-                {/* <h3>Project Saved!</h3> */}
-
+          <div className="add-proj-up">
+            {modalVisible && (
+              <div className="add-proj-sucess add-sucess">
                 <p>
                   <span>
-                     <Image
-                  src={sucesstik}
-                  alt="img"
-                  width={18}
-                  height={18}
-                  />
-
+                    <Image src={sucesstik} alt="img" width={18} height={18} />
                   </span>
+                  Your project has been successfully saved.
+                </p>
+              </div>
+            )}
 
-                  Your project has been successfully saved.</p>
-                {/* <button
-                  onClick={() => {
-                    setModalVisible(false);
-                    router.push("/provider/dashboard/projects"); // 👈 redirect on close
-                  }}
+            <div className="proj-form1 company-profile1 upload-page">
+              <h3>Images</h3>
+              <p>Upload your project images and details below</p>
 
+              <div className="form-grp upload-area">
+                <div>
+                  <div
+                    className="upload-box"
+                    onClick={() => document.querySelector(".upload-input")?.click()}
+                  >
+                    <div className="cover-upload">
+                      <div className="img-cover-up">
+                        <Image src={uploadIcon} width={40} height={40} alt="" />
+                      </div>
+                      <h3>Upload an image</h3>
+                      <p>Browse files to upload</p>
+                      <span>JPEG, PNG</span>
+                    </div>
 
-                  style={{
-                    marginTop: "15px",
-                    background: "#0070f3",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "6px",
-                    padding: "8px 16px",
-                    cursor: "pointer",
-                  }}
-                >
-                  Close
-                </button> */}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="upload-input hidden"
+                      onChange={handleFileChange}
+                    />
+                  </div>
 
+                  {imageFile?.map((file, index) => (
+                    <div key={index}>
+                      <img src={file.previewUrl} className="preview-img" />
+                      <button
+                        className="img-onclose"
+                        type="button"
+                        onClick={() =>
+                          setImageFile((prev) => prev.filter((_, i) => i !== index))
+                        }
+                      >
+                        ✕
+                      </button>
+                      <button
+                        type="button"
+                        className="setas-cover"
+                        onClick={() => {
+                          const updated = imageFile.map((f, i) =>
+                            ({ ...f, isCover: i === index })
+                          );
+                          setImageFile(updated);
+                        }}
+                      >
+                        {file.isCover ? "Cover Image" : "Set Cover"}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                {errors.images && (
+                  <p style={{ color: "red" }}>{errors.images}</p>
+                )}
+              </div>
+
+              <form onSubmit={handleSubmit}>
+                <div className="form-grp">
+                  <label>Title</label>
+                  <input id="title" value={formData.title} onChange={handleChange} />
+                  {errors.title && <p style={{ color: "red" }}>{errors.title}</p>}
+                </div>
+
+                <div className="form-grp">
+                  <label>Notes</label>
+                  <textarea
+                    id="notes"
+                    value={formData.notes}
+                    onChange={handleChange}
+                  />
+                  {errors.notes && <p style={{ color: "red" }}>{errors.notes}</p>}
+                </div>
+
+                <div className="form-grp">
+                  <label>Project Type</label>
+                  <select id="projectType" value={formData.projectType} onChange={handleChange}>
+                    <option value="">Select</option>
+                    {categoryList.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.projectType && (
+                    <p style={{ color: "red" }}>{errors.projectType}</p>
+                  )}
+                </div>
+
+                <div className="form-grp">
+                  <label>Location</label>
+                  <input id="location" value={formData.location} onChange={handleChange} />
+                  {errors.location && <p style={{ color: "red" }}>{errors.location}</p>}
+                </div>
+
+                <div className="form-grp">
+                  <label>Land Size</label>
+                  <input id="landSize" value={formData.landSize} onChange={handleChange} />
+                  {errors.landSize && <p style={{ color: "red" }}>{errors.landSize}</p>}
+                </div>
+
+                <div className="form-grp">
+                  <label>Design Style</label>
+                  <select id="designStyle" value={formData.designStyle} onChange={handleChange}>
+                    <option value="">Select</option>
+                    {designList.map((design) => (
+                      <option key={design.id} value={design.id}>
+                        {design.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.designStyle && (
+                    <p style={{ color: "red" }}>{errors.designStyle}</p>
+                  )}
+                </div>
+
+                <div className="btn-cvr" style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <button type="button" className="preview-btn" onClick={() => setShowPreview(true)}>
+                    Preview
+                  </button>
+                  <button type="submit" className="save-btn1">
+                    Save
+                  </button>
+                </div>
+              </form>
+
+              {message && (
+                <p style={{ color: message.includes("❌") ? "red" : "green" }}>
+                  {message}
+                </p>
+              )}
             </div>
-          )}
-
-
-
-
-        <div className="proj-form1 company-profile1 upload-page">
-          <h3>Images</h3>
-          <p>Upload your project images and details below</p>
-
-{/* 🟩 Upload + Preview Section */}
-<div className="form-grp upload-area">
-  <div>
-    {/* Upload Box inside grid */}
-    <div
-      className="upload-box"
-      onClick={() => document.querySelector(".upload-input")?.click()}
-
-      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#0070f3")}
-      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#ccc")}
-    >
-
-      <div className="cover-upload">
-        <div className="img-cover-up">
-            <Image src={uploadIcon} alt="Upload Icon" width={40} height={40} />
-        </div>
-
-
-      <h3 style={{ fontSize: "14px", marginTop: "10px" }}>Upload an image</h3>
-      <p style={{ fontSize: "12px", color: "#666", margin: "5px 0" }}>
-        Browse your files to upload document
-      </p>
-      <span style={{ fontSize: "11px", color: "#999" }}>
-        Supported Formats: JPEG, PNG
-      </span>
-
-
-      </div>
-
-
-
-
-
-
-
-      <input
-      type="file"
-      accept="image/*"
-      multiple
-      className="upload-input hidden"
-      onChange={handleFileChange}
-    />
-    </div>
-
-    {/* Hidden File Input */}
-
-
-    {/* Preview Grid */}
-    {imageFile &&
-      imageFile.length > 0 &&
-      imageFile.map((file, index) => {
-        const previewUrl = URL.createObjectURL(file);
-        return (
-          <div
-            key={index}
-
-          >
-            <img
-              src={previewUrl}
-              alt="preview"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                borderRadius: "10px",
-              }}
-            />
-
-            {/* Remove Button */}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setImageFile((prev) => prev.filter((_, i) => i !== index));
-              }}
-              className="img-onclose"
-            >
-              ✕
-            </button>
-
-            {/* Cover Image Button */}
-            <button
-              type="button"
-              className="setas-cover"
-              onClick={(e) => {
-                e.stopPropagation();
-                const updatedFiles = imageFile.map((f, i) =>
-                  Object.assign(f, { isCover: i === index })
-                );
-                setImageFile([...updatedFiles]);
-              }}
-              style={{
-                background: file.isCover ? "#2050f5" : "#ccc",
-                 cursor: "pointer",
-              }}
-            >
-              {file.isCover ? "Cover Image" : "Set Cover"}
-            </button>
           </div>
-        );
-      })}
-  </div>
-
-  {/* Validation Error */}
-  {errors.images && (
-    <p style={{ color: "red", fontSize: "13px", marginTop: "8px" }}>
-      {errors.images}
-    </p>
-  )}
-</div>
-
-
-
-
-
-
-          {/* 🟩 Form Section */}
-          <form onSubmit={handleSubmit}>
-            {/* Title */}
-            <div className="form-grp">
-              <label htmlFor="title">Title</label>
-              <input
-                type="text"
-                id="title"
-                value={formData.title}
-                onChange={handleChange}
-                placeholder="Project Title"
-              />
-              {errors.title && <p style={{ color: "red", fontSize: "13px" }}>{errors.title}</p>}
-            </div>
-
-            {/* Notes */}
-            <div className="form-grp">
-              <label htmlFor="notes">Notes</label>
-              <textarea
-                id="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                placeholder="Brief description for your project"
-                rows={4}
-              ></textarea>
-              {errors.notes && <p style={{ color: "red", fontSize: "13px" }}>{errors.notes}</p>}
-            </div>
-
-            {/* Project Type */}
-            <div className="form-grp">
-              <label htmlFor="projectType">Project Type</label>
-              <select id="projectType" value={formData.projectType} onChange={handleChange}>
-                <option value="">Select Project Type</option>
-                {categoryList.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-              {errors.projectType && (
-                <p style={{ color: "red", fontSize: "13px" }}>{errors.projectType}</p>
-              )}
-            </div>
-
-            {/* Location */}
-            <div className="form-grp">
-              <label htmlFor="location">Location</label>
-              <input
-                type="text"
-                id="location"
-                value={formData.location}
-                onChange={handleChange}
-                placeholder="Location"
-              />
-              {errors.location && <p style={{ color: "red", fontSize: "13px" }}>{errors.location}</p>}
-            </div>
-
-            {/* Land Size */}
-            <div className="form-grp">
-              <label htmlFor="landSize">Land Size</label>
-              <input
-                type="text"
-                id="landSize"
-                value={formData.landSize}
-                onChange={handleChange}
-                placeholder="Land size"
-              />
-              {errors.landSize && <p style={{ color: "red", fontSize: "13px" }}>{errors.landSize}</p>}
-            </div>
-
-            {/* Design Style */}
-            <div className="form-grp">
-              <label htmlFor="designStyle">Design Style</label>
-              <select id="designStyle" value={formData.designStyle} onChange={handleChange}>
-                <option value="">Select Design Style</option>
-                {designList.map((design) => (
-                  <option key={design.id} value={design.id}>
-                    {design.name}
-                  </option>
-                ))}
-              </select>
-              {errors.designStyle && (
-                <p style={{ color: "red", fontSize: "13px" }}>{errors.designStyle}</p>
-              )}
-            </div>
-
-            {/* Buttons */}
-            <div
-              className="btn-cvr"
-              style={{
-                display: "flex",
-                gap: "10px",
-                justifyContent: "flex-end",
-                marginTop: "20px",
-              }}
-            >
-              <button type="submit" className="save-btn1">
-                Save
-              </button>
-            </div>
-          </form>
-
-          {/* 🟩 Message */}
-          {message && (
-            <p
-              style={{
-                textAlign: "center",
-                marginTop: "20px",
-                color: message.includes("✅") ? "green" : "red",
-              }}
-            >
-              {message}
-            </p>
-          )}
-
-
-
-
-
-
-        </div>
-
-
-
-
-
-
-
-
-      </div>
-
-
+        </>
+      )}
     </>
   );
 };

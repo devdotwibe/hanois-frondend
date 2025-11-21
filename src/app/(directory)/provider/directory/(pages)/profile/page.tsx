@@ -142,7 +142,8 @@ const Page = () => {
                   <p>
                     <strong>Space Size</strong>
                   </p>
-                  <p>{project.land_size}</p>
+                <p>{project.land_size} m²</p>
+
                 </div>
 
 
