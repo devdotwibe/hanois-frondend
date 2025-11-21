@@ -3536,8 +3536,10 @@ color: #2050f5;
     display: flex;
     align-items: center;
     gap: 20px;
-        width: 100px;
-    height: 100px;
+
+
+    position: relative;
+    z-index: 99;
 }
 .seeker-col1 h2 span {
     color: #77767D;

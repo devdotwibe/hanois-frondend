@@ -215,10 +215,12 @@ const MyAccountForm = () => {
 
            {!previewImage && !profileImage && (
 
-            <label htmlFor="profile_image">
-              <button type="button" className="upload-btn">
+            <label htmlFor="profile_image" className='upload-btn'>
+
+             Upload new picture
+              {/* <button type="button" className="">
                 Upload new picture
-              </button>
+              </button> */}
             </label>
 
           )}
