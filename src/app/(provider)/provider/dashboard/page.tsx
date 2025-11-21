@@ -144,7 +144,7 @@ const getProposalStatus = (lead) => {
   return (
     <div>
       <div className="intro-tab">
-        <h3>Public Projects</h3>
+        <h3>Leads</h3>
         <p>
           Here is the list of your leads, you can check lead’s projects and
           contact with them
@@ -180,9 +180,10 @@ const getProposalStatus = (lead) => {
                       className="w-[32px] h-[32px] rounded-full"
                     />
 
-                    <span className="text-gray-800 font-medium">
-                      {lead?.title}
-                    </span>
+                   <span className="text-gray-800 font-medium">
+  {lead?.user?.name || "Unknown User"}
+</span>
+
                   </td>
 
                   {/* Project Type */}

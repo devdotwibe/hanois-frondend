@@ -167,7 +167,7 @@ const handleAddToLeads = async () => {
 
               </div>
               <div className="col-info4">
-                              <p>{landSize}</p>
+                              <p>{landSize} m²</p>
 
               </div>
 
