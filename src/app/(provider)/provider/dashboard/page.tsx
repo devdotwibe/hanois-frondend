@@ -7,18 +7,22 @@ import Image from "next/image";
 import img1 from "../../../../../public/images/profile.png";
 import Link from "next/link";
 
-const getStatusColor = (status: string) => {
+const getStatusColor = (status) => {
   switch (status) {
     case "Proposal Accepted":
       return "bg-green-100 text-green-700";
-    case "Contacted":
-      return "bg-yellow-100 text-yellow-700";
-    case "Proposal Sent":
-      return "bg-blue-100 text-blue-700";
+
     case "Proposal Rejected":
       return "bg-red-100 text-red-700";
+
+    case "Proposal Viewed":
+      return "bg-yellow-100 text-yellow-700";
+
+    case "Proposal Sent":
+      return "bg-blue-100 text-blue-700";
+
     default:
-      return "";
+      return "bg-gray-100 text-gray-700";
   }
 };
 
@@ -115,11 +119,25 @@ const handleSaveLead = async () => {
   }
 };
 
+const getProposalStatus = (lead) => {
+  const status = lead?.proposal_details?.proposalstatus;
 
-const getProposalStatus = (lead: any) => {
-  if (lead?.proposal_details?.is_accepted === true) return "Proposal Accepted";
-  if (lead?.proposal_details?.is_accepted === false) return "Proposal Rejected";
-  return "Awaiting Review"; // null or undefined
+  switch (status) {
+    case "Accepted":
+      return "Proposal Accepted";
+
+    case "Rejected":
+      return "Proposal Rejected";
+
+    case "Viewed":
+      return "Proposal Viewed";
+
+    case "ProposalSent":
+      return "Proposal Sent";
+
+    default:
+      return "Awaiting Review";
+  }
 };
 
 

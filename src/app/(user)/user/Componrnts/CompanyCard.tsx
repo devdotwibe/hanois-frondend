@@ -132,11 +132,34 @@ setTimeout(() => {
             <p className="company-duration">{proposal.timeline}</p>
           </div>
 
-          <div className="with-btn">
-            <button className="view-btn" onClick={() => setShowPopup(true)}>
-              View
-            </button>
-          </div>
+        <button
+  className="view-btn"
+  onClick={async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      // 🔥 Mark proposal as viewed in backend
+      await fetch(`${API_URL}/providers/proposal/${proposal.id}/viewed`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // then open popup
+      setShowPopup(true);
+    } catch (err) {
+      console.error("Error updating viewed status:", err);
+      setShowPopup(true);
+    }
+  }}
+>
+  View
+</button>
+
+
+
+
         </div>
       </div>
 
