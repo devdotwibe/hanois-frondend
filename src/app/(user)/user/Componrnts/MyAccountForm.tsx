@@ -235,16 +235,8 @@ const MyAccountForm = () => {
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="remove-btn"
-                  style={{
-                    marginTop: "10px",
-                    background: "#ff4d4d",
-                    color: "#fff",
-                    padding: "6px 12px",
-                    borderRadius: "5px",
-                    border: "none",
-                    cursor: "pointer",
-                  }}
+                  className="remove-btn1"
+
                 >
                   X
                 </button>
