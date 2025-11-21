@@ -27,8 +27,10 @@ const BuildSec: React.FC = () => {
 
         if (json.success && Array.isArray(json.data?.cards) && json.data.cards.length > 0) {
           // 🟩 Get last (3rd) Handis card
-          const lastCard = json.data.cards[json.data.cards.length - 1];
-          setCard(lastCard);
+        // Get 3rd card (index 2)
+const thirdCard = json.data.cards[2];
+setCard(thirdCard);
+
         }
       } catch (err) {
         console.error("❌ Failed to fetch Handis card", err);
