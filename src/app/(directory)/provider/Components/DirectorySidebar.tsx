@@ -46,9 +46,16 @@ const DirectorySidebar = ({
   }, []);
 
   // Keep internal stylesSelected in sync if parent passes a new selectedStyles prop
-  useEffect(() => {
-    setStylesSelected(new Set(selectedStyles || []));
-  }, [selectedStyles]);
+useEffect(() => {
+  const incoming = new Set(selectedStyles || []);
+  const isSame =
+    incoming.size === stylesSelected.size &&
+    [...incoming].every((item) => stylesSelected.has(item));
+
+  if (!isSame) {
+    setStylesSelected(incoming);
+  }
+}, [selectedStyles]);
 
   const toggleStyle = (identifier) => {
     // identifier can be id or name depending on how parent prefers to identify styles.
