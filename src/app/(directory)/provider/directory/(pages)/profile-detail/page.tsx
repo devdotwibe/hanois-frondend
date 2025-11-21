@@ -137,7 +137,7 @@ const fetchProviderDetails = async (providerId) => {
   const otherImages = project.images?.filter((img) => !img.is_cover) || [];
 
   return (
-    <div className="containers-limit detcol profile-page">
+    <div className="containers-limit detcol profile-page e-inner-profile">
       {/* ====================== LEFT SECTION ====================== */}
       <div className="detcol-1">
         {/* 🔙 Back Button */}
