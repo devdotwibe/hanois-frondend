@@ -9,15 +9,9 @@ const page = () => {
 
         <PublicIntro />
 
-
-
-
         <ProjectList />
 
-
         <FilterBy />
-
-
 
     </div>
   )
