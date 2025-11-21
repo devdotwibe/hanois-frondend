@@ -1843,7 +1843,7 @@ background: linear-gradient(
 
 
 
-.containers-limit{padding-inline: 300px;}
+.containers-limit{padding-inline: 250px;}
 .faq-question p {
     text-align: left;
     cursor: pointer;
@@ -2527,7 +2527,7 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
 
 
 .profile-page {
-    margin: 80px 0 0;
+    margin: 70px 0 0;
 }
 .proj-details {
     margin-top: 50px;
@@ -4264,6 +4264,8 @@ margin-inline: 0;}
 /* ---------------------------------------------------------- */
 @media (max-width: 1340px) {
 
+  .containers-limit{padding-inline: 220px;}
+
   .form-grp.wrap-select{margin-inline: 0;}
 
   .public-project-page .intro-tab{
@@ -4301,6 +4303,9 @@ margin-inline: 0;}
 
 
 @media (max-width: 1240px) {
+
+    .containers-limit{padding-inline: 20px;}
+
 
   .torrance-slider-wrapper {
     padding-inline: 0px;
@@ -4391,6 +4396,8 @@ right: -40px;
 
 
 @media (max-width: 1024px) {
+
+  .profile-page{margin-top: 0;}
 
   .text-support p {
     min-height: 96px;
@@ -4542,6 +4549,9 @@ right: -40px;
 
 
 @media (max-width: 900px) {
+
+.profile-page{margin-top: 50px;}
+
 .business-block{padding: 20px;}
 .content-top{margin: 0 0 20px;}
 .outer-imgb {width: 70px;}
@@ -4640,6 +4650,8 @@ right: -40px;
 
 @media (min-width: 768px) and (max-width: 900px) {
 
+  .containers-limit{padding-inline: 30px;}
+
 
     .business-div21 .content-top h3 {
         padding-left: 0;
@@ -4723,6 +4735,7 @@ right: -40px;
 
 
 @media (max-width: 767px) {
+  .containers-limit{padding-inline: 5%;}
 
       .text-support p {
         min-height: 63px;
