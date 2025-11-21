@@ -230,7 +230,7 @@ const MyAccountForm = () => {
               id="profile_image"
               accept="image/*"
               onChange={handleImageChange}
-              style={{ display: "none" }}
+              style={{ display: "none", cursor:"pointer" }}
             />
 
             {previewImage || profileImage && (
@@ -238,7 +238,7 @@ const MyAccountForm = () => {
                   type="button"
                   onClick={handleRemoveImage}
                   className="remove-btn1"
-
+                style={{ cursor:"pointer" }}
                 >
                   X
                 </button>
