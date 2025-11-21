@@ -5,7 +5,7 @@ import axios from "axios";
 
 
 const ContactForm = () => {
-  
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -173,11 +173,17 @@ const ContactForm = () => {
               rows={4}
                maxLength={1024}
             ></textarea>
-            <p style={{ fontSize: "12px", textAlign: "right", marginTop: "4px" }}>
+            <div className="smallwithptag">
+               <p style={{ fontSize: "12px", textAlign: "right", marginTop: "4px" }}>
   {1024 - formData.notes.length}
 </p>
 
             <small>Brief description for your profile. URLs are hyperlinked.</small>
+
+            </div>
+
+
+
           </div>
 
           {/* Submit */}
