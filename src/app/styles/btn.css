@@ -570,12 +570,15 @@ line-height: 1;
 @media (max-width: 1024px) {
 
 
+}
+
+
+@media (max-width: 900px) {
+
 .add-btn{white-space: nowrap; margin:0 0 0 10px; width: fit-content;}
 
 .send-btn{width: fit-content; padding-inline: 40px;}
 }
-
-
 
 
 

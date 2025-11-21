@@ -2383,7 +2383,7 @@ box-shadow: 0 0 8px rgba(231, 76, 60, .6);
 
 
 .detcol {
-    display: flex;
+    display: flex; flex-wrap: wrap;
     justify-content: space-between; position: relative;
 }
 
@@ -4498,23 +4498,12 @@ right: -40px;
     padding-left: 30px;
 }
 
-.project-card {
-    display: flex;
-    padding: 0; row-gap: 4px;  border: none; box-shadow: none;
-}
-    .detcol-1 {
-        margin-top: 90px;
-    }
+
 .add-btn{margin-top: 0;}
 
-.detcol-2.after-edit {
-    position: absolute;
-    right: 0px;
-    padding: 0;
-    top: 0;
+.project-card{
+  padding: 14px;
 }
-.detcol-1{width: 100%;}
-
 
 
 .after-edit .status-card {
@@ -4522,10 +4511,13 @@ right: -40px;
     max-width: 100%;
 
 }
+.detail-card .house-card-info{padding-left: 0; width: 100%;}
 
-.detcol-2{width: 100%;}
+
 .project-card{display: flex; flex-wrap: wrap; justify-content: flex-start;}
-
+.profile-page .detcol-1 {
+    margin-top: 0;
+}
 }
 
 
@@ -4549,6 +4541,14 @@ right: -40px;
 
 
 @media (max-width: 900px) {
+
+.detcol-1{width: 100%;}
+.detcol-2{width: 100%;}
+.after-update-1{width: 100%;}
+.after-update{justify-content: flex-start;}
+.detcol-2{padding-left: 0;}
+.after-update-1{max-width: 100%;}
+
 
 .profile-page{margin-top: 50px;}
 
@@ -4639,6 +4639,21 @@ right: -40px;
     .business-block {
         padding: 30px 20px 25px;
     }
+.detcol-2.after-edit {
+    position: absolute;
+    left: 0px;
+    padding: 0;
+    top: 0;
+}
+ .detcol-1 {
+        margin-top: 90px;
+    }
+.project-card {
+    display: flex;
+    padding: 0; row-gap: 4px;  border: none; box-shadow: none;
+}
+
+
 }
 
 
