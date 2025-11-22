@@ -4361,6 +4361,11 @@ span.time-now {
 .btn-cvr.on-signup {
     justify-content: flex-end;
 }
+.btn-cvr.two-btns {
+    justify-content: flex-end;
+}
+
+.
 /* ------------------------------------responsive */
 
 @media (max-width: 1541px) {
