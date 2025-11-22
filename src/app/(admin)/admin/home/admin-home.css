@@ -434,7 +434,8 @@ label {
     border: 2px solid #d7dbec;
 }
 
-.ql-container .ql-editor{border: 2px solid #ffffff;}
+.ql-container .ql-editor{border: 2px solid #ffffff; min-height: 118px;}
+
 .ql-container .ql-editor:focus{
     background: #ffffff;
   outline: none;
