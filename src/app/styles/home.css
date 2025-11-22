@@ -4337,7 +4337,7 @@ span.time-now {
 .delete-modal {
     border: 1px solid #e0e0e0;
     width: fit-content;
-    padding: 28px 40px;
+    padding: 25px;
     border-radius: 10px;
     /* box-shadow: 0 0 8px rgba(241, 196, 15, 0.6); */
     /* border-color: #fffbe6; */
@@ -4345,7 +4345,7 @@ span.time-now {
 }
 .inner-delimg2:has(.dark-btn) {
     border: 1px solid #e0e0e0;
-    padding: 28px 40px;
+    padding: 25px 25px;
     border-radius: 10px;
     width: fit-content;
 }
@@ -4366,6 +4366,111 @@ span.time-now {
     justify-content: flex-end;
 }
 
+
+
+
+.header-provider {
+    display: flex; align-items: center;
+    justify-content: space-between; padding-block: 20px;
+
+}
+.main-h{
+    border-bottom: 1px solid #ebeaea;
+
+}
+
+.user-info22 {
+    display: flex;
+    align-items: center;
+}
+
+.user-info11 {
+    width: 50px;
+    height: 50px;
+}
+
+.user-info2 {
+    padding-left: 10px;
+}
+.user-info2 p {
+font-size: 16px;
+    font-weight: bold;}
+
+    .user-info2 span{
+      font-size: 15px;
+
+    }
+
+
+.stats-section {
+    display: flex; margin-top: 50px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+padding: 25px; border-radius: 10px;
+    margin-right: 2%;
+    width: 23.5%;
+        border: 1px solid #ebeaea;
+
+}
+
+.stat-card:last-child {
+    margin-right: 0;
+}
+
+
+.stat-value {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+
+.tab-nav4 {
+    width: fit-content;
+    display: flex;
+    gap: 30px;
+            border: 1px solid #ebeaea;
+            padding: 10px; border-radius: 4px;
+
+}
+
+.tab-sec8 {
+    margin-top: 50px;
+}
+
+.tab-content-wrap2 {
+    margin-top: 40px;
+    padding: 40px; border-radius: 10px;
+                border: 1px solid #ebeaea;
+
+}
+
+.tab-content-wrap2 h2 {
+    font-size: 30px;
+      font-family: 'Avenir-Black';
+
+}
+.publish-div {
+    width: 100%;
+    gap: 2%;
+    display: flex; margin: 30px 0 0;
+}
+
+button.publish {
+    width: 90%;
+    color: #fff;
+    background: var(--primary-color);
+    border-radius: 5px;
+    padding: 10px 27px;
+    font-size: 16px;
+    font-weight: 400;
+    display: inline-block;
+
+}
+.e-upload{
+  width: 100% !important; margin-top: 20px;
+}
 
 /* ------------------------------------responsive */
 
@@ -4531,7 +4636,7 @@ right: -40px;
 
 @media (max-width: 1024px) {
 
-  
+
 
   .profile-page{margin-top: 0;}
 
