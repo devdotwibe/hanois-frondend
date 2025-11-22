@@ -8,7 +8,7 @@ import { API_URL, IMG_URL } from "@/config";
 import DetailCard from "@/app/(directory)/provider/Components/DetailCard";
 import TabBtns from "../../Components/TabBtns";
 import { useRouter } from "next/navigation";
-import { API_URL, IMG_URL } from "@/config";
+
 
 
 const UploadBox = () => {

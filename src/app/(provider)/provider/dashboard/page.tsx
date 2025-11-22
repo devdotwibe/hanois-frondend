@@ -151,77 +151,78 @@ const getProposalStatus = (lead) => {
         </p>
       </div>
 
-      <div className="overflow-x-auto leads-table">
-        <table className="border-collapse">
-          <thead>
-            <tr>
-              <th className="lead-col">Lead Name</th>
-              <th className="project-col">Project Type</th>
-              <th className="date-col">Date</th>
-              <th className="email-col">Email</th>
-              <th className="mob-col">Mobile</th>
-              <th className="status-col">Status</th>
-            </tr>
-          </thead>
+<div className="overflow-x-auto leads-table">
+  {leads.length > 0 ? (
+    <table className="border-collapse">
+      <thead>
+        <tr>
+          <th className="lead-col">Lead Name</th>
+          <th className="project-col">Project Type</th>
+          <th className="date-col">Date</th>
+          <th className="email-col">Email</th>
+          <th className="mob-col">Mobile</th>
+          <th className="status-col">Status</th>
+        </tr>
+      </thead>
 
-          <tbody>
-            {leads.length > 0 &&
-              leads.map((lead: any, index: number) => (
-                <tr key={index}>
-                  {/* Lead Name */}
-                  <td className="lead-name lead-col">
-                    <img
-                      src={
-                        lead?.user?.profile_image
-                          ? `${IMG_URL}uploads/${lead.user.profile_image}`
-                          : img1.src
-                      }
-                      alt="Avatar"
-                      className="w-[32px] h-[32px] rounded-full"
-                    />
+      <tbody>
+        {leads.map((lead: any, index: number) => (
+          <tr key={index}>
+            {/* Lead Name */}
+            <td className="lead-name lead-col">
+              <img
+                src={
+                  lead?.user?.profile_image
+                    ? `${IMG_URL}uploads/${lead.user.profile_image}`
+                    : img1.src
+                }
+                alt="Avatar"
+                className="w-[32px] h-[32px] rounded-full"
+              />
 
-                   <span className="text-gray-800 font-medium">
-  {lead?.user?.name || "Unknown User"}
-</span>
+              <span className="text-gray-800 font-medium">
+                {lead?.user?.name || "Unknown User"}
+              </span>
+            </td>
 
-                  </td>
+            {/* Project Type */}
+            <td className="project-col">
+              <span className="project-type">
+                {lead?.category?.name}
+              </span>
+            </td>
 
-                  {/* Project Type */}
-                  <td className="project-col">
-                    <span className="project-type">
-                      {lead?.category?.name}
-                    </span>
-                  </td>
+            {/* Date */}
+            <td className="date-col">
+              {new Date(lead.created_at).toLocaleDateString("en-GB")}
+            </td>
 
-                  {/* Date */}
-                  <td className="date-col">
-                    {new Date(lead.created_at).toLocaleDateString("en-GB")}
-                  </td>
+            {/* Email */}
+            <td className="email-col">{lead?.user?.email}</td>
 
-                  {/* Email */}
-                  <td className="email-col">{lead?.user?.email}</td>
+            {/* Phone */}
+            <td className="mob-col">{lead?.user?.phone || "N/A"}</td>
 
-                  {/* Phone */}
-                  <td className="mob-col">{lead?.user?.phone || "N/A"}</td>
-
-                  {/* Status */}
-                 <td className="status-col">
-  <span
-    className={`highlightedd bg-blue ${getStatusColor(getProposalStatus(lead))}`}
-    style={{ cursor: "pointer" }}
-    onClick={() => openLeadModal(lead)}
-  >
-    {getProposalStatus(lead)}
-  </span>
-</td>
-
-
-                  
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+            {/* Status */}
+            <td className="status-col">
+              <span
+                className={`highlightedd bg-blue ${getStatusColor(
+                  getProposalStatus(lead)
+                )}`}
+                style={{ cursor: "pointer" }}
+                onClick={() => openLeadModal(lead)}
+              >
+                {getProposalStatus(lead)}
+              </span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p className="text-center py-6 text-gray-500"></p>
+  )}
+</div>
 
       {/* ------------------------------ MODAL ------------------------------ */}
       {openPopup &&
