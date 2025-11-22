@@ -151,17 +151,12 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false); // for re
       });
 
       const data = await res.json();
-      if (res.ok) {
-
-        setSuccess("Password successfully reset!");
-
-        setTimeout(() => {
-
-          router.push('/login');
-
-        }, 5000);
-
-      } else {
+if (res.ok) {
+  setTimeout(() => {
+    setSuccess("Password successfully reset!");
+  }, 60 * 60 * 1000); // 1 hour
+}
+ else {
 
         alert(data.error || "Password reset failed.");
       }
