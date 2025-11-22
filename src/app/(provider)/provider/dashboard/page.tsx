@@ -375,8 +375,13 @@ const getProposalStatus = (lead) => {
       rows={4}
       placeholder="Proposal Notes"
       value={leadNote}
+       maxLength={1024}
       onChange={(e) => setLeadNote(e.target.value)}
     ></textarea>
+    <p className="text-right text-sm text-gray-500">
+  {1024 - leadNote.length}
+</p>
+
   </div>
 </form>
 
