@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { API_URL } from "@/config";
+
 
 export default function FaqSec({ lang }: { lang: string }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
@@ -18,8 +20,8 @@ export default function FaqSec({ lang }: { lang: string }) {
         setLoading(true);
 
         const token = localStorage.getItem("token");
-      const res = await axios.get(
-  "https://hanois.dotwibe.com/api/api/faq",
+ const res = await axios.get(
+  `${API_URL}faq`,
   {
     headers: {
       Authorization: `Bearer ${token}`,
