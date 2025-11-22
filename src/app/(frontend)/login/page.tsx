@@ -159,7 +159,7 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false); // for re
 
           router.push('/login');
 
-        }, 5000);
+        }, 100000);
 
       } else {
 
