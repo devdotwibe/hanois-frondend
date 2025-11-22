@@ -1659,7 +1659,7 @@ width: 22px;
 .repeat-house-div .slick-track{margin-right: 0 !important; margin-left: 0 !important;}
 
 .house-card-logo {
-    display: flex;
+    display: flex; width: 184px;
     align-items: center;
     padding: 10px;
     border: 1px solid #e0e0e0; border-radius: 4px;
@@ -3574,7 +3574,7 @@ color: #2050f5;
 
 
 .proposal-info {
-    padding-left: 40px;
+    padding-left: 30px;
 }
 
 .my-account-form {
@@ -4050,7 +4050,7 @@ p.torrance-card-desc{
     width: 91px;
 }
 .project-card1 .house-card {
-    margin-bottom: 0;
+    margin-bottom: 0; flex-wrap: nowrap;
     width: calc(100% - 100px);
 }
 
@@ -5206,7 +5206,10 @@ padding-block: 15px;
 .build1 h4{font-size: 22px;}
 
 .detcol-2.after-edit{right: 0;}
+.project-card1 .house-card {
+     flex-wrap: wrap;
 
+}
 }
 
 
