@@ -4,7 +4,9 @@ import React, { useState, useEffect } from 'react';
 import HouseCard1 from '@/app/(provider)/provider/dashboard/Components/HouseCard1';
 import ImageSlider from './ImageSlider';
 import { useRouter } from 'next/navigation';
-import { IMG_URL } from "@/config"; // Import IMG_URL from config
+
+import { API_URL, IMG_URL } from "@/config";
+
 
 const RepeatHouseDiv = ({ provider }) => {
   const [serviceCosts, setServiceCosts] = useState(null);
@@ -33,7 +35,7 @@ const RepeatHouseDiv = ({ provider }) => {
       setLoadingCosts(true);
       setError(null);
       try {
-        const response = await fetch('https://hanois.dotwibe.com/api/api/providers/all-provider-services');
+        const response = await fetch(`${API_URL}providers/all-provider-services`);
         const data = await response.json();
 
         if (data.success) {
@@ -67,7 +69,7 @@ const RepeatHouseDiv = ({ provider }) => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch('https://hanois.dotwibe.com/api/api/projects');
+        const response = await fetch(`${API_URL}projects`);
         const data = await response.json();
 
         if (data.success) {

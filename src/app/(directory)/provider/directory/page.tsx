@@ -7,9 +7,11 @@ import DirectorySidebar from '../Components/DirectorySidebar';
 import Image from 'next/image';
 import arrowright from "../../../../../public/images/right-page.svg"
 import arrowleft from "../../../../../public/images/left-page.svg"
+import { API_URL } from "@/config";
 
 
-const API_URL = 'https://hanois.dotwibe.com/api/api/providers';
+
+
 const ITEMS_PER_PAGE = 10;
 
 const ServiceProviderDirectory = () => {
@@ -31,10 +33,12 @@ const ServiceProviderDirectory = () => {
       setLoading(true);
       setError(null);
       try {
-        let url = API_URL;
+       let url = `${API_URL}providers`;
+
         let usedServerFilter = false;
         if (selectedCategory && selectedCategory !== 'All') {
-          url = `${API_URL}?category=${encodeURIComponent(selectedCategory)}`;
+         url = `${API_URL}providers?category=${encodeURIComponent(selectedCategory)}`;
+
           usedServerFilter = true;
         }
         const res = await fetch(url);

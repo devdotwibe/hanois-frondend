@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
+import { API_URL } from "@/config";
+
 
 
 
@@ -67,7 +69,8 @@ const ContactForm = () => {
         notes: formData.notes,
       };
 
-      const response = await axios.post("https://hanois.dotwibe.com/api/api/contacts", payload);
+   const response = await axios.post(`${API_URL}contacts`, payload);
+
 
       if (response.data.success) {
         setStatus({

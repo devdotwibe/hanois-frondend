@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "@/config";
 
-const API_URL =
-  "https://hanois.dotwibe.com/api/api/page/get?sectionKey=get_listedhandis";
+
+
 
 const HowHelp = () => {
   const [card, setCard] = useState<{ handistitle: string }>({
@@ -20,7 +21,10 @@ const HowHelp = () => {
         setLoading(true);
         setError("");
 
-        const res = await axios.get(API_URL);
+      const res = await axios.get(
+  `${API_URL}page/get?sectionKey=get_listedhandis`
+);
+
 
         if (
           res.data.success &&

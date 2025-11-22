@@ -122,12 +122,13 @@ const getDesignStyleName = () => {
   // FETCH DESIGN + CATEGORY
   // ------------------------------------------
   const fetchDesigns = async () => {
-    const res = await axios.get(`${API_URL}/design`);
+    const res = await axios.get(`${API_URL}design`);
     setDesignList(res.data);
   };
 
   const fetchCategories = async () => {
-    const res = await axios.get(`https://hanois.dotwibe.com/api/api/categories`);
+   const res = await axios.get(`${API_URL}categories`);
+
     setCategoryList(res.data);
   };
 
@@ -142,7 +143,7 @@ const getDesignStyleName = () => {
       return;
     }
 
-    const res = await fetch(`https://hanois.dotwibe.com/api/api/providers/${id}`, {
+    const res = await fetch(`${API_URL}providers/${id}`, {
       headers: {
         "Content-Type": "application/json",
         ...(tokenLocal && { Authorization: `Bearer ${tokenLocal}` }),
@@ -169,7 +170,7 @@ const getDesignStyleName = () => {
   // FETCH EXISTING PROJECT
   // ------------------------------------------
   const fetchProject = async () => {
-    const res = await axios.get(`${API_URL}/projects/${id}`);
+    const res = await axios.get(`${API_URL}projects/${id}`);
     if (res.data.success) {
       const project = res.data.data.project;
       setFormData({
@@ -216,7 +217,7 @@ const getDesignStyleName = () => {
   // DELETE EXISTING IMAGE
   // ------------------------------------------
   const handleDeleteImage = async (imgId) => {
-    await axios.delete(`${API_URL}/project-images/${imgId}`);
+    await axios.delete(`${API_URL}project-images/${imgId}`);
     setExistingImages(existingImages.filter((img) => img.id !== imgId));
   };
 
@@ -636,7 +637,7 @@ const getDesignStyleName = () => {
 
                   <button
                     onClick={async () => {
-                      await axios.delete(`${API_URL}/projects/${id}`);
+                      await axios.delete(`${API_URL}projects/${id}`);
                       router.push("/provider/dashboard/projects");
                     }}
                     className="danger-btn"
