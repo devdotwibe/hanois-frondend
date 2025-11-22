@@ -19,7 +19,7 @@ export default function FaqForm() {
     arabtitle: "",
     arabquestion: "",
     arabanswer: "",
-      order: "1",
+      order: "",
   });
   const [editingId, setEditingId] = useState(null);
   const [message, setMessage] = useState("");
@@ -29,6 +29,25 @@ export default function FaqForm() {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 const [deleteId, setDeleteId] = useState(null);
+
+// ✅ Available ONLY when creating
+const availableOrders = useMemo(() => {
+  const used = faqs.map((f) => f.order);
+
+  return Array.from({ length: faqs.length + 1 }, (_, i) => i + 1).filter(
+    (num) => !used.includes(num)
+  );
+}, [faqs]);
+
+// ✅ Show full list when editing
+const orderOptions = useMemo(() => {
+  if (editingId) {
+    return Array.from({ length: faqs.length }, (_, i) => i + 1);
+  }
+  return availableOrders;
+}, [editingId, faqs, availableOrders]);
+
+const [resetKey, setResetKey] = useState(0);
 
 
   // 🧠 Quill Toolbar Configuration
@@ -161,11 +180,12 @@ setTimeout(() => {
     arabtitle: "",
     arabquestion: "",
     arabanswer: "",
-    order: "1",
+    order: "",
   });
     setShowSourceQuestion(false);
   setShowSourceAnswer(false);
       setEditingId(null);
+      setResetKey(prev => prev + 1);
     }
   } catch (err) {
     console.error("❌ Error saving FAQ:", err);
@@ -246,11 +266,14 @@ const cancelDelete = () => {
   name="order"
   value={formData.order}
   onChange={handleChange}
-  
 >
-  {Array.from({ length: faqs.length + 1 }, (_, i) => (
-    <option key={i + 1} value={i + 1}>
-      {i + 1}
+  <option value="" disabled>
+    -- Select Order --
+  </option>
+
+  {orderOptions.map((num) => (
+    <option key={num} value={num}>
+      {num}
     </option>
   ))}
 </select>
@@ -259,16 +282,19 @@ const cancelDelete = () => {
 
 
 
+
+
         {/* 🟩 English Question with ReactQuill */}
       {/* 🟩 English Question Editor */}
 <HtmlToggleEditor
+  key={`question-${resetKey}`}
   label="Question"
   value={formData.engquestion}
   onChange={(val) => setFormData({ ...formData, engquestion: val })}
 />
 
-{/* 🟩 English Answer Editor */}
 <HtmlToggleEditor
+  key={`answer-${resetKey}`}
   label="Answer"
   value={formData.enganswer}
   onChange={(val) => setFormData({ ...formData, enganswer: val })}
