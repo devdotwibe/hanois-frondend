@@ -364,20 +364,29 @@ setTimeout(() => {
                   {errors.title && <p style={{ color: "red" }}>{errors.title}</p>}
                 </div>
 
-                <div className="form-grp">
-                  <label>Notes</label>
-                  <textarea
-                    id="notes"
-                    value={formData.notes}
-                    maxLength={1024}
-                    onChange={handleChange}
-                  />
-                    <p style={{ fontSize: "12px", color: "#666", marginTop: "4px" }}>
+               <div className="form-grp">
+  <label>Notes</label>
+
+  <textarea
+    id="notes"
+    value={formData.notes}
+    maxLength={1024}
+    onChange={handleChange}
+  />
+
+  {/* helper text */}
+  <p style={{ fontSize: "12px", color: "#9A9A9A", marginTop: "6px" }}>
+    Brief description for your profile. URLs are hyperlinked.
+  </p>
+
+  {/* character count */}
+  <p style={{ fontSize: "12px", color: "#666", marginTop: "4px" }}>
     {notesCount}
   </p>
 
-                  {errors.notes && <p style={{ color: "red" }}>{errors.notes}</p>}
-                </div>
+  {errors.notes && <p style={{ color: "red" }}>{errors.notes}</p>}
+</div>
+
 
                 <div className="form-grp">
   <label>Project Type</label>
