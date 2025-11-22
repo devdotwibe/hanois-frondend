@@ -43,6 +43,8 @@ const Login = () => {
 
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+const [showPassword, setShowPassword] = useState(false);
+const [showConfirmPassword, setShowConfirmPassword] = useState(false); // for reset page
 
 
   useEffect(() => {
@@ -281,41 +283,31 @@ const Login = () => {
                   <input type="email" className={`input-field ${loginError ? 'email-invalid' : ''}`} id="email" name="email" placeholder="Email" required />
                 </div>
 
-                <div className="form-grp">
-                  <label htmlFor="password">Password</label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="+8 characters"
-                    required
-                    className={`input-field ${loginError ? 'email-invalid' : ''}`}
-                  />
+               <div className="form-grp">
+  <label htmlFor="password">Password</label>
 
-                  <span className="eye-icon">
-                    <Image
-                    src={eyeiconhide}
-                    alt="img"
-                    width={20}
-                    height={20}
+  <input
+    type={showPassword ? "text" : "password"}
+    id="password"
+    name="password"
+    placeholder="+8 characters"
+    required
+    className={`input-field ${loginError ? 'email-invalid' : ''}`}
+  />
 
-                    />
+  <span
+    className="eye-icon"
+    onClick={() => setShowPassword(!showPassword)}
+  >
+    <Image
+      src={showPassword ? eyeicon : eyeiconhide}
+      alt="img"
+      width={20}
+      height={20}
+    />
+  </span>
+</div>
 
-                    {/* ontoggle */}
-
-
-                    {/* <Image
-                    src={eyeicon}
-                    alt="img"
-                    width={20}
-                    height={20}
-
-                    /> */}
-
-
-
-                  </span>
-                </div>
 
                 {loginError && <p style={{ color: 'red', marginTop: '10px' }} className="error-message">{loginError}</p>}
 

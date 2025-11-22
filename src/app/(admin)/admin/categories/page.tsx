@@ -10,6 +10,7 @@ export default function CategoriesPage() {
   const [newCategory, setNewCategory] = useState("");
   const [editingCategory, setEditingCategory] = useState(null);
   const [editingName, setEditingName] = useState("");
+  const [search, setSearch] = useState("");
 
   // Fetch categories
   const fetchCategories = async () => {
@@ -25,6 +26,13 @@ export default function CategoriesPage() {
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  // auto-hide message
+  useEffect(() => {
+    if (!message) return;
+    const timeout = setTimeout(() => setMessage(""), 2000);
+    return () => clearTimeout(timeout);
+  }, [message]);
 
   // Create category
   const handleCreate = async (e) => {
@@ -79,6 +87,11 @@ export default function CategoriesPage() {
     }
   };
 
+  // Filter categories
+  const filteredCategories = categories.filter((cat) =>
+    cat.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="mx-auto p-6 max-w-lg bg-white shadow-lg rounded-lg">
       <h1 className="text-2xl font-semibold mb-6 text-center">Categories</h1>
@@ -106,10 +119,24 @@ export default function CategoriesPage() {
         </button>
       </form>
 
+      {/* Search Input */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search category..."
+          className="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
       {/* List categories */}
       <ul className="space-y-4">
-        {categories.map((cat) => (
-          <li key={cat.id} className="flex justify-between items-center p-4 border rounded shadow-sm hover:bg-gray-50">
+        {filteredCategories.map((cat) => (
+          <li
+            key={cat.id}
+            className="flex justify-between items-center p-4 border rounded shadow-sm hover:bg-gray-50"
+          >
             {editingCategory === cat.id ? (
               <>
                 <input
@@ -118,16 +145,10 @@ export default function CategoriesPage() {
                   value={editingName}
                   onChange={(e) => setEditingName(e.target.value)}
                 />
-                <button
-                  onClick={() => handleUpdate(cat.id)}
-                  className="btn-delete"
-                >
+                <button onClick={() => handleUpdate(cat.id)} className="btn-delete">
                   Save
                 </button>
-                <button
-                  onClick={() => setEditingCategory(null)}
-                  className="btn-delete"
-                >
+                <button onClick={() => setEditingCategory(null)} className="btn-delete">
                   Cancel
                 </button>
               </>
@@ -144,10 +165,7 @@ export default function CategoriesPage() {
                   >
                     Edit
                   </button>
-                  <button
-                    onClick={() => handleDelete(cat.id)}
-                    className="btn-delete"
-                  >
+                  <button onClick={() => handleDelete(cat.id)} className="btn-delete">
                     Delete
                   </button>
                 </div>
@@ -157,9 +175,18 @@ export default function CategoriesPage() {
         ))}
       </ul>
 
+      {/* No results */}
+      {search && filteredCategories.length === 0 && (
+        <p className="text-center text-gray-500 mt-4">No categories found</p>
+      )}
+
       {/* Message */}
       {message && (
-        <p className={`mt-4 text-center text-sm ${message.includes("✅") ? "text-green-600" : "text-red-600"}`}>
+        <p
+          className={`mt-4 text-center text-sm ${
+            message.includes("✅") ? "text-green-600" : "text-red-600"
+          }`}
+        >
           {message}
         </p>
       )}
