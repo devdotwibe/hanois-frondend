@@ -7,8 +7,8 @@ const SideBar = () => {
   const pathname = usePathname();
 
   const links = [
-    { href: "/user/providers", label: "Service Providers" },
-    { href: "/user/dashboard", label: "My Project" },
+    { href: "/user/dashboard", label: "Service Providers" },
+    { href: "/user/project", label: "My Project" },
     { href: "/user/my-account", label: "My Account" },
   ];
 
