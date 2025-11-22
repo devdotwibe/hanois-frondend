@@ -163,6 +163,10 @@ const MyAccountForm = () => {
 
                   setSuccessMsg("Profile updated successfully!");
 
+                  setTimeout(() => {
+  setSuccessMsg("");
+}, 1000); // 1 second
+
                   if (data.data.profile_image) {
 
                     setProfileImage(data.data.profile_image);
