@@ -237,7 +237,7 @@ color: #00a056; font-size: 20px; line-height: 1;
     right: 0;
 }
 a.proposal-view {
-    color: #2563eb;
+    color: #2563eb; margin-left: auto;
     cursor: pointer;
     border: none;
     border-radius: 8px;
