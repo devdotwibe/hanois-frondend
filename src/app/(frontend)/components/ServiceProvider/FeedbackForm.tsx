@@ -47,7 +47,7 @@ const FeedbackForm = () => {
 
   const [isStep1Valid, setIsStep1Valid] = useState(false);
 
-  const [errors, setErrors] = useState<any>({}); 
+  const [errors, setErrors] = useState<any>({});
 
 
     const validateStep1 = () => {
@@ -86,7 +86,7 @@ const FeedbackForm = () => {
 
     try {
       const res = await axios.post(`${API_URL}providers/register`, formData);
-  
+
       setShowPopup(true);
 
     } catch (err: any) {
@@ -197,9 +197,9 @@ const FeedbackForm = () => {
                {errors.location && <p className="error-text">{errors.location}</p>}
             </div>
 
-            <div className="btn-cvr">
+            <div className="btn-cvr on-signup">
               <button
-              
+
                 type="button"
                 className={`btn-continue ${isStep1Valid ? "btn-active" : "btn-disabled"}`}
 

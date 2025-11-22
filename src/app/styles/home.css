@@ -1032,7 +1032,7 @@ padding-block: 60px;
   left: 0;
   width: 100%;
   height: 20px; /* thickness of shadow area */
-  background: rgba(0, 0, 0, 0.85); /* even dark tone */
+  background: rgba(0, 0, 0, 0.65); /* even dark tone */
   filter: blur(18px); /* smooth blur to spread evenly */
   border-radius: 50%; /* soft curve to prevent side bleed */
   pointer-events: none;
@@ -2044,13 +2044,42 @@ border-right: 1px solid #e0e0e0;
   cursor: pointer;
 }
 
-.hidden-checkbox {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
+.custom-checkbox{display: none;}
+.filter-section .checkbox-label input {
+margin-right: 8px;
+     border-radius: 0; line-height: 1;
+    padding: 0;
+    -webkit-appearance: none;
+     font-size: 0;
+   width: 22px;
+  height: 22px;
+  background: url("../../../public/images/check-icon-white.svg") no-repeat center !important;
+  background-size: 20px !important;
+  border: none;
+
 }
 
-.custom-checkbox {
+.filter-section .checkbox-label.selected input{
+   font-size: 0;
+   width: 22px;
+  height: 22px;
+  background: url("../../../public/images/tik-blue.svg") no-repeat center !important;
+  background-size: 20px !important;
+  border: none;
+
+}
+
+
+
+
+.filter-section .checkbox-label{gap: 4px !important;}
+.hidden-checkbox {
+  /* position: absolute;
+  opacity: 0;
+  cursor: pointer; */
+}
+
+/* .custom-checkbox {
   width: 20px;
   height: 20px;
   border: 2px solid #d1d5db;
@@ -2060,9 +2089,9 @@ border-right: 1px solid #e0e0e0;
   justify-content: center;
   background-color: #ffffff;
   transition: all 0.2s;
-}
+} */
 
-.custom-checkbox.checked {
+/* .custom-checkbox.checked {
   background-color: #2050f5;
   border-color: #2050f5;
 }
@@ -2071,7 +2100,7 @@ border-right: 1px solid #e0e0e0;
   color: #ffffff;
   font-size: 14px;
   font-weight: bold;
-}
+} */
 
 
 .form-c {
@@ -4313,7 +4342,7 @@ span.time-now {
     /* border-color: #fffbe6; */
 
 }
-.inner-delimg2 {
+.inner-delimg2:has(.dark-btn) {
     border: 1px solid #e0e0e0;
     padding: 28px 40px;
     border-radius: 10px;
@@ -4323,11 +4352,15 @@ span.time-now {
     width: 100%;
     margin: 20px 0 0;
 }
+
+
 .filter-section .checkbox-label {
     font-family: 'Avenir-medium';
 
 }
-
+.btn-cvr.on-signup {
+    justify-content: flex-end;
+}
 /* ------------------------------------responsive */
 
 @media (max-width: 1541px) {
