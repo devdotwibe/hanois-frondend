@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from "@/config";
 
 const DirectorySidebar = ({
   onCategoryChange = () => {},
@@ -17,7 +18,7 @@ const DirectorySidebar = ({
 
   useEffect(() => {
     // Fetch categories and designs in parallel
-    const fetchCategories = fetch('https://hanois.dotwibe.com/api/api/categories')
+    const fetchCategories = fetch(`${API_URL}categories`)
       .then(async (res) => {
         if (!res.ok) throw new Error(`Categories HTTP ${res.status}`);
         const json = await res.json();
@@ -25,7 +26,7 @@ const DirectorySidebar = ({
         return Array.isArray(cats) ? cats : [];
       });
 
-    const fetchDesigns = fetch('https://hanois.dotwibe.com/api/api/design')
+    const fetchDesigns = fetch(`${API_URL}design`)
       .then(async (res) => {
         if (!res.ok) throw new Error(`Designs HTTP ${res.status}`);
         const json = await res.json();
@@ -46,9 +47,16 @@ const DirectorySidebar = ({
   }, []);
 
   // Keep internal stylesSelected in sync if parent passes a new selectedStyles prop
-  useEffect(() => {
-    setStylesSelected(new Set(selectedStyles || []));
-  }, [selectedStyles]);
+useEffect(() => {
+  const incoming = new Set(selectedStyles || []);
+  const isSame =
+    incoming.size === stylesSelected.size &&
+    [...incoming].every((item) => stylesSelected.has(item));
+
+  if (!isSame) {
+    setStylesSelected(incoming);
+  }
+}, [selectedStyles]);
 
   const toggleStyle = (identifier) => {
     // identifier can be id or name depending on how parent prefers to identify styles.
