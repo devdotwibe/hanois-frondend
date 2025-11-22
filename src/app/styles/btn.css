@@ -437,6 +437,7 @@ button.close-poup:hover{
 
 .dark-btn:hover{
   background: #4c72f6;
+  border: 2px solid #4c72f6;
 }
 
 
@@ -445,6 +446,13 @@ button.close-poup:hover{
    outline: 2px solid var(--primary-color);
     background: #ffffff;
     cursor: pointer;
+}
+
+.dark-lined-btn:hover{
+  color: #fff;
+    background: var(--primary-color);
+    cursor: pointer;
+
 }
 
 .preview-btn {
@@ -580,6 +588,13 @@ line-height: 1;
 }
 .delete-btn4:hover {
     text-decoration: none;
+}
+.delete-modal-buttons button {
+    padding: 12px 18px;
+      font-family: 'Avenir-medium';
+
+    border-radius: 5px;
+    line-height: 1; font-size: 14px;
 }
 
 

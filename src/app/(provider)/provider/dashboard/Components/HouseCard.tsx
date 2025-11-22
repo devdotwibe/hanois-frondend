@@ -275,13 +275,13 @@ const HouseCard: React.FC<HouseCardProps> = ({
                 disabled={removing}
                 className="image-remove-btn"
                 style={{
-                 
+
                 }}
 
-                
+
                 title="Remove image"
 
-                
+
               >
                 ✕
               </button>
@@ -332,7 +332,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
         onChange={(e) => setHeadline(e.target.value)}
         placeholder="Professional headline"
         style={{
-        
+
         }}
       />
 {headline !== prevHeadlineRef.current && (
@@ -404,9 +404,26 @@ const HouseCard: React.FC<HouseCardProps> = ({
 
 
         {/* Inline status / confirm message (your provided div) */}
-        <div style={{ marginTop: 8 }}>
+
+
+        {/* Upload Button — only show when there is NO image */}
+        {!imagePath && (
+          <div style={{ marginTop: 10 }}>
+            <button
+              className="house-card-btn"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+            >
+              {uploading ? "Uploading..." : "Upload New Image"}
+            </button>
+          </div>
+        )}
+      </div>
+
+
+      <div style={{ marginTop: 8 }}>
           <div
-            className="login-success contact-sucess"
+            className="delte-img-poup"
             style={{ marginBottom: 12 }}
           >
             <p
@@ -457,20 +474,6 @@ const HouseCard: React.FC<HouseCardProps> = ({
             </div>
           )}
         </div>
-
-        {/* Upload Button — only show when there is NO image */}
-        {!imagePath && (
-          <div style={{ marginTop: 10 }}>
-            <button
-              className="house-card-btn"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-            >
-              {uploading ? "Uploading..." : "Upload New Image"}
-            </button>
-          </div>
-        )}
-      </div>
 
       {/* Hidden File Input */}
       <input
