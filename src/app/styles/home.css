@@ -4660,6 +4660,9 @@ right: -40px;
    width: 30px;
    height: 30px;
 }
+
+.h-div .h-div1:nth-child(2):after{width: 34%;}
+
 }
 
 
@@ -4825,7 +4828,7 @@ button.removeservice {
     align-items: center;
 }
 
-
+.h-div .h-div1:nth-child(2) .img-b:after{width: 50%;}
 }
 
 
@@ -5061,13 +5064,7 @@ p {font-size: 14px;}
     z-index: -1;
     background:     linear-gradient(to left, rgba(255,255,255,0) 60%, #ffffff 100%),
     url(../../../public/images/bg1.jpg) center / cover no-repeat;
-
-
-
-
-
     /* background: url(../../../public/images/bg1.jpg) center / cover no-repeat; */
-
     width: 63%;
     height: 100%;
     position: absolute;
@@ -5081,7 +5078,7 @@ p {font-size: 14px;}
     z-index: 9;
     background: url(../../../public/images/bg2.jpg) center / cover no-repeat;
     border-radius: 0 30px 30px 0;
-    width: 39%;
+    width: 50%;
     height: 100%;
     position: absolute;
     top: 0%;
