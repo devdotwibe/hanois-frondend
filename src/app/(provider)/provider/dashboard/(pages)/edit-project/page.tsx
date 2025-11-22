@@ -630,8 +630,8 @@ const getDesignStyleName = () => {
                 <h3>Are you sure?</h3>
                 <p>This action cannot be undone.</p>
 
-                <div className="delete-modal-buttons">
-                  <button onClick={() => setDeleteModalVisible(false)}>
+                <div className="delete-modal-buttons ">
+                  <button className="dark-btn" onClick={() => setDeleteModalVisible(false)}>
                     Cancel
                   </button>
 
@@ -640,7 +640,7 @@ const getDesignStyleName = () => {
                       await axios.delete(`${API_URL}projects/${id}`);
                       router.push("/provider/dashboard/projects");
                     }}
-                    className="danger-btn"
+                    className="danger-btn dark-lined-btn"
                   >
                     Yes, Delete
                   </button>
