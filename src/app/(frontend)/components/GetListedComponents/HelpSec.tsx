@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BuildCard from "./BuildCard";
-import { IMG_URL } from "@/config"; // optional: define IMG_URL in config if available
+import { API_URL, IMG_URL } from "@/config";
 
-const API_URL =
-  "https://hanois.dotwibe.com/api/api/page/get?sectionKey=get_listedhandis";
+
+
 
 interface HandisCard {
   handistitle: string;
@@ -25,7 +25,10 @@ const HelpSec: React.FC = () => {
         setLoading(true);
         setError("");
 
-        const res = await axios.get(API_URL);
+      const res = await axios.get(
+  `${API_URL}page/get?sectionKey=get_listedhandis`
+);
+
         if (res.data.success && Array.isArray(res.data.data?.cards)) {
           setCards(res.data.data.cards);
         } else {
@@ -43,11 +46,12 @@ const HelpSec: React.FC = () => {
   }, []);
 
   // 🟩 Build full image path
-  const getFullImageUrl = (imgPath: string) => {
-    if (!imgPath) return "";
-    if (imgPath.startsWith("http")) return imgPath;
-    return `${IMG_URL || "https://hanois.dotwibe.com/api/"}${imgPath}`;
-  };
+const getFullImageUrl = (imgPath: string) => {
+  if (!imgPath) return "";
+  if (imgPath.startsWith("http")) return imgPath;
+  return `${IMG_URL}${imgPath.replace(/^\//, "")}`;
+};
+
 
   return (
     <div className="h-outer">

@@ -8,6 +8,8 @@ import { API_URL, IMG_URL } from "@/config";
 import DetailCard from "@/app/(directory)/provider/Components/DetailCard";
 import TabBtns from "../../Components/TabBtns";
 import { useRouter } from "next/navigation";
+import { API_URL, IMG_URL } from "@/config";
+
 
 const UploadBox = () => {
   const router = useRouter();
@@ -90,14 +92,15 @@ const [notesCount, setNotesCount] = useState(1024);
 
   const fetchDesigns = async () => {
     try {
-      const res = await axios.get(`${API_URL}/design`);
+      const res = await axios.get(`${API_URL}design`);
       setDesignList(res.data);
     } catch (err) {}
   };
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("https://hanois.dotwibe.com/api/api/categories");
+      const res = await axios.get(`${API_URL}categories`);
+
       setCategoryList(res.data);
     } catch (err) {}
   };

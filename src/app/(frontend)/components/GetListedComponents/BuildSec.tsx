@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { API_URL } from "@/config";
+import { API_URL, IMG_URL } from "@/config";
+
 import build3 from "../../../../../public/images/get-listed-3.png";
 
 // 🟩 Corrected interface to match Handis card fields
@@ -47,9 +48,10 @@ setCard(thirdCard);
   }
 
   // 🟩 Build full image URL (in case backend gives relative path)
-  const imageUrl = card.image?.startsWith("http")
-    ? card.image
-    : `https://hanois.dotwibe.com/api/${card.image}`;
+const imageUrl = card.image?.startsWith("http")
+  ? card.image
+  : `${IMG_URL}${card.image?.replace(/^\//, "")}`;
+
 
   return (
     <div className="build-outer">

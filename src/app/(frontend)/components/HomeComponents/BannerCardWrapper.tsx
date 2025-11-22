@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BannerCards from "../ReusableComponents/Cards/BannerCards";
-import { API_URL } from "@/config";
+import { API_URL, IMG_URL } from "@/config";
+
 
 interface BannerItem {
   id: number;
@@ -51,7 +52,8 @@ const BannerCardWrapper = ({ lang = "en" }: { lang?: string }) => {
           setHeadings(validHeadings);
 
           // ✅ Extract and fix image URLs
-          const baseURL = "https://hanois.dotwibe.com/api";
+        const baseURL = IMG_URL;
+
           const validImages = [
             selectedLang.image1,
             selectedLang.image2,
