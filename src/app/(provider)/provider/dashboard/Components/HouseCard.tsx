@@ -455,27 +455,15 @@ const handleInlineCancel = () => {
               <button
                 onClick={performRemoveImage}
                 disabled={removing}
-                style={{
-                  padding: "6px 10px",
-                  borderRadius: 6,
-                  border: "1px solid #ddd",
-                  background: removing ? "#eee" : "#e53935",
-                  color: "#fff",
-                  cursor: "pointer",
-                }}
+                className="dark-btn"
+
               >
                 {removing ? "Removing..." : "Yes"}
               </button>
               <button
                 onClick={handleInlineCancel}
                 disabled={removing}
-                style={{
-                  padding: "6px 10px",
-                  borderRadius: 6,
-                  border: "1px solid #ddd",
-                  background: "#f8f8f8",
-                  cursor: "pointer",
-                }}
+                className="dark-lined-btn"
               >
                 No
               </button>

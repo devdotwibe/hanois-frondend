@@ -597,7 +597,13 @@ line-height: 1;
     line-height: 1; font-size: 14px;
 }
 
+.deleteimg-poupoutr button{
+   padding: 12px 18px;
+      font-family: 'Avenir-medium';
 
+    border-radius: 5px;
+    line-height: 1; font-size: 14px;
+}
 
 /* ----------------------------resp------------ */
 @media (max-width: 1204px) {
