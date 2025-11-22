@@ -591,25 +591,29 @@ const getDesignStyleName = () => {
             </div>
 
             {/* -------- Buttons -------- */}
-            <div className="btn-cvr" style={{ display: "flex", gap: "10px" }}>
+            <div className="btn-cvr">
+
+              <div className="div-c1">
+                 {/* Delete */}
+              <button
+                type="button"
+                className="delete-btn4"
+                onClick={() => setDeleteModalVisible(true)}
+              >
+                Delete
+              </button>
+              </div>
 
               {/* ➤ Preview Button */}
               <button
                 type="button"
-                className="preview-btn"
+                className="preview-btn dark-lined-btn"
                 onClick={() => setShowPreview(true)}
               >
                 Preview
               </button>
 
-              {/* Delete */}
-              <button
-                type="button"
-                className="save-btn1 dark-btn"
-                onClick={() => setDeleteModalVisible(true)}
-              >
-                Delete
-              </button>
+
 
               {/* Update */}
               <button type="submit" className="save-btn1 dark-btn">
