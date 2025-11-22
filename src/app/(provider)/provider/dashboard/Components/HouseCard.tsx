@@ -427,7 +427,10 @@ const handleInlineCancel = () => {
 
 
       <div className="deleteimg-poupoutr">
-          <div
+
+        <div className="inner-delimg2">
+
+           <div
             className="delte-img-poup"
             style={{ marginBottom: 12 }}
           >
@@ -478,6 +481,14 @@ const handleInlineCancel = () => {
               </button>
             </div>
           )}
+
+        </div>
+
+
+
+
+
+
         </div>
 
       {/* Hidden File Input */}
