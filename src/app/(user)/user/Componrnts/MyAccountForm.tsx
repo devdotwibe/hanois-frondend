@@ -297,7 +297,7 @@ const MyAccountForm = () => {
 
           <div className="form-grp prev-disabled">
             <label>Email</label>
-             <input type="email" value={User?.email} disabled />
+             <input type="email"  value={User?.email || ""} disabled />
 
              {errors.email && <p style={{ color: "red", margin: 0 }}>{errors.email}</p>}
 
