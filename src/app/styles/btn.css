@@ -571,6 +571,18 @@ line-height: 1;
   text-decoration: underline;
 }
 
+.delete-btn4 {
+    color: #ea5c5c;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.delete-btn4:hover {
+    text-decoration: none;
+}
+
+
 
 /* ----------------------------resp------------ */
 @media (max-width: 1204px) {
