@@ -426,7 +426,7 @@ const handleInlineCancel = () => {
       </div>
 
 
-      <div style={{ marginTop: 8 }}>
+      <div className="deleteimg-poupoutr">
           <div
             className="delte-img-poup"
             style={{ marginBottom: 12 }}
