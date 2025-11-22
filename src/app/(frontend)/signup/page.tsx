@@ -243,6 +243,30 @@ const SignUp = () => {
 
                 <input type="password" className={`input-field ${errors.confirmPassword ? 'email-invalid' : ''}`}  id="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm a password" required />
 
+                <span className="eye-icon">
+                    <Image
+                    src={eyeiconhide}
+                    alt="img"
+                    width={20}
+                    height={20}
+
+                    />
+
+                    {/* ontoggle */}
+
+
+                    {/* <Image
+                    src={eyeicon}
+                    alt="img"
+                    width={20}
+                    height={20}
+
+                    /> */}
+
+
+
+                  </span>
+
                  {errors.confirmPassword && <span className="error" style={{ color: 'red', marginTop: '10px' }} >{errors.confirmPassword}</span>}
 
               </div>

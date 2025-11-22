@@ -393,6 +393,12 @@ button.apple-btn,
 
 @media (max-width: 767px) {
 
+.login-success {
+top: 70px;
+    right: 10px;}
+
+
+
 .logincol1 {
     display: none;
 }
