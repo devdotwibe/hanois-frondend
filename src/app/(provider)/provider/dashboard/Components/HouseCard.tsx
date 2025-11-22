@@ -144,14 +144,15 @@ const HouseCard: React.FC<HouseCardProps> = ({
 
   // show inline confirm (no native confirm or popup)
   const openInlineConfirm = () => {
-    setStatus({ success: null, message: "Remove image? Click Yes or No." });
+   setStatus({ success: null, message: "Do you want to delete this image?" });
     setShowConfirmInline(true);
   };
 
-  const handleInlineCancel = () => {
-    setShowConfirmInline(false);
-    setStatus({ success: false, message: "Image removal cancelled." });
-  };
+const handleInlineCancel = () => {
+  setShowConfirmInline(false);
+  // optional: clear status completely
+  setStatus({ success: null, message: "" });
+};
 
   // actual deletion (called when user confirms inline)
   const performRemoveImage = async () => {
