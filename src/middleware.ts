@@ -63,7 +63,7 @@ export async function middleware(request: NextRequest) {
   
         if (authType === "user") {
           
-          return NextResponse.redirect(new URL("/user/providers", request.url));
+          return NextResponse.redirect(new URL("/user/dashboard", request.url));
 
         }
 
