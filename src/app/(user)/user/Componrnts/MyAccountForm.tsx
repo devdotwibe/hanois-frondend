@@ -323,7 +323,7 @@ const MyAccountForm = () => {
             <button type="button" className="change-btn">
               Change Password
             </button>
-            <button type="submit" className="save-btn1 save-account">
+            <button type="submit" className="save-btn1 dark-btn save-account">
               Save
             </button>
 

@@ -621,7 +621,7 @@ const EditProjectPage = () => {
         )}
 
         <div className="create-btn-container" style={{ marginTop: 20 }}>
-          <button className="create-btn invite-btn" type="submit">
+          <button className="create-btn dark-btn invite-btn" type="submit">
             Save Changes
           </button>
         </div>

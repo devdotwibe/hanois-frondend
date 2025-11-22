@@ -49,7 +49,7 @@ const AddNewForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submittedMessage, setsubmittedMessage] = useState(false);
 
-  
+
   const [editMode, setEditMode] = useState(false);
 
   const [categories, setCategories] = useState<OptionItem[]>([]);
@@ -61,7 +61,7 @@ const AddNewForm = () => {
   const [quality, setQuality] = useState("");
   const [buildCost, setBuildCost] = useState("");
   const [feeRate, setFeeRate] = useState("");
-  
+
   const [BuildArea, setBuildArea] = useState("");
   const [CostFinish, setCostFinish] = useState("");
   const [SuggestCost, setSuggestCost] = useState("");
@@ -87,7 +87,7 @@ const AddNewForm = () => {
 
       setProviders((prev) => prev.filter((p) => p.id !== company.id));
     } else {
-    
+
       setProviders((prev) => [...prev, company]);
 
        setSelectedProviderIds((prev) => prev.filter((id) => id !== company.id));
@@ -104,7 +104,7 @@ const AddNewForm = () => {
 
         const { name, value } = e.target;
         if (name === "notes") {
-        if (value.length > NOTES_LIMIT) return; 
+        if (value.length > NOTES_LIMIT) return;
         }
         setFormData(prev => ({ ...prev, [name]: value }));
 
@@ -115,7 +115,7 @@ const AddNewForm = () => {
                 setBuildCost(selectedLevel?.cost || "");
                 setFeeRate(selectedLevel?.rate || "");
             } else {
-         
+
                 setQuality("");
                 setBuildCost("");
                 setFeeRate("");
@@ -182,7 +182,7 @@ const handleSubmit = async (e: any) => {
   }
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-  
+
   try {
     const res = await fetch(`${API_URL}/users/add_project`, {
       method: "POST",
@@ -271,7 +271,7 @@ const getServiceName = (id: string | number) => {
 //   useEffect(() => {
 
 //     console.log(formData?.luxuryLevel,feeRate,buildCost,quality);
-    
+
 //   }, [formData?.luxuryLevel]);
 
 
@@ -579,8 +579,8 @@ return (
 
                                 {Providers.map((company) => (
 
-                                    <ProviderCard 
-                                    key={company.id} 
+                                    <ProviderCard
+                                    key={company.id}
                                     company={company}
                                     isSelected={false}
                                     onSelect={handleSelect}
@@ -589,7 +589,7 @@ return (
                                 ))}
 
                             </div>
-                         
+
                                 {selectedProviders.length > 0 && (
 
                                     <div className="selected-section">
@@ -608,7 +608,7 @@ return (
                                     </div>
 
                                 )}
-                            </>  
+                            </>
                         )}
 
                     </div>
@@ -624,7 +624,7 @@ return (
                                         <p><strong>Total max buildable area</strong></p>
                                         <p><span className="">{BuildArea}</span></p>
                                     </div>
-                                
+
                                     <div className="bud-row">
                                         <p><strong>Cost with finish</strong></p>
                                         <p><span className="">{CostFinish}</span></p>
@@ -649,7 +649,7 @@ return (
 
 
                     <div className="create-btn-container">
-                        <button className='create-btn invite-btn' type="submit">Create And Send Invite</button>
+                        <button className='create-btn dark-btn invite-btn' type="submit">Create And Send Invite</button>
                     </div>
 
                 </form>

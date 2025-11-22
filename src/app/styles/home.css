@@ -630,7 +630,7 @@ padding: 80px 0 0;
 }
 .form-c form{margin-top: 40px;}
 
-.btn-cvr{display: flex; justify-content: flex-end; flex-wrap: wrap; margin: 20px 0 0;}
+.btn-cvr{display: flex; justify-content: flex-end; flex-wrap: wrap; margin: 20px 0 0; align-items: center;}
 
 .btn-cvr .login-btn{width: 100%; max-width: 450px;}
 
@@ -2774,12 +2774,15 @@ button.save-btn{
 
     background: #2050f5;
     border-radius: 50%;
-    width: 28px;
-    height: 28px;
+    width: 22px;
+    height: 22px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
+    font-size: 10px;
+        position: absolute;
+    top: 0;
+    left: 68px;
 
     color: #ffffff;
 }
@@ -3706,12 +3709,14 @@ font-size: 11px;
 position: absolute;
 top: 5px;
 left: 10px;
-border-radius: 6px;
+border-radius: 6px; cursor: pointer;
 
 
 }
 
-
+.setas-cover.cover-btn {
+    background: #2050f5;
+}
 
 .torrance-slider-wrapper .slick-track {margin-left: 0;margin-right: 0;}
 
@@ -3814,19 +3819,29 @@ display: flex;
 }
 
 .leads-table span.bg-blue {
-    background: #D4FFEF;
+    background: #dbffee;
+    color: #404040 !important;
+
 }
 .leads-table span.bg-yellow {
-    background: #FBFEC4;
+    background: #fffcbe;
+        color: #404040 !important;
+
 }
 .leads-table span.bg-purple {
-    background: #DAE0FD;
+    background: #d8e1ff;
+        color: #404040 !important;
+
 }
 .leads-table span.bg-pink {
-    background: #FFD3D3;
+    background: #ffd3d3;
+        color: #404040 !important;
+
 }
 .leads-table span.viewed {
-    background: #F2F2F2;
+    background: #f2f2f2;
+        color: #404040 !important;
+
 }
 
 

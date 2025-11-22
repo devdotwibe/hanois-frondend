@@ -729,7 +729,7 @@ useEffect(() => {
             <button
               type="submit"
               disabled={status.loading}
-             className="save-btn1"
+             className="save-btn1 dark-btn"
             >
               {status.loading ? "Saving..." : "Save"}
             </button>

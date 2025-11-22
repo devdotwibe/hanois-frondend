@@ -161,7 +161,7 @@ const getDesignStyleName = () => {
  useEffect(() => {
   fetchDesigns();
   fetchCategories();
-  fetchProviderDataFromAPI();  
+  fetchProviderDataFromAPI();
   fetchProject();
 }, []);
 
@@ -194,7 +194,7 @@ const getDesignStyleName = () => {
   }, [id]);
 
 
-  
+
   // ------------------------------------------
   // INPUT CHANGES
   // ------------------------------------------
@@ -438,8 +438,9 @@ const getDesignStyleName = () => {
                   </button>
 
                   <button
+
                     type="button"
-                    className="setas-cover"
+                    className={`setas-cover ${img.is_cover ? "cover-btn" : "set-btn"}`}
                     onClick={() => {
                       const updated = existingImages.map((image, i) => ({
                         ...image,
@@ -449,6 +450,7 @@ const getDesignStyleName = () => {
                     }}
                   >
                     {img.is_cover ? "Cover Image" : "Set Cover"}
+
                   </button>
                 </div>
               ))}
@@ -590,7 +592,7 @@ const getDesignStyleName = () => {
 
             {/* -------- Buttons -------- */}
             <div className="btn-cvr" style={{ display: "flex", gap: "10px" }}>
-              
+
               {/* ➤ Preview Button */}
               <button
                 type="button"
@@ -603,14 +605,14 @@ const getDesignStyleName = () => {
               {/* Delete */}
               <button
                 type="button"
-                className="save-btn1"
+                className="save-btn1 dark-btn"
                 onClick={() => setDeleteModalVisible(true)}
               >
                 Delete
               </button>
 
               {/* Update */}
-              <button type="submit" className="save-btn1">
+              <button type="submit" className="save-btn1 dark-btn">
                 Update
               </button>
             </div>

@@ -296,15 +296,13 @@ color: #ffffff;
 
 
 button.save-btn1 {
-    background: var(--primary-color);
-    color: #fff;
-    cursor: pointer;
+  font-weight: 700;
     border-radius: 5px;
     width: fit-content;
     margin: 20px 0;
     padding: 12px 85px;
     display: block;
-          font-family: 'Avenir-medium';
+    font-family: 'Avenir-medium'; letter-spacing: 0.4px;
 
 }
 
@@ -418,31 +416,49 @@ button.close-poup:hover{
 
 
 .create-btn{
-    color: #fff;
-    background: var(--primary-color);
     border-radius: 5px;
     padding: 10px 50px;
     font-size: 13px;
     font-weight: 400;
     display: inline-block;
-    margin: 30px 0 0; cursor: pointer;
+    margin: 30px 0 0;
 }
 
 
-.create-btn:hover{
-  background: #4c72f6;
-}
 
 
 
 .dark-btn{
     color: #fff;
     background: var(--primary-color);
+    cursor: pointer;
+    border: 2px solid var(--primary-color);
 }
 
 .dark-btn:hover{
   background: #4c72f6;
 }
+
+
+.dark-lined-btn{
+   color: var(--primary-color);
+   outline: 2px solid var(--primary-color);
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.preview-btn {
+    padding: 12px 85px; border-radius: 5px;
+    margin: 20px 15px 20px 0;
+      font-family: 'Avenir-medium';font-size: 16px;
+      font-weight: 700;letter-spacing: 0.4px;
+}
+
+.preview-btn:hover{
+  background: var(--primary-color);
+  color: #ffffff;
+}
+
 
 .send-prop-btn{
   width: 100%;

@@ -329,7 +329,8 @@ setTimeout(() => {
                       </button>
                       <button
                         type="button"
-                        className="setas-cover"
+                        className={`setas-cover ${file.isCover ? "cover-btn" : "set-btn"}`}
+
                         onClick={() => {
                           const updated = imageFile.map((f, i) =>
                             ({ ...f, isCover: i === index })
@@ -338,6 +339,7 @@ setTimeout(() => {
                         }}
                       >
                         {file.isCover ? "Cover Image" : "Set Cover"}
+
                       </button>
                     </div>
                   ))}
@@ -424,11 +426,11 @@ setTimeout(() => {
                   )}
                 </div>
 
-                <div className="btn-cvr" style={{ display: "flex", justifyContent: "flex-end" }}>
-                  <button type="button" className="preview-btn" onClick={() => setShowPreview(true)}>
+                <div className="btn-cvr">
+                  <button type="button" className="preview-btn dark-lined-btn" onClick={() => setShowPreview(true)}>
                     Preview
                   </button>
-                  <button type="submit" className="save-btn1">
+                  <button type="submit" className="save-btn1 dark-btn">
                     Save
                   </button>
                 </div>
