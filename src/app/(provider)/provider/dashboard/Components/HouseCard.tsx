@@ -451,7 +451,7 @@ const handleInlineCancel = () => {
 
           {/* When confirming, show Yes / No buttons inline */}
           {showConfirmInline && (
-            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <div style={{ display: "flex", gap: 8, alignItems: "center", justifyContent: "center" }}>
               <button
                 onClick={performRemoveImage}
                 disabled={removing}

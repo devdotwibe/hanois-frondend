@@ -4337,7 +4337,7 @@ span.time-now {
 .delete-modal {
     border: 1px solid #e0e0e0;
     width: fit-content;
-    padding: 25px;
+    padding: 20px;
     border-radius: 10px;
     /* box-shadow: 0 0 8px rgba(241, 196, 15, 0.6); */
     /* border-color: #fffbe6; */
@@ -4345,7 +4345,7 @@ span.time-now {
 }
 .inner-delimg2:has(.dark-btn) {
     border: 1px solid #e0e0e0;
-    padding: 25px 25px;
+    padding: 20px;
     border-radius: 10px;
     width: fit-content;
 }
