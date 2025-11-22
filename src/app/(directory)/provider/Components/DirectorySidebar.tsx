@@ -82,7 +82,7 @@ useEffect(() => {
 
       <div className="filter-section">
         <p className="section-label">Service category</p>
-        <div className="select-wrapper">
+        <div className="select-wrapper form-grp">
           <select
             className="category-select"
             value={selectedCategory}
@@ -181,7 +181,7 @@ export default DirectorySidebar;
 //       {/* Style Section */}
 //       <div className='filter-section'>
 //         <p className='section-label'>Style</p>
-        
+
 //         <label className='checkbox-label'>
 //           <input type="checkbox" className='hidden-checkbox' />
 //           <span className='custom-checkbox checked'>
