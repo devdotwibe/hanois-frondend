@@ -4310,11 +4310,18 @@ span.time-now {
     padding: 28px 40px;
     border-radius: 10px;
     /* box-shadow: 0 0 8px rgba(241, 196, 15, 0.6); */
-    border-color: #fffbe6;
+    /* border-color: #fffbe6; */
 
 }
 
+.poupoutr{
+ border: 1px solid #e0e0e0;
 
+    padding: 28px 40px;
+    border-radius: 10px;
+    /* box-shadow: 0 0 8px rgba(241, 196, 15, 0.6); */
+    /* border-color: #fffbe6; */
+}
 
 /* ------------------------------------responsive */
 
