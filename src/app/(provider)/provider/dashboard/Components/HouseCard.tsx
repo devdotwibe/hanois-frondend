@@ -192,6 +192,10 @@ const HouseCard: React.FC<HouseCardProps> = ({
 
       setShowConfirmInline(false);
       setStatus({ success: true, message: "Image removed successfully." });
+      setTimeout(() => {
+  setStatus({ success: null, message: "" });
+}, 1000);
+
     } catch (err) {
       console.error("Remove error:", err);
       setStatus({ success: false, message: "Failed to remove image." });
