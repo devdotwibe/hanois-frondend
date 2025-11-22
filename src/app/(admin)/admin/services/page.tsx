@@ -11,6 +11,11 @@ export default function ServicesPage() {
   const [editingService, setEditingService] = useState(null);
   const [editingName, setEditingName] = useState("");
 
+  const [showModal, setShowModal] = useState(false);
+const [deleteId, setDeleteId] = useState(null);
+
+
+
   // Fetch Services
   const fetchServices = async () => {
     try {
@@ -49,17 +54,19 @@ export default function ServicesPage() {
   };
 
   // Delete Service
-  const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this Service?")) return;
-    try {
-      await axios.delete(`${API_URL}/Services/${id}`);
-      setServices(Services.filter((ser) => ser.id !== id));
-      setMessage("✅ Service deleted successfully");
-    } catch (error) {
-      console.error(error);
-      setMessage("❌ Failed to delete Service");
-    }
-  };
+const handleDelete = async () => {
+  try {
+    await axios.delete(`${API_URL}/services/${deleteId}`);
+    setServices(Services.filter((ser) => ser.id !== deleteId));
+    setMessage("✅ Service deleted successfully");
+  } catch (error) {
+    console.error(error);
+    setMessage("❌ Failed to delete Service");
+  } finally {
+    setShowModal(false);
+    setDeleteId(null);
+  }
+};
 
   // Update Service
   const handleUpdate = async (id) => {
@@ -144,12 +151,16 @@ export default function ServicesPage() {
                   >
                     Edit
                   </button>
-                  <button
-                    onClick={() => handleDelete(ser.id)}
-                    className="btn-delete"
-                  >
-                    Delete
-                  </button>
+                 <button
+  onClick={() => {
+    setShowModal(true);
+    setDeleteId(ser.id);
+  }}
+  className="btn-delete"
+>
+  Delete
+</button>
+
                 </div>
               </>
             )}
@@ -163,6 +174,37 @@ export default function ServicesPage() {
           {message}
         </p>
       )}
+
+      {showModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+      <h2 className="text-lg font-semibold mb-4">
+        Are you sure you want to delete this Service?
+      </h2>
+
+      <div className="flex justify-between gap-4">
+        <button
+          onClick={handleDelete}
+          className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-500"
+        >
+          Yes, Delete
+        </button>
+
+        <button
+          onClick={() => setShowModal(false)}
+          className="w-full bg-gray-300 py-2 rounded hover:bg-gray-200"
+        >
+          Cancel
+        </button>
+      </div>
     </div>
+  </div>
+)}
+
+
+
+    </div>
+
+
   );
 }

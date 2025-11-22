@@ -98,14 +98,15 @@ const ServiceDiv = ({ provider }) => {
         </div>
       )}
 
-      <div className="para-serv">
-        <p>
-          Each project is unique, making budgets and costs vary depending on different factors.
-          Call and speak to a team member for more information
-          {provider?.phone ? ` at ${provider.phone}` : ""} or visit our website
-          {provider?.website ? ` at ${provider.website}` : ""}.
-        </p>
-      </div>
+     <div className="para-serv">
+  <p>
+    Each project is unique, making budgets and costs vary depending on different factors.
+    Call and speak to a team member for more information
+    {provider?.phone && ` at ${provider.phone}`}
+    {provider?.website && ` or visit our website at ${provider.website}`}.
+  </p>
+</div>
+
     </div>
   );
 };
